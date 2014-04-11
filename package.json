@@ -1,0 +1,31 @@
+{
+  "name": "mediacat",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "reactify": "^0.11.0",
+    "react": "^0.10.0",
+    "underscore": "^1.6.0",
+    "gulp": "^3.6.0",
+    "factor-bundle": "^0.2.2",
+    "glob": "^3.2.9",
+    "browserify": "^3.41.0",
+    "mkpath": "^0.1.0",
+    "collections": "^2.0.1",
+    "pad": "0.0.4",
+    "browserify-shim": "^3.4.1",
+    "isomorph": "^0.2.1",
+    "http-post": "^0.1.1",
+    "envify": "^1.2.1",
+    "gulp-jasmine": "^0.2.0",
+    "gulp-sass": "^0.7.1",
+    "browserify-middleware": "^2.5.0"
+  }
+}

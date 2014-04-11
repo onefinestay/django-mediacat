@@ -1,3 +1,5 @@
+from django.views.generic import TemplateView
+
 from rest_framework import generics
 
 from . import models
@@ -22,3 +24,7 @@ class CropList(generics.ListCreateAPIView):
 class CropDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ImageCrop.objects.all()
     serializer_class = serializers.ImageCropSerializer
+
+
+class Library(TemplateView):
+    template_name = 'mediacat/library.html'

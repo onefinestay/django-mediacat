@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+  <title>mediacat</title>
+  <link rel="stylesheet" href="{% static 'mediacat/css/library.css' %}" />
+</head>
+<body>
+
+<script src="{% static 'mediacat/js/build/bundle.js' %}"></script>
+<script>
+  require('library')(null, null, document.body);
+</script>
+</body>
+</html>

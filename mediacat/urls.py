@@ -6,6 +6,7 @@ from . import views
 
 urlpatterns = patterns(
     '',
+    url(r'^$', views.Library.as_view(), name='mediacat-library'),
     url(r'^images/$', views.ImageList.as_view(), name='mediacat-image-list'),
     url(r'^images/(?P<pk>[0-9]+)/$', views.ImageDetail.as_view(), name='mediacat-image-detail'),
     url(r'^crops/$', views.CropList.as_view(), name='mediacat-crop-list'),
