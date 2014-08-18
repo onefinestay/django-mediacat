@@ -3,13 +3,19 @@
 <html>
 <head>
   <title>mediacat</title>
-  <link rel="stylesheet" href="{% static 'mediacat/css/library.css' %}" />
+  <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Muli:300,400' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="{% static 'mediacat/library.css' %}" />
 </head>
 <body>
 
-<script src="{% static 'mediacat/js/build/bundle.js' %}"></script>
+
 <script>
-  require('library')(null, null, document.body);
+ 	var MEDIACAT_CONFIG = {
+ 		currentMedia: [],
+ 		visibleCategores: []
+ 	};
 </script>
+<script src="{% static 'mediacat/library.js' %}"></script>
 </body>
 </html>
