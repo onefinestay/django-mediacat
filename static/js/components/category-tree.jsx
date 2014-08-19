@@ -54,19 +54,9 @@ var CategoryTreeNode = React.createClass({
 var CategoryTree = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
 
-  renderSubmit: function() {
-    return (
-      <div className="submit-section">
-        <h3>{messages.SUBMIT_CAPTION}</h3>
-        <button className="button">{messages.SUBMIT_BUTTON}</button>
-      </div>
-    );
-  },
-
   getStateFromFlux: function() {
     return {
-      categories: this.getFlux().store('Categories').state.get('categories'),
-      selectedCategory: this.getFlux().store('Categories').state.get('selectedCategory')
+      categories: this.getFlux().store('Categories').state.get('categories')
     };
   },
 

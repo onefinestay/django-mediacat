@@ -6,6 +6,7 @@ from . import models
 
 class ImageSerializer(serializers.ModelSerializer):
     crops = serializers.PrimaryKeyRelatedField(many=True)
+    thumbnail = serializers.Field(source='get_thumbnail_url')
 
     class Meta:
         model = models.Image
@@ -19,6 +20,7 @@ class ImageSerializer(serializers.ModelSerializer):
             'height',
             'width',
             'crops',
+            'thumbnail',
         )
 
 

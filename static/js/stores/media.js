@@ -9,6 +9,7 @@ var Constants = require('../constants');
 var MediaStore = Fluxxor.createStore({
   actions: {
     CATEGORY_SELECTED: 'onCategorySelect',
+    MEDIA_SELECTED: 'onMediaSelect',
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess'
   },
 
@@ -18,17 +19,30 @@ var MediaStore = Fluxxor.createStore({
   },
 
   getFetchRequest: function(category, filters) {
+    var query = {
+      content_type_id: category.get('content_type_id'),
+      object_id: category.get('object_id')
+    };
+
     return request
       .get('/mediacat/images/')
-      .query({category: 1})
+      .query(query)
       .on('error', this.flux.actions.media.fetchError)
       .end(this.flux.actions.media.fetchSuccess);
-    this.state.set('request', req);
+    this.state = this.state.set('request', req);
     this.emit('change');
   },
 
   onFetchImagesSuccess: function(payload) {
-    console.log(payload);
+    var media = Immutable.fromJS(payload.data);
+
+    this.state = this.state.set('media', media);
+    this.emit('change');
+  },
+
+  onMediaSelect: function(payload) {
+    this.state = this.state.set('selectedMedia', payload.media);
+    this.emit('change');
   },
 
   onCategorySelect: function(payload) {

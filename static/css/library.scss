@@ -81,6 +81,7 @@ body {
     background-color: $sidebar-bg;
     width: $sidebar-width;
     flex-grow: 0;
+    flex-shrink: 0;
     border-right: 1px $seperator-color solid;
     color: $sidebar-fg;
     display: flex;
@@ -128,5 +129,43 @@ body {
 
   .#{$ns}-document {
     flex-grow: 1;
+    overflow-y: scroll;    
   }
+
+  .#{$ns}-thumbnail-list {
+    margin: 0;
+    padding: 10px;
+    list-style-type: none;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .#{$ns}-thumbnail {
+    width: 180px;
+    height: 180px;
+    background-color: #2b303b;
+    padding: 10px;
+    margin: 5px;
+    background-size: cover;
+    cursor: pointer;
+
+    .proxy-image {
+      width: 100%;
+      height: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        display: block;
+      }
+    }
+  }
+
+  .#{$ns}-thumbnail-selected {
+    background-color: lighten(#2b303b, 10);
+  }
+
 }

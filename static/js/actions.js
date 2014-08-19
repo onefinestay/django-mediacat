@@ -4,6 +4,10 @@ var Constants = require('./constants');
 
 var Actions = {
   media: {
+    select: function(media) {
+      this.dispatch(Constants.MEDIA_SELECTED, {media});
+    },
+
     fetch: function(category, filters) {
       this.dispatch(Constants.FETCH_IMAGES, {category, filters});
     },

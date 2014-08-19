@@ -7,6 +7,7 @@ from django.db import models
 
 from django.utils.translation import ugettext as _
 
+from .backends.thumbor import thumb
 
 crop_registry = set([(k, v[1], v[2]) for k, v in settings.MEDIALIBRARY_CROPS.items()])
 
@@ -25,6 +26,19 @@ class Image(models.Model):
 
     def __unicode__(self):
         return self.image_file.name
+
+    def get_thumbnail_url(self, width=300):
+        url = self.image_file.url
+
+        if not url:
+            return None
+
+        return thumb(
+            url,
+            fit_in=True,
+            width=width,
+            filters=['quality({})'.format(85)]
+        )
 
     class Meta:
         verbose_name = _('Image')

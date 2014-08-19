@@ -5,6 +5,7 @@ var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var Header = require('./header');
+var ThumbnailList = require('./thumbnail-list');
 
 
 var Main = React.createClass({
@@ -17,7 +18,7 @@ var Main = React.createClass({
   				<button>Upload</button>
   			</Header>
   			<div className="mediacat-document">
-          Hello world
+          <ThumbnailList />
         </div>
   		</div>
   	);
