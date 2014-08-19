@@ -36,6 +36,26 @@ class ImageAssociation(models.Model):
     content_type = models.ForeignKey(ContentType, blank=True, null=True)
     object_id = models.PositiveIntegerField(blank=True, null=True)
     object = generic.GenericForeignKey('content_type', 'object_id')
+    canonical = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('image', 'content_type', 'object_id')
+        index_together = [
+            ['image', 'content_type', 'object_id']
+        ]
+
+    def save(self, **kwargs):
+        # We want to make sure this is 1 and only 1 canonical image. To that end
+        # if this instance is canonical then turn all others to False. If this
+        # instance is not set to canonical, and there aren't any others, then
+        # force it to be True
+
+        if self.canonical:
+            self.__class__.objects.filter(image=self.image).update(canonical=False)
+        else:
+            if not self.__class__.objects.filter(image=self.image, canonical=True).exists():
+                self.canonical = True
+        return super(ImageAssociation, self).save(**kwargs)
 
 
 SCORE_CHOICES = (
