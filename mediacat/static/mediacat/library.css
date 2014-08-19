@@ -1,6 +1,7 @@
 html {
   background-color: #232830;
   color: #fff;
+  font-size: 14px;
   font-weight: 300;
   font-family: Nunito, sans-serif; }
 
@@ -45,7 +46,14 @@ body {
     height: 57px;
     padding: 10px;
     line-height: 37px;
-    border-bottom: 1px #1a0000 solid; }
+    border-bottom: 1px #1a0000 solid;
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0; }
     .mediacat-application .mediacat-header button {
       display: block;
       background-color: #fff;
@@ -82,8 +90,55 @@ body {
     -ms-flex-positive: 0;
     flex-grow: 0;
     border-right: 1px #1a0000 solid;
-    color: #BAC5CE; }
+    color: #BAC5CE;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+  .mediacat-application .mediacat-categories {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    overflow-y: scroll;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1; }
+    .mediacat-application .mediacat-categories ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0; }
+  .mediacat-application .mediacat-categories-label {
+    display: block;
+    padding: 6px 20px;
+    cursor: pointer; }
+    .mediacat-application .mediacat-categories-label:hover {
+      color: #fff;
+      background-color: #303642; }
+  .mediacat-application .mediacat-categories-node-selected > .mediacat-categories-label {
+    background-color: #414858;
+    color: #fff;
+    text-shadow: 1px 1px 0 black; }
   .mediacat-application .mediacat-content {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+  .mediacat-application .mediacat-document {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;

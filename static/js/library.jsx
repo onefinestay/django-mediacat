@@ -9,18 +9,19 @@ var React = require('react/addons');
 var Fluxxor = require("fluxxor");
 var Application = require('./components/application');
 
-var LibraryStore = require('./store');
+var CategoryStore = require('./stores/categories');
+var MediaStore = require('./stores/media');
 
+var Actions = require('./actions');
 
-var actions = {
-
-};
+var config = window.MEDIACAT_CONFIG;
 
 var stores = {
-	LibraryStore: new LibraryStore(window.MEDIACAT_CONFIG)
+	Categories: new CategoryStore(config.categories),
+	Media: new MediaStore(config.media),
 };
 
-var flux = new Fluxxor.Flux(stores, actions);
+var flux = new Fluxxor.Flux(stores, Actions);
 
 window.React = React;
 

@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles mediacat_tags %}
 <!doctype html>
 <html>
 <head>
@@ -9,11 +9,16 @@
 </head>
 <body>
 
-
 <script>
  	var MEDIACAT_CONFIG = {
- 		currentMedia: [],
- 		visibleCategores: []
+ 		media: {
+ 			loading: false,
+ 			media: []
+ 		},
+ 		categories: {
+ 			selectedCategory: null,
+ 			categories: {{ category_data|jsonify }}
+ 		}
  	};
 </script>
 <script src="{% static 'mediacat/library.js' %}"></script>
