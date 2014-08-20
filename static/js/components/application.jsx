@@ -11,15 +11,15 @@ var FluxMixin = require('./flux-mixin');
 
 
 var Application = React.createClass({
-	mixins: [PureRenderMixin, FluxMixin],
+  mixins: [PureRenderMixin, FluxMixin],
 
   render: function() {
-  	return (
-  		<div className="mediacat-application">
-  			<Navigation />
-  			<Main />
-  		</div>
-  	);
+    return (
+      <div className="mediacat-application">
+        <Navigation />
+        <Main />
+      </div>
+    );
   }
 });
 

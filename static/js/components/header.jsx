@@ -6,14 +6,14 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 
 var Header = React.createClass({
-	mixins: [PureRenderMixin],
+  mixins: [PureRenderMixin],
 
   render: function() {
-  	return (
-  		<div className="mediacat-header">
+    return (
+      <div className="mediacat-header">
         {this.props.children}
-  		</div>
-  	);
+      </div>
+    );
   }
 });
 

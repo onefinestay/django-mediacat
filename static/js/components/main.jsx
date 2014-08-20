@@ -12,16 +12,16 @@ var Main = React.createClass({
   mixins: [PureRenderMixin],
   
   render: function() {
-  	return (
-  		<div className="mediacat-content">
-  			<Header>
-  				<button>Upload</button>
-  			</Header>
-  			<div className="mediacat-document">
+    return (
+      <div className="mediacat-content">
+        <Header>
+          <button>Upload</button>
+        </Header>
+        <div className="mediacat-document">
           <ThumbnailList />
         </div>
-  		</div>
-  	);
+      </div>
+    );
   }
 });
 

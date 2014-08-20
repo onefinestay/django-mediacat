@@ -13,14 +13,14 @@ var Navigation = React.createClass({
   mixins: [PureRenderMixin],
   
   render: function() {
-  	return (
-  		<div className="mediacat-navigation">
-  			<Header>
-  				<Search />
-  			</Header>
-  			<CategoryTree />
-  		</div>
-  	);
+    return (
+      <div className="mediacat-navigation">
+        <Header>
+          <Search />
+        </Header>
+        <CategoryTree />
+      </div>
+    );
   }
 });
 

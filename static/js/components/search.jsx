@@ -6,12 +6,12 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 
 var Search = React.createClass({
-	mixins: [PureRenderMixin],
-	
+  mixins: [PureRenderMixin],
+  
   render: function() {
-  	return (
-  		<input type="search" placeholder="Enter search query" />
-  	);
+    return (
+      <input type="search" placeholder="Enter search query" />
+    );
   }
 });
 

@@ -28,20 +28,20 @@ var Thumbnail = React.createClass({
 
 
 
-	render: function() {
-		var thumbnail = this.props.thumbnail;
+  render: function() {
+    var thumbnail = this.props.thumbnail;
 
     var classes = {
       'mediacat-thumbnail': true,
       'mediacat-thumbnail-selected': this.state.selected
     };
 
-		return (
-			<li className={cx(classes)} onClick={this.select}>
-				<ProxyImg src={thumbnail.get('thumbnail')} />
-			</li>
-		);
-	}
+    return (
+      <li className={cx(classes)} onClick={this.select}>
+        <ProxyImg src={thumbnail.get('thumbnail')} />
+      </li>
+    );
+  }
 });
 
 
@@ -55,13 +55,13 @@ var ThumbnailList = React.createClass({
   },
 
   render: function() {
-  	var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
-  	return (
-  		<ul className="mediacat-thumbnail-list">
-  			{thumbnails.toJS()}
-  		</ul>
-  	);
+    return (
+      <ul className="mediacat-thumbnail-list">
+        {thumbnails.toJS()}
+      </ul>
+    );
   }
 });
 

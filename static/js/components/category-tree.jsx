@@ -25,12 +25,12 @@ var CategoryTreeNode = React.createClass({
     };
   },  
 
-	render: function() {
-		var node = this.props.node;
+  render: function() {
+    var node = this.props.node;
 
     var depth = this.props.depth;
-		var children = node.get('children');
-		var nodes = children.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
+    var children = node.get('children');
+    var nodes = children.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
 
     var classes = {
       'mediacat-categories-node': true,
@@ -41,13 +41,13 @@ var CategoryTreeNode = React.createClass({
       'padding-left': 20 * depth + 'px'
     };
 
-		return (
-			<li className={cx(classes)}>
-				<a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>{node.get('name')}</a>
-				{children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
-			</li>
-		);
-	}
+    return (
+      <li className={cx(classes)}>
+        <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>{node.get('name')}</a>
+        {children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
+      </li>
+    );
+  }
 });
 
 
@@ -61,13 +61,13 @@ var CategoryTree = React.createClass({
   },
 
   render: function() {
-  	var nodes = this.state.categories.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
+    var nodes = this.state.categories.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
 
-  	return (
-  		<ul className="mediacat-categories">
-  			{nodes.toJS()}
-  		</ul>
-  	);
+    return (
+      <ul className="mediacat-categories">
+        {nodes.toJS()}
+      </ul>
+    );
   }
 });
 

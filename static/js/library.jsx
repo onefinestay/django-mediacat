@@ -17,8 +17,8 @@ var Actions = require('./actions');
 var config = window.MEDIACAT_CONFIG;
 
 var stores = {
-	Categories: new CategoryStore(config.categories),
-	Media: new MediaStore(config.media),
+  Categories: new CategoryStore(config.categories),
+  Media: new MediaStore(config.media),
 };
 
 var flux = new Fluxxor.Flux(stores, Actions);

@@ -66,8 +66,8 @@
 	var config = window.MEDIACAT_CONFIG;
 	
 	var stores = {
-		Categories: new CategoryStore(config.categories),
-		Media: new MediaStore(config.media),
+	  Categories: new CategoryStore(config.categories),
+	  Media: new MediaStore(config.media),
 	};
 	
 	var flux = new Fluxxor.Flux(stores, Actions);
@@ -140,15 +140,15 @@
 	
 	
 	var Application = React.createClass({displayName: 'Application',
-		mixins: [PureRenderMixin, FluxMixin],
+	  mixins: [PureRenderMixin, FluxMixin],
 	
 	  render: function() {
-	  	return (
-	  		React.DOM.div({className: "mediacat-application"}, 
-	  			Navigation(null), 
-	  			Main(null)
-	  		)
-	  	);
+	    return (
+	      React.DOM.div({className: "mediacat-application"}, 
+	        Navigation(null), 
+	        Main(null)
+	      )
+	    );
 	  }
 	});
 	
@@ -369,14 +369,14 @@
 	  mixins: [PureRenderMixin],
 	  
 	  render: function() {
-	  	return (
-	  		React.DOM.div({className: "mediacat-navigation"}, 
-	  			Header(null, 
-	  				Search(null)
-	  			), 
-	  			CategoryTree(null)
-	  		)
-	  	);
+	    return (
+	      React.DOM.div({className: "mediacat-navigation"}, 
+	        Header(null, 
+	          Search(null)
+	        ), 
+	        CategoryTree(null)
+	      )
+	    );
 	  }
 	});
 	
@@ -403,16 +403,16 @@
 	  mixins: [PureRenderMixin],
 	  
 	  render: function() {
-	  	return (
-	  		React.DOM.div({className: "mediacat-content"}, 
-	  			Header(null, 
-	  				React.DOM.button(null, "Upload")
-	  			), 
-	  			React.DOM.div({className: "mediacat-document"}, 
+	    return (
+	      React.DOM.div({className: "mediacat-content"}, 
+	        Header(null, 
+	          React.DOM.button(null, "Upload")
+	        ), 
+	        React.DOM.div({className: "mediacat-document"}, 
 	          ThumbnailList(null)
 	        )
-	  		)
-	  	);
+	      )
+	    );
 	  }
 	});
 	
@@ -860,14 +860,14 @@
 	
 	
 	var Header = React.createClass({displayName: 'Header',
-		mixins: [PureRenderMixin],
+	  mixins: [PureRenderMixin],
 	
 	  render: function() {
-	  	return (
-	  		React.DOM.div({className: "mediacat-header"}, 
+	    return (
+	      React.DOM.div({className: "mediacat-header"}, 
 	        this.props.children
-	  		)
-	  	);
+	      )
+	    );
 	  }
 	});
 	
@@ -888,12 +888,12 @@
 	
 	
 	var Search = React.createClass({displayName: 'Search',
-		mixins: [PureRenderMixin],
-		
+	  mixins: [PureRenderMixin],
+	  
 	  render: function() {
-	  	return (
-	  		React.DOM.input({type: "search", placeholder: "Enter search query"})
-	  	);
+	    return (
+	      React.DOM.input({type: "search", placeholder: "Enter search query"})
+	    );
 	  }
 	});
 	
@@ -933,12 +933,12 @@
 	    };
 	  },  
 	
-		render: function() {
-			var node = this.props.node;
+	  render: function() {
+	    var node = this.props.node;
 	
 	    var depth = this.props.depth;
-			var children = node.get('children');
-			var nodes = children.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: depth + 1});});
+	    var children = node.get('children');
+	    var nodes = children.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: depth + 1});});
 	
 	    var classes = {
 	      'mediacat-categories-node': true,
@@ -949,13 +949,13 @@
 	      'padding-left': 20 * depth + 'px'
 	    };
 	
-			return (
-				React.DOM.li({className: cx(classes)}, 
-					React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, node.get('name')), 
-					children.length ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null
-				)
-			);
-		}
+	    return (
+	      React.DOM.li({className: cx(classes)}, 
+	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, node.get('name')), 
+	        children.length ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null
+	      )
+	    );
+	  }
 	});
 	
 	
@@ -969,13 +969,13 @@
 	  },
 	
 	  render: function() {
-	  	var nodes = this.state.categories.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: 1});});
+	    var nodes = this.state.categories.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: 1});});
 	
-	  	return (
-	  		React.DOM.ul({className: "mediacat-categories"}, 
-	  			nodes.toJS()
-	  		)
-	  	);
+	    return (
+	      React.DOM.ul({className: "mediacat-categories"}, 
+	        nodes.toJS()
+	      )
+	    );
 	  }
 	});
 	
@@ -1052,20 +1052,20 @@
 	
 	
 	
-		render: function() {
-			var thumbnail = this.props.thumbnail;
+	  render: function() {
+	    var thumbnail = this.props.thumbnail;
 	
 	    var classes = {
 	      'mediacat-thumbnail': true,
 	      'mediacat-thumbnail-selected': this.state.selected
 	    };
 	
-			return (
-				React.DOM.li({className: cx(classes), onClick: this.select}, 
-					ProxyImg({src: thumbnail.get('thumbnail')})
-				)
-			);
-		}
+	    return (
+	      React.DOM.li({className: cx(classes), onClick: this.select}, 
+	        ProxyImg({src: thumbnail.get('thumbnail')})
+	      )
+	    );
+	  }
 	});
 	
 	
@@ -1079,13 +1079,13 @@
 	  },
 	
 	  render: function() {
-	  	var thumbnails = this.state.media.map(function(thumbnail)  {return Thumbnail({key: thumbnail.get('id'), thumbnail: thumbnail});});
+	    var thumbnails = this.state.media.map(function(thumbnail)  {return Thumbnail({key: thumbnail.get('id'), thumbnail: thumbnail});});
 	
-	  	return (
-	  		React.DOM.ul({className: "mediacat-thumbnail-list"}, 
-	  			thumbnails.toJS()
-	  		)
-	  	);
+	    return (
+	      React.DOM.ul({className: "mediacat-thumbnail-list"}, 
+	        thumbnails.toJS()
+	      )
+	    );
 	  }
 	});
 	
