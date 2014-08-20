@@ -5,6 +5,8 @@ var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 
+var RadialLoader = require('./loaders/radial');
+
 var ProxyImg = React.createClass({
   mixins: [PureRenderMixin],
 
@@ -65,7 +67,7 @@ var ProxyImg = React.createClass({
         <div className="proxy-image-bg" style={style}>
           <img src={src} />
         </div>
-        <div className="proxy-image-spinner" style={spinnerStyle}>Loading</div>
+        <div className="proxy-image-spinner" style={spinnerStyle}><RadialLoader /></div>
       </div>
   	);
   }

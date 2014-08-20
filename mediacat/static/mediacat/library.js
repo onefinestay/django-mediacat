@@ -2420,6 +2420,8 @@
 	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
 	var cx = React.addons.classSet;
 	
+	var RadialLoader = __webpack_require__(/*! ./loaders/radial */ 244);
+	
 	var ProxyImg = React.createClass({displayName: 'ProxyImg',
 	  mixins: [PureRenderMixin],
 	
@@ -2480,7 +2482,7 @@
 	        React.DOM.div({className: "proxy-image-bg", style: style}, 
 	          React.DOM.img({src: src})
 	        ), 
-	        React.DOM.div({className: "proxy-image-spinner", style: spinnerStyle}, "Loading")
+	        React.DOM.div({className: "proxy-image-spinner", style: spinnerStyle}, RadialLoader(null))
 	      )
 	  	);
 	  }
@@ -27766,6 +27768,51 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 62)))
+
+/***/ },
+/* 243 */,
+/* 244 */
+/*!*************************************************!*\
+  !*** ./static/js/components/loaders/radial.jsx ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
+	
+	var RadialLoader = React.createClass({displayName: 'RadialLoader',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "radial-loader"}, 
+	        React.DOM.div({className: "radial-loader-container radial-loader-container-1"}, 
+	          React.DOM.div({className: "radial-loader-circle-1"}), 
+	          React.DOM.div({className: "radial-loader-circle-2"}), 
+	          React.DOM.div({className: "radial-loader-circle-3"}), 
+	          React.DOM.div({className: "radial-loader-circle-4"})
+	        ), 
+	        React.DOM.div({className: "radial-loader-container radial-loader-container-2"}, 
+	          React.DOM.div({className: "radial-loader-circle-1"}), 
+	          React.DOM.div({className: "radial-loader-circle-2"}), 
+	          React.DOM.div({className: "radial-loader-circle-3"}), 
+	          React.DOM.div({className: "radial-loader-circle-4"})
+	        ), 
+	        React.DOM.div({className: "radial-loader-container radial-loader-container-3"}, 
+	          React.DOM.div({className: "radial-loader-circle-1"}), 
+	          React.DOM.div({className: "radial-loader-circle-2"}), 
+	          React.DOM.div({className: "radial-loader-circle-3"}), 
+	          React.DOM.div({className: "radial-loader-circle-4"})
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = RadialLoader;
 
 /***/ }
 /******/ ])
