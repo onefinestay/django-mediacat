@@ -55,7 +55,7 @@ var ThumbnailList = React.createClass({
   },
 
   render: function() {
-  	var thumbnails = this.state.media.map(thumbnail => <Thumbnail thumbnail={thumbnail} />);
+  	var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
   	return (
   		<ul className="mediacat-thumbnail-list">

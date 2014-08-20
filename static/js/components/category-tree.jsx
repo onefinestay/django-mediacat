@@ -30,7 +30,7 @@ var CategoryTreeNode = React.createClass({
 
     var depth = this.props.depth;
 		var children = node.get('children');
-		var nodes = children.map(node => <CategoryTreeNode node={node} depth={depth + 1} />);
+		var nodes = children.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
 
     var classes = {
       'mediacat-categories-node': true,
@@ -61,7 +61,7 @@ var CategoryTree = React.createClass({
   },
 
   render: function() {
-  	var nodes = this.state.categories.map(node => <CategoryTreeNode node={node} depth={1} />);
+  	var nodes = this.state.categories.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
 
   	return (
   		<ul className="mediacat-categories">

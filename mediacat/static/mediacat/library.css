@@ -177,11 +177,38 @@ body {
     cursor: pointer; }
     .mediacat-application .mediacat-thumbnail .proxy-image {
       width: 100%;
-      height: 100%; }
+      height: 100%;
+      position: relative; }
+      .mediacat-application .mediacat-thumbnail .proxy-image .proxy-image-bg {
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: opacity 1s ease;
+        transition: opacity 1s ease; }
+      .mediacat-application .mediacat-thumbnail .proxy-image .proxy-image-spinner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 1;
+        -webkit-transition: opacity 1s ease;
+        transition: opacity 1s ease;
+        line-height: 100%;
+        text-align: center;
+        height: 100%;
+        width: 100%; }
+      .mediacat-application .mediacat-thumbnail .proxy-image.proxy-image-preloaded .proxy-image-bg, .mediacat-application .mediacat-thumbnail .proxy-image.proxy-image-preloaded .proxy-image-spinner {
+        -webkit-transition-property: none;
+        transition-property: none; }
       .mediacat-application .mediacat-thumbnail .proxy-image img {
         width: 100%;
         height: 100%;
         opacity: 0;
         display: block; }
   .mediacat-application .mediacat-thumbnail-selected {
-    background-color: #414858; }
+    border: 1px solid #00C0FF;
+    padding: 9px; }

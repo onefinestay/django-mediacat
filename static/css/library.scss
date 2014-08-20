@@ -154,6 +154,38 @@ body {
     .proxy-image {
       width: 100%;
       height: 100%;
+      position: relative;
+
+      .proxy-image-bg {
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 1s ease;
+      }
+
+      .proxy-image-spinner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 1;
+        transition: opacity 1s ease;
+        line-height: 100%;
+        text-align: center;
+        height: 100%;
+        width: 100%;        
+      }
+
+      &.proxy-image-preloaded {
+        .proxy-image-bg,
+        .proxy-image-spinner { 
+          transition-property: none;
+        }
+      }
 
       img {
         width: 100%;
@@ -165,7 +197,9 @@ body {
   }
 
   .#{$ns}-thumbnail-selected {
-    background-color: lighten(#2b303b, 10);
+    //background-color: lighten(#2b303b, 10);
+    border: 1px solid $base-color;
+    padding: 9px;
   }
 
 }
