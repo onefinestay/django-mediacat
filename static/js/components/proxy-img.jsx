@@ -62,14 +62,14 @@ var ProxyImg = React.createClass({
     var spinnerStyle = {
       'opacity': this.state.loaded ? 0 : 100
     };
-  	return (
-  		<div className={cx(classes)}>
+    return (
+      <div className={cx(classes)}>
         <div className="proxy-image-bg" style={style}>
           <img src={src} />
         </div>
         <div className="proxy-image-spinner" style={spinnerStyle}><RadialLoader /></div>
       </div>
-  	);
+    );
   }
 });
 

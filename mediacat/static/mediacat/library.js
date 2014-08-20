@@ -2477,14 +2477,14 @@
 	    var spinnerStyle = {
 	      'opacity': this.state.loaded ? 0 : 100
 	    };
-	  	return (
-	  		React.DOM.div({className: cx(classes)}, 
+	    return (
+	      React.DOM.div({className: cx(classes)}, 
 	        React.DOM.div({className: "proxy-image-bg", style: style}, 
 	          React.DOM.img({src: src})
 	        ), 
 	        React.DOM.div({className: "proxy-image-spinner", style: spinnerStyle}, RadialLoader(null))
 	      )
-	  	);
+	    );
 	  }
 	});
 	

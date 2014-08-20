@@ -147,10 +147,11 @@ body {
     width: 180px;
     height: 180px;
     background-color: #2b303b;
-    padding: 10px;
+    padding: 9px;
     margin: 5px;
     background-size: cover;
     cursor: pointer;
+    border: 1px darken(#2b303b, 5) solid;
 
     .proxy-image {
       width: 100%;
@@ -199,8 +200,7 @@ body {
 
   .#{$ns}-thumbnail-selected {
     //background-color: lighten(#2b303b, 10);
-    border: 1px solid $base-color;
-    padding: 9px;
+    border: 1px solid #414858;
   }
 
 }
