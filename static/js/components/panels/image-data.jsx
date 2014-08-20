@@ -5,16 +5,16 @@ var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 
-var InformationPanel = React.createClass({
+var ImageDataPanel = React.createClass({
   mixins: [PureRenderMixin],
   
   render: function() {
     return (
       <div className="mediacat-information-panel">
-        Oh hi!
+        Information
       </div>
     );
   }
 });
 
-module.exports = InformationPanel;
+module.exports = ImageDataPanel;

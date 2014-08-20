@@ -226,6 +226,7 @@
 	    return request
 	      .get('/mediacat/images/')
 	      .query(query)
+	      .set('Accept', 'application/json')
 	      .on('error', this.flux.actions.media.fetchError)
 	      .end(this.flux.actions.media.fetchSuccess);
 	    this.state = this.state.set('request', req);
@@ -438,7 +439,8 @@
 	var Tab = tabs.Tab;
 	var Tabs = tabs.Tabs;
 	
-	var InformationPanel = __webpack_require__(/*! ./information-panel */ 245);
+	var ImageDataPanel = __webpack_require__(/*! ./panels/image-data */ 250);
+	var CropsPanel = __webpack_require__(/*! ./panels/crops */ 251);
 	
 	
 	var Information = React.createClass({displayName: 'Information',
@@ -450,10 +452,10 @@
 	        Header(null), 
 	        Tabs(null, 
 	          Tab({name: "Crops"}, 
-	            React.DOM.div(null, "Hello World!")
+	            CropsPanel(null)
 	          ), 
-	          Tab({name: "Metadata"}, 
-	            InformationPanel(null)
+	          Tab({name: "Image"}, 
+	            ImageDataPanel(null)
 	          )
 	        )
 	      )
@@ -1060,8 +1062,6 @@
 	      selected: this.props.thumbnail === this.getFlux().store('Media').state.get('selectedMedia')
 	    };
 	  },
-	
-	
 	
 	  render: function() {
 	    var thumbnail = this.props.thumbnail;
@@ -27859,34 +27859,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 63)))
 
 /***/ },
-/* 245 */
-/*!****************************************************!*\
-  !*** ./static/js/components/information-panel.jsx ***!
-  \****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 */
-	var React = __webpack_require__(/*! react/addons */ 6);
-	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
-	
-	
-	var InformationPanel = React.createClass({displayName: 'InformationPanel',
-	  mixins: [PureRenderMixin],
-	  
-	  render: function() {
-	    return (
-	      React.DOM.div({className: "mediacat-information-panel"}, 
-	        "Oh hi!"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = InformationPanel;
-
-/***/ },
+/* 245 */,
 /* 246 */
 /*!********************************************!*\
   !*** ./static/js/components/tabs/tabs.jsx ***!
@@ -29340,6 +29313,174 @@
 	  }
 	}).call(this);
 
+
+/***/ },
+/* 249 */,
+/* 250 */
+/*!****************************************************!*\
+  !*** ./static/js/components/panels/image-data.jsx ***!
+  \****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
+	
+	
+	var ImageDataPanel = React.createClass({displayName: 'ImageDataPanel',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "mediacat-information-panel"}, 
+	        "Information"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ImageDataPanel;
+
+/***/ },
+/* 251 */
+/*!***********************************************!*\
+  !*** ./static/js/components/panels/crops.jsx ***!
+  \***********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 5);
+	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+	
+	var CropList = __webpack_require__(/*! ../crop-list */ 252);
+	
+	var CropsPanel = React.createClass({displayName: 'CropsPanel',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "mediacat-crops-panel"}, 
+	        CropList(null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CropsPanel;
+
+/***/ },
+/* 252 */
+/*!********************************************!*\
+  !*** ./static/js/components/crop-list.jsx ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 10).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 5);
+	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 14);
+	
+	
+	var Crop = React.createClass({displayName: 'Crop',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	
+	  select: function(event) {
+	    event.preventDefault();
+	    //this.getFlux().actions.media.select(this.props.thumbnail);
+	  },
+	
+	  getStateFromFlux: function() {
+	    return {};
+	  },
+	
+	  render: function() {
+	    var media = this.props.media;
+	    var crop = this.props.crop;
+	
+	    var classes = {
+	      'mediacat-crop': true
+	    };
+	
+	    var frameWidth = 150;
+	    var mediaWidth = media.get('width');
+	    var mediaHeight = media.get('height');
+	
+	    var scale = frameWidth / mediaWidth;
+	    var frameHeight = mediaHeight * scale;
+	
+	    var frameStyles = {
+	        width: frameWidth + 'px',
+	        height: frameHeight + 'px'
+	    };
+	
+	    var cropLeft = Math.round(scale * crop.get('x1'));
+	    var cropTop = Math.round(scale * crop.get('y1'));
+	    var cropWidth = Math.round(scale * (crop.get('x2') - crop.get('x1')));
+	    var cropHeight = Math.round(scale * (crop.get('y2') - crop.get('y1')));
+	
+	    var previewStyles = {
+	      left: cropLeft + 'px',
+	      top: cropTop + 'px',
+	      width: cropWidth + 'px',
+	      height: cropHeight + 'px'
+	    };
+	
+	    return (
+	      React.DOM.li({className: cx(classes), onClick: this.select}, 
+	        React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
+	          React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
+	        ), 
+	        crop.get('key')
+	      )
+	    );
+	  }
+	});
+	
+	
+	var CropList = React.createClass({displayName: 'CropList',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	
+	  getStateFromFlux: function() {
+	    var store = this.getFlux().store('Media');
+	    var selected = store.state.get('selectedMedia');
+	
+	    return {
+	      media: selected,
+	      crops: selected ? selected.get('crops') : null
+	    };
+	  },
+	
+	  render: function() {
+	    var media = this.state.media;    
+	    var crops;
+	
+	    if (!media) {
+	      return React.DOM.p(null, "Select an image to view its crops");
+	    }
+	
+	    crops = this.state.crops.map(function(crop)  {return Crop({key: crop.get('id'), crop: crop, media: media});});
+	
+	    return (
+	      React.DOM.ul({className: "mediacat-crop-list"}, 
+	        crops.toJS()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CropList;
 
 /***/ }
 /******/ ])

@@ -26,8 +26,6 @@ var Thumbnail = React.createClass({
     };
   },
 
-
-
   render: function() {
     var thumbnail = this.props.thumbnail;
 

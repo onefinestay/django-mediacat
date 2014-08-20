@@ -4,26 +4,6 @@ from rest_framework import serializers
 from . import models
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    crops = serializers.PrimaryKeyRelatedField(many=True)
-    thumbnail = serializers.Field(source='get_thumbnail_url')
-
-    class Meta:
-        model = models.Image
-        fields = (
-            'id',
-            'rank',
-            'image_file',
-            'date_created',
-            'date_modified',
-            'file_size',
-            'height',
-            'width',
-            'crops',
-            'thumbnail',
-        )
-
-
 class ImageCropSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -40,4 +20,24 @@ class ImageCropSerializer(serializers.ModelSerializer):
             'y1',
             'x2',
             'y2',
+        )
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    crops = ImageCropSerializer(many=True)
+    thumbnail = serializers.Field(source='get_thumbnail_url')
+
+    class Meta:
+        model = models.Image
+        fields = (
+            'id',
+            'rank',
+            'image_file',
+            'date_created',
+            'date_modified',
+            'file_size',
+            'height',
+            'width',
+            'crops',
+            'thumbnail',
         )

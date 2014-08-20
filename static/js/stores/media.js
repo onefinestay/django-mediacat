@@ -27,6 +27,7 @@ var MediaStore = Fluxxor.createStore({
     return request
       .get('/mediacat/images/')
       .query(query)
+      .set('Accept', 'application/json')
       .on('error', this.flux.actions.media.fetchError)
       .end(this.flux.actions.media.fetchSuccess);
     this.state = this.state.set('request', req);

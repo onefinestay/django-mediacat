@@ -411,9 +411,34 @@ body {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
-    flex-grow: 1; }
+    flex-grow: 1;
+    flex-dirction: row; }
   .mediacat-tabs .mediacat-tabs-panel-active {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
+  .mediacat-tabs .mediacat-crops-panel {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1; }
+  .mediacat-tabs .mediacat-crop-list {
+    margin: 0;
+    padding: 10px;
+    list-style-type: none; }
+    .mediacat-tabs .mediacat-crop-list .mediacat-crop {
+      padding: 10px;
+      background-color: #232830;
+      margin: 0 0 10px;
+      border-radius: 2px;
+      text-align: center; }
+  .mediacat-tabs .mediacat-crop-preview-frame {
+    margin: 0 auto 10px;
+    background-color: #1a0000;
+    position: relative;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box; }
+  .mediacat-tabs .mediacat-crop-preview {
+    position: absolute;
+    background-color: #414858; }
