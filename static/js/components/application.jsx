@@ -6,6 +6,7 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var Navigation = require('./navigation');
 var Main = require('./main');
+var Information = require('./information');
 
 var FluxMixin = require('./flux-mixin');
 
@@ -18,6 +19,7 @@ var Application = React.createClass({
       <div className="mediacat-application">
         <Navigation />
         <Main />
+        <Information />
       </div>
     );
   }
