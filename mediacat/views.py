@@ -6,8 +6,7 @@ from rest_framework import generics
 
 from . import models
 from . import serializers
-
-from onefinestay.medialibrary import utils
+from . import utils
 
 
 class ImageList(generics.ListCreateAPIView):
