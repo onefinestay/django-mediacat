@@ -38,8 +38,13 @@ class Path(object):
         self.name = name
         if not children:
             self.children = []
+        elif isinstance(children, PathPatterns):
+            self.children = children.paths
         else:
             self.children = children
+
+        for child in self.children:
+            child.parent = self
 
     @property
     def depth(self):
@@ -70,11 +75,13 @@ class Path(object):
 
             joined_regex = r'^{}$'.format(joined_regex)
 
-            paths.append(Path(
+            path = Path(
                 regex=joined_regex,
                 handler=child.handler,
                 name=child.name,
-            ))
+            )
+            path.parent = self
+            paths.append(path)
             paths.extend(child.flatten(prefix=prefixed_regex))
         return paths
 
@@ -84,11 +91,29 @@ class Path(object):
         paths.extend(handler.list_all(children=self.children))
         return paths
 
+    def list_children(self):
+        paths = []
+        for child in self.children:
+            paths.extend(child.list())
+        return paths
+
+    def list(self, child_paths=None, match_path=None, **kwargs):
+        paths = []
+        handler = self.handler(self.name, **kwargs)
+        paths.extend(handler.list(child_paths=child_paths, match_path=match_path))
+        return paths
+
     def resolve(self, path):
         matches = self.compiled_regex.match(path)
         if matches:
             handler = self.handler(name=self.name, **matches.groupdict())
             return handler.get_object()
+        raise NoResolveException()
+
+    def resolve_to_path(self, path):
+        matches = self.compiled_regex.match(path)
+        if matches:
+            return self
         raise NoResolveException()
 
     def reverse(self, name, **kwargs):
@@ -143,6 +168,30 @@ class BasePathHandler(object):
             paths.append(data)
         return paths
 
+    def list(self, child_paths=None, match_path=None):
+        from .utils import reverse
+        paths = []
+
+        for obj in self.get_queryset():
+            content_type_id = ContentType.objects.get_for_model(obj).pk
+            object_id = obj.pk
+
+            params = obj.get_medialibrary_path_params()
+
+            data = {
+                'name': self.get_display_name(obj),
+                'content_type_id': content_type_id,
+                'object_id': object_id,
+                'path': reverse(self.name, **params),
+                'children': [],
+            }
+
+            if data['path'] == match_path:
+                data['children'] = child_paths
+
+            paths.append(data)
+        return paths
+
 
 class NullHandler(BasePathHandler):
     display_name = 'No Name'
@@ -171,6 +220,23 @@ class NullHandler(BasePathHandler):
 
         return paths
 
+    def list(self, child_paths=None, match_path=None):
+        from .utils import reverse
+
+        paths = []
+
+        data = {
+            'name': self.display_name,
+            'content_type_id': None,
+            'object_id': None,
+            'path': reverse(self.name, **self.kwargs),
+            'children': child_paths,
+        }
+
+        paths.append(data)
+
+        return paths
+
 
 class PathPatterns(object):
 
@@ -178,6 +244,9 @@ class PathPatterns(object):
         self.paths = paths
         self._flattened_paths = []
         self._build_flattened_paths()
+
+        for path in self.paths:
+            path.parent = None
 
     def _build_flattened_paths(self):
         self._flattened_paths = []
@@ -207,6 +276,48 @@ class PathPatterns(object):
             paths.extend(p.list_all())
         return paths
 
+    def list_root_paths(self, pregenerated=None):
+        paths = []
+        for p in self.paths:
+            paths.extend(p.list())
+        if pregenerated:
+            pregenerated_paths = [p['path'] for p in pregenerated]
+            paths = [p for p in paths if p['path'] not in pregenerated_paths]
+            paths = paths + pregenerated
+        return paths
 
-def model_to_path(obj):
-    return obj.get_canonical_image_category()
+    def resolve_to_path(self, path):
+        for p in self._flattened_paths:
+            try:
+                return p.resolve_to_path(path)
+            except NoResolveException:
+                continue
+        return None
+
+    def list_tree_for_path(self, path, params=None, child_paths=None, list_children=True):
+        if not path:
+            return self.list_root_paths()
+
+        obj_path = self.resolve_to_path(path)
+
+        if not params:
+            obj = self.resolve(path)
+            if obj:
+                params = obj.get_medialibrary_path_params()
+            else:
+                params = {}
+
+        if list_children:
+            pass # fetch children here?
+
+        paths = obj_path.list(child_paths=child_paths, match_path=path, **params)
+
+        if not obj_path.parent:
+            return self.list_root_paths(pregenerated=paths)
+
+        parent_path = self.reverse(obj_path.parent.name, **params)
+
+        return self.list_tree_for_path(parent_path, params=params, child_paths=paths)
+
+
+

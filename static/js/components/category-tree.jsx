@@ -35,14 +35,18 @@ var CategoryTreeNode = React.createClass({
       fetchingMedia: fetchRequest ? true : false,
       selected: this.props.node === this.getFlux().store('Categories').state.get('selectedCategory')
     };
-  },  
+  },
 
   render: function() {
     var node = this.props.node;
 
     var depth = this.props.depth;
     var children = node.get('children');
-    var nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
+    var loadedChildren = children !== null;
+    var nodes;
+    if (loadedChildren) {
+      nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
+    }
 
     var classes = {
       'mediacat-categories-node': true,
@@ -56,9 +60,9 @@ var CategoryTreeNode = React.createClass({
     return (
       <li className={cx(classes)}>
         <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>
-          {node.get('name')} {this.state.fetchingMedia ? <LinearLoader /> : null}
+          {node.get('name')} ({node.get('count')}) {this.state.fetchingMedia ? <LinearLoader /> : null}
         </a>
-        {children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
+        {loadedChildren && children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
       </li>
     );
   }

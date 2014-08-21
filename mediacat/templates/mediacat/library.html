@@ -13,7 +13,7 @@
  	var MEDIACAT_CONFIG = {
  		media: {
  			loading: false,
- 			media: []
+ 			media: {{ media|jsonify }}
  		},
  		categories: {
  			selectedCategory: null,
