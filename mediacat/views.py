@@ -51,11 +51,8 @@ class Library(TemplateView):
         path = self.kwargs['path'][:-1]
         data['path'] = path
 
-        now = datetime.datetime.now()
         try:
-            obj_now = datetime.datetime.now()
             obj = utils.resolve(path)
-            print "getting object took: ", datetime.datetime.now() - obj_now
             content_type_id = ContentType.objects.get_for_model(obj).pk
             images = models.Image.objects.filter(
                 associations__object_id=obj.pk,
@@ -66,8 +63,6 @@ class Library(TemplateView):
             print "serialisation took: ", datetime.datetime.now() - seri_now
         except exceptions.NoResolveException:
             pass
-
-        print "image generation took: ", datetime.datetime.now() - now
 
         now = datetime.datetime.now()
         categories = utils.library_paths.list_tree_for_path(path)
