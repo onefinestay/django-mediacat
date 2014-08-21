@@ -110,16 +110,17 @@
 .linear-loader {
   left: 50%;
   top: 50%;
-  margin: -7px 0 0 -35px;
+  margin: -8px 0 0 -24px;
   position: absolute;
-  width: 70px;
-  height: 14px;
+  width: 48px;
+  height: 16px;
   text-align: center; }
   .linear-loader > div {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
-    background-color: #6c7893;
+    width: 8px;
+    height: 8px;
+    margin: 4px;
+    background-color: #fff;
+    opacity: 0.5;
     border-radius: 100%;
     display: inline-block;
     -webkit-animation: linearbouncedelay 1.4s infinite ease-in-out;
@@ -308,7 +309,7 @@ body {
     line-height: 1.5; }
     .mediacat-application .mediacat-categories-label .linear-loader {
       left: auto;
-      right: 0; }
+      right: 5px; }
     .mediacat-application .mediacat-categories-label .mediacat-categories-count {
       padding: 5px;
       opacity: 0.35;
