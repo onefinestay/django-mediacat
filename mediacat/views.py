@@ -45,6 +45,7 @@ class Library(TemplateView):
 
     def get_context_data(self, **kwargs):
         data = super(Library, self).get_context_data(**kwargs)
-        data['category_data'] = utils.list_all()
-        data['path'] = self.kwargs['path'][:-1]
+        path = self.kwargs['path'][:-1]
+        data['path'] = path
+        data['category_data'] = utils.library_paths.list_tree_for_path(path)
         return data
