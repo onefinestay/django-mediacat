@@ -440,12 +440,29 @@
 	      'mediacat-document-detail': this.state.mode === 'detail'
 	    };
 	
+	    var gridButtonClasses = {
+	      'icon': true,
+	      'icon-grid': true,
+	      'active': this.state.mode === 'grid'
+	    };
+	
+	    var detailButtonClasses = {
+	      'icon': true,
+	      'icon-detail': true,
+	      'active': this.state.mode === 'detail'
+	    };
+	
 	    return (
 	      React.DOM.div({className: "mediacat-content"}, 
 	        Header(null, 
-	          React.DOM.button(null, "Upload"), 
-	          React.DOM.button({className: "icon icon-grid", onClick: this.setGridMode}), 
-	          React.DOM.button({className: "icon icon-detail", onClick: this.setDetailMode})
+	          React.DOM.div({className: "toolbar"}, 
+	            React.DOM.button(null, "Upload"), 
+	            React.DOM.div({className: "spacer"}), 
+	            React.DOM.div({className: "button-group"}, 
+	              React.DOM.button({className: cx(gridButtonClasses), onClick: this.setGridMode}), 
+	              React.DOM.button({className: cx(detailButtonClasses), onClick: this.setDetailMode})
+	            )
+	          )
 	        ), 
 	        React.DOM.div({className: cx(documentClasses)}, 
 	          Detail(null), 

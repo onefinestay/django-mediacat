@@ -34,12 +34,29 @@ var Main = React.createClass({
       'mediacat-document-detail': this.state.mode === 'detail'
     };
 
+    var gridButtonClasses = {
+      'icon': true,
+      'icon-grid': true,
+      'active': this.state.mode === 'grid'
+    };
+
+    var detailButtonClasses = {
+      'icon': true,
+      'icon-detail': true,
+      'active': this.state.mode === 'detail'
+    };
+
     return (
       <div className="mediacat-content">
         <Header>
-          <button>Upload</button>
-          <button className="icon icon-grid" onClick={this.setGridMode} />
-          <button className="icon icon-detail" onClick={this.setDetailMode} />
+          <div className="toolbar">
+            <button>Upload</button>
+            <div className="spacer" />
+            <div className="button-group">
+              <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />
+              <button className={cx(detailButtonClasses)} onClick={this.setDetailMode} />
+            </div>
+          </div>
         </Header>
         <div className={cx(documentClasses)}>
           <Detail />
