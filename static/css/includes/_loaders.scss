@@ -1,4 +1,16 @@
-@keyframes bouncedelay {
+@keyframes radialbouncedelay {
+  0%, 
+  80%, 
+  100% { 
+    transform: scale(0);
+  }
+
+  40% { 
+    transform: scale(1);
+  }
+}
+
+@keyframes linearbouncedelay {
   0%, 
   80%, 
   100% { 
@@ -33,7 +45,7 @@
       background-color: lighten(#414858, 10);
       border-radius: 100%;
       position: absolute;
-      animation: bouncedelay 1.2s infinite ease-in-out;
+      animation: radialbouncedelay 1.2s infinite ease-in-out;
       animation-fill-mode: both;
     }
   }
@@ -110,5 +122,35 @@
     .radial-loader-circle-4 {
       animation-delay: -.1s;
     }    
+  }  
+}
+
+
+.linear-loader {
+  left: 50%;
+  top: 50%;
+  margin: -7px 0 0 -35px;
+  position: absolute;
+  width: 70px;
+  height: 14px;
+  text-align: center;
+
+  > div {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+    background-color: lighten(#414858, 20);
+    border-radius: 100%;
+    display: inline-block;
+    animation: linearbouncedelay 1.4s infinite ease-in-out;
+    animation-fill-mode: both;
+  }
+
+  .linear-loader-bounce-1 {
+    animation-delay: -.32s;
+  }
+
+  .linear-loader-bounce-2 {
+    animation-delay: -.16s;
   }  
 }

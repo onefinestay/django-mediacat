@@ -9,10 +9,11 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
+var LinearLoader = require('./loaders/linear');
 
 
 var CategoryTreeNode = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
 
   select: function(event) {
     event.preventDefault();
@@ -20,7 +21,18 @@ var CategoryTreeNode = React.createClass({
   },
 
   getStateFromFlux: function() {
+    var path = this.props.node.get('path');
+    var requests = this.getFlux().store('Media').state.get('fetchRequests');
+
+    var hasRequest = false;
+    var fetchRequest;
+
+    if (requests) {
+      fetchRequest = requests.get(path);
+    }
+
     return {
+      fetchingMedia: fetchRequest ? true : false,
       selected: this.props.node === this.getFlux().store('Categories').state.get('selectedCategory')
     };
   },  
@@ -30,7 +42,7 @@ var CategoryTreeNode = React.createClass({
 
     var depth = this.props.depth;
     var children = node.get('children');
-    var nodes = children.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
+    var nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
 
     var classes = {
       'mediacat-categories-node': true,
@@ -43,7 +55,9 @@ var CategoryTreeNode = React.createClass({
 
     return (
       <li className={cx(classes)}>
-        <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>{node.get('name')}</a>
+        <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>
+          {node.get('name')} {this.state.fetchingMedia ? <LinearLoader /> : null}
+        </a>
         {children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
       </li>
     );
@@ -55,13 +69,15 @@ var CategoryTree = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
 
   getStateFromFlux: function() {
+    var store = this.getFlux().store('Categories');
+
     return {
       categories: this.getFlux().store('Categories').state.get('categories')
     };
   },
 
   render: function() {
-    var nodes = this.state.categories.map(node => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
+    var nodes = this.state.categories.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
 
     return (
       <ul className="mediacat-categories">

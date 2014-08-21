@@ -106,7 +106,13 @@ body {
   .#{$ns}-categories-label {
     display: block;
     padding: 6px 20px;
-    cursor: pointer;    
+    cursor: pointer;
+    position: relative;
+
+    .linear-loader {
+      left: auto;
+      right: 0;
+    }
 
     &:hover {
       color: #fff;
@@ -143,6 +149,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-content: flex-start
   }
 
   .#{$ns}-thumbnail {

@@ -14,7 +14,8 @@ var Actions = {
 
     fetchSuccess: function(response) {
       var data = response.body;
-      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data});
+      var request = response.req;
+      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data, request});
     },
 
     fetchError: function(response) {

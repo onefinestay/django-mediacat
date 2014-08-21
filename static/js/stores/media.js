@@ -30,15 +30,20 @@ var MediaStore = Fluxxor.createStore({
       .set('Accept', 'application/json')
       .on('error', this.flux.actions.media.fetchError)
       .end(this.flux.actions.media.fetchSuccess);
-    this.state = this.state.set('request', req);
-    this.emit('change');
   },
 
   onFetchImagesSuccess: function(payload) {
+    var req = payload.request;
     var media = Immutable.fromJS(payload.data);
 
-    this.state = this.state.set('media', media);
-    this.emit('change');
+    var requests = this.state.get('fetchRequests');
+    var key = requests.findKey((v, k) => v === req);
+    requests = requests.delete(key);
+
+    this.state = this.state.withMutations(function(state) {
+      state.set('media', media).set('fetchRequests', requests);
+    });
+    this.emit('change');    
   },
 
   onMediaSelect: function(payload) {
@@ -49,9 +54,15 @@ var MediaStore = Fluxxor.createStore({
   onCategorySelect: function(payload) {
     var req = this.getFetchRequest(payload.category, null);
 
+    var requests = this.state.get('fetchRequests');
+
+    if (!requests) {
+      requests = Immutable.Map();
+    }
+    requests = requests.set(payload.category.get('path'), req);
+
     this.state = this.state.withMutations(function(state) {
-      state['media'] = [];
-      state['request'] = req;
+      state.set('media', Immutable.Sequence()).set('fetchRequests', requests);
     });
     this.emit('change');
   }  
