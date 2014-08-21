@@ -58,7 +58,7 @@ body {
 
     &.icon {
       font-size: 23px;
-      padding: 5px 9px 5px 10px;
+      padding: 6px 9px 4px 10px;
     }
   }  
 
@@ -106,8 +106,8 @@ body {
       box-shadow: 0 1px 0 0 darken(#00c0ff, 20);
 
       &.active {
-        box-shadow: inset 0 1px 0 0 darken(#00c0ff, 20);
-        background-color: darken(#00c0ff, 10);
+        box-shadow: inset 0 1px 0 0 darken(#00c0ff, 30), inset 0 -1px 0 0 lighten(#00c0ff, 10);
+        background-color: darken(#00c0ff, 20);
         color: #00c0ff;
       }
 
@@ -163,14 +163,27 @@ body {
 
   .#{$ns}-categories-label {
     display: block;
-    padding: 6px 20px;
+    padding: 5px 20px;
     cursor: pointer;
     position: relative;
+    font-size: 14px;
+    line-height: 1.5;
 
     .linear-loader {
       left: auto;
       right: 0;
     }
+
+    .#{$ns}-categories-count {
+      padding: 5px;
+      opacity: 0.35;
+      font-size: 12px;
+      line-height: 1.75;
+      position: absolute;
+      top: 0;
+      right: 5px;
+
+    }    
 
     &:hover {
       color: #fff;
@@ -406,7 +419,7 @@ body {
   .#{$ns}-tabs-panel {
     display: none;
     flex-grow: 1;
-    flex-dirction: row;
+    flex-direction: row;
   }
 
   .#{$ns}-tabs-panel-active {
@@ -426,8 +439,14 @@ body {
       padding: 10px;
       background-color: #232830;
       margin: 0 0 10px;
-      border-radius: 2px;
       text-align: center;
+      cursor: pointer;
+    }
+
+    .#{$ns}-crop-selected {
+      border: 1px solid #414858;
+      padding: 9px;
+      background-color: darken(#414858, 5);
     }
   }
 

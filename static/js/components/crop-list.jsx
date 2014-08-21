@@ -14,11 +14,13 @@ var Crop = React.createClass({
 
   select: function(event) {
     event.preventDefault();
-    //this.getFlux().actions.media.select(this.props.thumbnail);
+    this.getFlux().actions.crop.select(this.props.crop);
   },
 
   getStateFromFlux: function() {
-    return {};
+    return {
+      selected: this.props.crop === this.getFlux().store('Media').state.get('selectedCrop')
+    };
   },
 
   render: function() {
@@ -26,7 +28,8 @@ var Crop = React.createClass({
     var crop = this.props.crop;
 
     var classes = {
-      'mediacat-crop': true
+      'mediacat-crop': true,
+      'mediacat-crop-selected': this.state.selected
     };
 
     var frameWidth = 150;

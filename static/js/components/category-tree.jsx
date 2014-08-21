@@ -62,10 +62,13 @@ var CategoryTreeNode = React.createClass({
       'padding-left': 20 * depth + 'px'
     };
 
+    var count = node.get('count');
+
     return (
       <li className={cx(classes)}>
         <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>
-          {node.get('name')} ({node.get('count')}) {this.state.fetchingMedia ? <LinearLoader /> : null}
+          {node.get('name')}
+          {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
         </a>
         {loadedChildren && children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
       </li>

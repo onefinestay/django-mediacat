@@ -23,6 +23,12 @@ var Actions = {
     }
   },
 
+  crop: {
+    select: function(crop, media) {
+      this.dispatch(Constants.CROP_SELECTED, {crop, media});
+    }
+  },
+
   categories: {
     select: function(category) {
       this.dispatch(Constants.CATEGORY_SELECTED, {category});

@@ -20,12 +20,22 @@ var Detail = React.createClass({
     var selected = store.state.get('selectedMedia');
 
     return {
+      crop: store.state.get('selectedCrop'),
       media: selected
     };
   },
 
   render: function() {
-    var media = this.state.media;    
+    var media = this.state.media;
+    var crop = this.state.crop;
+
+    if (media) {
+      return (
+        <div className="mediacat-detail">
+          {media ? <DetailProxyImage key={media.get('thumbnail')} src={media.get('url')} placeholderSrc={media.get('thumbnail')} /> : null}
+        </div>
+      );
+    }
 
     return (
       <div className="mediacat-detail">

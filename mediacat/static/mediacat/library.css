@@ -194,7 +194,7 @@ body {
       outline: none; }
     .mediacat-application button.icon {
       font-size: 23px;
-      padding: 5px 9px 5px 10px; }
+      padding: 6px 9px 4px 10px; }
   .mediacat-application .toolbar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -245,8 +245,8 @@ body {
       color: #00C0FF;
       box-shadow: 0 1px 0 0 #007599; }
       .mediacat-application .mediacat-header button.active {
-        box-shadow: inset 0 1px 0 0 #007599;
-        background-color: #009ccc;
+        box-shadow: inset 0 1px 0 0 #004e66, inset 0 -1px 0 0 #33cfff;
+        background-color: #007599;
         color: #00c0ff; }
       .mediacat-application .mediacat-header button.icon {
         font-size: 23px; }
@@ -301,12 +301,22 @@ body {
       padding: 0; }
   .mediacat-application .mediacat-categories-label {
     display: block;
-    padding: 6px 20px;
+    padding: 5px 20px;
     cursor: pointer;
-    position: relative; }
+    position: relative;
+    font-size: 14px;
+    line-height: 1.5; }
     .mediacat-application .mediacat-categories-label .linear-loader {
       left: auto;
       right: 0; }
+    .mediacat-application .mediacat-categories-label .mediacat-categories-count {
+      padding: 5px;
+      opacity: 0.35;
+      font-size: 12px;
+      line-height: 1.75;
+      position: absolute;
+      top: 0;
+      right: 5px; }
     .mediacat-application .mediacat-categories-label:hover {
       color: #fff;
       background-color: #303642; }
@@ -580,7 +590,11 @@ body {
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    flex-dirction: row; }
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row; }
   .mediacat-tabs .mediacat-tabs-panel-active {
     display: -webkit-box;
     display: -webkit-flex;
@@ -599,8 +613,12 @@ body {
       padding: 10px;
       background-color: #232830;
       margin: 0 0 10px;
-      border-radius: 2px;
-      text-align: center; }
+      text-align: center;
+      cursor: pointer; }
+    .mediacat-tabs .mediacat-crop-list .mediacat-crop-selected {
+      border: 1px solid #414858;
+      padding: 9px;
+      background-color: #363c49; }
   .mediacat-tabs .mediacat-crop-preview-frame {
     margin: 0 auto 10px;
     background-color: #1a0000;
