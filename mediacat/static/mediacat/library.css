@@ -177,7 +177,7 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
   .mediacat-application .icon {
-    font-size: 24px; }
+    font-size: 23px; }
   .mediacat-application .mediacat-header {
     background-color: #00C0FF;
     height: 57px;
@@ -204,6 +204,8 @@ body {
       height: 37px;
       margin: 0;
       box-shadow: 0px 1px 0px 0px #2F3F4A; }
+      .mediacat-application .mediacat-header button.icon {
+        font-size: 23px; }
     .mediacat-application .mediacat-header input {
       display: block;
       margin: 0;
@@ -287,40 +289,109 @@ body {
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    overflow-y: scroll;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
+    -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row; }
-  .mediacat-application .mediacat-thumbnail-list {
-    margin: 0;
-    padding: 10px;
-    list-style-type: none;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -webkit-align-content: flex-start;
-    -ms-flex-line-pack: start;
-    align-content: flex-start; }
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+    .mediacat-application .mediacat-document .mediacat-detail {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      background-color: #0d0f13;
+      position: relative; }
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px; }
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 1;
+        -webkit-transition: opacity 1s ease;
+        transition: opacity 1s ease; }
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        -webkit-transition: opacity 1s ease;
+        transition: opacity 1s ease; }
+      .mediacat-application .mediacat-document .mediacat-detail img {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        display: block; }
+    .mediacat-application .mediacat-document .mediacat-thumbnail-list {
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-box-flex: 0;
+      -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      margin: 0;
+      padding: 10px;
+      height: 210px;
+      list-style-type: none;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-flex-wrap: no-wrap;
+      -ms-flex-wrap: no-wrap;
+      flex-wrap: no-wrap;
+      -webkit-align-content: flex-start;
+      -ms-flex-line-pack: start;
+      align-content: flex-start;
+      overflow-x: scroll; }
+    .mediacat-application .mediacat-document.mediacat-document-grid .mediacat-detail {
+      -webkit-box-flex: 0;
+      -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      height: 0; }
+    .mediacat-application .mediacat-document.mediacat-document-grid .mediacat-thumbnail-list {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      overflow-y: scroll; }
   .mediacat-application .mediacat-thumbnail {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
     width: 180px;
     max-width: 270px;
     height: 180px;

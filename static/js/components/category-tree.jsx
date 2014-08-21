@@ -44,6 +44,11 @@ var CategoryTreeNode = React.createClass({
     var children = node.get('children');
     var loadedChildren = children !== null;
     var nodes;
+
+    if (children) {
+      console.log(children);  
+    }
+    
     if (loadedChildren) {
       nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
     }

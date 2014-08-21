@@ -25,6 +25,7 @@ class ImageCropSerializer(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
     crops = ImageCropSerializer(many=True)
+    url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
 
     class Meta:
@@ -39,5 +40,6 @@ class ImageSerializer(serializers.ModelSerializer):
             'height',
             'width',
             'crops',
+            'url',
             'thumbnail',
         )

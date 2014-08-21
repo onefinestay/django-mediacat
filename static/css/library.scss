@@ -35,7 +35,7 @@ body {
   }
 
   .icon {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   .#{$ns}-header {
@@ -60,6 +60,10 @@ body {
       height: 37px;
       margin: 0;
       box-shadow: 0px 1px 0px 0px #2F3F4A;
+
+      &.icon {
+        font-size: 23px;
+      }
     }
 
     input {
@@ -140,23 +144,89 @@ body {
 
   .#{$ns}-document {
     flex-grow: 1;
-    overflow-y: scroll;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+
+    .#{$ns}-detail {
+      flex-grow: 1;
+      background-color: darken(#232830, 10);
+      position: relative;
+
+      .detail-proxy-image {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
+
+      .detail-proxy-image-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 1;
+        transition: opacity 1s ease;
+      }      
+
+      .detail-proxy-image-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        display: block;
+      }
+    }
+
+    .#{$ns}-thumbnail-list {
+      flex-shrink: 0;
+      flex-grow: 0;
+      margin: 0;
+      padding: 10px;
+      height: 210px;
+      list-style-type: none;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: no-wrap;
+      align-content: flex-start;
+      overflow-x: scroll;
+    }
+
+    &.#{$ns}-document-grid {
+      .#{$ns}-detail {
+        flex-grow: 0;
+        height: 0;
+      }
+
+      .#{$ns}-thumbnail-list {
+        flex-grow: 1;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-y: scroll;
+      }      
+    }
   }
 
-  .#{$ns}-thumbnail-list {
-    margin: 0;
-    padding: 10px;
-    list-style-type: none;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start
-  }
 
   .#{$ns}-thumbnail {
+    flex-shrink: 0;
     width: 180px;
     max-width: 270px;
     height: 180px;
