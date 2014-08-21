@@ -27,7 +27,7 @@ class Image(models.Model):
     def __unicode__(self):
         return self.image_file.name
 
-    def get_thumbnail_url(self, width=300):
+    def get_thumbnail_url(self, width=160):
         url = self.image_file.url
 
         if not url:

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <font id="mediacat-icons" horiz-adv-x="736">
+    <font-face font-family="mediacat-icons"
+      units-per-em="736" ascent="736"
+      descent="0" />
+    <missing-glyph horiz-adv-x="0" />
+    <glyph glyph-name="detail"
+      unicode="&#xE001;"
+      horiz-adv-x="736" d=" M0 672H736V224H0z M0 192H160V64H0z M192 193H352V64H192z M384 192H544V64H384z M576 192H736V64H576z" />
+    <glyph glyph-name="grid"
+      unicode="&#xE002;"
+      horiz-adv-x="736" d=" M0 192H160V64H0z M192 192H352V64H192z M384 192H544V64H384z M576 192H736V64H576z M0 352H160V224H0z M192 352H352V224H192z M384 352H544V224H384z M576 352H736V224H576z M0 512H160V384H0z M192 512H352V384H192z M384 512H544V384H384z M576 512H736V384H576z M0 672H160V544H0z M192 672H352V544H192z M384 672H544V544H384z M576 672H736V544H576z" />
+  </font>
+</defs>
+</svg>

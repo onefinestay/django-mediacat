@@ -106,7 +106,13 @@ body {
   .#{$ns}-categories-label {
     display: block;
     padding: 6px 20px;
-    cursor: pointer;    
+    cursor: pointer;
+    position: relative;
+
+    .linear-loader {
+      left: auto;
+      right: 0;
+    }
 
     &:hover {
       color: #fff;
@@ -143,6 +149,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-content: flex-start
   }
 
   .#{$ns}-thumbnail {
@@ -275,9 +282,40 @@ body {
   .#{$ns}-tabs-panel {
     display: none;
     flex-grow: 1;
+    flex-dirction: row;
   }
 
   .#{$ns}-tabs-panel-active {
     display: flex;
+  }
+  
+  .#{$ns}-crops-panel {
+    flex-grow: 1
+  }
+
+  .#{$ns}-crop-list {
+    margin: 0;
+    padding: 10px;
+    list-style-type: none;
+
+    .#{$ns}-crop {
+      padding: 10px;
+      background-color: #232830;
+      margin: 0 0 10px;
+      border-radius: 2px;
+      text-align: center;
+    }
+  }
+
+  .#{$ns}-crop-preview-frame {
+    margin: 0 auto 10px;
+    background-color: #1a0000;
+    position: relative;
+    box-sizing: content-box;
+  }
+
+  .#{$ns}-crop-preview {
+    position: absolute;
+    background-color: #414858;
   }
 }

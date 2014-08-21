@@ -16,6 +16,8 @@ var Main = React.createClass({
       <div className="mediacat-content">
         <Header>
           <button>Upload</button>
+          <button>Gallery</button>
+          <button>Detail</button>
         </Header>
         <div className="mediacat-document">
           <ThumbnailList />

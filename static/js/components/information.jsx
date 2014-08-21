@@ -9,7 +9,8 @@ var tabs = require('./tabs/tabs');
 var Tab = tabs.Tab;
 var Tabs = tabs.Tabs;
 
-var InformationPanel = require('./information-panel');
+var ImageDataPanel = require('./panels/image-data');
+var CropsPanel = require('./panels/crops');
 
 
 var Information = React.createClass({
@@ -21,10 +22,10 @@ var Information = React.createClass({
         <Header />
         <Tabs>
           <Tab name="Crops">
-            <div>Hello World!</div>
+            <CropsPanel />
           </Tab>        
-          <Tab name="Metadata">
-            <InformationPanel />
+          <Tab name="Image">
+            <ImageDataPanel />
           </Tab>
         </Tabs>
       </div>

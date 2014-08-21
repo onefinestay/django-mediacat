@@ -103,7 +103,8 @@
 	
 	    fetchSuccess: function(response) {
 	      var data = response.body;
-	      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data:data});
+	      var request = response.req;
+	      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data:data, request:request});
 	    },
 	
 	    fetchError: function(response) {
@@ -226,17 +227,23 @@
 	    return request
 	      .get('/mediacat/images/')
 	      .query(query)
+	      .set('Accept', 'application/json')
 	      .on('error', this.flux.actions.media.fetchError)
 	      .end(this.flux.actions.media.fetchSuccess);
-	    this.state = this.state.set('request', req);
-	    this.emit('change');
 	  },
 	
 	  onFetchImagesSuccess: function(payload) {
+	    var req = payload.request;
 	    var media = Immutable.fromJS(payload.data);
 	
-	    this.state = this.state.set('media', media);
-	    this.emit('change');
+	    var requests = this.state.get('fetchRequests');
+	    var key = requests.findKey(function(v, k)  {return v === req;});
+	    requests = requests.delete(key);
+	
+	    this.state = this.state.withMutations(function(state) {
+	      state.set('media', media).set('fetchRequests', requests);
+	    });
+	    this.emit('change');    
 	  },
 	
 	  onMediaSelect: function(payload) {
@@ -247,9 +254,15 @@
 	  onCategorySelect: function(payload) {
 	    var req = this.getFetchRequest(payload.category, null);
 	
+	    var requests = this.state.get('fetchRequests');
+	
+	    if (!requests) {
+	      requests = Immutable.Map();
+	    }
+	    requests = requests.set(payload.category.get('path'), req);
+	
 	    this.state = this.state.withMutations(function(state) {
-	      state['media'] = [];
-	      state['request'] = req;
+	      state.set('media', Immutable.Sequence()).set('fetchRequests', requests);
 	    });
 	    this.emit('change');
 	  }  
@@ -448,7 +461,9 @@
 	    return (
 	      React.DOM.div({className: "mediacat-content"}, 
 	        Header(null, 
-	          React.DOM.button(null, "Upload")
+	          React.DOM.button(null, "Upload"), 
+	          React.DOM.button(null, "Gallery"), 
+	          React.DOM.button(null, "Detail")
 	        ), 
 	        React.DOM.div({className: "mediacat-document"}, 
 	          ThumbnailList(null)
@@ -478,7 +493,8 @@
 	var Tab = tabs.Tab;
 	var Tabs = tabs.Tabs;
 	
-	var InformationPanel = __webpack_require__(/*! ./information-panel */ 27);
+	var ImageDataPanel = __webpack_require__(/*! ./panels/image-data */ 249);
+	var CropsPanel = __webpack_require__(/*! ./panels/crops */ 250);
 	
 	
 	var Information = React.createClass({displayName: 'Information',
@@ -490,10 +506,10 @@
 	        Header(null), 
 	        Tabs(null, 
 	          Tab({name: "Crops"}, 
-	            React.DOM.div(null, "Hello World!")
+	            CropsPanel(null)
 	          ), 
-	          Tab({name: "Metadata"}, 
-	            InformationPanel(null)
+	          Tab({name: "Image"}, 
+	            ImageDataPanel(null)
 	          )
 	        )
 	      )
@@ -962,10 +978,11 @@
 	
 	var CategoryTree = __webpack_require__(/*! ./category-tree */ 25);
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 15);
+	var LinearLoader = __webpack_require__(/*! ./loaders/linear */ 252);
 	
 	
 	var CategoryTreeNode = React.createClass({displayName: 'CategoryTreeNode',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
 	
 	  select: function(event) {
 	    event.preventDefault();
@@ -973,7 +990,18 @@
 	  },
 	
 	  getStateFromFlux: function() {
+	    var path = this.props.node.get('path');
+	    var requests = this.getFlux().store('Media').state.get('fetchRequests');
+	
+	    var hasRequest = false;
+	    var fetchRequest;
+	
+	    if (requests) {
+	      fetchRequest = requests.get(path);
+	    }
+	
 	    return {
+	      fetchingMedia: fetchRequest ? true : false,
 	      selected: this.props.node === this.getFlux().store('Categories').state.get('selectedCategory')
 	    };
 	  },
@@ -986,7 +1014,7 @@
 	    var loadedChildren = children !== null;
 	    var nodes;
 	    if (loadedChildren) {
-	      nodes = children.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: depth + 1});});
+	      nodes = children.map(function(node, i)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: depth + 1});});
 	    }
 	
 	    var classes = {
@@ -1000,7 +1028,9 @@
 	
 	    return (
 	      React.DOM.li({className: cx(classes)}, 
-	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, node.get('name')), 
+	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, 
+	          node.get('name'), " ", this.state.fetchingMedia ? LinearLoader(null) : null
+	        ), 
 	        loadedChildren && children.length ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null
 	      )
 	    );
@@ -1012,13 +1042,15 @@
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
 	
 	  getStateFromFlux: function() {
+	    var store = this.getFlux().store('Categories');
+	
 	    return {
 	      categories: this.getFlux().store('Categories').state.get('categories')
 	    };
 	  },
 	
 	  render: function() {
-	    var nodes = this.state.categories.map(function(node)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: 1});});
+	    var nodes = this.state.categories.map(function(node, i)  {return CategoryTreeNode({key: node.get('path'), node: node, depth: 1});});
 	
 	    return (
 	      React.DOM.ul({className: "mediacat-categories"}, 
@@ -1066,8 +1098,6 @@
 	    };
 	  },
 	
-	
-	
 	  render: function() {
 	    var thumbnail = this.props.thumbnail;
 	
@@ -1108,34 +1138,7 @@
 	module.exports = ThumbnailList;
 
 /***/ },
-/* 27 */
-/*!****************************************************!*\
-  !*** ./static/js/components/information-panel.jsx ***!
-  \****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 */
-	var React = __webpack_require__(/*! react/addons */ 6);
-	var PureRenderMixin = __webpack_require__(/*! react */ 11).addons.PureRenderMixin;
-	
-	
-	var InformationPanel = React.createClass({displayName: 'InformationPanel',
-	  mixins: [PureRenderMixin],
-	  
-	  render: function() {
-	    return (
-	      React.DOM.div({className: "mediacat-information-panel"}, 
-	        "Oh hi!"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = InformationPanel;
-
-/***/ },
+/* 27 */,
 /* 28 */
 /*!***************************************!*\
   !*** ./~/immutable/dist/Immutable.js ***!
@@ -29345,6 +29348,202 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 66)))
+
+/***/ },
+/* 249 */
+/*!****************************************************!*\
+  !*** ./static/js/components/panels/image-data.jsx ***!
+  \****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 11).addons.PureRenderMixin;
+	
+	
+	var ImageDataPanel = React.createClass({displayName: 'ImageDataPanel',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "mediacat-information-panel"}, 
+	        "Information"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ImageDataPanel;
+
+/***/ },
+/* 250 */
+/*!***********************************************!*\
+  !*** ./static/js/components/panels/crops.jsx ***!
+  \***********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 11).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 5);
+	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+	
+	var CropList = __webpack_require__(/*! ../crop-list */ 251);
+	
+	var CropsPanel = React.createClass({displayName: 'CropsPanel',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "mediacat-crops-panel"}, 
+	        CropList(null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CropsPanel;
+
+/***/ },
+/* 251 */
+/*!********************************************!*\
+  !*** ./static/js/components/crop-list.jsx ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 11).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 5);
+	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 15);
+	
+	
+	var Crop = React.createClass({displayName: 'Crop',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	
+	  select: function(event) {
+	    event.preventDefault();
+	    //this.getFlux().actions.media.select(this.props.thumbnail);
+	  },
+	
+	  getStateFromFlux: function() {
+	    return {};
+	  },
+	
+	  render: function() {
+	    var media = this.props.media;
+	    var crop = this.props.crop;
+	
+	    var classes = {
+	      'mediacat-crop': true
+	    };
+	
+	    var frameWidth = 150;
+	    var mediaWidth = media.get('width');
+	    var mediaHeight = media.get('height');
+	
+	    var scale = frameWidth / mediaWidth;
+	    var frameHeight = mediaHeight * scale;
+	
+	    var frameStyles = {
+	        width: frameWidth + 'px',
+	        height: frameHeight + 'px'
+	    };
+	
+	    var cropLeft = Math.round(scale * crop.get('x1'));
+	    var cropTop = Math.round(scale * crop.get('y1'));
+	    var cropWidth = Math.round(scale * (crop.get('x2') - crop.get('x1')));
+	    var cropHeight = Math.round(scale * (crop.get('y2') - crop.get('y1')));
+	
+	    var previewStyles = {
+	      left: cropLeft + 'px',
+	      top: cropTop + 'px',
+	      width: cropWidth + 'px',
+	      height: cropHeight + 'px'
+	    };
+	
+	    return (
+	      React.DOM.li({className: cx(classes), onClick: this.select}, 
+	        React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
+	          React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
+	        ), 
+	        crop.get('key')
+	      )
+	    );
+	  }
+	});
+	
+	
+	var CropList = React.createClass({displayName: 'CropList',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	
+	  getStateFromFlux: function() {
+	    var store = this.getFlux().store('Media');
+	    var selected = store.state.get('selectedMedia');
+	
+	    return {
+	      media: selected,
+	      crops: selected ? selected.get('crops') : null
+	    };
+	  },
+	
+	  render: function() {
+	    var media = this.state.media;    
+	    var crops;
+	
+	    if (!media) {
+	      return React.DOM.p(null, "Select an image to view its crops");
+	    }
+	
+	    crops = this.state.crops.map(function(crop)  {return Crop({key: crop.get('id'), crop: crop, media: media});});
+	
+	    return (
+	      React.DOM.ul({className: "mediacat-crop-list"}, 
+	        crops.toJS()
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = CropList;
+
+/***/ },
+/* 252 */
+/*!*************************************************!*\
+  !*** ./static/js/components/loaders/linear.jsx ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 6);
+	var PureRenderMixin = __webpack_require__(/*! react */ 11).addons.PureRenderMixin;
+	
+	var LinearLoader = React.createClass({displayName: 'LinearLoader',
+	  mixins: [PureRenderMixin],
+	  
+	  render: function() {
+	    return (
+	      React.DOM.div({className: "linear-loader"}, 
+	        React.DOM.div({className: "linear-loader-bounce-1"}), 
+	        React.DOM.div({className: "linear-loader-bounce-2"}), 
+	        React.DOM.div({className: "linear-loader-bounce-3"})
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = LinearLoader;
 
 /***/ }
 /******/ ])
