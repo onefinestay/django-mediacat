@@ -1,5 +1,4 @@
 import json
-import datetime
 
 from django.contrib.contenttypes.models import ContentType
 from django.views.generic import TemplateView
@@ -58,18 +57,12 @@ class Library(TemplateView):
                 associations__object_id=obj.pk,
                 associations__content_type_id=content_type_id
             )
-            seri_now = datetime.datetime.now()
             data['media'] = serializers.ImageSerializer(images, many=True).data
-            print "serialisation took: ", datetime.datetime.now() - seri_now
         except exceptions.NoResolveException:
             pass
 
-        now = datetime.datetime.now()
         categories = utils.library_paths.list_tree_for_path(path)
-        print "category generation took: ", datetime.datetime.now() - now
-        now = datetime.datetime.now()
         utils.annotate_counts(categories)
-        print "annotate took: ", datetime.datetime.now() - now
         data['category_data'] = categories
 
         return data
