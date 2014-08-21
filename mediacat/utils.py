@@ -41,7 +41,8 @@ def annotate_counts(categories):
 
     for ctype in content_types:
         counts = models.ImageAssociation.objects.filter(content_type_id=ctype)\
-            .annotate(count=Count('object_id')).values('object_id', 'count')
+            .values('object_id')\
+            .annotate(count=Count('object_id'))
         count_map[ctype] = {c['object_id']: c['count'] for c in counts}
 
     def _annotate(cat):
