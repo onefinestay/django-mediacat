@@ -462,8 +462,8 @@
 	      React.DOM.div({className: "mediacat-content"}, 
 	        Header(null, 
 	          React.DOM.button(null, "Upload"), 
-	          React.DOM.button(null, "Gallery"), 
-	          React.DOM.button({className: "icon-detail"}, "Detail")
+	          React.DOM.button({className: "icon icon-grid"}), 
+	          React.DOM.button({className: "icon icon-detail"})
 	        ), 
 	        React.DOM.div({className: "mediacat-document"}, 
 	          ThumbnailList(null)
