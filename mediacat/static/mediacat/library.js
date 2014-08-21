@@ -1029,7 +1029,7 @@
 	    return (
 	      React.DOM.li({className: cx(classes)}, 
 	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, 
-	          node.get('name'), " ", this.state.fetchingMedia ? LinearLoader(null) : null
+	          node.get('name'), " (", node.get('count'), ") ", this.state.fetchingMedia ? LinearLoader(null) : null
 	        ), 
 	        loadedChildren && children.length ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null
 	      )

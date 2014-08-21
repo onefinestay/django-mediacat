@@ -185,7 +185,7 @@ class BasePathHandler(object):
                 'path': reverse(self.name, **params),
                 'children': [],
             }
-            print data['path'], str(match_path)
+
             if data['path'] == match_path:
                 data['children'] = child_paths
 
@@ -276,10 +276,14 @@ class PathPatterns(object):
             paths.extend(p.list_all())
         return paths
 
-    def list_root_paths(self):
+    def list_root_paths(self, pregenerated=None):
         paths = []
         for p in self.paths:
             paths.extend(p.list())
+        if pregenerated:
+            pregenerated_paths = [p['path'] for p in pregenerated]
+            paths = [p for p in paths if p['path'] not in pregenerated_paths]
+            paths = paths + pregenerated
         return paths
 
     def resolve_to_path(self, path):
@@ -298,7 +302,10 @@ class PathPatterns(object):
 
         if not params:
             obj = self.resolve(path)
-            params = obj.get_medialibrary_path_params()
+            if obj:
+                params = obj.get_medialibrary_path_params()
+            else:
+                params = {}
 
         if list_children:
             pass # fetch children here?
@@ -306,7 +313,7 @@ class PathPatterns(object):
         paths = obj_path.list(child_paths=child_paths, match_path=path, **params)
 
         if not obj_path.parent:
-            return paths
+            return self.list_root_paths(pregenerated=paths)
 
         parent_path = self.reverse(obj_path.parent.name, **params)
 

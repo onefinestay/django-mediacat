@@ -1,5 +1,7 @@
 import json
+import datetime
 
+from django.contrib.contenttypes.models import ContentType
 from django.views.generic import TemplateView
 
 from rest_framework import generics
@@ -7,6 +9,7 @@ from rest_framework import generics
 from . import models
 from . import serializers
 from . import utils
+from . import exceptions
 
 
 class ImageList(generics.ListCreateAPIView):
@@ -47,5 +50,31 @@ class Library(TemplateView):
         data = super(Library, self).get_context_data(**kwargs)
         path = self.kwargs['path'][:-1]
         data['path'] = path
-        data['category_data'] = utils.library_paths.list_tree_for_path(path)
+
+        now = datetime.datetime.now()
+        try:
+            obj_now = datetime.datetime.now()
+            obj = utils.resolve(path)
+            print "getting object took: ", datetime.datetime.now() - obj_now
+            content_type_id = ContentType.objects.get_for_model(obj).pk
+            images = models.Image.objects.filter(
+                associations__object_id=obj.pk,
+                associations__content_type_id=content_type_id
+            )
+            seri_now = datetime.datetime.now()
+            data['media'] = serializers.ImageSerializer(images, many=True).data
+            print "serialisation took: ", datetime.datetime.now() - seri_now
+        except exceptions.NoResolveException:
+            pass
+
+        print "image generation took: ", datetime.datetime.now() - now
+
+        now = datetime.datetime.now()
+        categories = utils.library_paths.list_tree_for_path(path)
+        print "category generation took: ", datetime.datetime.now() - now
+        now = datetime.datetime.now()
+        utils.annotate_counts(categories)
+        print "annotate took: ", datetime.datetime.now() - now
+        data['category_data'] = categories
+
         return data
