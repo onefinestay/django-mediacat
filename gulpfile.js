@@ -5,15 +5,19 @@ var path = require('path');
 var gulp = require('gulp');
 
 var iconfont = require('gulp-iconfont');
+var sketch = require("gulp-sketch");
 
 gulp.task('icon', function(){
-  gulp.src(['static/fonts/mediacat/svg/*.svg'])
+  return gulp.src("static/fonts/mediacat/master/*.sketch")
+    .pipe(sketch({
+      export: 'artboards',
+      formats: 'svg'
+    }))
     .pipe(iconfont({
       fontName: 'mediacat-icons', // required
-      appendCodepoints: true // recommended option
+      appendCodepoints: false // recommended option
     }))
       .on('codepoints', function(codepoints, options) {
-        // CSS templating, e.g.
         console.log(codepoints, options);
       })
     .pipe(gulp.dest('static/fonts/mediacat/'));
