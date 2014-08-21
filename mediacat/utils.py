@@ -1,6 +1,7 @@
 import importlib
 from collections import defaultdict
 
+from django.db.models import Count
 from django.conf import settings
 
 from . import models
@@ -20,25 +21,32 @@ def model_to_path(obj):
     return obj.get_canonical_image_category()
 
 
-
-
-
 def annotate_counts(categories):
-    images = models.ImageAssociation.objects.all()
-    image_map = {}
 
-    for image in images:
-        content_type_id = image.content_type_id
-        obj_id = image.object_id
+    content_types = []
 
-        if content_type_id not in image_map:
-            image_map[content_type_id] = defaultdict(int)
+    def _get_content_types(cat):
+        ctypes = []
+        ctypes.append(cat['content_type_id'])
+        if cat['children']:
+            for child in cat['children']:
+                ctypes += _get_content_types(child)
+        return ctypes
 
-        image_map[content_type_id][obj_id] += 1
+    for category in categories:
+        content_types += _get_content_types(category)
+
+    content_types = set(content_types)
+    count_map = {}
+
+    for ctype in content_types:
+        counts = models.ImageAssociation.objects.filter(content_type_id=ctype)\
+            .annotate(count=Count('object_id')).values('object_id', 'count')
+        count_map[ctype] = {c['object_id']: c['count'] for c in counts}
 
     def _annotate(cat):
         try:
-            cat['count'] = image_map[cat['content_type_id']][cat['object_id']]
+            cat['count'] = count_map[cat['content_type_id']][cat['object_id']]
         except KeyError:
             cat['count'] = 0
 
