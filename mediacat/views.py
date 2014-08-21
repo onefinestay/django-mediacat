@@ -17,7 +17,7 @@ class ImageList(generics.ListCreateAPIView):
     serializer_class = serializers.ImageSerializer
 
     def get_queryset(self):
-        queryset = super(ImageList, self).get_queryset()
+        queryset = super(ImageList, self).get_queryset().prefetch_related('crops')
         params = self.request.QUERY_PARAMS
 
         if 'object_id' in params and 'content_type_id' in params:

@@ -17,7 +17,7 @@ var Main = React.createClass({
         <Header>
           <button>Upload</button>
           <button>Gallery</button>
-          <button>Detail</button>
+          <button className="icon-detail">Detail</button>
         </Header>
         <div className="mediacat-document">
           <ThumbnailList />

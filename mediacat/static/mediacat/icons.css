@@ -1,0 +1,29 @@
+@font-face {
+	font-family: "mediacat-icons";
+	src: url('./fonts/mediacat-icons.eot');
+	src: url('./fonts/mediacat-icons.eot?#iefix') format('eot'),
+		url('./fonts/mediacat-icons.woff') format('woff'),
+		url('./fonts/mediacat-icons.ttf') format('truetype'),
+		url('./fonts/mediacat-icons.svg#mediacat-icons') format('svg');
+}
+
+.icon:before {
+	font-family: "mediacat-icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.icon-detail:before {
+	content: "\E001";
+}
+
+.icon-grid:before {
+	content: "\E002";
+}

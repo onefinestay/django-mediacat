@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "gulp-iconfont": "^0.1.1",
-    "gulp-sketch": "0.0.3"
+    "gulp-sketch": "0.0.3",
+    "gulp-iconfont-css": "0.0.9"
   }
 }
