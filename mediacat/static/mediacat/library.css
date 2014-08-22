@@ -215,6 +215,8 @@ body {
       -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
       flex-grow: 1; }
+    .mediacat-application .toolbar .separator {
+      width: 10px; }
     .mediacat-application .toolbar .button-group button {
       border-radius: 0; }
       .mediacat-application .toolbar .button-group button:first-child {
@@ -259,6 +261,10 @@ body {
       font-weight: 300;
       box-shadow: inset 0px 1px 0px 0px #89C0D2; }
       .mediacat-application .mediacat-header input[type=search] {
+        -webkit-box-flex: 1;
+        -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
         padding: 5px 10px;
         line-height: 27px;
         font-size: 14px;
@@ -477,7 +483,8 @@ body {
       position: absolute; }
     .mediacat-application .mediacat-cropper .mediacat-cropper-selection {
       position: absolute;
-      border: 1px #fff dashed; }
+      border: 1px #fff dashed;
+      cursor: move; }
   .mediacat-application .mediacat-thumbnail {
     -webkit-flex-shrink: 0;
     -ms-flex-negative: 0;

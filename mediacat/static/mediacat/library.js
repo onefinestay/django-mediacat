@@ -542,7 +542,11 @@
 	    return (
 	      React.DOM.div({className: "mediacat-navigation"}, 
 	        Header(null, 
-	          Search(null)
+	          React.DOM.div({className: "toolbar"}, 
+	            React.DOM.button({className: "icon icon-upload"}), 
+	            React.DOM.div({className: "separator"}), 
+	            Search(null)
+	          )
 	        ), 
 	        CategoryTree(null)
 	      )
@@ -611,7 +615,6 @@
 	      React.DOM.div({className: "mediacat-content"}, 
 	        Header(null, 
 	          React.DOM.div({className: "toolbar"}, 
-	            React.DOM.button(null, "Upload"), 
 	            React.DOM.div({className: "spacer"}), 
 	            React.DOM.div({className: "button-group"}, 
 	              React.DOM.button({className: cx(gridButtonClasses), onClick: this.setGridMode}), 

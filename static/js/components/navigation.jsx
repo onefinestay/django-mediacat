@@ -16,7 +16,11 @@ var Navigation = React.createClass({
     return (
       <div className="mediacat-navigation">
         <Header>
-          <Search />
+          <div className="toolbar">
+            <button className="icon icon-upload" />
+            <div className="separator" />
+            <Search />
+          </div>
         </Header>
         <CategoryTree />
       </div>

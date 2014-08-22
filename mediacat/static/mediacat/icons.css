@@ -31,3 +31,7 @@
 .icon-grid:before {
 	content: "\E003";
 }
+
+.icon-upload:before {
+	content: "\E004";
+}

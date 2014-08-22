@@ -50,7 +50,6 @@ var Main = React.createClass({
       <div className="mediacat-content">
         <Header>
           <div className="toolbar">
-            <button>Upload</button>
             <div className="spacer" />
             <div className="button-group">
               <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />

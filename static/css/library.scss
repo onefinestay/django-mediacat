@@ -71,6 +71,10 @@ body {
       flex-grow: 1;
     }
 
+    .separator {
+      width: 10px;
+    }
+
     .button-group {
       button {
         border-radius: 0;
@@ -125,6 +129,7 @@ body {
       box-shadow: inset 0px 1px 0px 0px #89C0D2;
 
       &[type=search] {
+        flex-grow: 1;
         padding: 5px 10px;
         line-height: 27px;
         font-size: 14px;
@@ -328,6 +333,7 @@ body {
     .#{$ns}-cropper-selection {
       position: absolute;
       border: 1px #fff dashed;
+      cursor: move;
     }
   }  
 
