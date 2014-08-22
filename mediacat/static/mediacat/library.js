@@ -190,16 +190,48 @@
 	
 	  initialize: function(options) {
 	    this.setMaxListeners(0);
+	    var selectedPath = options.selectedPath;
+	    delete options.selectedPath;
+	
 	    this.state = Immutable.fromJS(options);
+	
+	    function checkForPath(cat) {
+	      var childMatch;
+	      if (cat.get('path') === selectedPath) {
+	        return cat;
+	      } else if (cat.get('children')) {
+	        cat.get('children').forEach(function(obj){
+	          childMatch = checkForPath(obj);
+	          if (childMatch) {
+	            return false;
+	          }
+	        });
+	      }
+	      return childMatch;
+	    }
+	
+	    var match;
+	    this.state.get('categories').forEach(function(obj) {
+	      match = checkForPath(obj);
+	      if (match) {
+	        return false;
+	      }
+	    });
+	
+	    if (match) {
+	      this.state = this.state.set('selectedCategory', match);
+	    }
+	
 	  },
 	
 	  onCategorySelect: function(payload) {
 	    this.state = this.state.set('selectedCategory', payload.category);
 	    this.emit('change');
-	  }  
+	  }
 	});
 	
 	module.exports = CategoryStore;
+
 
 /***/ },
 /* 4 */
@@ -1175,8 +1207,6 @@
 	    var width;
 	    var height;
 	
-	    console.log(media, crop, this.state.width, this.state.height);
-	
 	    if (media && crop && this.state.width && this.state.height) {
 	      width = media.get('width');
 	      height = media.get('height');
@@ -1264,7 +1294,6 @@
 	    if (requests) {
 	      fetchRequest = requests.get(path);
 	    }
-	
 	    return {
 	      fetchingMedia: fetchRequest ? true : false,
 	      selected: this.props.node === this.getFlux().store('Categories').state.get('selectedCategory')
@@ -1297,7 +1326,7 @@
 	    return (
 	      React.DOM.li({className: cx(classes)}, 
 	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, 
-	          node.get('name'), 
+	          node.get('name'), " ", node.get('has_children') ? 'yes' : 'no', 
 	          this.state.fetchingMedia ? LinearLoader(null) : React.DOM.div({className: "mediacat-categories-count"}, count || '-')
 	        ), 
 	        loadedChildren && children.length ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null
@@ -29931,10 +29960,6 @@
 	      width: cropWidth  + 'px',
 	      height: cropHeight + 'px'
 	    };
-	
-	    console.log(crop.get('width'), cropWidth);
-	    console.log(crop.get('height'), cropHeight);
-	    console.log(selectionStyle);
 	
 	    return (
 	      React.DOM.div({className: "mediacat-cropper", style: style}, 

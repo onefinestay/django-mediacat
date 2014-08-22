@@ -58,8 +58,6 @@ var Detail = React.createClass({
     var width;
     var height;
 
-    console.log(media, crop, this.state.width, this.state.height);
-
     if (media && crop && this.state.width && this.state.height) {
       width = media.get('width');
       height = media.get('height');

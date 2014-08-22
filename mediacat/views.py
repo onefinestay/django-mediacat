@@ -42,6 +42,15 @@ class CropDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.ImageCropSerializer
 
 
+class CategoryList(generics.ListCreateAPIView):
+    queryset = None
+    serializer_class = serializers.CategorySerializer
+
+    def get_queryset(self):
+        path = self.kwargs['path'][:-1]
+        return utils.library_paths.get_children_for_path(path)
+
+
 class Library(TemplateView):
     template_name = 'mediacat/library.html'
 
@@ -52,17 +61,19 @@ class Library(TemplateView):
 
         try:
             obj = utils.resolve(path)
-            content_type_id = ContentType.objects.get_for_model(obj).pk
-            images = models.Image.objects.filter(
-                associations__object_id=obj.pk,
-                associations__content_type_id=content_type_id
-            )
-            data['media'] = serializers.ImageSerializer(images, many=True).data
+            if obj:
+                content_type_id = ContentType.objects.get_for_model(obj).pk
+                images = models.Image.objects.filter(
+                    associations__object_id=obj.pk,
+                    associations__content_type_id=content_type_id
+                )
+                data['media'] = serializers.ImageSerializer(images, many=True).data
         except exceptions.NoResolveException:
-            pass
+            data['media'] = []
 
-        categories = utils.library_paths.list_tree_for_path(path)
+        categories = serializers.CategorySerializer(utils.library_paths.list_tree_for_path(path)).data
         utils.annotate_counts(categories)
+
         data['category_data'] = categories
 
         return data

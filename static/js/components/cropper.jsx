@@ -97,10 +97,6 @@ var Cropper = React.createClass({
       height: cropHeight + 'px'
     };
 
-    console.log(crop.get('width'), cropWidth);
-    console.log(crop.get('height'), cropHeight);
-    console.log(selectionStyle);
-
     return (
       <div className="mediacat-cropper" style={style}>
         <div className="mediacat-cropper-mask" style={leftMaskStyle} />

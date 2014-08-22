@@ -106,8 +106,12 @@ class Path(object):
     def resolve(self, path):
         matches = self.compiled_regex.match(path)
         if matches:
-            handler = self.handler(name=self.name, **matches.groupdict())
+            if issubclass(self.handler, NullHandler) and self.parent:
+                handler = self.parent.handler(name=self.name, **matches.groupdict())
+            else:
+                handler = self.handler(name=self.name, **matches.groupdict())
             return handler.get_object()
+
         raise NoResolveException()
 
     def resolve_to_path(self, path):
@@ -178,19 +182,38 @@ class BasePathHandler(object):
 
             params = obj.get_medialibrary_path_params()
 
+            has_children = self.has_children(**params)
+
             data = {
                 'name': self.get_display_name(obj),
                 'content_type_id': content_type_id,
                 'object_id': object_id,
                 'path': reverse(self.name, **params),
-                'children': [],
+                'children': None,
+                'has_children': self.has_children(**params),
             }
 
-            if data['path'] == match_path:
+            if child_paths and data['path'] == match_path:
                 data['children'] = child_paths
 
             paths.append(data)
         return paths
+
+    def has_children(self, **kwargs):
+        from . import utils
+
+        path = utils.library_paths.get_path_by_name(self.name)
+
+        if not path.children:
+            return False
+
+        for child_path in path.children:
+            if issubclass(child_path.handler, NullHandler):
+                return True
+
+            if child_path.handler(child_path.name, **kwargs).get_queryset().exists():
+                return True
+        return False
 
 
 class NullHandler(BasePathHandler):
@@ -225,12 +248,15 @@ class NullHandler(BasePathHandler):
 
         paths = []
 
+        has_children = self.has_children(**self.kwargs)
+
         data = {
             'name': self.display_name,
             'content_type_id': None,
             'object_id': None,
             'path': reverse(self.name, **self.kwargs),
-            'children': child_paths,
+            'children': child_paths if child_paths and self.has_children else None,
+            'has_children': self.has_children(**self.kwargs),
         }
 
         paths.append(data)
@@ -253,6 +279,20 @@ class PathPatterns(object):
         for p in self.paths:
             self._flattened_paths.append(p)
             self._flattened_paths.extend(p.flatten())
+
+    def descendant_paths(self):
+        """ returns all the path objects in a list without trying to flatten them """
+        descendants = list(self.paths)
+        def _traverse(path):
+            paths = list(path.children)
+            for path in path.children:
+                paths += _traverse(path)
+            return list(paths)
+
+        for path in self.paths:
+            descendants += _traverse(path)
+
+        return descendants
 
     def resolve(self, path):
         for p in self._flattened_paths:
@@ -294,7 +334,13 @@ class PathPatterns(object):
                 continue
         return None
 
-    def list_tree_for_path(self, path, params=None, child_paths=None, list_children=True):
+    def get_path_by_name(self, name):
+        for path in self.descendant_paths():
+            if path.name == name:
+                return path
+        return None
+
+    def list_tree_for_path(self, path, params=None, child_paths=None):
         if not path:
             return self.list_root_paths()
 
@@ -307,9 +353,6 @@ class PathPatterns(object):
             else:
                 params = {}
 
-        if list_children:
-            pass # fetch children here?
-
         paths = obj_path.list(child_paths=child_paths, match_path=path, **params)
 
         if not obj_path.parent:
@@ -319,5 +362,20 @@ class PathPatterns(object):
 
         return self.list_tree_for_path(parent_path, params=params, child_paths=paths)
 
+    def get_children_for_path(self, path):
+        if not path:
+            return self.list_root_paths()
 
+        obj_path = self.get_path_by_name(self.resolve_to_path(path).name)
+        obj = self.resolve(path)
+        if obj:
+            params = obj.get_medialibrary_path_params()
+        else:
+            params = {}
+
+        children = []
+        for child in obj_path.children:
+            children += child.list(**params)
+
+        return children
 
