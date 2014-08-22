@@ -20,10 +20,14 @@
 }
 
 
-.icon-detail:before {
+.icon-arrow:before {
 	content: "\E001";
 }
 
-.icon-grid:before {
+.icon-detail:before {
 	content: "\E002";
+}
+
+.icon-grid:before {
+	content: "\E003";
 }

@@ -35,7 +35,7 @@ body {
   }
 
   .icon {
-    font-size: 23px;
+    font-size: 24px;
   }
 
 
@@ -57,8 +57,8 @@ body {
     }
 
     &.icon {
-      font-size: 23px;
-      padding: 6px 9px 4px 10px;
+      font-size: 24px;
+      padding: 5px 10px;
     }
   }  
 
@@ -112,7 +112,7 @@ body {
       }
 
       &.icon {
-        font-size: 23px;
+        font-size: 24px;
       }
     }
 
@@ -169,6 +169,21 @@ body {
     font-size: 14px;
     line-height: 1.5;
 
+    .icon-arrow {
+      display: inline-block;
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0.75;
+    }
+
+    .no-children {
+      display: inline-block;
+      margin-right: 10px;
+      width: 15px;      
+    }    
+
     .linear-loader {
       left: auto;
       right: 5px;
@@ -181,8 +196,7 @@ body {
       line-height: 1.75;
       position: absolute;
       top: 0;
-      right: 5px;
-
+      right: 10px;
     }    
 
     &:hover {

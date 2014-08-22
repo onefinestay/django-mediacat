@@ -178,7 +178,7 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
   .mediacat-application .icon {
-    font-size: 23px; }
+    font-size: 24px; }
   .mediacat-application button {
     display: inline-block;
     border: 0;
@@ -194,8 +194,8 @@ body {
     .mediacat-application button:focus {
       outline: none; }
     .mediacat-application button.icon {
-      font-size: 23px;
-      padding: 6px 9px 4px 10px; }
+      font-size: 24px;
+      padding: 5px 10px; }
   .mediacat-application .toolbar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -250,7 +250,7 @@ body {
         background-color: #007599;
         color: #00c0ff; }
       .mediacat-application .mediacat-header button.icon {
-        font-size: 23px; }
+        font-size: 24px; }
     .mediacat-application .mediacat-header input {
       display: block;
       margin: 0;
@@ -307,6 +307,17 @@ body {
     position: relative;
     font-size: 14px;
     line-height: 1.5; }
+    .mediacat-application .mediacat-categories-label .icon-arrow {
+      display: inline-block;
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0.75; }
+    .mediacat-application .mediacat-categories-label .no-children {
+      display: inline-block;
+      margin-right: 10px;
+      width: 15px; }
     .mediacat-application .mediacat-categories-label .linear-loader {
       left: auto;
       right: 5px; }
@@ -317,7 +328,7 @@ body {
       line-height: 1.75;
       position: absolute;
       top: 0;
-      right: 5px; }
+      right: 10px; }
     .mediacat-application .mediacat-categories-label:hover {
       color: #fff;
       background-color: #303642; }
