@@ -116,7 +116,7 @@ body {
       &.active {
         box-shadow: inset 0 1px 0 0 darken(#00c0ff, 30), inset 0 -1px 0 0 lighten(#00c0ff, 10);
         background-color: darken(#00c0ff, 20);
-        color: desaturate($base-color, 49);
+        color: lighten(desaturate($base-color, 49), 10);
       }
 
       &.icon {
@@ -134,13 +134,13 @@ body {
 
       &[type=search] {
         flex-grow: 1;
-        padding: 5px 10px;
+        padding: 5px 10px 5px 5px;
         line-height: 27px;
         font-size: 14px;
         font-family: Nunito, sans-serif;  
         height: 37px;
         border: none;
-        border-radius: 18px;
+        border-radius: 5px;
       }
     }
   }
