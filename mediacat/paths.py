@@ -198,6 +198,9 @@ class BasePathHandler(object):
             if child_paths and data['path'] == match_path:
                 data['children'] = child_paths
 
+            if data['path'] == match_path:
+                data['expanded'] = True
+
             paths.append(data)
         return paths
 
@@ -259,9 +262,15 @@ class NullHandler(BasePathHandler):
             'object_id': None,
             'accepts_images': False,
             'path': reverse(self.name, **self.kwargs),
-            'children': child_paths if child_paths and self.has_children else None,
+            'children': None,
             'has_children': self.has_children(**self.kwargs),
         }
+
+        if child_paths and data['path'] == match_path:
+            data['children'] = child_paths
+
+        if data['path'] == match_path:
+            data['expanded'] = True
 
         paths.append(data)
 

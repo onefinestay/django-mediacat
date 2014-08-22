@@ -73,7 +73,8 @@ class Library(TemplateView):
         except exceptions.NoResolveException:
             data['media'] = []
 
-        categories = serializers.CategorySerializer(utils.library_paths.list_tree_for_path(path)).data
+        raw_categories = utils.library_paths.list_tree_for_path(path, child_paths=utils.library_paths.get_children_for_path(path))
+        categories = serializers.CategorySerializer(raw_categories, many=True).data
         utils.annotate_counts(categories)
 
         data['category_data'] = categories
