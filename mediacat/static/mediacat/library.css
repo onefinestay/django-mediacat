@@ -225,7 +225,7 @@ body {
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px; }
   .mediacat-application .mediacat-header {
-    background-color: #00C0FF;
+    background-color: #3ea2c1;
     height: 57px;
     padding: 10px;
     line-height: 37px;
@@ -243,12 +243,12 @@ body {
     display: flex; }
     .mediacat-application .mediacat-header button {
       background-color: #fff;
-      color: #00C0FF;
+      color: #3ea2c1;
       box-shadow: 0 1px 0 0 #007599; }
       .mediacat-application .mediacat-header button.active {
         box-shadow: inset 0 1px 0 0 #004e66, inset 0 -1px 0 0 #33cfff;
         background-color: #007599;
-        color: #00c0ff; }
+        color: #3ea2c1; }
       .mediacat-application .mediacat-header button.icon {
         font-size: 24px; }
     .mediacat-application .mediacat-header input {
