@@ -14,7 +14,11 @@ var Crop = React.createClass({
 
   select: function(event) {
     event.preventDefault();
-    this.getFlux().actions.crop.select(this.props.crop);
+    if (this.state.selected) {
+      this.getFlux().actions.crop.deselect(this.props.crop);
+    } else {
+      this.getFlux().actions.crop.select(this.props.crop);
+    }
   },
 
   getStateFromFlux: function() {

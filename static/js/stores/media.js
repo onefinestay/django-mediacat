@@ -11,6 +11,7 @@ var MediaStore = Fluxxor.createStore({
     CATEGORY_SELECTED: 'onCategorySelect',
     MEDIA_SELECTED: 'onMediaSelect',
     CROP_SELECTED: 'onCropSelect',
+    CROP_DESELECTED: 'onCropDeselect',
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess'
   },
 
@@ -58,6 +59,11 @@ var MediaStore = Fluxxor.createStore({
     this.state = this.state.set('selectedCrop', payload.crop);
     this.emit('change');    
   },
+
+  onCropDeselect: function(payload) {
+    this.state = this.state.set('selectedCrop', null);
+    this.emit('change');    
+  },  
 
   onCategorySelect: function(payload) {
     var req = this.getFetchRequest(payload.category, null);

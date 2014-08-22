@@ -26,6 +26,10 @@ var Actions = {
   crop: {
     select: function(crop, media) {
       this.dispatch(Constants.CROP_SELECTED, {crop, media});
+    },
+
+    deselect: function(crop, media) {
+      this.dispatch(Constants.CROP_DESELECTED, {crop, media});
     }
   },
 

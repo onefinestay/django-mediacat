@@ -210,17 +210,24 @@ body {
     display: flex;
     flex-direction: column;
 
-    .#{$ns}-detail {
+    .#{$ns}-detail-wrapper {
       flex-grow: 1;
       background-color: darken(#232830, 10);
       position: relative;
+      padding: 20px;
+      display: flex;
+    }
+
+    .#{$ns}-detail {
+      position: relative;
+      flex-grow: 1;
 
       .detail-proxy-image {
         position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
 
       .detail-proxy-image-placeholder {
@@ -287,6 +294,20 @@ body {
     }
   }
 
+  .#{$ns}-cropper {
+    position: absolute;
+    z-index: 1;
+
+    .#{$ns}-cropper-mask {
+      background-color: rgba(0, 0, 0, .5);      
+      position: absolute;
+    }
+
+    .#{$ns}-cropper-selection {
+      position: absolute;
+      border: 1px #fff dashed;
+    }
+  }  
 
   .#{$ns}-thumbnail {
     flex-shrink: 0;
@@ -370,6 +391,20 @@ body {
     width: 320px;
     overflow-y: scroll;
     background-color: $sidebar-bg;
+    padding: 10px;
+
+    table {
+      width: 100%;
+      border: 1px $seperator-color solid;
+    }
+
+    th, td {
+      padding: 5px;
+    }
+
+    td {
+      width: 100%;
+    }
   }   
 }
 
