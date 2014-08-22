@@ -10,9 +10,12 @@ var sketch = require("gulp-sketch");
 
 var fontName = 'mediacat-icons';
 
+var paths = {
+  sketch: "./static/fonts/mediacat/master/*.sketch"
+};
 
 gulp.task('icon', function(){
-  return gulp.src("./static/fonts/mediacat/master/*.sketch")
+  return gulp.src(paths.sketch)
     .pipe(sketch({
       export: 'artboards',
       formats: 'svg'
@@ -28,4 +31,9 @@ gulp.task('icon', function(){
       appendCodepoints: false
     }))
     .pipe(gulp.dest('./mediacat/static/mediacat/fonts/'));
+});
+
+
+gulp.task('watch', function() {
+  gulp.watch(paths.sketch, ['icon']);
 });

@@ -3091,8 +3091,6 @@
 	
 	    var style;
 	
-	
-	
 	    if (ratio >= containerRatio) {
 	      // Landscape
 	      width = containerWidth;
