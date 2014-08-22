@@ -43,3 +43,28 @@ class ImageSerializer(serializers.ModelSerializer):
             'url',
             'thumbnail',
         )
+
+
+class CategorySerializer(serializers.Serializer):
+
+    name = serializers.CharField()
+    content_type_id = serializers.IntegerField()
+    object_id = serializers.IntegerField()
+    path = serializers.CharField()
+    children = serializers.SerializerMethodField('get_sub_categories')
+    has_children = serializers.BooleanField()
+
+    class Meta:
+        fields = (
+            'name',
+            'content_type_id',
+            'object_id',
+            'path',
+            'has_children',
+            'children',
+        )
+
+    def get_sub_categories(self, obj):
+        if obj['children'] is None:
+            return None
+        return CategorySerializer(obj['children'], many=True).data

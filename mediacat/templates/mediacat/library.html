@@ -15,10 +15,12 @@
  		media: {
  			selectedMedia: null,
  			selectedCrop: null,
- 			media: {{ media|jsonify }}
+ 			loading: false,
+ 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}
  		},
  		categories: {
- 			selectedCategory: null,
+            selectedCategory: null,
+ 			selectedPath: {{ path|jsonify }},
  			categories: {{ category_data|jsonify }}
  		}
  	};

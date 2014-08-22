@@ -58,3 +58,15 @@ def annotate_counts(categories):
     for category in categories:
         _annotate(category)
 
+
+def annotate_children(categories):
+    import datetime
+    now = datetime.datetime.now()
+
+    import ipdb; ipdb.set_trace()
+
+
+
+
+
+    print "Annotate children took: ", datetime.datetime.now() - now
