@@ -162,6 +162,7 @@ class BasePathHandler(object):
                 'name': self.get_display_name(obj),
                 'content_type_id': content_type_id,
                 'object_id': object_id,
+                'accepts_images': True,
                 'path': reverse(self.name, **params),
                 'children': [],
             }
@@ -188,6 +189,7 @@ class BasePathHandler(object):
                 'name': self.get_display_name(obj),
                 'content_type_id': content_type_id,
                 'object_id': object_id,
+                'accepts_images': True,
                 'path': reverse(self.name, **params),
                 'children': None,
                 'has_children': self.has_children(**params),
@@ -232,6 +234,7 @@ class NullHandler(BasePathHandler):
             'name': self.display_name,
             'content_type_id': None,
             'object_id': None,
+            'accepts_images': False,
             'path': reverse(self.name, **params),
             'children': []
         }
@@ -254,6 +257,7 @@ class NullHandler(BasePathHandler):
             'name': self.display_name,
             'content_type_id': None,
             'object_id': None,
+            'accepts_images': False,
             'path': reverse(self.name, **self.kwargs),
             'children': child_paths if child_paths and self.has_children else None,
             'has_children': self.has_children(**self.kwargs),

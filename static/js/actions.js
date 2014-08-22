@@ -36,6 +36,24 @@ var Actions = {
   categories: {
     select: function(category) {
       this.dispatch(Constants.CATEGORY_SELECTED, {category});
+    },
+
+    open: function(category) {
+      this.dispatch(Constants.CATEGORY_OPEN, {category});
+    },
+
+    fetchChildrenSuccess: function(response) {
+      var data = response.body;
+      var request = response.req;
+      this.dispatch(Constants.FETCH_CATEGORY_CHILDREN_SUCCESS, {data, request});
+    },
+
+    fetchChildrenError: function(response) {
+      console.log(response);
+    },
+
+    loadChildren: function(category) {
+      this.dispatch(Constants.CATEGORY_LOAD_CHILDREN, {category});
     }
   }
 };

@@ -50,8 +50,10 @@ class CategorySerializer(serializers.Serializer):
     name = serializers.CharField()
     content_type_id = serializers.IntegerField()
     object_id = serializers.IntegerField()
+    count = serializers.IntegerField()
     path = serializers.CharField()
     children = serializers.SerializerMethodField('get_sub_categories')
+    accepts_images = serializers.BooleanField()
     has_children = serializers.BooleanField()
 
     class Meta:
@@ -59,7 +61,9 @@ class CategorySerializer(serializers.Serializer):
             'name',
             'content_type_id',
             'object_id',
+            'count',
             'path',
+            'accepts_images',
             'has_children',
             'children',
         )

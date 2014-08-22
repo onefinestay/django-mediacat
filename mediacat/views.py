@@ -48,7 +48,9 @@ class CategoryList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         path = self.kwargs['path'][:-1]
-        return utils.library_paths.get_children_for_path(path)
+        categories = utils.library_paths.get_children_for_path(path)
+        utils.annotate_counts(categories)
+        return categories
 
 
 class Library(TemplateView):

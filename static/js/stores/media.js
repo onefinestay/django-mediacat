@@ -66,18 +66,23 @@ var MediaStore = Fluxxor.createStore({
   },  
 
   onCategorySelect: function(payload) {
-    var req = this.getFetchRequest(payload.category, null);
+    if (payload.category.get('accepts_images')) {
+      var req = this.getFetchRequest(payload.category, null);
 
-    var requests = this.state.get('fetchRequests');
+      var requests = this.state.get('fetchRequests');
 
-    if (!requests) {
-      requests = Immutable.Map();
+      if (!requests) {
+        requests = Immutable.Map();
+      }
+      requests = requests.set(payload.category.get('path'), req);
+
+      this.state = this.state.withMutations(function(state) {
+        state.set('media', Immutable.Sequence()).set('fetchRequests', requests);
+      });
+    } else {
+      this.state = this.state.set('media', Immutable.Sequence());
     }
-    requests = requests.set(payload.category.get('path'), req);
-
-    this.state = this.state.withMutations(function(state) {
-      state.set('media', Immutable.Sequence()).set('fetchRequests', requests);
-    });
+    
     this.emit('change');
   }  
 });

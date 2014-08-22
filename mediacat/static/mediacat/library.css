@@ -336,6 +336,10 @@ body {
     background-color: #414858;
     color: #fff;
     text-shadow: 1px 1px 0 black; }
+  .mediacat-application .mediacat-categories-node-open > .mediacat-categories-label .icon-arrow {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg); }
   .mediacat-application .mediacat-content {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;

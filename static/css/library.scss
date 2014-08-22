@@ -213,6 +213,14 @@ body {
     }
   }
 
+  .#{$ns}-categories-node-open {
+    > .#{$ns}-categories-label {
+      .icon-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  }  
+
   .#{$ns}-content {
     flex-grow: 1;
     display: flex;

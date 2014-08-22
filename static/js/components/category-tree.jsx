@@ -16,8 +16,16 @@ var CategoryTreeNode = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
 
   select: function(event) {
+    var category = this.props.node;
     event.preventDefault();
-    this.getFlux().actions.categories.select(this.props.node);
+
+    this.getFlux().actions.categories.select(category);
+    if (!category.get('open')) {
+      this.getFlux().actions.categories.open(category);
+    }
+    if (category.get('has_children') && !category.get('children')) {
+      this.getFlux().actions.categories.loadChildren(category);
+    }
   },
 
   getStateFromFlux: function() {
@@ -48,13 +56,16 @@ var CategoryTreeNode = React.createClass({
       nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
     }
 
+    var isOpen = loadedChildren;
+
     var classes = {
       'mediacat-categories-node': true,
+      'mediacat-categories-node-open': isOpen,
       'mediacat-categories-node-selected': this.state.selected
     };
 
     var style = {
-      'padding-left': 10 * depth + 'px'
+      'padding-left': 15 * depth + 'px'
     };
 
     var count = node.get('count');
