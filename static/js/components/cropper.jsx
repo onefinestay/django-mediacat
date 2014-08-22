@@ -15,6 +15,8 @@ var Cropper = React.createClass({
     var containerWidth = this.props.width;
     var containerHeight = this.props.height;
 
+    var containerRatio = containerWidth / containerHeight;
+
     var mWidth = media.get('width');
     var mHeight = media.get('height');
 
@@ -28,7 +30,9 @@ var Cropper = React.createClass({
 
     var style;
 
-    if (ratio >= 1) {
+
+
+    if (ratio >= containerRatio) {
       // Landscape
       width = containerWidth;
       scale = width / mWidth;
