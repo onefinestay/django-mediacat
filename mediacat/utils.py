@@ -1,5 +1,4 @@
 import importlib
-from collections import defaultdict
 
 from django.db.models import Count
 from django.conf import settings
