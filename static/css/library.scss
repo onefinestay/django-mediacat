@@ -52,6 +52,10 @@ body {
     text-align: center;
     cursor: pointer;
 
+    &:hover {
+      opacity: 0.8;
+    }
+
     &:focus {
       outline: none;
     }

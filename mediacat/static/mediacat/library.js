@@ -1198,6 +1198,24 @@
 	var LinearLoader = __webpack_require__(/*! ./loaders/linear */ 39);
 	
 	
+	var CategoryTreePlaceholderNode = React.createClass({displayName: 'CategoryTreePlaceholderNode',
+	  render: function() {
+	    var style = {
+	      'padding-left': 15 * this.props.depth + 'px'
+	    };
+	
+	    return (
+	      React.DOM.li({className: "mediacat-categories-node"}, 
+	        React.DOM.a({style: style, className: "mediacat-categories-label"}, 
+	          React.DOM.span({className: "no-children"}), 
+	          "Loading..."
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	
 	var CategoryTreeNode = React.createClass({displayName: 'CategoryTreeNode',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
 	
@@ -1277,7 +1295,7 @@
 	          this.state.fetchingMedia ? LinearLoader(null) : React.DOM.div({className: "mediacat-categories-count"}, count || '-')
 	        ), 
 	        isOpen && hasChildren && loadedChildren ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null, 
-	        isOpen && hasChildren && !loadedChildren ? React.DOM.ul({className: "mediacat-categories-children"}, React.DOM.li(null, "Loading")) : null
+	        isOpen && hasChildren && !loadedChildren ? React.DOM.ul({className: "mediacat-categories-children"}, CategoryTreePlaceholderNode({depth: depth + 1})) : null
 	      )
 	    );
 	  }

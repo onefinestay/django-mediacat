@@ -12,6 +12,24 @@ var FluxMixin = require('./flux-mixin');
 var LinearLoader = require('./loaders/linear');
 
 
+var CategoryTreePlaceholderNode = React.createClass({
+  render: function() {
+    var style = {
+      'padding-left': 15 * this.props.depth + 'px'
+    };
+
+    return (
+      <li className="mediacat-categories-node">
+        <a style={style} className="mediacat-categories-label">
+          <span className="no-children" />
+          Loading...
+        </a>
+      </li>
+    );
+  }
+});
+
+
 var CategoryTreeNode = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
 
@@ -91,7 +109,7 @@ var CategoryTreeNode = React.createClass({
           {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
         </a>
         {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
-        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children"><li>Loading</li></ul> : null}
+        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
       </li>
     );
   }

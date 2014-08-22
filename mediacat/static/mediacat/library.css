@@ -191,6 +191,8 @@ body {
     margin: 0;
     text-align: center;
     cursor: pointer; }
+    .mediacat-application button:hover {
+      opacity: 0.8; }
     .mediacat-application button:focus {
       outline: none; }
     .mediacat-application button.icon {
