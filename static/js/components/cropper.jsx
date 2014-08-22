@@ -30,8 +30,6 @@ var Cropper = React.createClass({
 
     var style;
 
-
-
     if (ratio >= containerRatio) {
       // Landscape
       width = containerWidth;
