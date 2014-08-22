@@ -42,6 +42,10 @@ var Actions = {
       this.dispatch(Constants.CATEGORY_OPEN, {category});
     },
 
+    close: function(category) {
+      this.dispatch(Constants.CATEGORY_CLOSE, {category});
+    },    
+
     fetchChildrenSuccess: function(response) {
       var data = response.body;
       var request = response.req;

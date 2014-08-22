@@ -18,13 +18,25 @@ var CategoryTreeNode = React.createClass({
   select: function(event) {
     var category = this.props.node;
     event.preventDefault();
-
     this.getFlux().actions.categories.select(category);
-    if (!category.get('open')) {
+
+    if (!category.get('expanded')) {
       this.getFlux().actions.categories.open(category);
     }
     if (category.get('has_children') && !category.get('children')) {
       this.getFlux().actions.categories.loadChildren(category);
+    }
+  },
+
+  toggleExpanded: function(event) {
+    var category = this.props.node;
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (category.get('expanded')) {
+      this.getFlux().actions.categories.close(category);
+    } else {
+      this.getFlux().actions.categories.open(category);
     }
   },
 
@@ -40,7 +52,7 @@ var CategoryTreeNode = React.createClass({
     }
     return {
       fetchingMedia: fetchRequest ? true : false,
-      selected: this.props.node === this.getFlux().store('Categories').state.get('selectedCategory')
+      selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath')
     };
   },
 
@@ -56,7 +68,8 @@ var CategoryTreeNode = React.createClass({
       nodes = children.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={depth + 1} />);
     }
 
-    var isOpen = loadedChildren;
+    var isOpen = node.get('expanded');
+    var hasChildren = node.get('has_children');
 
     var classes = {
       'mediacat-categories-node': true,
@@ -73,11 +86,12 @@ var CategoryTreeNode = React.createClass({
     return (
       <li className={cx(classes)}>
         <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>
-          {node.get('has_children') ? <span className="icon icon-arrow" /> : <span className="no-children" />}
+          {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="no-children" />}
           {node.get('name')}
           {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
         </a>
-        {loadedChildren && children.length ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
+        {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
+        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children"><li>Loading</li></ul> : null}
       </li>
     );
   }

@@ -8,6 +8,7 @@ var CategoryStore = Fluxxor.createStore({
   actions: {
     CATEGORY_SELECTED: 'onCategorySelect',
     CATEGORY_OPEN: 'onCategoryOpen',
+    CATEGORY_CLOSE: 'onCategoryClose',
     CATEGORY_LOAD_CHILDREN: 'onCategoryLoadChildren',
     FETCH_CATEGORY_CHILDREN_SUCCESS: 'onFetchCategoryChildrenSuccess'
   },
@@ -82,20 +83,23 @@ var CategoryStore = Fluxxor.createStore({
 
   initialize: function(options) {
     this.setMaxListeners(0);
-    var selectedPath = options.selectedPath;
-    delete options.selectedPath;
-
     this.state = Immutable.fromJS(options);
-
-    var selectedCategory = this.findByPath(selectedPath);
-
-    if (selectedCategory) {
-      this.state = this.state.set('selectedCategory', selectedCategory);
-    }
   },
 
   onCategorySelect: function(payload) {
-    this.state = this.state.set('selectedCategory', payload.category);
+    this.state = this.state.set('selectedPath', payload.category.get('path'));
+    this.emit('change');
+  },
+
+  onCategoryOpen: function(payload) {
+    var updatePath = this.getObjectPath(payload.category.get('path'));
+    this.state = this.state.updateIn(updatePath.toJS(), cat => cat.set('expanded', true));
+    this.emit('change');
+  },
+
+  onCategoryClose: function(payload) {
+    var updatePath = this.getObjectPath(payload.category.get('path'));
+    this.state = this.state.updateIn(updatePath.toJS(), cat => cat.set('expanded', false));
     this.emit('change');
   },
 
