@@ -322,6 +322,10 @@ body {
       line-height: 1.75;
       width: 15px;
       opacity: 0.75; }
+      .mediacat-application .mediacat-categories-label .icon-arrow:hover {
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg); }
     .mediacat-application .mediacat-categories-label .no-children {
       display: inline-block;
       margin-right: 10px;
@@ -350,6 +354,10 @@ body {
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg); }
+    .mediacat-application .mediacat-categories-node-open > .mediacat-categories-label .icon-arrow:hover {
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg); }
   .mediacat-application .mediacat-content {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;

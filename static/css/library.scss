@@ -185,6 +185,10 @@ body {
       line-height: 1.75;
       width: 15px;
       opacity: .75;
+
+      &:hover {
+        transform: rotate(45deg);
+      }
     }
 
     .no-children {
@@ -230,6 +234,10 @@ body {
     > .#{$ns}-categories-label {
       .icon-arrow {
         transform: rotate(90deg);
+
+        &:hover {
+          transform: rotate(45deg);
+        }        
       }
     }
   }  
