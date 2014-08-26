@@ -25,10 +25,10 @@ var Detail = React.createClass({
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
-    var selected = store.state.get('selectedMedia');
+    var selected = store.getSelectedMedia();
 
     return {
-      crop: store.state.get('selectedCrop'),
+      crop: store.getSelectedCrop(),
       media: selected
     };
   },

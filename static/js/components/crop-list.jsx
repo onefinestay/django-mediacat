@@ -22,8 +22,10 @@ var Crop = React.createClass({
   },
 
   getStateFromFlux: function() {
+    console.log(this.props.crop, this.getFlux().store('Media').getSelectedCrop());
+
     return {
-      selected: this.props.crop === this.getFlux().store('Media').state.get('selectedCrop')
+      selected: this.props.crop === this.getFlux().store('Media').getSelectedCrop()
     };
   },
 
@@ -77,7 +79,7 @@ var CropList = React.createClass({
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
-    var selected = store.state.get('selectedMedia');
+    var selected = store.getSelectedMedia();
 
     return {
       media: selected,

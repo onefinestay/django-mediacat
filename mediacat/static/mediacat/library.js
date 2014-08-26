@@ -119,6 +119,10 @@
 	
 	    deselect: function(crop, media) {
 	      this.dispatch(Constants.CROP_DESELECTED, {crop:crop, media:media});
+	    },
+	
+	    move: function(crop, dX, dY) {
+	      this.dispatch(Constants.CROP_MOVE, {crop:crop, dX:dX, dY:dY});
 	    }
 	  },
 	
@@ -361,6 +365,7 @@
 	    MEDIA_SELECTED: 'onMediaSelect',
 	    CROP_SELECTED: 'onCropSelect',
 	    CROP_DESELECTED: 'onCropDeselect',
+	    CROP_MOVE: 'onCropMove',
 	    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess'
 	  },
 	
@@ -383,6 +388,27 @@
 	      .end(this.flux.actions.media.fetchSuccess);
 	  },
 	
+	  getSelectedMedia: function() {
+	    var id = this.state.get('selectedMedia');
+	
+	    if (!id) {
+	      return null;
+	    }
+	    return this.state.get('media').find(function(m)  {return m.get('id') === id;});
+	  },
+	
+	  getSelectedCrop: function() {
+	    var id = this.state.get('selectedCrop');
+	
+	    if (!id) {
+	      return null;
+	    }
+	
+	    var media = this.getSelectedMedia();
+	
+	    return media.get('crops').find(function(c)  {return c.get('id') === id;});
+	  },
+	
 	  onFetchImagesSuccess: function(payload) {
 	    var req = payload.request;
 	    var media = Immutable.fromJS(payload.data);
@@ -399,20 +425,58 @@
 	
 	  onMediaSelect: function(payload) {
 	    this.state = this.state.withMutations(function(state) {
-	      state.set('selectedMedia', payload.media).set('selectedCrop', null);
+	      state.set('selectedMedia', payload.media.get('id')).set('selectedCrop', null);
 	    });
 	    this.emit('change');
 	  },
 	
 	  onCropSelect: function(payload) {
-	    this.state = this.state.set('selectedCrop', payload.crop);
+	    this.state = this.state.set('selectedCrop', payload.crop.get('id'));
 	    this.emit('change');    
 	  },
 	
 	  onCropDeselect: function(payload) {
 	    this.state = this.state.set('selectedCrop', null);
 	    this.emit('change');    
-	  },  
+	  },
+	
+	  onCropMove: function(payload) {
+	    var crop = this.getSelectedCrop();
+	    var media = this.getSelectedMedia();
+	    var cropIndex = media.get('crops').indexOf(crop);
+	    var mediaIndex = this.state.get('media').indexOf(media);
+	
+	    var x1 = crop.get('x1');
+	    var x2 = crop.get('x2');
+	    var y1 = crop.get('y1');
+	    var y2 = crop.get('y2');
+	
+	    var dX = payload.dX;
+	    var dY = payload.dY;
+	
+	    if (x1 + dX < 0) {
+	      dX = -x1;
+	    } else if (x2 + dX > media.get('width')) {
+	      dX = media.get('width') - x2;
+	    }
+	
+	    if (y1 + dY < 0) {
+	      dY = -y1;
+	    } else if (y2 + dY > media.get('height')) {
+	      dY = media.get('height') - y2;
+	    }    
+	
+	    this.state = this.state.updateIn(['media', mediaIndex, 'crops', cropIndex], function(c) {
+	      return c.withMutations(function(c) {
+	        c.
+	          set('x1', x1 + dX).
+	          set('x2', x2 + dX).
+	          set('y1', y1 + dY).
+	          set('y2', y2 + dY);
+	      });
+	    })
+	    this.emit('change');
+	  },
 	
 	  onCategorySelect: function(payload) {
 	    if (payload.category.get('accepts_images')) {
@@ -517,6 +581,7 @@
 	  MEDIA_SELECTED: 'MEDIA_SELECTED',
 	  CROP_SELECTED: 'CROP_SELECTED',
 	  CROP_DESELECTED: 'CROP_DESELECTED',
+	  CROP_MOVE: 'CROP_MOVE',
 	  CATEGORY_SELECTED: 'CATEGORY_SELECTED',
 	  CATEGORY_OPEN: 'CATEGORY_OPEN',
 	  CATEGORY_CLOSE: 'CATEGORY_CLOSE',
@@ -1182,7 +1247,7 @@
 	
 	  getStateFromFlux: function() {
 	    return {
-	      selected: this.props.thumbnail === this.getFlux().store('Media').state.get('selectedMedia')
+	      selected: this.props.thumbnail === this.getFlux().store('Media').getSelectedMedia()
 	    };
 	  },
 	
@@ -1259,10 +1324,10 @@
 	
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
-	    var selected = store.state.get('selectedMedia');
+	    var selected = store.getSelectedMedia();
 	
 	    return {
-	      crop: store.state.get('selectedCrop'),
+	      crop: store.getSelectedCrop(),
 	      media: selected
 	    };
 	  },
@@ -1630,7 +1695,7 @@
 	
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
-	    var selected = store.state.get('selectedMedia');
+	    var selected = store.getSelectedMedia();
 	
 	    return {
 	      media: selected
@@ -3192,11 +3257,16 @@
 	 */
 	var React = __webpack_require__(/*! react/addons */ 6);
 	var PureRenderMixin = __webpack_require__(/*! react */ 14).addons.PureRenderMixin;
+	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 13);
 	
 	var CropSelection = __webpack_require__(/*! ./crop-selection */ 255);
 	
 	var Cropper = React.createClass({displayName: 'Cropper',
-	  mixins: [PureRenderMixin],
+	  mixins: [PureRenderMixin, FluxMixin],
+	
+	  moveSelection: function(dX, dY) {
+	    this.getFlux().actions.crop.move(this.props.crop, dX, dY);
+	  },
 	  
 	  render: function() {
 	    var media = this.props.media;
@@ -3288,7 +3358,7 @@
 	        React.DOM.div({className: "mediacat-cropper-mask", style: topMaskStyle}), 
 	        React.DOM.div({className: "mediacat-cropper-mask", style: rightMaskStyle}), 
 	        React.DOM.div({className: "mediacat-cropper-mask", style: bottomMaskStyle}), 
-	        CropSelection({top: cropTop, left: cropLeft, width: cropWidth, height: cropHeight})
+	        CropSelection({onMove: this.moveSelection, scale: scale, top: cropTop, left: cropLeft, width: cropWidth, height: cropHeight})
 	      )
 	    );
 	  }
@@ -3327,8 +3397,10 @@
 	  },
 	
 	  getStateFromFlux: function() {
+	    console.log(this.props.crop, this.getFlux().store('Media').getSelectedCrop());
+	
 	    return {
-	      selected: this.props.crop === this.getFlux().store('Media').state.get('selectedCrop')
+	      selected: this.props.crop === this.getFlux().store('Media').getSelectedCrop()
 	    };
 	  },
 	
@@ -3382,7 +3454,7 @@
 	
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
-	    var selected = store.state.get('selectedMedia');
+	    var selected = store.getSelectedMedia();
 	
 	    return {
 	      media: selected,
@@ -30152,6 +30224,86 @@
 	var CropSelection = React.createClass({displayName: 'CropSelection',
 	  mixins: [PureRenderMixin],
 	
+	  getInitialState: function() {
+	    return {
+	      dragging: false,
+	      draggingPaused: false,
+	      prevX: null,
+	      prevY: null
+	    };
+	  },
+	
+	  handleMouseLeave: function(event) {
+	    event.preventDefault();
+	
+	    if (this.state.dragging) {
+	      this.setState({
+	        draggingPaused: true,
+	      });
+	    }
+	  },
+	
+	  handleMouseEnter: function(event) {
+	    event.preventDefault();
+	
+	    if (this.state.dragging && this.state.draggingPaused) {
+	      if (event.button === 0) {
+	        this.setState({
+	          draggingPaused: false,
+	          prevX: event.clientX,
+	          prevY: event.clientY        
+	        });
+	      } else {
+	        this.setState({
+	          dragging: false,
+	          draggingPaused: false,
+	          prevX: null,
+	          prevY: null      
+	        });
+	      }
+	    }
+	  },
+	
+	  handleMouseDown: function(event) {
+	    event.preventDefault();
+	
+	    if (event.button === 0) {
+	      this.setState({
+	        dragging: true,
+	        prevX: event.clientX,
+	        prevY: event.clientY
+	      });
+	    }
+	  },
+	
+	  handleMouseMove: function(event) {
+	    var dX;
+	    var dY;
+	
+	    event.preventDefault();
+	
+	    if (this.state.dragging) {
+	      dX = event.clientX - this.state.prevX;
+	      dY = event.clientY - this.state.prevY;
+	      this.props.onMove(dX / this.props.scale, dY / this.props.scale);
+	      
+	      this.setState({
+	        prevX: event.clientX,
+	        prevY: event.clientY
+	      });
+	    }
+	  },  
+	
+	  handleMouseUp: function(event) {
+	    event.preventDefault();
+	
+	    this.setState({
+	      dragging: false,
+	      prevX: null,
+	      prevY: null
+	    });
+	  },
+	
 	  render: function() {
 	    var style = {
 	      top: this.props.top + 'px',
@@ -30161,7 +30313,15 @@
 	    };
 	
 	    return (
-	      React.DOM.div({className: "mediacat-cropper-selection", style: style}, 
+	      React.DOM.div({
+	        className: "mediacat-cropper-selection", 
+	        style: style, 
+	        onMouseLeave: this.handleMouseLeave, 
+	        onMouseEnter: this.handleMouseEnter, 
+	        onMouseDown: this.handleMouseDown, 
+	        onMouseMove: this.handleMouseMove, 
+	        onMouseUp: this.handleMouseUp
+	      }, 
 	        React.DOM.div({className: "mediacat-cropper-selection-top"}, 
 	          React.DOM.div({className: "mediacat-cropper-selection-handle"})
 	        ), 

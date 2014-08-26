@@ -19,7 +19,6 @@
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}
  		},
  		categories: {
-            selectedCategory: null,
  			selectedPath: {{ path|jsonify }},
  			categories: {{ category_data|jsonify }}
  		}

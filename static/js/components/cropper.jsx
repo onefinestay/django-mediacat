@@ -3,11 +3,16 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
+var FluxMixin = require('./flux-mixin');
 
 var CropSelection = require('./crop-selection');
 
 var Cropper = React.createClass({
-  mixins: [PureRenderMixin],
+  mixins: [PureRenderMixin, FluxMixin],
+
+  moveSelection: function(dX, dY) {
+    this.getFlux().actions.crop.move(this.props.crop, dX, dY);
+  },
   
   render: function() {
     var media = this.props.media;
@@ -99,7 +104,7 @@ var Cropper = React.createClass({
         <div className="mediacat-cropper-mask" style={topMaskStyle} />
         <div className="mediacat-cropper-mask" style={rightMaskStyle} />
         <div className="mediacat-cropper-mask" style={bottomMaskStyle} />
-        <CropSelection top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
+        <CropSelection onMove={this.moveSelection} scale={scale} top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
       </div>
     );
   }

@@ -14,7 +14,7 @@ var ImageDataPanel = React.createClass({
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
-    var selected = store.state.get('selectedMedia');
+    var selected = store.getSelectedMedia();
 
     return {
       media: selected

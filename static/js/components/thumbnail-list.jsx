@@ -22,7 +22,7 @@ var Thumbnail = React.createClass({
 
   getStateFromFlux: function() {
     return {
-      selected: this.props.thumbnail === this.getFlux().store('Media').state.get('selectedMedia')
+      selected: this.props.thumbnail === this.getFlux().store('Media').getSelectedMedia()
     };
   },
 

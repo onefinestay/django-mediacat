@@ -23,7 +23,7 @@ class ImageList(generics.ListCreateAPIView):
             queryset = queryset.filter(
                 associations__object_id=params['object_id'],
                 associations__content_type_id=params['content_type_id']
-            )
+            ).distinct()
         return queryset
 
 
