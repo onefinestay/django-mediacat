@@ -4,6 +4,7 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
+var CropSelection = require('./crop-selection');
 
 var Cropper = React.createClass({
   mixins: [PureRenderMixin],
@@ -92,20 +93,13 @@ var Cropper = React.createClass({
       right: (width - cropRight) + 'px'
     };
 
-    var selectionStyle = {
-      top: cropTop + 'px',
-      left: cropLeft + 'px',
-      width: cropWidth  + 'px',
-      height: cropHeight + 'px'
-    };
-
     return (
       <div className="mediacat-cropper" style={style}>
         <div className="mediacat-cropper-mask" style={leftMaskStyle} />
         <div className="mediacat-cropper-mask" style={topMaskStyle} />
         <div className="mediacat-cropper-mask" style={rightMaskStyle} />
         <div className="mediacat-cropper-mask" style={bottomMaskStyle} />
-        <div className="mediacat-cropper-selection" style={selectionStyle} />
+        <CropSelection top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
       </div>
     );
   }

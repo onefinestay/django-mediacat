@@ -22,7 +22,7 @@ var CategoryTreePlaceholderNode = React.createClass({
       <li className="mediacat-categories-node">
         <a style={style} className="mediacat-categories-label">
           <span className="no-children" />
-          Loading...
+          <span className="loading">Loading...</span>
         </a>
       </li>
     );

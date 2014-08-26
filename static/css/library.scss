@@ -184,7 +184,7 @@ body {
       font-size: 10px;
       line-height: 1.75;
       width: 15px;
-      opacity: 0.75;
+      opacity: .75;
     }
 
     .no-children {
@@ -193,14 +193,18 @@ body {
       width: 15px;      
     }    
 
+    .loading {
+      opacity: .35;
+    }
+
     .linear-loader {
       left: auto;
-      right: 5px;
+      right: 5px;     
     }
 
     .#{$ns}-categories-count {
       padding: 5px;
-      opacity: 0.35;
+      opacity: .35;
       font-size: 12px;
       line-height: 1.75;
       position: absolute;
@@ -338,6 +342,93 @@ body {
       position: absolute;
       border: 1px #fff dashed;
       cursor: move;
+
+      .mediacat-cropper-selection-top,
+      .mediacat-cropper-selection-top-left,
+      .mediacat-cropper-selection-left,
+      .mediacat-cropper-selection-bottom-left,
+      .mediacat-cropper-selection-bottom,
+      .mediacat-cropper-selection-bottom-right,
+      .mediacat-cropper-selection-right,
+      .mediacat-cropper-selection-top-right {
+        position: absolute;
+
+        .mediacat-cropper-selection-handle {
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          left: 50%;
+          top: 50%;
+          margin-top: -5px;
+          margin-left: -5px;
+          border: 1px solid #fff;
+          background-color: rgba(255, 255, 255, 0.35);
+        }
+      }
+
+      .mediacat-cropper-selection-top {
+        top: -5px;
+        left: 5px;
+        right: 5px;
+        height: 10px;
+        cursor: ns-resize;
+      }
+
+      .mediacat-cropper-selection-top-left {
+        top: -5px;
+        left: -5px;
+        width: 10px;
+        height: 10px;
+        cursor: nwse-resize;
+      }      
+
+      .mediacat-cropper-selection-left {
+        top: 5px;
+        left: -5px;
+        width: 10px;
+        bottom: 5px;
+        cursor: ew-resize;
+      }
+
+      .mediacat-cropper-selection-bottom-left {
+        bottom: -5px;
+        left: -5px;
+        width: 10px;
+        height: 10px;
+        cursor: nesw-resize;
+      }            
+
+      .mediacat-cropper-selection-bottom {
+        bottom: -5px;
+        left: 5px;
+        right: 5px;
+        height: 10px;
+        cursor: ns-resize;
+      }
+
+      .mediacat-cropper-selection-bottom-right {
+        bottom: -5px;
+        right: -5px;
+        width: 10px;
+        height: 10px;
+        cursor: nwse-resize;
+      }          
+
+      .mediacat-cropper-selection-right {
+        top: 5px;
+        right: -5px;
+        width: 10px;
+        bottom: 5px;
+        cursor: ew-resize;
+      }     
+
+      .mediacat-cropper-selection-top-right {
+        top: -5px;
+        right: -5px;
+        width: 10px;
+        height: 10px;
+        cursor: nesw-resize;
+      }      
     }
   }  
 
