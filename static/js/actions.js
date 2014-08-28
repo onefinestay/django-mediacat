@@ -67,6 +67,12 @@ var Actions = {
     loadChildren: function(category) {
       this.dispatch(Constants.CATEGORY_LOAD_CHILDREN, {category});
     }
+  },
+
+  uploads: {
+    add: function(file, categoryPath) {
+      this.dispatch(Constants.UPLOAD_ADD, {file, categoryPath});
+    }
   }
 };
 

@@ -179,7 +179,14 @@ body {
     box-sizing: border-box; }
   .mediacat-application .icon {
     font-size: 24px; }
-  .mediacat-application button {
+  .mediacat-application .hidden-file {
+    position: absolute;
+    width: 0;
+    height: 0;
+    visibility: hidden; }
+  .mediacat-application .button-wrapper {
+    display: inline-block; }
+  .mediacat-application button, .mediacat-application .button {
     display: inline-block;
     border: 0;
     border-radius: 5px;
@@ -188,16 +195,27 @@ body {
     font-weight: 300;
     letter-spacing: 0.0625em;
     height: 37px;
+    line-height: 27px;
     margin: 0;
     text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
     cursor: pointer; }
-    .mediacat-application button:hover {
+    .mediacat-application button .button-mask, .mediacat-application .button .button-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; }
+    .mediacat-application button:hover, .mediacat-application .button:hover {
       opacity: 0.8; }
-    .mediacat-application button:focus {
+    .mediacat-application button:focus, .mediacat-application .button:focus {
       outline: none; }
-    .mediacat-application button.icon {
+    .mediacat-application button.icon, .mediacat-application .button.icon {
       font-size: 24px;
-      padding: 5px 10px; }
+      padding: 5px 10px;
+      width: 50px; }
   .mediacat-application .toolbar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -218,13 +236,20 @@ body {
       -ms-flex-positive: 1;
       flex-grow: 1; }
     .mediacat-application .toolbar .separator {
-      width: 10px; }
-    .mediacat-application .toolbar .button-group button {
+      width: 10px;
+      -webkit-box-flex: 0;
+      -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0; }
+    .mediacat-application .toolbar .button-group button, .mediacat-application .toolbar .button-group .button {
       border-radius: 0; }
-      .mediacat-application .toolbar .button-group button:first-child {
+      .mediacat-application .toolbar .button-group button:first-child, .mediacat-application .toolbar .button-group .button:first-child {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px; }
-      .mediacat-application .toolbar .button-group button:last-child {
+      .mediacat-application .toolbar .button-group button:last-child, .mediacat-application .toolbar .button-group .button:last-child {
         margin-left: 1px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px; }
@@ -245,15 +270,15 @@ body {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
-    .mediacat-application .mediacat-header button {
+    .mediacat-application .mediacat-header button, .mediacat-application .mediacat-header .button {
       background-color: #fff;
       color: #3ea2c1;
       box-shadow: 0 1px 0 0 #007599; }
-      .mediacat-application .mediacat-header button.active {
+      .mediacat-application .mediacat-header button.active, .mediacat-application .mediacat-header .button.active {
         box-shadow: inset 0 1px 0 0 #004e66, inset 0 -1px 0 0 #33cfff;
         background-color: #007599;
         color: #65b6cd; }
-      .mediacat-application .mediacat-header button.icon {
+      .mediacat-application .mediacat-header button.icon, .mediacat-application .mediacat-header .button.icon {
         font-size: 24px; }
     .mediacat-application .mediacat-header input {
       display: block;
@@ -274,6 +299,41 @@ body {
         height: 37px;
         border: none;
         border-radius: 5px; }
+  .mediacat-application .mediacat-panel-header {
+    background-color: #414858;
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    padding: 10px; }
+    .mediacat-application .mediacat-panel-header button, .mediacat-application .mediacat-panel-header .button {
+      padding: 2px 3px 2px 0;
+      width: 19px;
+      height: 19px;
+      line-height: 16px; }
+      .mediacat-application .mediacat-panel-header button .icon, .mediacat-application .mediacat-panel-header .button .icon {
+        padding: 2px 3px 2px 0;
+        font-size: 12px; }
+  .mediacat-application .mediacat-panel-open .mediacat-panel-state .icon {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg); }
+    .mediacat-application .mediacat-panel-open .mediacat-panel-state .icon:hover {
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg); }
   .mediacat-application .mediacat-navigation {
     background-color: #2B303B;
     width: 320px;
@@ -295,6 +355,29 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column; }
+  .mediacat-application .mediacat-uploads {
+    border-top: 1px #1a0000 solid;
+    list-style-type: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0; }
+  .mediacat-application .mediacat-upload-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    max-height: 200px; }
+  .mediacat-application .mediacat-upload {
+    padding: 10px; }
   .mediacat-application .mediacat-categories {
     margin: 0;
     padding: 0;

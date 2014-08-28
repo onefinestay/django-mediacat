@@ -38,8 +38,18 @@ body {
     font-size: 24px;
   }
 
+  .hidden-file {
+    position: absolute;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
 
-  button {
+  .button-wrapper {
+    display: inline-block;
+  }
+
+  button, .button {
     display: inline-block;
     border: 0;
     border-radius: 5px;
@@ -48,9 +58,21 @@ body {
     font-weight: 300;
     letter-spacing: 0.0625em;
     height: 37px;
+    line-height: 27px;
     margin: 0;
     text-align: center;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    .button-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
 
     &:hover {
       opacity: 0.8;
@@ -63,6 +85,7 @@ body {
     &.icon {
       font-size: 24px;
       padding: 5px 10px;
+      width: 50px;
     }
   }  
 
@@ -77,10 +100,12 @@ body {
 
     .separator {
       width: 10px;
+      flex-grow: 0;
+      flex-shrink: 0;
     }
 
     .button-group {
-      button {
+      button, .button {
         border-radius: 0;
 
         &:first-child {
@@ -108,7 +133,7 @@ body {
     flex-shrink: 0;
     display: flex;
 
-    button {
+    button, .button {
       background-color: #fff;      
       color: desaturate($base-color, 49);
       box-shadow: 0 1px 0 0 darken(#00c0ff, 20);
@@ -145,6 +170,37 @@ body {
     }
   }
 
+  .#{$ns}-panel-header {
+    background-color: #414858;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+
+    button, .button {
+      padding: 2px 3px 2px 0;
+      width: 19px;
+      height: 19px;
+      line-height: 16px;    
+
+      .icon {
+        padding: 2px 3px 2px 0;
+        font-size: 12px;
+      }
+    }
+  }    
+
+  .#{$ns}-panel-open {
+    .#{$ns}-panel-state .icon {
+      transform: rotate(90deg);
+
+      &:hover {
+        transform: rotate(45deg);
+      }
+    }
+  }  
+
   .#{$ns}-navigation {
     background-color: $sidebar-bg;
     width: $sidebar-width;
@@ -155,6 +211,26 @@ body {
     display: flex;
     flex-direction: column;
   }
+
+  .#{$ns}-uploads {
+    border-top: 1px $seperator-color solid;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .#{$ns}-upload-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    max-height: 200px;
+  }
+
+  .#{$ns}-upload {
+    padding: 10px;
+  }  
 
   .#{$ns}-categories {
     margin: 0;
