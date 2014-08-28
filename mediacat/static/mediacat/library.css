@@ -502,7 +502,27 @@ body {
         left: 5px;
         right: 5px;
         bottom: 5px;
-        cursor: move; }
+        cursor: move;
+        z-index: 1; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.35); }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2 {
+        width: 1px;
+        top: 0;
+        bottom: 0; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
+        height: 1px;
+        left: 0;
+        right: 0; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1 {
+        left: 33.3333333333%; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2 {
+        right: 33.3333333333%; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1 {
+        top: 33.3333333333%; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
+        bottom: 33.3333333333%; }
       .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right {
         position: absolute; }
         .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right .mediacat-cropper-selection-handle {

@@ -64,6 +64,7 @@ class CategorySerializer(serializers.Serializer):
     children = serializers.SerializerMethodField('get_sub_categories')
     accepts_images = serializers.BooleanField()
     has_children = serializers.BooleanField()
+    expanded = serializers.BooleanField()
 
     class Meta:
         fields = (
@@ -75,6 +76,7 @@ class CategorySerializer(serializers.Serializer):
             'accepts_images',
             'has_children',
             'children',
+            'expanded',
         )
 
     def get_sub_categories(self, obj):

@@ -350,26 +350,65 @@ body {
       position: absolute;
       border: 1px #fff dashed;
 
-      .mediacat-cropper-selection-mover {
+      .#{$ns}-cropper-selection-mover {
         position: absolute;
         top: 5px;
         left: 5px;
         right: 5px;
         bottom: 5px;
         cursor: move;
+        z-index: 1;
       }
 
-      .mediacat-cropper-selection-top,
-      .mediacat-cropper-selection-top-left,
-      .mediacat-cropper-selection-left,
-      .mediacat-cropper-selection-bottom-left,
-      .mediacat-cropper-selection-bottom,
-      .mediacat-cropper-selection-bottom-right,
-      .mediacat-cropper-selection-right,
-      .mediacat-cropper-selection-top-right {
+      .#{$ns}-cropper-selection-guide-x1,
+      .#{$ns}-cropper-selection-guide-x2,
+      .#{$ns}-cropper-selection-guide-y1,
+      .#{$ns}-cropper-selection-guide-y2 {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.35);
+      }
+
+      .#{$ns}-cropper-selection-guide-x1,
+      .#{$ns}-cropper-selection-guide-x2 {
+        width: 1px;
+        top: 0;
+        bottom: 0;
+      }
+
+      .#{$ns}-cropper-selection-guide-y1,
+      .#{$ns}-cropper-selection-guide-y2 {
+        height: 1px;
+        left: 0;
+        right: 0;
+      }      
+
+      .#{$ns}-cropper-selection-guide-x1 {
+        left: (100% / 3);
+      }
+
+      .#{$ns}-cropper-selection-guide-x2 {
+        right: (100% / 3);
+      }
+
+      .#{$ns}-cropper-selection-guide-y1 {
+        top: (100% / 3);
+      }
+
+      .#{$ns}-cropper-selection-guide-y2 {
+        bottom: (100% / 3);
+      }         
+
+      .#{$ns}-cropper-selection-top,
+      .#{$ns}-cropper-selection-top-left,
+      .#{$ns}-cropper-selection-left,
+      .#{$ns}-cropper-selection-bottom-left,
+      .#{$ns}-cropper-selection-bottom,
+      .#{$ns}-cropper-selection-bottom-right,
+      .#{$ns}-cropper-selection-right,
+      .#{$ns}-cropper-selection-top-right {
         position: absolute;
 
-        .mediacat-cropper-selection-handle {
+        .#{$ns}-cropper-selection-handle {
           position: absolute;
           width: 9px;
           height: 9px;
@@ -381,7 +420,7 @@ body {
         }
       }
 
-      .mediacat-cropper-selection-top {
+      .#{$ns}-cropper-selection-top {
         top: -5px;
         left: 5px;
         right: 5px;
@@ -389,7 +428,7 @@ body {
         cursor: ns-resize;
       }
 
-      .mediacat-cropper-selection-top-left {
+      .#{$ns}-cropper-selection-top-left {
         top: -5px;
         left: -5px;
         width: 9px;
@@ -397,7 +436,7 @@ body {
         cursor: nwse-resize;
       }      
 
-      .mediacat-cropper-selection-left {
+      .#{$ns}-cropper-selection-left {
         top: 5px;
         left: -5px;
         width: 9px;
@@ -405,7 +444,7 @@ body {
         cursor: ew-resize;
       }
 
-      .mediacat-cropper-selection-bottom-left {
+      .#{$ns}-cropper-selection-bottom-left {
         bottom: -5px;
         left: -5px;
         width: 9px;
@@ -413,7 +452,7 @@ body {
         cursor: nesw-resize;
       }            
 
-      .mediacat-cropper-selection-bottom {
+      .#{$ns}-cropper-selection-bottom {
         bottom: -5px;
         left: 5px;
         right: 5px;
@@ -421,7 +460,7 @@ body {
         cursor: ns-resize;
       }
 
-      .mediacat-cropper-selection-bottom-right {
+      .#{$ns}-cropper-selection-bottom-right {
         bottom: -5px;
         right: -5px;
         width: 9px;
@@ -429,7 +468,7 @@ body {
         cursor: nwse-resize;
       }          
 
-      .mediacat-cropper-selection-right {
+      .#{$ns}-cropper-selection-right {
         top: 5px;
         right: -5px;
         width: 9px;
@@ -437,7 +476,7 @@ body {
         cursor: ew-resize;
       }     
 
-      .mediacat-cropper-selection-top-right {
+      .#{$ns}-cropper-selection-top-right {
         top: -5px;
         right: -5px;
         width: 9px;

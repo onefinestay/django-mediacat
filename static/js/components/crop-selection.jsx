@@ -9,59 +9,8 @@ var cx = React.addons.classSet;
 var CropSelectionHandle = React.createClass({
   mixins: [PureRenderMixin],
 
-  getInitialState: function() {
-    return {
-      dragging: false,
-      draggingPaused: false,
-      prevX: null,
-      prevY: null
-    };
-  },
-
-  handleMouseDown: function(event) {
-    console.log('Mouse Down');  
-    document.body.addEventListener('mousemove', this.handleMouseMove);
-    document.body.addEventListener('mouseup', this.handleMouseUp);
-
-    this.setState({
-      dragging: true,
-      prevX: event.clientX,
-      prevY: event.clientY
-    });
-  },
-
-  handleMouseMove: function(event) {
-    console.log('Mouse Move');
-    var dX;
-    var dY;
-
-    event.preventDefault();
-    
-    if (this.state.dragging) {
-      dX = event.clientX - this.state.prevX;
-      dY = event.clientY - this.state.prevY;
-
-      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.props.position);
-            
-      this.setState({
-        prevX: event.clientX,
-        prevY: event.clientY
-      });
-    }
-  },  
-
-  handleMouseUp: function(event) {
-    console.log('Mouse Up');
-    event.preventDefault();
-
-    document.body.removeEventListener('mousemove', this.handleMouseMove);
-    document.body.removeEventListener('mouseup', this.handleMouseUp);    
-
-    this.setState({
-      dragging: false,
-      prevX: null,
-      prevY: null
-    });
+  onMouseDown: function(event) {
+    return this.props.onMouseDown(event, this.props.position);
   },
 
   render: function() {
@@ -71,7 +20,7 @@ var CropSelectionHandle = React.createClass({
     return (
       <div 
         className={cx(classes)}
-        onMouseDown={this.handleMouseDown}>
+        onMouseDown={this.onMouseDown}>
         <div className="mediacat-cropper-selection-handle" />
       </div>
     );
@@ -85,49 +34,36 @@ var CropSelection = React.createClass({
   getInitialState: function() {
     return {
       dragging: false,
-      draggingPaused: false,
+      dragOrigin: null,
       prevX: null,
       prevY: null
     };
   },
 
-  handleMouseLeave: function(event) {
+  onMouseDown: function(event) {
     event.preventDefault();
 
-    if (this.state.dragging) {
+    if (event.button === 0) {
+      document.body.addEventListener('mousemove', this.handleMouseMove);
+      document.body.addEventListener('mouseup', this.handleMouseUp);          
       this.setState({
-        draggingPaused: true,
+        dragging: true,
+        dragOrigin: 'center',
+        prevX: event.clientX,
+        prevY: event.clientY
       });
     }
   },
 
-  handleMouseEnter: function(event) {
-    event.preventDefault();
-
-    if (this.state.dragging && this.state.draggingPaused) {
-      if (event.button === 0) {
-        this.setState({
-          draggingPaused: false,
-          prevX: event.clientX,
-          prevY: event.clientY        
-        });
-      } else {
-        this.setState({
-          dragging: false,
-          draggingPaused: false,
-          prevX: null,
-          prevY: null      
-        });
-      }
-    }
-  },
-
-  handleMouseDown: function(event) {
+  onHandleMouseDown: function(event, origin) {
     event.preventDefault();
 
     if (event.button === 0) {
+      document.body.addEventListener('mousemove', this.handleMouseMove);
+      document.body.addEventListener('mouseup', this.handleMouseUp);    
       this.setState({
         dragging: true,
+        dragOrigin: origin,
         prevX: event.clientX,
         prevY: event.clientY
       });
@@ -139,12 +75,13 @@ var CropSelection = React.createClass({
     var dY;
 
     event.preventDefault();
-
+    
     if (this.state.dragging) {
       dX = event.clientX - this.state.prevX;
       dY = event.clientY - this.state.prevY;
-      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale));
-      
+
+      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin);
+            
       this.setState({
         prevX: event.clientX,
         prevY: event.clientY
@@ -155,8 +92,12 @@ var CropSelection = React.createClass({
   handleMouseUp: function(event) {
     event.preventDefault();
 
+    document.body.removeEventListener('mousemove', this.handleMouseMove);
+    document.body.removeEventListener('mouseup', this.handleMouseUp);    
+
     this.setState({
       dragging: false,
+      dragOrigin: null,
       prevX: null,
       prevY: null
     });
@@ -176,19 +117,20 @@ var CropSelection = React.createClass({
         style={style} >
         <div 
           className="mediacat-cropper-selection-mover" 
-          onMouseLeave={this.handleMouseLeave}
-          onMouseEnter={this.handleMouseEnter}
-          onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          onMouseUp={this.handleMouseUp} /> 
-        <CropSelectionHandle position="top" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="top-left" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="left" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="bottom-left" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="bottom" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="bottom-right" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="right" onMove={this.props.onResize} scale={this.props.scale} />
-        <CropSelectionHandle position="top-right" onMove={this.props.onResize} scale={this.props.scale} />     
+          onMouseDown={this.onMouseDown}
+          />
+          <div className="mediacat-cropper-selection-guide-x1" />
+          <div className="mediacat-cropper-selection-guide-x2" />
+          <div className="mediacat-cropper-selection-guide-y1" />
+          <div className="mediacat-cropper-selection-guide-y2" />          
+        <CropSelectionHandle position="top" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="top-left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom-left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom-right" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="right" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="top-right" onMouseDown={this.onHandleMouseDown} />     
       </div>
     );
   }
