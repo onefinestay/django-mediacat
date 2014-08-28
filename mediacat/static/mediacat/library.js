@@ -405,10 +405,21 @@
 	
 	var translateCoordinates = function(values, dX, dY) {
 	  var m = matrixFromValues(values);
-	  var translateMatrix = getTranslateMatrix(x, y);  
+	  var translateMatrix = getTranslateMatrix(dX, dY);  
 	  m = matrix.multiply(translateMatrix, m);
 	  return valuesFromMatrix(m);
 	};
+	
+	var getCropOverflow = function(media, anchorX, anchorY, values) {
+	  // Sometimes we scale too far, so work out the scale necessary to fix it.
+	  var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
+	  var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
+	  var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
+	  var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
+	
+	  return {x1:x1, y1:y1, x2:x2, y2:y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
+	};
+	
 	
 	var MediaStore = Fluxxor.createStore({
 	  actions: {
@@ -492,18 +503,6 @@
 	    this.emit('change');    
 	  },
 	
-	  getCropOverflow: function(media, anchorX, anchorY, values) {
-	    // Sometimes we scale too far, so work out the scale necessary to fix it.
-	    var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
-	    var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
-	    var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
-	    var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
-	
-	    var params = [x1, y1, x2, y2];
-	
-	    return {x1:x1, y1:y1, x2:x2, y2:y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
-	  },
-	
 	  onCropResize: function(payload) {
 	    var crop = payload.crop;
 	    var media = this.getSelectedMedia();
@@ -547,7 +546,7 @@
 	
 	    x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
 	    y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
-	    var overflow = this.getCropOverflow(media, x, y, transformedData);
+	    var overflow = getCropOverflow(media, x, y, transformedData);
 	
 	    if (overflow.reverseScale !== 1) {
 	      transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
@@ -561,7 +560,27 @@
 	    var media = this.getSelectedMedia();
 	    var cropIndex = media.get('crops').indexOf(crop);
 	    var mediaIndex = this.state.get('media').indexOf(media);
-	    var transformedData = translateCoordinates(crop.toJS(), scale, payload.dX, payload.dY);
+	    var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
+	
+	    var dX = 0;
+	    var dY = 0;
+	
+	    if (transformedData.x1 < 0) {
+	      dX = -transformedData.x1;
+	    } else if (transformedData.x2 > media.get('width')) {
+	      dX = media.get('width') - transformedData.x2;
+	    }
+	
+	    if (transformedData.y1 < 0) {
+	      dY = -transformedData.y1;
+	    } else if (transformedData.y2 > media.get('height')) {
+	      dY = media.get('height') - transformedData.y2;
+	    }
+	
+	    if (dX || dY) {
+	      transformedData = translateCoordinates(transformedData, dX, dY);
+	    }
+	
 	    this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
 	  },
 	
@@ -11965,76 +11984,76 @@
 	    };
 	  },
 	
-	  // handleMouseLeave: function(event) {
-	  //   event.preventDefault();
+	  handleMouseLeave: function(event) {
+	    event.preventDefault();
 	
-	  //   if (this.state.dragging) {
-	  //     this.setState({
-	  //       draggingPaused: true,
-	  //     });
-	  //   }
-	  // },
+	    if (this.state.dragging) {
+	      this.setState({
+	        draggingPaused: true,
+	      });
+	    }
+	  },
 	
-	  // handleMouseEnter: function(event) {
-	  //   event.preventDefault();
+	  handleMouseEnter: function(event) {
+	    event.preventDefault();
 	
-	  //   if (this.state.dragging && this.state.draggingPaused) {
-	  //     if (event.button === 0) {
-	  //       this.setState({
-	  //         draggingPaused: false,
-	  //         prevX: event.clientX,
-	  //         prevY: event.clientY        
-	  //       });
-	  //     } else {
-	  //       this.setState({
-	  //         dragging: false,
-	  //         draggingPaused: false,
-	  //         prevX: null,
-	  //         prevY: null      
-	  //       });
-	  //     }
-	  //   }
-	  // },
+	    if (this.state.dragging && this.state.draggingPaused) {
+	      if (event.button === 0) {
+	        this.setState({
+	          draggingPaused: false,
+	          prevX: event.clientX,
+	          prevY: event.clientY        
+	        });
+	      } else {
+	        this.setState({
+	          dragging: false,
+	          draggingPaused: false,
+	          prevX: null,
+	          prevY: null      
+	        });
+	      }
+	    }
+	  },
 	
-	  // handleMouseDown: function(event) {
-	  //   event.preventDefault();
+	  handleMouseDown: function(event) {
+	    event.preventDefault();
 	
-	  //   if (event.button === 0) {
-	  //     this.setState({
-	  //       dragging: true,
-	  //       prevX: event.clientX,
-	  //       prevY: event.clientY
-	  //     });
-	  //   }
-	  // },
+	    if (event.button === 0) {
+	      this.setState({
+	        dragging: true,
+	        prevX: event.clientX,
+	        prevY: event.clientY
+	      });
+	    }
+	  },
 	
-	  // handleMouseMove: function(event) {
-	  //   var dX;
-	  //   var dY;
+	  handleMouseMove: function(event) {
+	    var dX;
+	    var dY;
 	
-	  //   event.preventDefault();
+	    event.preventDefault();
 	
-	  //   if (this.state.dragging) {
-	  //     dX = event.clientX - this.state.prevX;
-	  //     dY = event.clientY - this.state.prevY;
-	  //     this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale));
+	    if (this.state.dragging) {
+	      dX = event.clientX - this.state.prevX;
+	      dY = event.clientY - this.state.prevY;
+	      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale));
 	      
-	  //     this.setState({
-	  //       prevX: event.clientX,
-	  //       prevY: event.clientY
-	  //     });
-	  //   }
-	  // },  
+	      this.setState({
+	        prevX: event.clientX,
+	        prevY: event.clientY
+	      });
+	    }
+	  },  
 	
-	  // handleMouseUp: function(event) {
-	  //   event.preventDefault();
+	  handleMouseUp: function(event) {
+	    event.preventDefault();
 	
-	  //   this.setState({
-	  //     dragging: false,
-	  //     prevX: null,
-	  //     prevY: null
-	  //   });
-	  // },
+	    this.setState({
+	      dragging: false,
+	      prevX: null,
+	      prevY: null
+	    });
+	  },
 	
 	  render: function() {
 	    var style = {
@@ -12047,12 +12066,14 @@
 	    return (
 	      React.DOM.div({
 	        className: "mediacat-cropper-selection", 
-	        onMouseLeave: this.handleMouseLeave, 
-	        onMouseEnter: this.handleMouseEnter, 
-	        onMouseDown: this.handleMouseDown, 
-	        onMouseMove: this.handleMouseMove, 
-	        onMouseUp: this.handleMouseUp, 
 	        style: style}, 
+	        React.DOM.div({
+	          className: "mediacat-cropper-selection-mover", 
+	          onMouseLeave: this.handleMouseLeave, 
+	          onMouseEnter: this.handleMouseEnter, 
+	          onMouseDown: this.handleMouseDown, 
+	          onMouseMove: this.handleMouseMove, 
+	          onMouseUp: this.handleMouseUp}), 
 	        CropSelectionHandle({position: "top", onMove: this.props.onResize, scale: this.props.scale}), 
 	        CropSelectionHandle({position: "top-left", onMove: this.props.onResize, scale: this.props.scale}), 
 	        CropSelectionHandle({position: "left", onMove: this.props.onResize, scale: this.props.scale}), 

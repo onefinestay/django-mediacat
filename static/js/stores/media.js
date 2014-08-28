@@ -48,10 +48,21 @@ var scaleCoordinates = function(values, scale, x, y) {
 
 var translateCoordinates = function(values, dX, dY) {
   var m = matrixFromValues(values);
-  var translateMatrix = getTranslateMatrix(x, y);  
+  var translateMatrix = getTranslateMatrix(dX, dY);  
   m = matrix.multiply(translateMatrix, m);
   return valuesFromMatrix(m);
 };
+
+var getCropOverflow = function(media, anchorX, anchorY, values) {
+  // Sometimes we scale too far, so work out the scale necessary to fix it.
+  var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
+  var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
+  var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
+  var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
+
+  return {x1, y1, x2, y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
+};
+
 
 var MediaStore = Fluxxor.createStore({
   actions: {
@@ -135,18 +146,6 @@ var MediaStore = Fluxxor.createStore({
     this.emit('change');    
   },
 
-  getCropOverflow: function(media, anchorX, anchorY, values) {
-    // Sometimes we scale too far, so work out the scale necessary to fix it.
-    var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
-    var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
-    var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
-    var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
-
-    var params = [x1, y1, x2, y2];
-
-    return {x1, y1, x2, y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
-  },
-
   onCropResize: function(payload) {
     var crop = payload.crop;
     var media = this.getSelectedMedia();
@@ -190,7 +189,7 @@ var MediaStore = Fluxxor.createStore({
 
     x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
     y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
-    var overflow = this.getCropOverflow(media, x, y, transformedData);
+    var overflow = getCropOverflow(media, x, y, transformedData);
 
     if (overflow.reverseScale !== 1) {
       transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
@@ -204,7 +203,27 @@ var MediaStore = Fluxxor.createStore({
     var media = this.getSelectedMedia();
     var cropIndex = media.get('crops').indexOf(crop);
     var mediaIndex = this.state.get('media').indexOf(media);
-    var transformedData = translateCoordinates(crop.toJS(), scale, payload.dX, payload.dY);
+    var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
+
+    var dX = 0;
+    var dY = 0;
+
+    if (transformedData.x1 < 0) {
+      dX = -transformedData.x1;
+    } else if (transformedData.x2 > media.get('width')) {
+      dX = media.get('width') - transformedData.x2;
+    }
+
+    if (transformedData.y1 < 0) {
+      dY = -transformedData.y1;
+    } else if (transformedData.y2 > media.get('height')) {
+      dY = media.get('height') - transformedData.y2;
+    }
+
+    if (dX || dY) {
+      transformedData = translateCoordinates(transformedData, dX, dY);
+    }
+
     this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
   },
 

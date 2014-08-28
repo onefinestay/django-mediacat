@@ -349,7 +349,15 @@ body {
     .#{$ns}-cropper-selection {
       position: absolute;
       border: 1px #fff dashed;
-      cursor: move;
+
+      .mediacat-cropper-selection-mover {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        cursor: move;
+      }
 
       .mediacat-cropper-selection-top,
       .mediacat-cropper-selection-top-left,

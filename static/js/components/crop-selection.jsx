@@ -91,76 +91,76 @@ var CropSelection = React.createClass({
     };
   },
 
-  // handleMouseLeave: function(event) {
-  //   event.preventDefault();
+  handleMouseLeave: function(event) {
+    event.preventDefault();
 
-  //   if (this.state.dragging) {
-  //     this.setState({
-  //       draggingPaused: true,
-  //     });
-  //   }
-  // },
+    if (this.state.dragging) {
+      this.setState({
+        draggingPaused: true,
+      });
+    }
+  },
 
-  // handleMouseEnter: function(event) {
-  //   event.preventDefault();
+  handleMouseEnter: function(event) {
+    event.preventDefault();
 
-  //   if (this.state.dragging && this.state.draggingPaused) {
-  //     if (event.button === 0) {
-  //       this.setState({
-  //         draggingPaused: false,
-  //         prevX: event.clientX,
-  //         prevY: event.clientY        
-  //       });
-  //     } else {
-  //       this.setState({
-  //         dragging: false,
-  //         draggingPaused: false,
-  //         prevX: null,
-  //         prevY: null      
-  //       });
-  //     }
-  //   }
-  // },
+    if (this.state.dragging && this.state.draggingPaused) {
+      if (event.button === 0) {
+        this.setState({
+          draggingPaused: false,
+          prevX: event.clientX,
+          prevY: event.clientY        
+        });
+      } else {
+        this.setState({
+          dragging: false,
+          draggingPaused: false,
+          prevX: null,
+          prevY: null      
+        });
+      }
+    }
+  },
 
-  // handleMouseDown: function(event) {
-  //   event.preventDefault();
+  handleMouseDown: function(event) {
+    event.preventDefault();
 
-  //   if (event.button === 0) {
-  //     this.setState({
-  //       dragging: true,
-  //       prevX: event.clientX,
-  //       prevY: event.clientY
-  //     });
-  //   }
-  // },
+    if (event.button === 0) {
+      this.setState({
+        dragging: true,
+        prevX: event.clientX,
+        prevY: event.clientY
+      });
+    }
+  },
 
-  // handleMouseMove: function(event) {
-  //   var dX;
-  //   var dY;
+  handleMouseMove: function(event) {
+    var dX;
+    var dY;
 
-  //   event.preventDefault();
+    event.preventDefault();
 
-  //   if (this.state.dragging) {
-  //     dX = event.clientX - this.state.prevX;
-  //     dY = event.clientY - this.state.prevY;
-  //     this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale));
+    if (this.state.dragging) {
+      dX = event.clientX - this.state.prevX;
+      dY = event.clientY - this.state.prevY;
+      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale));
       
-  //     this.setState({
-  //       prevX: event.clientX,
-  //       prevY: event.clientY
-  //     });
-  //   }
-  // },  
+      this.setState({
+        prevX: event.clientX,
+        prevY: event.clientY
+      });
+    }
+  },  
 
-  // handleMouseUp: function(event) {
-  //   event.preventDefault();
+  handleMouseUp: function(event) {
+    event.preventDefault();
 
-  //   this.setState({
-  //     dragging: false,
-  //     prevX: null,
-  //     prevY: null
-  //   });
-  // },
+    this.setState({
+      dragging: false,
+      prevX: null,
+      prevY: null
+    });
+  },
 
   render: function() {
     var style = {
@@ -172,13 +172,15 @@ var CropSelection = React.createClass({
 
     return (
       <div 
-        className="mediacat-cropper-selection"
-        onMouseLeave={this.handleMouseLeave}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseDown={this.handleMouseDown}
-        onMouseMove={this.handleMouseMove}
-        onMouseUp={this.handleMouseUp}        
+        className="mediacat-cropper-selection"  
         style={style} >
+        <div 
+          className="mediacat-cropper-selection-mover" 
+          onMouseLeave={this.handleMouseLeave}
+          onMouseEnter={this.handleMouseEnter}
+          onMouseDown={this.handleMouseDown}
+          onMouseMove={this.handleMouseMove}
+          onMouseUp={this.handleMouseUp} /> 
         <CropSelectionHandle position="top" onMove={this.props.onResize} scale={this.props.scale} />
         <CropSelectionHandle position="top-left" onMove={this.props.onResize} scale={this.props.scale} />
         <CropSelectionHandle position="left" onMove={this.props.onResize} scale={this.props.scale} />

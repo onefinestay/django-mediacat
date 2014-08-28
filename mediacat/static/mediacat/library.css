@@ -495,8 +495,14 @@ body {
       position: absolute; }
     .mediacat-application .mediacat-cropper .mediacat-cropper-selection {
       position: absolute;
-      border: 1px #fff dashed;
-      cursor: move; }
+      border: 1px #fff dashed; }
+      .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-mover {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        cursor: move; }
       .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right {
         position: absolute; }
         .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right .mediacat-cropper-selection-handle, .mediacat-application .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right .mediacat-cropper-selection-handle {
