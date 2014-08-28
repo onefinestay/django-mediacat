@@ -135,7 +135,7 @@ var MediaStore = Fluxxor.createStore({
     this.emit('change');    
   },
 
-  getCropOverflow: function(crop, media, values) {
+  getCropOverflow: function(media, values) {
     var x1 = values.x1 < 0 ? -values.x1 / (media.get('width') - values.x1) : 0;
     var y1 = values.y1 < 0 ? -values.y1 / (media.get('height') - values.y1): 0;
     var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / values.x2 : 0;
@@ -186,7 +186,7 @@ var MediaStore = Fluxxor.createStore({
     var y = (cropData[anchor[1][0]] + cropData[anchor[1][1]]) / 2;  
     var transformedData = scaleCoordinates(cropData, scale, x, y);
 
-    var overflow = this.getCropOverflow(crop, media, transformedData);
+    var overflow = this.getCropOverflow(media, transformedData);
 
     console.log(overflow);
 
