@@ -1,10 +1,18 @@
-
+from django.conf import settings
 from rest_framework import serializers
 
 from . import models
 
 
+
 class ImageCropSerializer(serializers.ModelSerializer):
+    ratio = serializers.SerializerMethodField('get_ratio')
+
+    def get_ratio(self, obj):
+        try:
+            return float(obj.x2 - obj.x1) / (obj.y2 - obj.y1)
+        except ZeroDivisionError:
+            return 1.5
 
     class Meta:
         model = models.ImageCrop
@@ -16,6 +24,7 @@ class ImageCropSerializer(serializers.ModelSerializer):
             'width',
             'height',
             'key',
+            'ratio',
             'x1',
             'y1',
             'x2',

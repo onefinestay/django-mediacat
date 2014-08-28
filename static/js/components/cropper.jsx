@@ -13,6 +13,10 @@ var Cropper = React.createClass({
   moveSelection: function(dX, dY) {
     this.getFlux().actions.crop.move(this.props.crop, dX, dY);
   },
+
+  resize: function(dX, dY, position) {
+    this.getFlux().actions.crop.resize(this.props.crop, dX, dY, position);
+  }, 
   
   render: function() {
     var media = this.props.media;
@@ -104,7 +108,7 @@ var Cropper = React.createClass({
         <div className="mediacat-cropper-mask" style={topMaskStyle} />
         <div className="mediacat-cropper-mask" style={rightMaskStyle} />
         <div className="mediacat-cropper-mask" style={bottomMaskStyle} />
-        <CropSelection onMove={this.moveSelection} scale={scale} top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
+        <CropSelection onMove={this.moveSelection} onResize={this.resize} scale={scale} top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
       </div>
     );
   }

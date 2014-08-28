@@ -22,10 +22,11 @@ var Crop = React.createClass({
   },
 
   getStateFromFlux: function() {
-    console.log(this.props.crop, this.getFlux().store('Media').getSelectedCrop());
+    var store = this.getFlux().store('Media');
+    var selected = store.getSelectedCrop();
 
     return {
-      selected: this.props.crop === this.getFlux().store('Media').getSelectedCrop()
+      selected: selected && this.props.crop.get('id') === selected.get('id')
     };
   },
 
@@ -50,10 +51,10 @@ var Crop = React.createClass({
         height: frameHeight + 'px'
     };
 
-    var cropLeft = Math.round(scale * crop.get('x1'));
-    var cropTop = Math.round(scale * crop.get('y1'));
-    var cropWidth = Math.round(scale * (crop.get('x2') - crop.get('x1')));
-    var cropHeight = Math.round(scale * (crop.get('y2') - crop.get('y1')));
+    var cropLeft = Math.round(scale * this.props.x1);
+    var cropTop = Math.round(scale * this.props.y1);
+    var cropWidth = Math.round(scale * (this.props.x2 - this.props.x1));
+    var cropHeight = Math.round(scale * (this.props.y2 - this.props.y1));
 
     var previewStyles = {
       left: cropLeft + 'px',
@@ -95,7 +96,7 @@ var CropList = React.createClass({
       return <p>Select an image to view its crops</p>;
     }
 
-    crops = this.state.crops.map(crop => <Crop key={crop.get('id')} crop={crop} media={media} />);
+    crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
       <ul className="mediacat-crop-list">
