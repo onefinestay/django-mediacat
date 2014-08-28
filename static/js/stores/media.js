@@ -135,17 +135,19 @@ var MediaStore = Fluxxor.createStore({
     this.emit('change');    
   },
 
-  getCropOverflow: function(media, values) {
-    var x1 = values.x1 < 0 ? -values.x1 / (media.get('width') - values.x1) : 0;
-    var y1 = values.y1 < 0 ? -values.y1 / (media.get('height') - values.y1): 0;
-    var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / values.x2 : 0;
-    var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / values.y2 : 0
+  getCropOverflow: function(media, anchorX, anchorY, values) {
+    // Sometimes we scale too far, so work out the scale necessary to fix it.
+    var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
+    var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
+    var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
+    var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
 
-    return {x1, y1, x2, y2, reverseScale: 1 - Math.max(x1 + x2, y1 + y2)};
+    var params = [x1, y1, x2, y2];
+
+    return {x1, y1, x2, y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
   },
 
   onCropResize: function(payload) {
-    // For when we're moving one of the corner handles
     var crop = payload.crop;
     var media = this.getSelectedMedia();
     var cropIndex = media.get('crops').indexOf(crop);
@@ -186,13 +188,11 @@ var MediaStore = Fluxxor.createStore({
     var y = (cropData[anchor[1][0]] + cropData[anchor[1][1]]) / 2;  
     var transformedData = scaleCoordinates(cropData, scale, x, y);
 
-    var overflow = this.getCropOverflow(media, transformedData);
-
-    console.log(overflow);
+    x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
+    y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
+    var overflow = this.getCropOverflow(media, x, y, transformedData);
 
     if (overflow.reverseScale !== 1) {
-      x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
-      y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
       transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
     }
 
