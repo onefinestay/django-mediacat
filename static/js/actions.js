@@ -34,7 +34,11 @@ var Actions = {
 
     move: function(crop, dX, dY) {
       this.dispatch(Constants.CROP_MOVE, {crop, dX, dY});
-    }
+    },
+
+    resize: function(crop, dX, dY, position) {
+      this.dispatch(Constants.CROP_RESIZE, {crop, dX, dY, position});
+    },
   },
 
   categories: {

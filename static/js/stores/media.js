@@ -6,6 +6,71 @@ var request = require('superagent');
 
 var Constants = require('../constants');
 
+var matrix = require('matrix-utilities')
+
+var getScaleMatrix = function(scale) {
+  return [
+    [scale, 0, 0], 
+    [0, scale, 0], 
+    [0, 0, 1]];
+};
+
+var getTranslateMatrix = function(x, y) {
+  return [
+    [1, 0, x], 
+    [0, 1, y], 
+    [0, 0, 1]]
+  ;
+};
+
+var matrixFromValues = function(v) {
+  return [
+    [v.x1, v.x2],
+    [v.y1, v.y2],
+    [1, 1]
+  ];
+};
+
+var valuesFromMatrix = function(m) {
+  return {
+    x1: m[0][0],
+    x2: m[0][1],
+    y1: m[1][0],
+    y2: m[1][1]
+  };
+};
+
+var scaleCoordinates = function(values, scale, x, y) {
+  var m = matrixFromValues(values);
+  var preTranslateMatrix = getTranslateMatrix(-x, -y);
+  var scaleMatrix = getScaleMatrix(scale);
+  var postTranslateMatrix = getTranslateMatrix(x, y);  
+
+  m = matrix.multiply(preTranslateMatrix, m);
+  m = matrix.multiply(scaleMatrix, m);
+  m = matrix.multiply(postTranslateMatrix, m);
+
+  return valuesFromMatrix(m);
+};
+
+var translateCoordinates = function(values, dX, dY) {
+  var m = matrixFromValues(values);
+  var translateMatrix = getTranslateMatrix(dX, dY);  
+  m = matrix.multiply(translateMatrix, m);
+  return valuesFromMatrix(m);
+};
+
+var getCropOverflow = function(media, anchorX, anchorY, values) {
+  // Sometimes we scale too far, so work out the scale necessary to fix it.
+  var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
+  var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
+  var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
+  var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
+
+  return {x1, y1, x2, y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
+};
+
+
 var MediaStore = Fluxxor.createStore({
   actions: {
     CATEGORY_SELECTED: 'onCategorySelect',
@@ -13,6 +78,7 @@ var MediaStore = Fluxxor.createStore({
     CROP_SELECTED: 'onCropSelect',
     CROP_DESELECTED: 'onCropDeselect',
     CROP_MOVE: 'onCropMove',
+    CROP_RESIZE: 'onCropResize',
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess'
   },
 
@@ -87,41 +153,102 @@ var MediaStore = Fluxxor.createStore({
     this.emit('change');    
   },
 
-  onCropMove: function(payload) {
-    var crop = this.getSelectedCrop();
+  onCropResize: function(payload) {
+    var crop = payload.crop;
     var media = this.getSelectedMedia();
     var cropIndex = media.get('crops').indexOf(crop);
     var mediaIndex = this.state.get('media').indexOf(media);
 
-    var x1 = crop.get('x1');
-    var x2 = crop.get('x2');
-    var y1 = crop.get('y1');
-    var y2 = crop.get('y2');
+    var cropData = crop.toJS();
+
+    var width = media.get('width');
+    var height = media.get('height');
+
+    var cropWidth = cropData.x2 - cropData.x1;
+    var cropHeight = cropData.y2 - cropData.y1;
 
     var dX = payload.dX;
     var dY = payload.dY;
 
-    if (x1 + dX < 0) {
-      dX = -x1;
-    } else if (x2 + dX > media.get('width')) {
-      dX = media.get('width') - x2;
+    var scale;
+
+    // What point do we anchor around, and how should we multiply the X and Y deltas;
+    var anchor = {
+      'center': [['x1', 'x2'], ['y1', 'y2'], 1, 1],
+      'left': [['x2', 'x2'], ['y1', 'y2'], -1, 0],
+      'right': [['x1', 'x1'], ['y1', 'y2'], 1, 0],
+      'bottom': [['x1', 'x2'], ['y1', 'y1'], 0, 1],
+      'top': [['x1', 'x2'], ['y2', 'y2'], 0, -1],      
+      'top-left': [['x2', 'x2'], ['y2', 'y2'], -1, -1],
+      'top-right': [['x1', 'x1'], ['y2', 'y2'], 1, -1],
+      'bottom-left': [['x2', 'x2'], ['y1', 'y1'], -1, 1],
+      'bottom-right': [['x1', 'x1'], ['y1', 'y1'], 1, 1]
+    }[payload.position];        
+
+    if (Math.abs(dX) >= Math.abs(dY)) {
+      scale = (cropWidth + (anchor[2] * dX)) / cropWidth;
+    } else {
+      scale = (cropHeight + (anchor[3] * dY)) / cropHeight;
     }
 
-    if (y1 + dY < 0) {
-      dY = -y1;
-    } else if (y2 + dY > media.get('height')) {
-      dY = media.get('height') - y2;
-    }    
+    var x = (cropData[anchor[0][0]] + cropData[anchor[0][1]]) / 2;
+    var y = (cropData[anchor[1][0]] + cropData[anchor[1][1]]) / 2;  
+    var transformedData = scaleCoordinates(cropData, scale, x, y);
 
-    this.state = this.state.updateIn(['media', mediaIndex, 'crops', cropIndex], function(c) {
-      return c.withMutations(function(c) {
-        c.
-          set('x1', x1 + dX).
-          set('x2', x2 + dX).
-          set('y1', y1 + dY).
-          set('y2', y2 + dY);
-      });
-    })
+    x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
+    y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
+    var overflow = getCropOverflow(media, x, y, transformedData);
+
+    if (overflow.reverseScale !== 1) {
+      transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
+    }
+
+    this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
+  },
+
+  onCropMove: function(payload) {
+    var crop = payload.crop;
+    var media = this.getSelectedMedia();
+    var cropIndex = media.get('crops').indexOf(crop);
+    var mediaIndex = this.state.get('media').indexOf(media);
+    var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
+
+    var dX = 0;
+    var dY = 0;
+
+    if (transformedData.x1 < 0) {
+      dX = -transformedData.x1;
+    } else if (transformedData.x2 > media.get('width')) {
+      dX = media.get('width') - transformedData.x2;
+    }
+
+    if (transformedData.y1 < 0) {
+      dY = -transformedData.y1;
+    } else if (transformedData.y2 > media.get('height')) {
+      dY = media.get('height') - transformedData.y2;
+    }
+
+    if (dX || dY) {
+      transformedData = translateCoordinates(transformedData, dX, dY);
+    }
+
+    this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
+  },
+
+  updateCrop: function(path, crop, media, data) {
+    var values = {
+      x1: Math.round(data.x1),
+      x2: Math.round(data.x2),
+      y1: Math.round(data.y1),
+      y2: Math.round(data.y2)
+    };
+
+    this.state = this.state.updateIn(path, function(crop) {
+      for (var k in values) {
+        crop = crop.set(k, Math.round(values[k]));
+      }
+      return crop;
+    }); 
     this.emit('change');
   },
 

@@ -10,10 +10,14 @@ var CropSelection = require('./crop-selection');
 var Cropper = React.createClass({
   mixins: [PureRenderMixin, FluxMixin],
 
-  moveSelection: function(dX, dY) {
-    this.getFlux().actions.crop.move(this.props.crop, dX, dY);
+  moveSelection: function(dX, dY, origin, modifier) {
+    if (!modifier && origin === 'center') {
+      this.getFlux().actions.crop.move(this.props.crop, dX, dY);  
+    } else {
+      this.getFlux().actions.crop.resize(this.props.crop, dX, dY, origin);  
+    }   
   },
-  
+ 
   render: function() {
     var media = this.props.media;
     var crop = this.props.crop;

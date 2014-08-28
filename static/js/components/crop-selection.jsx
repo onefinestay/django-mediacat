@@ -6,55 +6,64 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 
 
+var CropSelectionHandle = React.createClass({
+  mixins: [PureRenderMixin],
+
+  onMouseDown: function(event) {
+    return this.props.onMouseDown(event, this.props.position);
+  },
+
+  render: function() {
+    var classes = [];
+    classes['mediacat-cropper-selection-' + this.props.position] = true;
+
+    return (
+      <div 
+        className={cx(classes)}
+        onMouseDown={this.onMouseDown}>
+        <div className="mediacat-cropper-selection-handle" />
+      </div>
+    );
+  },
+});
+
+
 var CropSelection = React.createClass({
   mixins: [PureRenderMixin],
 
   getInitialState: function() {
     return {
       dragging: false,
-      draggingPaused: false,
+      dragOrigin: null,
       prevX: null,
       prevY: null
     };
   },
 
-  handleMouseLeave: function(event) {
+  onMouseDown: function(event) {
     event.preventDefault();
 
-    if (this.state.dragging) {
+    if (event.button === 0) {
+      document.body.addEventListener('mousemove', this.handleMouseMove);
+      document.body.addEventListener('mouseup', this.handleMouseUp);          
       this.setState({
-        draggingPaused: true,
+        dragging: true,
+        dragOrigin: 'center',
+        prevX: event.clientX,
+        prevY: event.clientY
       });
     }
   },
 
-  handleMouseEnter: function(event) {
-    event.preventDefault();
-
-    if (this.state.dragging && this.state.draggingPaused) {
-      if (event.button === 0) {
-        this.setState({
-          draggingPaused: false,
-          prevX: event.clientX,
-          prevY: event.clientY        
-        });
-      } else {
-        this.setState({
-          dragging: false,
-          draggingPaused: false,
-          prevX: null,
-          prevY: null      
-        });
-      }
-    }
-  },
-
-  handleMouseDown: function(event) {
+  onHandleMouseDown: function(event, origin) {
     event.preventDefault();
 
     if (event.button === 0) {
+      document.body.addEventListener('mousemove', this.handleMouseMove);
+      document.body.addEventListener('mouseup', this.handleMouseUp);    
       this.setState({
         dragging: true,
+        dragOrigin: origin,
         prevX: event.clientX,
         prevY: event.clientY
       });
@@ -66,12 +75,13 @@ var CropSelection = React.createClass({
     var dY;
 
     event.preventDefault();
-
+    
     if (this.state.dragging) {
       dX = event.clientX - this.state.prevX;
       dY = event.clientY - this.state.prevY;
-      this.props.onMove(dX / this.props.scale, dY / this.props.scale);
-      
+
+      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin, event.shiftKey == 1);
+            
       this.setState({
         prevX: event.clientX,
         prevY: event.clientY
@@ -82,8 +92,12 @@ var CropSelection = React.createClass({
   handleMouseUp: function(event) {
     event.preventDefault();
 
+    document.body.removeEventListener('mousemove', this.handleMouseMove);
+    document.body.removeEventListener('mouseup', this.handleMouseUp);    
+
     this.setState({
       dragging: false,
+      dragOrigin: null,
       prevX: null,
       prevY: null
     });
@@ -99,38 +113,24 @@ var CropSelection = React.createClass({
 
     return (
       <div 
-        className="mediacat-cropper-selection" 
-        style={style} 
-        onMouseLeave={this.handleMouseLeave}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseDown={this.handleMouseDown}
-        onMouseMove={this.handleMouseMove}
-        onMouseUp={this.handleMouseUp}
-      >
-        <div className="mediacat-cropper-selection-top">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>
-        <div className="mediacat-cropper-selection-top-left">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>        
-        <div className="mediacat-cropper-selection-left">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>
-        <div className="mediacat-cropper-selection-bottom-left">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>          
-        <div className="mediacat-cropper-selection-bottom">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>
-        <div className="mediacat-cropper-selection-bottom-right">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>          
-        <div className="mediacat-cropper-selection-right">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>
-        <div className="mediacat-cropper-selection-top-right">
-          <div className="mediacat-cropper-selection-handle" />
-        </div>          
+        className="mediacat-cropper-selection"  
+        style={style} >
+        <div 
+          className="mediacat-cropper-selection-mover" 
+          onMouseDown={this.onMouseDown}
+          />
+          <div className="mediacat-cropper-selection-guide-x1" />
+          <div className="mediacat-cropper-selection-guide-x2" />
+          <div className="mediacat-cropper-selection-guide-y1" />
+          <div className="mediacat-cropper-selection-guide-y2" />          
+        <CropSelectionHandle position="top" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="top-left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom-left" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="bottom-right" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="right" onMouseDown={this.onHandleMouseDown} />
+        <CropSelectionHandle position="top-right" onMouseDown={this.onHandleMouseDown} />     
       </div>
     );
   }
