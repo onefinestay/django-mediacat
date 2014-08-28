@@ -60,6 +60,7 @@
 	
 	var CategoryStore = __webpack_require__(/*! ./stores/categories */ 3);
 	var MediaStore = __webpack_require__(/*! ./stores/media */ 4);
+	var UploadStore = __webpack_require__(/*! ./stores/uploads */ 257);
 	
 	var Actions = __webpack_require__(/*! ./actions */ 1);
 	
@@ -68,6 +69,7 @@
 	var stores = {
 	  Categories: new CategoryStore(config.categories),
 	  Media: new MediaStore(config.media),
+	  Uploads: new UploadStore(config.uploads)
 	};
 	
 	var flux = new Fluxxor.Flux(stores, Actions);
@@ -366,11 +368,18 @@
 	var matrix = __webpack_require__(/*! matrix-utilities */ 23)
 	
 	var getScaleMatrix = function(scale) {
-	  return [[scale, 0, 0], [0, scale, 0], [0, 0, 1]];
+	  return [
+	    [scale, 0, 0], 
+	    [0, scale, 0], 
+	    [0, 0, 1]];
 	};
 	
 	var getTranslateMatrix = function(x, y) {
-	  return [[1, 0, x], [0, 1, y], [0, 0, 1]];
+	  return [
+	    [1, 0, x], 
+	    [0, 1, y], 
+	    [0, 0, 1]]
+	  ;
 	};
 	
 	var matrixFromValues = function(v) {
@@ -30575,6 +30584,34 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 74)))
+
+/***/ },
+/* 257 */
+/*!*************************************!*\
+  !*** ./static/js/stores/uploads.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	 "use strict";
+	
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 5);
+	var Immutable = __webpack_require__(/*! immutable */ 29);
+	var request = __webpack_require__(/*! superagent */ 35);
+	
+	var UploadStore = Fluxxor.createStore({
+	  actions: {
+	
+	  },
+	
+	  initialize: function(options) {
+	    this.setMaxListeners(0);
+	    this.state = Immutable.fromJS(options);
+	  }
+	
+	});
+	
+	module.exports = UploadStore;
+
 
 /***/ }
 /******/ ])

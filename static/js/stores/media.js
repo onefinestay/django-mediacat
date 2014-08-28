@@ -9,11 +9,18 @@ var Constants = require('../constants');
 var matrix = require('matrix-utilities')
 
 var getScaleMatrix = function(scale) {
-  return [[scale, 0, 0], [0, scale, 0], [0, 0, 1]];
+  return [
+    [scale, 0, 0], 
+    [0, scale, 0], 
+    [0, 0, 1]];
 };
 
 var getTranslateMatrix = function(x, y) {
-  return [[1, 0, x], [0, 1, y], [0, 0, 1]];
+  return [
+    [1, 0, x], 
+    [0, 1, y], 
+    [0, 0, 1]]
+  ;
 };
 
 var matrixFromValues = function(v) {
