@@ -80,7 +80,7 @@ var CropSelection = React.createClass({
       dX = event.clientX - this.state.prevX;
       dY = event.clientY - this.state.prevY;
 
-      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin);
+      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin, event.shiftKey == 1);
             
       this.setState({
         prevX: event.clientX,

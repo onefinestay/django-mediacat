@@ -533,6 +533,7 @@
 	
 	    // What point do we anchor around, and how should we multiply the X and Y deltas;
 	    var anchor = {
+	      'center': [['x1', 'x2'], ['y1', 'y2'], 1, 1],
 	      'left': [['x2', 'x2'], ['y1', 'y2'], -1, 0],
 	      'right': [['x1', 'x1'], ['y1', 'y2'], 1, 0],
 	      'bottom': [['x1', 'x2'], ['y1', 'y1'], 0, 1],
@@ -3491,8 +3492,8 @@
 	var Cropper = React.createClass({displayName: 'Cropper',
 	  mixins: [PureRenderMixin, FluxMixin],
 	
-	  moveSelection: function(dX, dY, origin) {
-	    if (origin === 'center') {
+	  moveSelection: function(dX, dY, origin, modifier) {
+	    if (!modifier && origin === 'center') {
 	      this.getFlux().actions.crop.move(this.props.crop, dX, dY);  
 	    } else {
 	      this.getFlux().actions.crop.resize(this.props.crop, dX, dY, origin);  
@@ -11866,7 +11867,7 @@
 	      dX = event.clientX - this.state.prevX;
 	      dY = event.clientY - this.state.prevY;
 	
-	      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin);
+	      this.props.onMove(Math.round(dX / this.props.scale), Math.round(dY / this.props.scale), this.state.dragOrigin, event.shiftKey == 1);
 	            
 	      this.setState({
 	        prevX: event.clientX,

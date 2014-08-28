@@ -174,6 +174,7 @@ var MediaStore = Fluxxor.createStore({
 
     // What point do we anchor around, and how should we multiply the X and Y deltas;
     var anchor = {
+      'center': [['x1', 'x2'], ['y1', 'y2'], 1, 1],
       'left': [['x2', 'x2'], ['y1', 'y2'], -1, 0],
       'right': [['x1', 'x1'], ['y1', 'y2'], 1, 0],
       'bottom': [['x1', 'x2'], ['y1', 'y1'], 0, 1],
