@@ -12,10 +12,10 @@ var Actions = {
       this.dispatch(Constants.FETCH_IMAGES, {category, filters});
     },
 
-    fetchSuccess: function(response) {
+    fetchSuccess: function(response, categoryPath) {
       var data = response.body;
       var request = response.req;
-      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data, request});
+      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data, request, categoryPath});
     },
 
     fetchError: function(response) {
@@ -72,6 +72,18 @@ var Actions = {
   uploads: {
     add: function(file, category) {
       this.dispatch(Constants.UPLOAD_ADD, {file, category});
+    },
+
+    progress: function(event, id, file, categoryPath) {
+      this.dispatch(Constants.UPLOAD_PROGRESS, {event, id, file, categoryPath});
+    },
+
+    load: function(event, id, file, categoryPath) {
+      this.dispatch(Constants.UPLOAD_LOAD, {event, id, file, categoryPath});
+    },
+
+    complete: function(response, id, file, categoryPath) {
+      this.dispatch(Constants.UPLOAD_COMPLETE, {response, id, file, categoryPath});      
     }
   }
 };

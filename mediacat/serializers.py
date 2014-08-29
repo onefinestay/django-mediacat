@@ -56,6 +56,7 @@ class ImageSerializer(serializers.ModelSerializer):
         required=False)
 
     def restore_object(self, attrs, instance=None):
+        # Pop the attrs because Django no likey
         associated_content_type = attrs.pop('associated_content_type')
         associated_object_id = attrs.pop('associated_object_id')
 

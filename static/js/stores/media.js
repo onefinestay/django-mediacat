@@ -79,7 +79,8 @@ var MediaStore = Fluxxor.createStore({
     CROP_DESELECTED: 'onCropDeselect',
     CROP_MOVE: 'onCropMove',
     CROP_RESIZE: 'onCropResize',
-    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess'
+    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
+    UPLOAD_COMPLETE: 'onUploadComplete'
   },
 
   initialize: function(options) {
@@ -88,17 +89,31 @@ var MediaStore = Fluxxor.createStore({
   },
 
   getFetchRequest: function(category, filters) {
+    var categoryPath = null;
+    var content_type_id = null;
+    var object_id = null;
+
+    if (category) {
+      categoryPath = category.get('path');
+      content_type_id = category.get('content_type_id');
+      object_id = category.get('object_id');
+    }
+
     var query = {
-      content_type_id: category.get('content_type_id'),
-      object_id: category.get('object_id')
+      content_type_id: content_type_id,
+      object_id: object_id,
     };
+
+    var onSuccess = function(response) {
+      this.flux.actions.media.fetchSuccess(response, categoryPath);
+    }.bind(this);
 
     return request
       .get('/mediacat/images/')
       .query(query)
       .set('Accept', 'application/json')
       .on('error', this.flux.actions.media.fetchError)
-      .end(this.flux.actions.media.fetchSuccess);
+      .end(onSuccess);
   },
 
   getSelectedMedia: function() {
@@ -123,17 +138,20 @@ var MediaStore = Fluxxor.createStore({
   },
 
   onFetchImagesSuccess: function(payload) {
+    var categoryPath = payload.categoryPath;
+
     var req = payload.request;
     var media = Immutable.fromJS(payload.data);
 
     var requests = this.state.get('fetchRequests');
     var key = requests.findKey((v, k) => v === req);
-    requests = requests.delete(key);
+    requests = requests.delete(key);    
+    this.state = this.state.set('fetchRequests', requests);
 
-    this.state = this.state.withMutations(function(state) {
-      state.set('media', media).set('fetchRequests', requests);
-    });
-    this.emit('change');    
+    if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
+      this.state = this.state.set('media', media);
+    }
+    this.emit('change');
   },
 
   onMediaSelect: function(payload) {
@@ -271,7 +289,20 @@ var MediaStore = Fluxxor.createStore({
     }
     
     this.emit('change');
-  }  
+  },
+
+  onUploadComplete: function(payload) {
+    var categoryPath = payload.categoryPath;
+    var newImage;
+
+    if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
+      newImage = Immutable.fromJS(payload.response.body);
+      this.state = this.state.updateIn(['media'], media => media.push(newImage));
+      this.emit('change');
+    }
+  },
+
+
 });
 
 module.exports = MediaStore;

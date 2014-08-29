@@ -37,9 +37,21 @@ var Upload = React.createClass({
       'mediacat-upload-selected': this.state.selected
     };
 
+    var caption;
+
+    if (!upload.get('complete')) {
+      if (upload.get('progress') === 100) {
+        caption = 'Processing';
+      } else {
+        caption = 'Uploading';
+      }
+    } else {
+      capation = 'Complete';
+    }
+
     return (
       <li className={cx(classes)}>
-        {upload.get('file').name}
+        {upload.get('file').name} - {upload.get('progress')}% - {caption}
       </li>
     );
   }
