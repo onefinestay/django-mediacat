@@ -414,10 +414,14 @@ body {
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg); }
-    .mediacat-application .mediacat-categories-label .no-children {
+    .mediacat-application .mediacat-categories-label .icon-dash {
       display: inline-block;
-      margin-right: 10px;
-      width: 15px; }
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0;
+      text-align: center; }
     .mediacat-application .mediacat-categories-label .loading {
       opacity: 0.35; }
     .mediacat-application .mediacat-categories-label .linear-loader {

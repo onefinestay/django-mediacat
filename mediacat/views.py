@@ -29,6 +29,11 @@ class ImageList(generics.ListCreateAPIView):
                 associations__object_id=params['object_id'],
                 associations__content_type_id=params['content_type_id']
             ).distinct()
+        else:
+            queryset = queryset.filter(
+                associations__object_id__isnull=True,
+                associations__content_type_id__isnull=True,
+            ).distinct()
         return queryset
 
 
@@ -66,22 +71,51 @@ class Library(TemplateView):
         path = self.kwargs['path'][:-1]
         data['path'] = path
 
-        try:
-            obj = utils.resolve(path)
-            if obj:
-                content_type_id = ContentType.objects.get_for_model(obj).pk
-                images = models.Image.objects.filter(
-                    associations__object_id=obj.pk,
-                    associations__content_type_id=content_type_id
-                )
-                data['media'] = serializers.ImageSerializer(images, many=True).data
-        except exceptions.NoResolveException:
-            data['media'] = []
+        if path == 'uncategorized':
+            child_paths = []
+            images = models.Image.objects.filter(
+                associations__object_id__isnull=True,
+                associations__content_type_id__isnull=True,
+            ).distinct()
+            data['media'] = serializers.ImageSerializer(images, many=True).data
+            uncategorized_count = len(data['media'])
+        else:
+            child_paths = utils.library_paths.get_children_for_path(path)
+            uncategorized_count = models.Image.objects.filter(
+                associations__object_id__isnull=True,
+                associations__content_type_id__isnull=True,
+            ).distinct().count()
+            try:
+                obj = utils.resolve(path)
+                if obj:
+                    content_type_id = ContentType.objects.get_for_model(obj).pk
+                    images = models.Image.objects.filter(
+                        associations__object_id=obj.pk,
+                        associations__content_type_id=content_type_id
+                    )
+                    data['media'] = serializers.ImageSerializer(images, many=True).data
+            except exceptions.NoResolveException:
+                data['media'] = []
 
-        raw_categories = utils.library_paths.list_tree_for_path(path, child_paths=utils.library_paths.get_children_for_path(path))
+        raw_categories = utils.library_paths.list_tree_for_path(path, child_paths=child_paths)
         categories = serializers.CategorySerializer(raw_categories, many=True).data
         utils.annotate_counts(categories)
 
+        uncategorized = {
+            "name": "Uncategorized",
+            "content_type_id": None,
+            "object_id": None,
+            "count": uncategorized_count,
+            "path": "uncategorized",
+            "accepts_images": True,
+            "has_children": False,
+            "children": None,
+            "expanded": None
+        }
+
+        categories.append(uncategorized)
+
         data['category_data'] = categories
+        data['uncategorized'] = uncategorized
 
         return data

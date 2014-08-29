@@ -354,7 +354,7 @@ class PathPatterns(object):
         return None
 
     def list_tree_for_path(self, path, params=None, child_paths=None):
-        if not path:
+        if not path or path == 'uncategorized':
             return self.list_root_paths()
 
         obj_path = self.resolve_to_path(path)

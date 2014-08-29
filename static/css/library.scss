@@ -278,10 +278,14 @@ body {
       }
     }
 
-    .no-children {
+    .icon-dash {
       display: inline-block;
-      margin-right: 10px;
-      width: 15px;      
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0;
+      text-align: center;
     }    
 
     .loading {

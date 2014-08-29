@@ -53,16 +53,16 @@ class ImageSerializer(serializers.ModelSerializer):
     thumbnail = serializers.Field(source='get_thumbnail_url')
 
     associated_content_type = serializers.IntegerField(
-        write_only=True,
-        required=False)
+        required=False,
+        write_only=True)
     associated_object_id = serializers.IntegerField(
-        write_only=True,
-        required=False)
+        required=False,
+        write_only=True)
 
     def restore_object(self, attrs, instance=None):
         # Pop the attrs because Django no likey
-        associated_content_type = attrs.pop('associated_content_type')
-        associated_object_id = attrs.pop('associated_object_id')
+        associated_content_type = attrs.pop('associated_content_type', None)
+        associated_object_id = attrs.pop('associated_object_id', None)
 
         instance = super(ImageSerializer, self).restore_object(
             attrs,
@@ -86,7 +86,6 @@ class ImageSerializer(serializers.ModelSerializer):
             'image_file',
             'date_created',
             'date_modified',
-            'file_size',
             'height',
             'width',
             'crops',
