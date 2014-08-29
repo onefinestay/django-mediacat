@@ -7,12 +7,15 @@ from . import models
 
 class ImageCropSerializer(serializers.ModelSerializer):
     ratio = serializers.SerializerMethodField('get_ratio')
+    label = serializers.SerializerMethodField('get_label')
 
     def get_ratio(self, obj):
-        try:
-            return float(obj.x2 - obj.x1) / (obj.y2 - obj.y1)
-        except ZeroDivisionError:
-            return 1.5
+        crop_info = settings.MEDIACAT_AVAILABLE_CROP_RATIOS[obj.key]
+        return crop_info[1]
+
+    def get_label(self, obj):
+        crop_info = settings.MEDIACAT_AVAILABLE_CROP_RATIOS[obj.key]
+        return crop_info[0]
 
     class Meta:
         model = models.ImageCrop
@@ -24,6 +27,7 @@ class ImageCropSerializer(serializers.ModelSerializer):
             'height',
             'key',
             'ratio',
+            'label',
             'x1',
             'y1',
             'x2',

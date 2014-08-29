@@ -212,6 +212,11 @@ body {
       opacity: 0.8; }
     .mediacat-application button:focus, .mediacat-application .button:focus {
       outline: none; }
+    .mediacat-application button.disabled, .mediacat-application .button.disabled {
+      opacity: 0.5;
+      cursor: default; }
+      .mediacat-application button.disabled:hover, .mediacat-application .button.disabled:hover {
+        opacity: 0.5; }
     .mediacat-application button.icon, .mediacat-application .button.icon {
       font-size: 24px;
       padding: 5px 10px;

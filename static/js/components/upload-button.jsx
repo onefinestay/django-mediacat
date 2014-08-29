@@ -34,12 +34,21 @@ var UploadButton = React.createClass({
   },
 
   render: function() {
+    var disabled = !this.state.category || !this.state.category.get('accepts_images');
+
+    var classes = {
+      'button': true,
+      'icon': true,
+      'icon-upload': true,
+      'disabled': disabled
+    };
+
     return (
-      <div className="button icon icon-upload">
+      <div className={cx(classes)}>
         <div className="button-mask" onClick={this.handleClick} />
         <input className="hidden-file" type="file" multiple={true} ref="upload"
           accept="image/jpeg, image/png, image/gif"
-          onChange={this.handleChange} />
+          onChange={this.handleChange} disabled={disabled} />
       </div>
     );
   }

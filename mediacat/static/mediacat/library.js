@@ -1670,12 +1670,21 @@
 	  },
 	
 	  render: function() {
+	    var disabled = !this.state.category || !this.state.category.get('accepts_images');
+	
+	    var classes = {
+	      'button': true,
+	      'icon': true,
+	      'icon-upload': true,
+	      'disabled': disabled
+	    };
+	
 	    return (
-	      React.DOM.div({className: "button icon icon-upload"}, 
+	      React.DOM.div({className: cx(classes)}, 
 	        React.DOM.div({className: "button-mask", onClick: this.handleClick}), 
 	        React.DOM.input({className: "hidden-file", type: "file", multiple: true, ref: "upload", 
 	          accept: "image/jpeg, image/png, image/gif", 
-	          onChange: this.handleChange})
+	          onChange: this.handleChange, disabled: disabled})
 	      )
 	    );
 	  }
@@ -4057,7 +4066,7 @@
 	        React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
 	          React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
 	        ), 
-	        crop.get('key')
+	        crop.get('label')
 	      )
 	    );
 	  }

@@ -82,6 +82,17 @@ body {
       outline: none;
     }
 
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
+
     &.icon {
       font-size: 24px;
       padding: 5px 10px;
