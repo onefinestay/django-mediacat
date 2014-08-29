@@ -70,8 +70,8 @@ var Actions = {
   },
 
   uploads: {
-    add: function(file, categoryPath) {
-      this.dispatch(Constants.UPLOAD_ADD, {file, categoryPath});
+    add: function(file, category) {
+      this.dispatch(Constants.UPLOAD_ADD, {file, category});
     }
   }
 };

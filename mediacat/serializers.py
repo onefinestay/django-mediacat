@@ -18,7 +18,6 @@ class ImageCropSerializer(serializers.ModelSerializer):
         model = models.ImageCrop
         fields = (
             'id',
-            'image',
             'scale',
             'score',
             'width',
@@ -32,10 +31,47 @@ class ImageCropSerializer(serializers.ModelSerializer):
         )
 
 
+class ImageAssociationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.ImageAssociation
+        fields = (
+            'content_type',
+            'object_id',
+            'canonical',
+        )
+
+
 class ImageSerializer(serializers.ModelSerializer):
-    crops = ImageCropSerializer(many=True)
+    associations = ImageAssociationSerializer(many=True, required=False)
+    crops = ImageCropSerializer(many=True, required=False)
     url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
+
+    associated_content_type = serializers.IntegerField(
+        write_only=True,
+        required=False)
+    associated_object_id = serializers.IntegerField(
+        write_only=True,
+        required=False)
+
+    def restore_object(self, attrs, instance=None):
+        associated_content_type = attrs.pop('associated_content_type')
+        associated_object_id = attrs.pop('associated_object_id')
+
+        instance = super(ImageSerializer, self).restore_object(
+            attrs,
+            instance=instance
+        )
+
+        if associated_content_type and associated_object_id:
+            association = models.ImageAssociation(
+                content_type_id=associated_content_type,
+                object_id=associated_object_id,
+                canonical=True
+            )
+            instance._m2m_data['associations'] = [association]
+        return instance
 
     class Meta:
         model = models.Image
@@ -49,6 +85,9 @@ class ImageSerializer(serializers.ModelSerializer):
             'height',
             'width',
             'crops',
+            'associations',
+            'associated_content_type',
+            'associated_object_id',
             'url',
             'thumbnail',
         )

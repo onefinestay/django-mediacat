@@ -13,7 +13,11 @@ crop_registry = set([(k, v[1], v[2]) for k, v in settings.MEDIALIBRARY_CROPS.ite
 
 
 class Image(models.Model):
-    image_file = models.ImageField(upload_to='media-library', width_field='width', height_field='height')
+    image_file = models.ImageField(
+        upload_to='media-library',
+        width_field='width',
+        height_field='height',
+    )
     width = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     file_size = models.IntegerField(blank=True, null=True)

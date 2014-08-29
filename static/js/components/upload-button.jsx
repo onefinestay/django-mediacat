@@ -13,7 +13,7 @@ var UploadButton = React.createClass({
   getStateFromFlux: function() {
     var store = this.getFlux().store('Categories');
     return {
-      categoryPath: store.state.get('selectedPath')
+      category: store.getSelectedCategory()
     };
   },  
 
@@ -28,7 +28,7 @@ var UploadButton = React.createClass({
     
     if (files.length) {
       for (var i = 0; i < files.length; i++) {
-        this.getFlux().actions.uploads.add(files[i], this.state.categoryPath);
+        this.getFlux().actions.uploads.add(files[i], this.state.category);
       }
     }
   },

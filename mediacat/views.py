@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.views.generic import TemplateView
 
 from rest_framework import generics
+from rest_framework import parsers
 
 from . import models
 from . import serializers
@@ -14,9 +15,13 @@ from . import exceptions
 class ImageList(generics.ListCreateAPIView):
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
+    parser_classes = (
+        parsers.MultiPartParser,
+        parsers.FormParser,
+    )
 
     def get_queryset(self):
-        queryset = super(ImageList, self).get_queryset().prefetch_related('crops')
+        queryset = super(ImageList, self).get_queryset().prefetch_related('crops', 'associations')
         params = self.request.QUERY_PARAMS
 
         if 'object_id' in params and 'content_type_id' in params:

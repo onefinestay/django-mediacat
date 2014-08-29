@@ -103,6 +103,15 @@ var CategoryStore = Fluxxor.createStore({
     this.emit('change');
   },
 
+  getSelectedCategory: function() {
+    var path = this.state.get('selectedPath');
+
+    if (!path) {
+      return null;
+    }
+    return this.state.getIn(this.getObjectPath(path).toJS());
+  },
+
   getFetchChildrenRequest: function(category, filters) {
     return request
       .get('/mediacat/categories/' + category.get('path') + '/')
