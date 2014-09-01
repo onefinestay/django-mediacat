@@ -2150,11 +2150,23 @@
 	        // Landscape
 	        displayWidth = this.state.width;
 	        displayScale = this.state.width / width;
+	
+	        if (displayScale > 1) {
+	          displayScale = 1;
+	          displayWidth = width;
+	        }
+	
 	        displayHeight = height * displayScale;
 	      } else {
 	        // Portrait
 	        displayHeight = this.state.height;
 	        displayScale = this.state.height / width;
+	
+	        if (displayScale > 1) {
+	          displayScale = 1;
+	          displayHeight = height;
+	        }
+	
 	        displayWidth = width * displayScale;
 	      }
 	    }
