@@ -134,6 +134,54 @@
     -webkit-animation-delay: -0.16s;
     animation-delay: -0.16s; }
 
+.scrollpane {
+  position: relative;
+  -webkit-transform: translatez(0);
+  -ms-transform: translatez(0);
+  transform: translatez(0); }
+  .scrollpane > * {
+    -webkit-transform: translatez(0);
+    -ms-transform: translatez(0);
+    transform: translatez(0); }
+  .scrollpane .scrollpane-scrollbar-handle {
+    position: absolute;
+    background-color: #414858;
+    opacity: 0.8;
+    cursor: pointer; }
+  .scrollpane .scrollpane-scrollbar {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.25); }
+    .scrollpane .scrollpane-scrollbar:hover .scrollpane-scrollbar-handle {
+      opacity: 1; }
+  .scrollpane .scrollpane-scrollbar-vertical {
+    width: 15px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #1a0000; }
+    .scrollpane .scrollpane-scrollbar-vertical .scrollpane-scrollbar-handle {
+      left: 0;
+      right: 0; }
+  .scrollpane .scrollpane-scrollbar-horizontal {
+    height: 15px;
+    left: 0;
+    right: 0;
+    bottom: 0; }
+    .scrollpane .scrollpane-scrollbar-horizontal .scrollpane-scrollbar-handle {
+      top: 0;
+      bottom: 0; }
+  .scrollpane .scrollpane-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden; }
+  .scrollpane .scrollpane-viewport-vertical-scrollbar {
+    right: 15px; }
+  .scrollpane .scrollpane-viewport-horizontal-scrollbar {
+    bottom: 15px; }
+
 html {
   background-color: #232830;
   color: #fff;
@@ -361,6 +409,11 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column; }
+    .mediacat-application .mediacat-navigation > .scrollpane {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1; }
   .mediacat-application .mediacat-uploads {
     border-top: 1px #1a0000 solid;
     list-style-type: none;
@@ -534,16 +587,8 @@ body {
         opacity: 0;
         display: block; }
     .mediacat-application .mediacat-document .mediacat-thumbnail-list {
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-      -webkit-box-flex: 0;
-      -webkit-flex-grow: 0;
-      -ms-flex-positive: 0;
-      flex-grow: 0;
       margin: 0;
       padding: 10px;
-      height: 210px;
       list-style-type: none;
       display: -webkit-box;
       display: -webkit-flex;
@@ -554,32 +599,20 @@ body {
       -webkit-flex-direction: row;
       -ms-flex-direction: row;
       flex-direction: row;
-      -webkit-flex-wrap: no-wrap;
-      -ms-flex-wrap: no-wrap;
-      flex-wrap: no-wrap;
-      -webkit-align-content: flex-start;
-      -ms-flex-line-pack: start;
-      align-content: flex-start;
-      overflow-x: scroll; }
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+    .mediacat-application .mediacat-document.mediacat-document-grid > .scrollpane {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1; }
     .mediacat-application .mediacat-document.mediacat-document-grid .mediacat-detail {
       -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
       -ms-flex-positive: 0;
       flex-grow: 0;
       height: 0; }
-    .mediacat-application .mediacat-document.mediacat-document-grid .mediacat-thumbnail-list {
-      -webkit-box-flex: 1;
-      -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-      flex-grow: 1;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      overflow-y: scroll; }
   .mediacat-application .mediacat-cropper {
     position: absolute;
     z-index: 1; }

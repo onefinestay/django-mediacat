@@ -7,6 +7,7 @@ var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
+var ScrollPane = require('./scrollpane');
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
 var LinearLoader = require('./loaders/linear');
@@ -131,9 +132,11 @@ var CategoryTree = React.createClass({
     var nodes = this.state.categories.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
 
     return (
-      <ul className="mediacat-categories">
-        {nodes.toJS()}
-      </ul>
+      <ScrollPane>
+        <ul className="mediacat-categories">
+          {nodes.toJS()}
+        </ul>
+      </ScrollPane>
     );
   }
 });

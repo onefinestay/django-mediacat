@@ -1,0 +1,74 @@
+@import "../includes/colors";
+
+$scrollbar-size: 15px;
+
+.scrollpane {
+	position: relative;
+	transform: translatez(0);
+
+	> * {
+		transform: translatez(0);
+	}
+
+	.scrollpane-scrollbar-handle {
+		position: absolute;
+		background-color: #414858;
+		opacity: .8;
+		cursor: pointer;
+	}		
+
+	.scrollpane-scrollbar {
+		position: absolute;
+		background-color: rgba(0, 0, 0, .25);
+
+		&:hover {
+			.scrollpane-scrollbar-handle {
+				opacity: 1;
+			}
+		}
+	}	
+
+	.scrollpane-scrollbar-vertical {
+		width: $scrollbar-size;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		border-left: 1px solid $seperator-color;
+
+		.scrollpane-scrollbar-handle {
+			left: 0;
+			right: 0;
+		}		
+	}
+
+	.scrollpane-scrollbar-horizontal {
+		height: $scrollbar-size;
+		left: 0;
+		right: 0;
+		bottom: 0;
+
+		.scrollpane-scrollbar-handle {
+			top: 0;
+			bottom: 0;
+		}	
+
+	}
+
+	.scrollpane-viewport {
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		overflow: hidden;
+	}
+
+
+	.scrollpane-viewport-vertical-scrollbar {
+		right: $scrollbar-size;
+	}
+
+	.scrollpane-viewport-horizontal-scrollbar {
+		bottom: $scrollbar-size;
+	}
+}

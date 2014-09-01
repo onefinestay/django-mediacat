@@ -7,6 +7,7 @@ var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
+var ScrollPane = require('./scrollpane');
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
 var ProxyImg = require('./proxy-img');
@@ -59,9 +60,11 @@ var ThumbnailList = React.createClass({
     var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     return (
-      <ul className="mediacat-thumbnail-list">
-        {thumbnails.toJS()}
-      </ul>
+      <ScrollPane>
+        <ul className="mediacat-thumbnail-list">
+          {thumbnails.toJS()}
+        </ul>
+      </ScrollPane>
     );
   }
 });
