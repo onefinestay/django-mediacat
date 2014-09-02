@@ -1034,7 +1034,7 @@
 	        ), 
 	        React.DOM.div({className: cx(documentClasses)}, 
 	          this.state.mode === 'detail' && React.DOM.div({className: "mediacat-detail-wrapper"}, Detail(null)), 
-	          ThumbnailList(null)
+	          ThumbnailList({mode: this.state.mode})
 	        )
 	      )
 	    );
@@ -2060,7 +2060,7 @@
 	    var thumbnails = this.state.media.map(function(thumbnail)  {return Thumbnail({key: thumbnail.get('id'), thumbnail: thumbnail});});
 	
 	    return (
-	      ScrollPane(null, 
+	      ScrollPane({mode: this.props.mode}, 
 	        React.DOM.ul({className: "mediacat-thumbnail-list"}, 
 	          thumbnails.toJS()
 	        )
@@ -3781,7 +3781,7 @@
 	  },
 	
 	  componentDidUpdate: function(prevProps, prevState) {
-	    if (prevProps.children !== this.props.children) {
+	    if (prevProps !== this.props) {
 	      this.updateDOMDimensions();
 	    }
 	  },
@@ -3862,10 +3862,10 @@
 	        var handleWidth = 100 * (this.state.width / this.state.contentWidth);
 	
 	        horizontalHandleStyles = {
-	          height: handleWidth + '%',
+	          width: handleWidth + '%',
 	          left: this.state.scrollX + '%'
 	        };
-	        translateX = -this.state.scrollY;
+	        translateX = -this.state.scrollX;
 	      }      
 	
 	      contentStyles = {
@@ -3885,7 +3885,7 @@
 	            React.DOM.div({className: "scrollpane-scrollbar-handle", style: verticalHandleStyles})
 	          ), 
 	          shouldScrollHorizontal && React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-horizontal"}, 
-	            React.DOM.div({className: "scrollpane-scrollbar-handle"})
+	            React.DOM.div({className: "scrollpane-scrollbar-handle", style: horizontalHandleStyles})
 	          ), 
 	          React.DOM.div({className: cx(viewportClasses)}, 
 	          React.DOM.div({className: "scrollpane-content", style: contentStyles}, 

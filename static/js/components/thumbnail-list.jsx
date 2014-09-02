@@ -60,7 +60,7 @@ var ThumbnailList = React.createClass({
     var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     return (
-      <ScrollPane>
+      <ScrollPane mode={this.props.mode}>
         <ul className="mediacat-thumbnail-list">
           {thumbnails.toJS()}
         </ul>

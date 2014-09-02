@@ -430,10 +430,19 @@ body {
       > .scrollpane {
         flex-grow: 0;
         flex-shrink: 0;
-        height: 210px;
+        height: 225px;
+
+        .scrollpane-content {
+          display: inline-block;
+        }
 
         .#{$ns}-thumbnail-list {
-          flex-wrap: nowrap;
+          display: inline-block;
+          white-space: nowrap;
+
+          li {
+            display: inline-block;
+          }
         }
       }
     }    

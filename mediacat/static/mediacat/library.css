@@ -621,11 +621,14 @@ body {
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
-      height: 210px; }
+      height: 225px; }
+      .mediacat-application .mediacat-document.mediacat-document-detail > .scrollpane .scrollpane-content {
+        display: inline-block; }
       .mediacat-application .mediacat-document.mediacat-document-detail > .scrollpane .mediacat-thumbnail-list {
-        -webkit-flex-wrap: nowrap;
-        -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap; }
+        display: inline-block;
+        white-space: nowrap; }
+        .mediacat-application .mediacat-document.mediacat-document-detail > .scrollpane .mediacat-thumbnail-list li {
+          display: inline-block; }
   .mediacat-application .mediacat-cropper {
     position: absolute;
     z-index: 1; }

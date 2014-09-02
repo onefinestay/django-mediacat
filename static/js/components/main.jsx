@@ -59,7 +59,7 @@ var Main = React.createClass({
         </Header>
         <div className={cx(documentClasses)}>
           {this.state.mode === 'detail' && <div className="mediacat-detail-wrapper"><Detail /></div>}
-          <ThumbnailList />
+          <ThumbnailList mode={this.state.mode} />
         </div>
       </div>
     );

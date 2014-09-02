@@ -33,7 +33,7 @@ var ScrollPane = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    if (prevProps.children !== this.props.children) {
+    if (prevProps !== this.props) {
       this.updateDOMDimensions();
     }
   },
@@ -114,10 +114,10 @@ var ScrollPane = React.createClass({
         var handleWidth = 100 * (this.state.width / this.state.contentWidth);
 
         horizontalHandleStyles = {
-          height: handleWidth + '%',
+          width: handleWidth + '%',
           left: this.state.scrollX + '%'
         };
-        translateX = -this.state.scrollY;
+        translateX = -this.state.scrollX;
       }      
 
       contentStyles = {
@@ -137,7 +137,7 @@ var ScrollPane = React.createClass({
             <div className="scrollpane-scrollbar-handle" style={verticalHandleStyles} />
           </div>}
           {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal">
-            <div className="scrollpane-scrollbar-handle" />
+            <div className="scrollpane-scrollbar-handle" style={horizontalHandleStyles} />
           </div>}
           <div className={cx(viewportClasses)}>
           <div className="scrollpane-content" style={contentStyles}>
