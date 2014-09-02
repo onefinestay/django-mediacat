@@ -231,7 +231,7 @@ body {
   .mediacat-application button, .mediacat-application .button {
     display: inline-block;
     border: 0;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 5px 50px;
     font-size: 16px;
     font-weight: 300;
@@ -294,12 +294,12 @@ body {
     .mediacat-application .toolbar .button-group button, .mediacat-application .toolbar .button-group .button {
       border-radius: 0; }
       .mediacat-application .toolbar .button-group button:first-child, .mediacat-application .toolbar .button-group .button:first-child {
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px; }
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px; }
       .mediacat-application .toolbar .button-group button:last-child, .mediacat-application .toolbar .button-group .button:last-child {
         margin-left: 1px;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px; }
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px; }
   .mediacat-application .mediacat-header {
     background-color: #3ea2c1;
     height: 57px;
@@ -345,7 +345,7 @@ body {
         font-family: Nunito, sans-serif;
         height: 37px;
         border: none;
-        border-radius: 5px; }
+        border-radius: 2px; }
   .mediacat-application .mediacat-panel-header {
     background-color: #414858;
     -webkit-box-flex: 0;
@@ -846,7 +846,7 @@ body {
       border: 1px solid #414858;
       border-bottom-width: 0;
       cursor: pointer;
-      border-radius: 3px 3px 0 0;
+      border-radius: 1px 1px 0 0;
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0; }

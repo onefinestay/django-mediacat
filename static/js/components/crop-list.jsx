@@ -71,6 +71,14 @@ var Crop = React.createClass({
           <div className="mediacat-crop-preview" style={previewStyles} />
         </div>
         {crop.get('label')}
+        <div>
+          <span className="icon icon-reject" />
+          <span className="icon icon-star" />
+          <span className="icon icon-star" />
+          <span className="icon icon-star" />
+          <span className="icon icon-empty-star" />
+          <span className="icon icon-empty-star" />
+        </div>
       </li>
     );
   }
@@ -95,7 +103,7 @@ var CropList = React.createClass({
     var crops;
 
     if (!media) {
-      return <p>Select an image to view its crops</p>;
+      return null;
     }
 
     crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);

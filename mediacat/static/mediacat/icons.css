@@ -32,10 +32,22 @@
 	content: "\E003";
 }
 
-.icon-grid:before {
+.icon-empty-star:before {
 	content: "\E004";
 }
 
-.icon-upload:before {
+.icon-grid:before {
 	content: "\E005";
+}
+
+.icon-reject:before {
+	content: "\E006";
+}
+
+.icon-star:before {
+	content: "\E007";
+}
+
+.icon-upload:before {
+	content: "\E008";
 }

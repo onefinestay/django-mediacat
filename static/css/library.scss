@@ -55,7 +55,7 @@ body {
   button, .button {
     display: inline-block;
     border: 0;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 5px 50px;
     font-size: 16px;
     font-weight: 300;
@@ -123,14 +123,14 @@ body {
         border-radius: 0;
 
         &:first-child {
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
+          border-top-left-radius: 2px;
+          border-bottom-left-radius: 2px;
         }    
 
         &:last-child {
           margin-left: 1px;
-          border-top-right-radius: 5px;
-          border-bottom-right-radius: 5px;
+          border-top-right-radius: 2px;
+          border-bottom-right-radius: 2px;
         }         
  
       }
@@ -179,7 +179,7 @@ body {
         font-family: Nunito, sans-serif;  
         height: 37px;
         border: none;
-        border-radius: 5px;
+        border-radius: 2px;
       }
     }
   }
@@ -719,7 +719,7 @@ body {
       border: 1px solid #414858;
       border-bottom-width: 0;
       cursor: pointer;
-      border-radius: 3px 3px 0 0;
+      border-radius: 1px 1px 0 0;
       flex-shrink: 0;
     }
 
