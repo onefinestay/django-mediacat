@@ -3787,15 +3787,6 @@
 	    }
 	  },
 	
-	  componentWillReceiveProps: function(nextProps) {
-	    if (nextProps !== this.props) {
-	      this.setState({
-	        scrollX: 0,
-	        scrollY: 0
-	      });
-	    }
-	  },
-	
 	  componentDidMount: function() {
 	    this.updateDOMDimensions();
 	    window.addEventListener('resize', this.updateDOMDimensions); 
