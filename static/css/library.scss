@@ -425,6 +425,18 @@ body {
         height: 0;
       }    
     }
+
+    &.#{$ns}-document-detail {
+      > .scrollpane {
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 210px;
+
+        .#{$ns}-thumbnail-list {
+          flex-wrap: nowrap;
+        }
+      }
+    }    
   }
 
   .#{$ns}-cropper {

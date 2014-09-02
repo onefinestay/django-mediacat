@@ -3796,6 +3796,7 @@
 	  handleWheel: function(event) {
 	    var dY;
 	    var handleY;
+	    var handleX;
 	    var newScrollX;
 	    var newScrollY;
 	
@@ -3812,8 +3813,22 @@
 	      }
 	    }
 	
+	    if (event.deltaX && this.state.contentWidth > this.state.width) {
+	      handleX = 100 * (this.state.width / this.state.contentWidth);
+	      dX = 100 * (event.deltaX / this.state.contentWidth);
+	
+	      newScrollX = this.state.scrollX + dX;
+	
+	      if (newScrollX > 100 - handleX) {
+	        newScrollX = 100 - handleX;
+	      } else if (newScrollX < 0) {
+	        newScrollX = 0;
+	      }
+	    }
+	
 	    this.setState({
-	      scrollY: newScrollY
+	      scrollY: newScrollY,
+	      scrollX: newScrollX
 	    });
 	  },
 	
@@ -3839,8 +3854,18 @@
 	        translateY = -this.state.scrollY;
 	      }
 	
+	      if (shouldScrollHorizontal) {
+	        var handleWidth = 100 * (this.state.width / this.state.contentWidth);
+	
+	        horizontalHandleStyles = {
+	          height: handleWidth + '%',
+	          left: this.state.scrollX + '%'
+	        };
+	        translateX = -this.state.scrollY;
+	      }      
+	
 	      contentStyles = {
-	        'transform': 'translate(' + translateX + '%, ' + translateY + '%)'
+	        'transform': 'translate3d(' + translateX + '%, ' + translateY + '%, 0)'
 	      };
 	
 	      var viewportClasses = {
