@@ -319,6 +319,8 @@
 	
 	  onCategorySelect: function(payload) {
 	    this.state = this.state.set('selectedPath', payload.category.get('path'));
+	    var urlPath = this.state.get('basePath') + this.state.get('selectedPath') + '/';
+	    window.history.replaceState(null, '', urlPath);
 	    this.emit('change');
 	  },
 	
@@ -379,7 +381,7 @@
 	    }
 	    requests = requests.set(payload.category.get('path'), req);
 	    this.state = this.state.set('fetchRequests', requests);
-	    this.emit('change');    
+	    this.emit('change');
 	  }
 	
 	});
@@ -2038,7 +2040,7 @@
 	
 	    return (
 	      React.DOM.li({className: cx(classes), onClick: this.select}, 
-	        ProxyImg({src: thumbnail.get('thumbnail')})
+	        ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: 160, maxHeight: 160})
 	      )
 	    );
 	  }
@@ -2166,7 +2168,7 @@
 	      } else {
 	        // Portrait
 	        displayHeight = this.state.height;
-	        displayScale = this.state.height / width;
+	        displayScale = this.state.height / height;
 	
 	        if (displayScale > 1) {
 	          displayScale = 1;
@@ -3794,6 +3796,8 @@
 	  },
 	
 	  handleWheel: function(event) {
+	    event.preventDefault();
+	    event.stopPropagation();
 	    var dY;
 	    var handleY;
 	    var handleX;
@@ -3964,14 +3968,62 @@
 	  render: function() {
 	    var src = this.props.src;
 	
+	    var containerWidth = this.props.maxWidth;
+	    var containerHeight = this.props.maxHeight;
+	
+	    var width = this.props.width;
+	    var height = this.props.height;
+	    var ratio = width / height;
+	
+	    var displayWidth;
+	    var displayHeight;
+	    var displayTop;
+	    var displayLeft;
+	    var displayScale;
+	
+	    var containerRatio = containerWidth / containerHeight;
+	
+	    if (ratio >= containerRatio) {
+	      // Landscape
+	      displayWidth = containerWidth;
+	      displayScale = containerWidth / width;
+	
+	      if (displayScale > 1) {
+	        displayScale = 1;
+	        displayWidth = width;
+	      }
+	
+	      displayHeight = height * displayScale;
+	    } else {
+	      // Portrait
+	      displayHeight = containerHeight;
+	      displayScale = containerHeight / height;
+	
+	      if (displayScale > 1) {
+	        displayScale = 1;
+	        displayHeight = height;
+	      }
+	
+	      displayWidth = width * displayScale;
+	    }
+	
+	    displayTop = (containerHeight - displayHeight) / 2;
+	    displayLeft = (containerWidth- displayWidth) / 2;  
+	
 	    var classes = {
 	      'proxy-image': true,
 	      'proxy-image-preloaded': this.state.alreadyLoaded ? true : false
 	    };
 	
 	    var style = {
-	      'opacity': this.state.loaded ? 100 : 0,
-	      'background-image': ("url('" +  src + "')")
+	      'opacity': this.state.loaded ? 100 : 0
+	    };
+	
+	    var imgStyle = {
+	        width: displayWidth + 'px',
+	        height: displayHeight + 'px',
+	        top: displayTop + 'px',
+	        left: displayLeft + 'px'
 	    };
 	
 	    var spinnerStyle = {
@@ -3980,9 +4032,8 @@
 	    return (
 	      React.DOM.div({className: cx(classes)}, 
 	        React.DOM.div({className: "proxy-image-bg", style: style}, 
-	          React.DOM.img({src: src})
-	        ), 
-	        React.DOM.div({className: "proxy-image-spinner", style: spinnerStyle}, RadialLoader(null))
+	          React.DOM.img({src: src, style: imgStyle})
+	        )
 	      )
 	    );
 	  }

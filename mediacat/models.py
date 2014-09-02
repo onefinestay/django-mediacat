@@ -28,6 +28,9 @@ class Image(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
+    xmp_data = models.TextField(blank=True)
+    exif_data = models.TextField(blank=True)
+
     def __unicode__(self):
         return self.image_file.name
 
@@ -50,6 +53,13 @@ class Image(models.Model):
     class Meta:
         verbose_name = _('Image')
         verbose_name_plural = _('Images')
+
+    def save(self, **kwargs):
+        from .xmp.extract import extract_xmp_data
+        from .exif.extract import extract_exif_data
+        self.xmp_data = extract_xmp_data(self.image_file.file)
+        self.exif_data = extract_exif_data(self.image_file.file)
+        return super(Image, self).save(**kwargs)
 
 
 class ImageAssociation(models.Model):

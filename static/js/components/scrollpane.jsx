@@ -48,6 +48,8 @@ var ScrollPane = React.createClass({
   },
 
   handleWheel: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
     var dY;
     var handleY;
     var handleX;

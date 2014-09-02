@@ -88,7 +88,7 @@ var Detail = React.createClass({
       } else {
         // Portrait
         displayHeight = this.state.height;
-        displayScale = this.state.height / width;
+        displayScale = this.state.height / height;
 
         if (displayScale > 1) {
           displayScale = 1;

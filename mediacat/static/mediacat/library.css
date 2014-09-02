@@ -764,9 +764,7 @@ body {
         -webkit-transition-property: none;
         transition-property: none; }
       .mediacat-application .mediacat-thumbnail .proxy-image img {
-        width: 100%;
-        height: 100%;
-        opacity: 0;
+        position: absolute;
         display: block; }
   .mediacat-application .mediacat-thumbnail-selected {
     background-color: #363c4a;

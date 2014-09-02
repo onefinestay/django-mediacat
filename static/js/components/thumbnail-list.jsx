@@ -40,7 +40,7 @@ var Thumbnail = React.createClass({
 
     return (
       <li className={cx(classes)} onClick={this.select}>
-        <ProxyImg src={thumbnail.get('thumbnail')} />
+        <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={160} maxHeight={160} />
       </li>
     );
   }

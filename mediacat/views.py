@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 
 from rest_framework import generics
@@ -70,6 +71,7 @@ class Library(TemplateView):
         data = super(Library, self).get_context_data(**kwargs)
         path = self.kwargs['path'][:-1]
         data['path'] = path
+        data['base_path'] = reverse('mediacat-library', kwargs={"path": ""})
 
         if path == 'uncategorized':
             child_paths = []

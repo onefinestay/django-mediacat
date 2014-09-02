@@ -89,6 +89,8 @@ var CategoryStore = Fluxxor.createStore({
 
   onCategorySelect: function(payload) {
     this.state = this.state.set('selectedPath', payload.category.get('path'));
+    var urlPath = this.state.get('basePath') + this.state.get('selectedPath') + '/';
+    window.history.replaceState(null, '', urlPath);
     this.emit('change');
   },
 
@@ -149,7 +151,7 @@ var CategoryStore = Fluxxor.createStore({
     }
     requests = requests.set(payload.category.get('path'), req);
     this.state = this.state.set('fetchRequests', requests);
-    this.emit('change');    
+    this.emit('change');
   }
 
 });

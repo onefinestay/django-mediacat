@@ -49,14 +49,62 @@ var ProxyImg = React.createClass({
   render: function() {
     var src = this.props.src;
 
+    var containerWidth = this.props.maxWidth;
+    var containerHeight = this.props.maxHeight;
+
+    var width = this.props.width;
+    var height = this.props.height;
+    var ratio = width / height;
+
+    var displayWidth;
+    var displayHeight;
+    var displayTop;
+    var displayLeft;
+    var displayScale;
+
+    var containerRatio = containerWidth / containerHeight;
+
+    if (ratio >= containerRatio) {
+      // Landscape
+      displayWidth = containerWidth;
+      displayScale = containerWidth / width;
+
+      if (displayScale > 1) {
+        displayScale = 1;
+        displayWidth = width;
+      }
+
+      displayHeight = height * displayScale;
+    } else {
+      // Portrait
+      displayHeight = containerHeight;
+      displayScale = containerHeight / height;
+
+      if (displayScale > 1) {
+        displayScale = 1;
+        displayHeight = height;
+      }
+
+      displayWidth = width * displayScale;
+    }
+
+    displayTop = (containerHeight - displayHeight) / 2;
+    displayLeft = (containerWidth- displayWidth) / 2;  
+
     var classes = {
       'proxy-image': true,
       'proxy-image-preloaded': this.state.alreadyLoaded ? true : false
     };
 
     var style = {
-      'opacity': this.state.loaded ? 100 : 0,
-      'background-image': `url('${ src }')`
+      'opacity': this.state.loaded ? 100 : 0
+    };
+
+    var imgStyle = {
+        width: displayWidth + 'px',
+        height: displayHeight + 'px',
+        top: displayTop + 'px',
+        left: displayLeft + 'px'
     };
 
     var spinnerStyle = {
@@ -65,9 +113,8 @@ var ProxyImg = React.createClass({
     return (
       <div className={cx(classes)}>
         <div className="proxy-image-bg" style={style}>
-          <img src={src} />
+          <img src={src} style={imgStyle} />
         </div>
-        <div className="proxy-image-spinner" style={spinnerStyle}><RadialLoader /></div>
       </div>
     );
   }
