@@ -151,7 +151,8 @@ body {
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
-  flex-direction: row; }
+  flex-direction: row;
+  scroll-behavior: smooth; }
 
 .mediacat-application {
   -moz-box-sizing: border-box;
@@ -212,6 +213,11 @@ body {
       opacity: 0.8; }
     .mediacat-application button:focus, .mediacat-application .button:focus {
       outline: none; }
+    .mediacat-application button.disabled, .mediacat-application .button.disabled {
+      opacity: 0.5;
+      cursor: default; }
+      .mediacat-application button.disabled:hover, .mediacat-application .button.disabled:hover {
+        opacity: 0.5; }
     .mediacat-application button.icon, .mediacat-application .button.icon {
       font-size: 24px;
       padding: 5px 10px;
@@ -409,10 +415,14 @@ body {
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg); }
-    .mediacat-application .mediacat-categories-label .no-children {
+    .mediacat-application .mediacat-categories-label .icon-dash {
       display: inline-block;
-      margin-right: 10px;
-      width: 15px; }
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0;
+      text-align: center; }
     .mediacat-application .mediacat-categories-label .loading {
       opacity: 0.35; }
     .mediacat-application .mediacat-categories-label .linear-loader {
@@ -499,7 +509,7 @@ body {
         left: 0;
         right: 0;
         bottom: 0;
-        background-size: contain;
+        background-size: cover;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         opacity: 1;
@@ -512,7 +522,7 @@ body {
         right: 0;
         bottom: 0;
         z-index: 1;
-        background-size: contain;
+        background-size: cover;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         opacity: 0;

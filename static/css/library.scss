@@ -16,6 +16,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: row;
+  scroll-behavior: smooth;
 }
 
 .#{$ns}-application {
@@ -81,6 +82,17 @@ body {
     &:focus {
       outline: none;
     }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: default;
+
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+
 
     &.icon {
       font-size: 24px;
@@ -267,10 +279,14 @@ body {
       }
     }
 
-    .no-children {
+    .icon-dash {
       display: inline-block;
-      margin-right: 10px;
-      width: 15px;      
+      margin-right: 5px;
+      font-size: 10px;
+      line-height: 1.75;
+      width: 15px;
+      opacity: 0;
+      text-align: center;
     }    
 
     .loading {
@@ -355,7 +371,7 @@ body {
         left: 0;
         right: 0;
         bottom: 0;
-        background-size: contain;
+        background-size: cover;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         opacity: 1;
@@ -369,7 +385,7 @@ body {
         right: 0;
         bottom: 0;
         z-index: 1;
-        background-size: contain;
+        background-size: cover;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         opacity: 0;

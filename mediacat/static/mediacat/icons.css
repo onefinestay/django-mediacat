@@ -24,14 +24,18 @@
 	content: "\E001";
 }
 
-.icon-detail:before {
+.icon-dash:before {
 	content: "\E002";
 }
 
-.icon-grid:before {
+.icon-detail:before {
 	content: "\E003";
 }
 
-.icon-upload:before {
+.icon-grid:before {
 	content: "\E004";
+}
+
+.icon-upload:before {
+	content: "\E005";
 }

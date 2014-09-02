@@ -50,6 +50,13 @@ var DetailProxyImage = React.createClass({
     var src = this.props.src;
     var placeholderSrc = this.props.placeholderSrc;
 
+    var containerStyle = {
+      width: this.props.width + 'px',
+      height: this.props.height + 'px',
+      top: this.props.top + 'px',
+      left: this.props.left + 'px'
+    };
+
     var classes = {
       'detail-proxy-image': true,
       'detail-proxy-image-preloaded': this.state.alreadyLoaded ? true : false
@@ -68,7 +75,7 @@ var DetailProxyImage = React.createClass({
       'opacity': this.state.loaded ? 0 : 100
     };
     return (
-      <div className={cx(classes)}>
+      <div className={cx(classes)} style={containerStyle}>
         <div className="detail-proxy-image-placeholder" style={placeholderStyle} />
         <div className="detail-proxy-image-bg" style={style}>
           <img src={src} />

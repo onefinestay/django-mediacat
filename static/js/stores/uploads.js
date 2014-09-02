@@ -44,10 +44,15 @@ var UploadStore = Fluxxor.createStore({
       this.flux.actions.uploads.complete(response, id, file, categoryPath);
     }.bind(this);
 
-    var req = request.post('/mediacat/images/')
-      .use(django)
-      .field('associated_content_type', content_type)
-      .field('associated_object_id', object_id)
+    var req = request.post('/mediacat/images/').use(django);
+
+    if (content_type && object_id) {
+      req = req
+        .field('associated_content_type', content_type)
+        .field('associated_object_id', object_id);
+    }
+
+    req = req
       .field('image_file', file)
       .end(onComplete);
 

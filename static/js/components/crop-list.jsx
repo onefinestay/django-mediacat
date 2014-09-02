@@ -68,7 +68,7 @@ var Crop = React.createClass({
         <div className="mediacat-crop-preview-frame" style={frameStyles} >
           <div className="mediacat-crop-preview" style={previewStyles} />
         </div>
-        {crop.get('key')}
+        {crop.get('label')}
       </li>
     );
   }

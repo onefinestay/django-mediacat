@@ -57,22 +57,85 @@ var Detail = React.createClass({
     var cropWrapperStyle;
     var width;
     var height;
+    var containerRatio;
+    var ratio;
+    var displayWidth;
+    var displayHeight;
+    var displayTop;
+    var displayLeft;
+    var displayScale;
 
-    if (media && crop && this.state.width && this.state.height) {
+    var readyToDisplay = media && this.state.width && this.state.height;
+
+    if (readyToDisplay) {
       width = media.get('width');
       height = media.get('height');
+      ratio = width / height;
 
+      containerRatio = this.state.width / this.state.height;
+
+      if (ratio >= containerRatio) {
+        // Landscape
+        displayWidth = this.state.width;
+        displayScale = this.state.width / width;
+
+        if (displayScale > 1) {
+          displayScale = 1;
+          displayWidth = width;
+        }
+
+        displayHeight = height * displayScale;
+      } else {
+        // Portrait
+        displayHeight = this.state.height;
+        displayScale = this.state.height / width;
+
+        if (displayScale > 1) {
+          displayScale = 1;
+          displayHeight = height;
+        }
+
+        displayWidth = width * displayScale;
+      }
+    }
+
+    displayTop = (this.state.height - displayHeight) / 2;
+    displayLeft = (this.state.width - displayWidth) / 2;    
+
+    if (readyToDisplay && crop) {
       return (
         <div className="mediacat-detail mediacat-detail-crop">
-          <DetailProxyImage key={media.get('thumbnail')} src={media.get('url')} placeholderSrc={media.get('thumbnail')} />
-          <Cropper key={crop.get('id')} width={this.state.width} height={this.state.height} media={media} crop={crop} />
+          <DetailProxyImage
+            key={media.get('thumbnail')} 
+            width={displayWidth} 
+            height={displayHeight} 
+            top={displayTop} 
+            left={displayLeft} 
+            src={media.get('url')} 
+            placeholderSrc={media.get('thumbnail')} />
+          <Cropper 
+            key={crop.get('id')} 
+            scale={displayScale}
+            width={displayWidth} 
+            height={displayHeight} 
+            top={displayTop} 
+            left={displayLeft} 
+            media={media} 
+            crop={crop} />
         </div>
       );
     }
 
     return (
       <div className="mediacat-detail">
-        {media ? <DetailProxyImage key={media.get('thumbnail')} src={media.get('url')} placeholderSrc={media.get('thumbnail')} /> : null}
+        {readyToDisplay ? <DetailProxyImage
+          key={media.get('thumbnail')}
+          width={displayWidth} 
+          height={displayHeight} 
+          top={displayTop} 
+          left={displayLeft}           
+          src={media.get('url')} 
+          placeholderSrc={media.get('thumbnail')} /> : null}
       </div>
     );
   }
