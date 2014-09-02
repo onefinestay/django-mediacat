@@ -95,7 +95,6 @@ var ScrollPane = React.createClass({
   },
 
   handleMouseMove: function(event) {
-    console.log('Mouse move');
     var dX;
     var dY;
     var handleX;
@@ -146,7 +145,6 @@ var ScrollPane = React.createClass({
   },
 
   handleMouseUp: function(event) {
-    console.log('Mouse up');
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);    
 
