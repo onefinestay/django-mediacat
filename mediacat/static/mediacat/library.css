@@ -135,14 +135,7 @@
     animation-delay: -0.16s; }
 
 .scrollpane {
-  position: relative;
-  -webkit-transform: translatez(0);
-  -ms-transform: translatez(0);
-  transform: translatez(0); }
-  .scrollpane > * {
-    -webkit-transform: translatez(0);
-    -ms-transform: translatez(0);
-    transform: translatez(0); }
+  position: relative; }
   .scrollpane .scrollpane-scrollbar-handle {
     position: absolute;
     background-color: #414858;

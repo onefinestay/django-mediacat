@@ -6,11 +6,38 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 
 
+var ScrollPaneHandle = React.createClass({
+  render: function() {
+    var style;
+
+    if (this.props.direction === 'vertical') {
+      style = {
+        height: this.props.handleSize + '%',
+        top: this.props.position + '%'        
+      };
+    } else {
+      style = {
+        width: this.props.handleSize + '%',
+        left: this.props.position + '%'        
+      };
+    }
+
+    return (
+      <div className="scrollpane-scrollbar-handle" style={style} onMouseDown={this.props.onDrag} />
+    );
+  }
+});
+
+
 var ScrollPane = React.createClass({
   mixins: [PureRenderMixin],
 
   getInitialState: function() {
     return {
+      dragging: false,
+      dragMode: null,
+      dragPrevX: null,
+      dragPrevY: null,
       scrollY: 0,
       scrollX: 0,
       width: null,
@@ -34,7 +61,6 @@ var ScrollPane = React.createClass({
 
   componentDidUpdate: function(prevProps, prevState) {
     if (prevProps !== this.props) {
-      console.log('prop change');
       this.updateDOMDimensions();
     }
   },
@@ -46,6 +72,90 @@ var ScrollPane = React.createClass({
 
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.updateDOMDimensions);
+  },
+
+  handleDragX: function(event) {
+    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseup', this.handleMouseUp);
+    this.setState({
+      dragging: true,
+      dragMode: 'horizontal',
+      dragPrevX: event.clientX
+    });
+  },    
+
+  handleDragY: function(event) {
+    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseup', this.handleMouseUp);
+    this.setState({
+      dragging: true,
+      dragMode: 'vertical',
+      dragPrevY: event.clientY
+    });
+  },
+
+  handleMouseMove: function(event) {
+    console.log('Mouse move');
+    var dX;
+    var dY;
+    var handleX;
+    var handleY;
+    var newScrollX = this.state.scrollX;
+    var newScrollY = this.state.scrollY;
+
+    if (this.state.dragging) {
+      if (this.state.dragMode === 'horizontal') {
+        dX = event.clientX - this.state.dragPrevX;
+
+        if (Math.abs(dX) > 0) {
+          handleX = 100 * (this.state.width / this.state.contentWidth);
+          dX = 100 * (dX / this.state.width);
+
+          newScrollX = newScrollX + dX;
+
+          if (newScrollX > 100 - handleX) {
+            newScrollX = 100 - handleX;
+          } else if (newScrollX < 0) {
+            newScrollX = 0;
+          }
+        }
+      } else {
+        dY = event.clientY - this.state.dragPrevY;
+
+        if (Math.abs(dY) > 0) {
+          handleY = 100 * (this.state.height / this.state.contentHeight);
+          dY = 100 * (dY / this.state.height);
+
+          newScrollY = newScrollY + dY;
+
+          if (newScrollY > 100 - handleY) {
+            newScrollY = 100 - handleY;
+          } else if (newScrollY < 0) {
+            newScrollY = 0;
+          }
+        }
+      }
+
+      this.setState({
+        dragPrevX: event.clientX,
+        dragPrevY: event.clientY,
+        scrollY: newScrollY,
+        scrollX: newScrollX
+      });
+    }
+  },
+
+  handleMouseUp: function(event) {
+    console.log('Mouse up');
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseup', this.handleMouseUp);    
+
+    this.setState({
+      dragging: false,
+      dragMode: null,
+      dragPrevX: null,
+      dragPrevY: null
+    });
   },
 
   handleWheel: function(event) {
@@ -97,7 +207,9 @@ var ScrollPane = React.createClass({
   render: function() {
     var readyToDisplay = this.state.width && this.state.height;
     var verticalHandleStyles;
+    var verticalHandleSize;
     var horizontalHandleStyles;
+    var horizontalHandleSize;
     var contentStyles;
     var translateX = 0;
     var translateY = 0;
@@ -107,22 +219,12 @@ var ScrollPane = React.createClass({
       var shouldScrollVertical = this.state.contentHeight > this.state.height;
 
       if (shouldScrollVertical) {
-        var handleHeight = 100 * (this.state.height / this.state.contentHeight);
-
-        verticalHandleStyles = {
-          height: handleHeight + '%',
-          top: this.state.scrollY + '%'
-        };
+        verticalHandleSize = 100 * (this.state.height / this.state.contentHeight);
         translateY = -this.state.scrollY;
       }
 
       if (shouldScrollHorizontal) {
-        var handleWidth = 100 * (this.state.width / this.state.contentWidth);
-
-        horizontalHandleStyles = {
-          width: handleWidth + '%',
-          left: this.state.scrollX + '%'
-        };
+        horizontalHandleSize = 100 * (this.state.width / this.state.contentWidth);
         translateX = -this.state.scrollX;
       }      
 
@@ -140,10 +242,10 @@ var ScrollPane = React.createClass({
         <div className="scrollpane" onWheel={this.handleWheel}>
           {shouldScrollVertical &&
           <div className="scrollpane-scrollbar scrollpane-scrollbar-vertical">
-            <div className="scrollpane-scrollbar-handle" style={verticalHandleStyles} />
+            <ScrollPaneHandle direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
           </div>}
           {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal">
-            <div className="scrollpane-scrollbar-handle" style={horizontalHandleStyles} />
+            <ScrollPaneHandle direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
           </div>}
           <div className={cx(viewportClasses)}>
           <div className="scrollpane-content" style={contentStyles}>

@@ -4,11 +4,6 @@ $scrollbar-size: 15px;
 
 .scrollpane {
 	position: relative;
-	transform: translatez(0);
-
-	> * {
-		transform: translatez(0);
-	}
 
 	.scrollpane-scrollbar-handle {
 		position: absolute;

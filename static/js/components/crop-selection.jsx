@@ -44,8 +44,8 @@ var CropSelection = React.createClass({
     event.preventDefault();
 
     if (event.button === 0) {
-      document.body.addEventListener('mousemove', this.handleMouseMove);
-      document.body.addEventListener('mouseup', this.handleMouseUp);          
+      document.addEventListener('mousemove', this.handleMouseMove);
+      document.addEventListener('mouseup', this.handleMouseUp);          
       this.setState({
         dragging: true,
         dragOrigin: 'center',
@@ -59,8 +59,8 @@ var CropSelection = React.createClass({
     event.preventDefault();
 
     if (event.button === 0) {
-      document.body.addEventListener('mousemove', this.handleMouseMove);
-      document.body.addEventListener('mouseup', this.handleMouseUp);    
+      document.addEventListener('mousemove', this.handleMouseMove);
+      document.addEventListener('mouseup', this.handleMouseUp);    
       this.setState({
         dragging: true,
         dragOrigin: origin,
@@ -92,8 +92,8 @@ var CropSelection = React.createClass({
   handleMouseUp: function(event) {
     event.preventDefault();
 
-    document.body.removeEventListener('mousemove', this.handleMouseMove);
-    document.body.removeEventListener('mouseup', this.handleMouseUp);    
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseup', this.handleMouseUp);    
 
     this.setState({
       dragging: false,
