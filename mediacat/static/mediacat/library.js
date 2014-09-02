@@ -3782,7 +3782,17 @@
 	
 	  componentDidUpdate: function(prevProps, prevState) {
 	    if (prevProps !== this.props) {
+	      console.log('prop change');
 	      this.updateDOMDimensions();
+	    }
+	  },
+	
+	  componentWillReceiveProps: function(nextProps) {
+	    if (nextProps !== this.props) {
+	      this.setState({
+	        scrollX: 0,
+	        scrollY: 0
+	      });
 	    }
 	  },
 	
@@ -3796,44 +3806,49 @@
 	  },
 	
 	  handleWheel: function(event) {
-	    event.preventDefault();
-	    event.stopPropagation();
-	    var dY;
-	    var handleY;
-	    var handleX;
-	    var newScrollX;
-	    var newScrollY;
+	    if (this.state.width && this.state.height) {
+	      var shouldScrollHorizontal = this.state.contentWidth > this.state.width;
+	      var shouldScrollVertical = this.state.contentHeight > this.state.height;
 	
-	    if (event.deltaY && this.state.contentHeight > this.state.height) {
-	      handleY = 100 * (this.state.height / this.state.contentHeight);
-	      dY = 100 * (event.deltaY / this.state.contentHeight);
+	      event.preventDefault();
+	      event.stopPropagation();
+	      var dY;
+	      var handleY;
+	      var handleX;
+	      var newScrollX = this.state.scrollX;
+	      var newScrollY = this.state.scrollY;
 	
-	      newScrollY = this.state.scrollY + dY;
+	      if (Math.abs(event.deltaY) > 0 && shouldScrollVertical) {
+	        handleY = 100 * (this.state.height / this.state.contentHeight);
+	        dY = 100 * (event.deltaY / this.state.contentHeight);
 	
-	      if (newScrollY > 100 - handleY) {
-	        newScrollY = 100 - handleY;
-	      } else if (newScrollY < 0) {
-	        newScrollY = 0;
+	        newScrollY = newScrollY + dY;
+	
+	        if (newScrollY > 100 - handleY) {
+	          newScrollY = 100 - handleY;
+	        } else if (newScrollY < 0) {
+	          newScrollY = 0;
+	        }
 	      }
-	    }
 	
-	    if (event.deltaX && this.state.contentWidth > this.state.width) {
-	      handleX = 100 * (this.state.width / this.state.contentWidth);
-	      dX = 100 * (event.deltaX / this.state.contentWidth);
+	      if (Math.abs(event.deltaX) > 0 && shouldScrollHorizontal) {
+	        handleX = 100 * (this.state.width / this.state.contentWidth);
+	        dX = 100 * (event.deltaX / this.state.contentWidth);
 	
-	      newScrollX = this.state.scrollX + dX;
+	        newScrollX = newScrollX + dX;
 	
-	      if (newScrollX > 100 - handleX) {
-	        newScrollX = 100 - handleX;
-	      } else if (newScrollX < 0) {
-	        newScrollX = 0;
+	        if (newScrollX > 100 - handleX) {
+	          newScrollX = 100 - handleX;
+	        } else if (newScrollX < 0) {
+	          newScrollX = 0;
+	        }
 	      }
-	    }
 	
-	    this.setState({
-	      scrollY: newScrollY,
-	      scrollX: newScrollX
-	    });
+	      this.setState({
+	        scrollY: newScrollY,
+	        scrollX: newScrollX
+	      });
+	    }
 	  },
 	
 	  render: function() {
