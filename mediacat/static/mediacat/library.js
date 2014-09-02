@@ -11766,6 +11766,8 @@
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 15);
 	
+	var ScrollPane = __webpack_require__(/*! ./scrollpane */ 42);
+	
 	
 	var Crop = React.createClass({displayName: 'Crop',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
@@ -11857,8 +11859,10 @@
 	    crops = this.state.crops.map(function(crop)  {return Crop({key: crop.get('id'), x1: crop.get('x1'), x2: crop.get('x2'), y1: crop.get('y1'), y2: crop.get('y2'), crop: crop, media: media});});
 	
 	    return (
-	      React.DOM.ul({className: "mediacat-crop-list"}, 
-	        crops.toJS()
+	      ScrollPane(null, 
+	        React.DOM.ul({className: "mediacat-crop-list"}, 
+	          crops.toJS()
+	        )
 	      )
 	    );
 	  }

@@ -832,6 +832,9 @@ body {
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
     flex-direction: row;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
     background-color: #414858;
     border-bottom: 1px #1a0000 solid;
     height: 40px; }
@@ -843,7 +846,10 @@ body {
       border: 1px solid #414858;
       border-bottom-width: 0;
       cursor: pointer;
-      border-radius: 3px 3px 0 0; }
+      border-radius: 3px 3px 0 0;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0; }
     .mediacat-tabs .mediacat-tabs-buttons .mediacat-tabs-button-active {
       background-color: #2b303b;
       margin-bottom: -1px;
@@ -885,7 +891,16 @@ body {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
-    flex-grow: 1; }
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .mediacat-tabs .mediacat-crops-panel > .scrollpane {
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1; }
   .mediacat-tabs .mediacat-crop-list {
     margin: 0;
     padding: 10px;

@@ -8,6 +8,8 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
 
+var ScrollPane = require('./scrollpane');
+
 
 var Crop = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
@@ -99,9 +101,11 @@ var CropList = React.createClass({
     crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
-      <ul className="mediacat-crop-list">
-        {crops.toJS()}
-      </ul>
+      <ScrollPane>
+        <ul className="mediacat-crop-list">
+          {crops.toJS()}
+        </ul>
+      </ScrollPane>
     );
   }
 });

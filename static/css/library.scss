@@ -706,6 +706,7 @@ body {
     padding: 0 0 0 5px;
     display: flex;
     flex-direction: row;
+    flex-shrink: 0;
     background-color: #414858;
     border-bottom: 1px #1a0000 solid;
     height: 40px;
@@ -719,6 +720,7 @@ body {
       border-bottom-width: 0;
       cursor: pointer;
       border-radius: 3px 3px 0 0;
+      flex-shrink: 0;
     }
 
     .#{$ns}-tabs-button-active {
@@ -748,7 +750,12 @@ body {
   }
   
   .#{$ns}-crops-panel {
-    flex-grow: 1
+    flex-grow: 1;
+    display: flex;
+
+    > .scrollpane {
+      flex-grow: 1;
+    }
   }
 
   .#{$ns}-crop-list {
