@@ -5,8 +5,9 @@ var Immutable = require('immutable');
 var request = require('superagent');
 
 var Constants = require('../constants');
-
 var matrix = require('matrix-utilities')
+var uuid = require('uuid-v4');
+
 
 var getScaleMatrix = function(scale) {
   return [
@@ -79,6 +80,7 @@ var MediaStore = Fluxxor.createStore({
     CROP_DESELECTED: 'onCropDeselect',
     CROP_MOVE: 'onCropMove',
     CROP_RESIZE: 'onCropResize',
+    CROP_ADD: 'onCropAdd',
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
     UPLOAD_COMPLETE: 'onUploadComplete'
   },
@@ -267,6 +269,70 @@ var MediaStore = Fluxxor.createStore({
       }
       return crop;
     }); 
+    this.emit('change');
+  },
+
+  onCropAdd: function(payload) {
+    var cropType = payload.cropType;
+    var media = this.getSelectedMedia();
+
+    var width = media.get('width');
+    var height = media.get('height');
+    var ratio = width / height;
+
+    var cropRatio = this.state.getIn(['availableCrops', cropType, 1]);
+    var cropWidth;
+    var cropHeight;
+
+    var x1;
+    var x2;
+    var y1;
+    var y2;
+
+    if (cropRatio >= ratio) {
+      // Touch the left and right
+      cropWidth = width;
+
+      x1 = 0;
+      x2 = cropWidth;
+
+      cropHeight = cropWidth / cropRatio;
+
+      y1 = Math.round((height - cropHeight) / 2);
+      y2 = height - y1;
+
+    } else {
+      cropHeight = height;
+
+      y1 = 0;
+      y2 = cropHeight;
+
+      cropWidth = cropHeight * cropRatio;
+
+      x1 = Math.round((width - cropWidth) / 2);
+      x2 = width - x1;
+    }
+
+    console.log(x1, x2, y1, y2);
+
+    console.log(this.getSelectedMedia().get('crops').toJS());
+
+
+    var newCrop = Immutable.fromJS({
+      applications: [],
+      height: cropHeight,
+      id: uuid(), // This doesn't get saved, it's just so that React has a key
+      key: cropType,
+      ratio: cropRatio,
+      x1: x1,
+      x2: x2,
+      y1: y1,
+      y2: y2
+    });
+
+    var index = this.state.get('media').findIndex(m => m.get('id') === media.get('id'));
+
+    this.state = this.state.updateIn(['media', index, 'crops'], crops => crops.push(newCrop));
     this.emit('change');
   },
 

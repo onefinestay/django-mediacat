@@ -32,13 +32,8 @@ class ImageCropSerializer(serializers.ModelSerializer):
         model = models.ImageCrop
         fields = (
             'id',
-            'scale',
-            'score',
-            'width',
-            'height',
             'key',
             'ratio',
-            'label',
             'x1',
             'y1',
             'x2',

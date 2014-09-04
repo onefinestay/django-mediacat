@@ -18,10 +18,17 @@ var CropsPanel = React.createClass({
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
+    var selected = store.getSelectedMedia();
 
     return {
+      media: selected,      
       availableCrops: store.state.get('availableCrops')
     };
+  },
+
+  handleAdd: function(event) {
+  	var cropType = this.refs.cropType.getDOMNode().value;
+  	this.getFlux().actions.crop.add(cropType);
   },
   
   render: function() {
@@ -29,11 +36,13 @@ var CropsPanel = React.createClass({
   		return <option value={key}>{config.get(0)}</option>;
 	  });
 
+    var disabled = this.state.media ? false : true;
+
   	var toolbar = (
   		<PanelToolbar>
-      	<select>{options.toJS()}</select>
+      	<select disabled={disabled} ref="cropType">{options.toJS()}</select>
       	<span className="separator" />
-      	<button>Add</button>
+      	<button disabled={disabled} onClick={this.handleAdd}>Add</button>
       </PanelToolbar>
   	);
 

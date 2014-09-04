@@ -39,6 +39,10 @@ var Actions = {
     resize: function(crop, dX, dY, position) {
       this.dispatch(Constants.CROP_RESIZE, {crop, dX, dY, position});
     },
+
+    add: function(cropType) {
+      this.dispatch(Constants.CROP_ADD, {cropType});
+    }
   },
 
   categories: {

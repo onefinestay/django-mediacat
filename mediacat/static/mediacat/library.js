@@ -130,6 +130,10 @@
 	    resize: function(crop, dX, dY, position) {
 	      this.dispatch(Constants.CROP_RESIZE, {crop:crop, dX:dX, dY:dY, position:position});
 	    },
+	
+	    add: function(cropType) {
+	      this.dispatch(Constants.CROP_ADD, {cropType:cropType});
+	    }
 	  },
 	
 	  categories: {
@@ -403,8 +407,9 @@
 	var request = __webpack_require__(/*! superagent */ 40);
 	
 	var Constants = __webpack_require__(/*! ../constants */ 10);
-	
 	var matrix = __webpack_require__(/*! matrix-utilities */ 26)
+	var uuid = __webpack_require__(/*! uuid-v4 */ 18);
+	
 	
 	var getScaleMatrix = function(scale) {
 	  return [
@@ -477,6 +482,7 @@
 	    CROP_DESELECTED: 'onCropDeselect',
 	    CROP_MOVE: 'onCropMove',
 	    CROP_RESIZE: 'onCropResize',
+	    CROP_ADD: 'onCropAdd',
 	    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
 	    UPLOAD_COMPLETE: 'onUploadComplete'
 	  },
@@ -665,6 +671,70 @@
 	      }
 	      return crop;
 	    }); 
+	    this.emit('change');
+	  },
+	
+	  onCropAdd: function(payload) {
+	    var cropType = payload.cropType;
+	    var media = this.getSelectedMedia();
+	
+	    var width = media.get('width');
+	    var height = media.get('height');
+	    var ratio = width / height;
+	
+	    var cropRatio = this.state.getIn(['availableCrops', cropType, 1]);
+	    var cropWidth;
+	    var cropHeight;
+	
+	    var x1;
+	    var x2;
+	    var y1;
+	    var y2;
+	
+	    if (cropRatio >= ratio) {
+	      // Touch the left and right
+	      cropWidth = width;
+	
+	      x1 = 0;
+	      x2 = cropWidth;
+	
+	      cropHeight = cropWidth / cropRatio;
+	
+	      y1 = Math.round((height - cropHeight) / 2);
+	      y2 = height - y1;
+	
+	    } else {
+	      cropHeight = height;
+	
+	      y1 = 0;
+	      y2 = cropHeight;
+	
+	      cropWidth = cropHeight * cropRatio;
+	
+	      x1 = Math.round((width - cropWidth) / 2);
+	      x2 = width - x1;
+	    }
+	
+	    console.log(x1, x2, y1, y2);
+	
+	    console.log(this.getSelectedMedia().get('crops').toJS());
+	
+	
+	    var newCrop = Immutable.fromJS({
+	      applications: [],
+	      height: cropHeight,
+	      id: uuid(), // This doesn't get saved, it's just so that React has a key
+	      key: cropType,
+	      ratio: cropRatio,
+	      x1: x1,
+	      x2: x2,
+	      y1: y1,
+	      y2: y2
+	    });
+	
+	    var index = this.state.get('media').findIndex(function(m)  {return m.get('id') === media.get('id');});
+	
+	    this.state = this.state.updateIn(['media', index, 'crops'], function(crops)  {return crops.push(newCrop);});
 	    this.emit('change');
 	  },
 	
@@ -890,6 +960,7 @@
 	  CROP_DESELECTED: 'CROP_DESELECTED',
 	  CROP_MOVE: 'CROP_MOVE',
 	  CROP_RESIZE: 'CROP_RESIZE',
+	  CROP_ADD: 'CROP_ADD',
 	  CATEGORY_SELECTED: 'CATEGORY_SELECTED',
 	  CATEGORY_OPEN: 'CATEGORY_OPEN',
 	  CATEGORY_CLOSE: 'CATEGORY_CLOSE',
@@ -2631,10 +2702,17 @@
 	
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
+	    var selected = store.getSelectedMedia();
 	
 	    return {
+	      media: selected,      
 	      availableCrops: store.state.get('availableCrops')
 	    };
+	  },
+	
+	  handleAdd: function(event) {
+	  	var cropType = this.refs.cropType.getDOMNode().value;
+	  	this.getFlux().actions.crop.add(cropType);
 	  },
 	  
 	  render: function() {
@@ -2642,11 +2720,13 @@
 	  		return React.DOM.option({value: key}, config.get(0));
 		  });
 	
+	    var disabled = this.state.media ? false : true;
+	
 	  	var toolbar = (
 	  		PanelToolbar(null, 
-	      	React.DOM.select(null, options.toJS()), 
+	      	React.DOM.select({disabled: disabled, ref: "cropType"}, options.toJS()), 
 	      	React.DOM.span({className: "separator"}), 
-	      	React.DOM.button(null, "Add")
+	      	React.DOM.button({disabled: disabled, onClick: this.handleAdd}, "Add")
 	      )
 	  	);
 	
