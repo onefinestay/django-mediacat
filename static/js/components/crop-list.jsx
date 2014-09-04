@@ -8,9 +8,6 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
 
-var ScrollPane = require('./scrollpane');
-
-
 var Crop = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
 
@@ -70,15 +67,43 @@ var Crop = React.createClass({
         <div className="mediacat-crop-preview-frame" style={frameStyles} >
           <div className="mediacat-crop-preview" style={previewStyles} />
         </div>
-        {crop.get('label')}
-        <div>
-          <span className="icon icon-reject" />
-          <span className="icon icon-star" />
-          <span className="icon icon-star" />
-          <span className="icon icon-star" />
-          <span className="icon icon-empty-star" />
-          <span className="icon icon-empty-star" />
+        Usages: {crop.get('applications').length}
+      </li>
+    );
+  }
+});
+
+
+var CropType = React.createClass({
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+
+  getStateFromFlux: function() {
+    var store = this.getFlux().store('Media');
+    var selected = store.getSelectedMedia();
+    var crops = selected ? selected.get('crops').filter(c => c.get('key') === this.props.key) : null;
+
+    return {
+      media: selected,
+      crops: crops
+    };
+  },
+
+  render: function() {
+    var media = this.state.media;     
+    var crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
+
+    if (!crops.count()) {
+      return null;
+    }
+
+    return (
+      <li>
+        <div className="mediacat-crop-type-header">
+          {this.props.config.get(0)}
         </div>
+        {crops.count() ? <ul className="mediacat-crop-list">
+          {crops.toJS()}
+        </ul> : null}
       </li>
     );
   }
@@ -94,26 +119,25 @@ var CropList = React.createClass({
 
     return {
       media: selected,
+      availableCrops: store.state.get('availableCrops'),
       crops: selected ? selected.get('crops') : null
     };
   },
 
   render: function() {
     var media = this.state.media;    
-    var crops;
+    var availableCrops;
 
     if (!media) {
       return null;
     }
 
-    crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
+    availableCrops = this.state.availableCrops.map((config, key) => <CropType key={key} config={config} />);
 
     return (
-      <ScrollPane>
-        <ul className="mediacat-crop-list">
-          {crops.toJS()}
-        </ul>
-      </ScrollPane>
+      <ul className="mediacat-crop-type-list">
+        {availableCrops.toJS()}
+      </ul>
     );
   }
 });

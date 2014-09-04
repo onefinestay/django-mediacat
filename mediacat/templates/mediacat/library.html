@@ -16,7 +16,8 @@
  			selectedMedia: null,
  			selectedCrop: null,
  			loading: false,
- 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}
+ 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
+ 			availableCrops: {{ available_crops|jsonify }}
  		},
  		categories: {
             basePath: {{ base_path|jsonify }},

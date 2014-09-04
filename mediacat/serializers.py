@@ -4,10 +4,21 @@ from rest_framework import serializers
 from . import models
 
 
+class ImageCropApplicationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.ImageCropApplication
+        fields = (
+            'field_name',
+            'content_type',
+            'object_id',
+        )
+
 
 class ImageCropSerializer(serializers.ModelSerializer):
     ratio = serializers.SerializerMethodField('get_ratio')
     label = serializers.SerializerMethodField('get_label')
+    applications = ImageCropApplicationSerializer(many=True, required=False)
 
     def get_ratio(self, obj):
         crop_info = settings.MEDIACAT_AVAILABLE_CROP_RATIOS[obj.key]
@@ -32,6 +43,7 @@ class ImageCropSerializer(serializers.ModelSerializer):
             'y1',
             'x2',
             'y2',
+            'applications',
         )
 
 

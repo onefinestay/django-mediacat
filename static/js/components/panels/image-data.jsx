@@ -9,6 +9,10 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
 
 
+var Panel = require('../panel');
+var PanelToolbar = require('../panel-toolbar');
+
+
 var ImageDataPanel = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
 
@@ -25,7 +29,7 @@ var ImageDataPanel = React.createClass({
     var media = this.state.media;
 
     return (
-      <div className="mediacat-information-panel">
+      <Panel className="mediacat-information-panel">
         <table>
           <tr>
             <th scope="row">Width</th>
@@ -36,7 +40,7 @@ var ImageDataPanel = React.createClass({
             <td>{media && media.get('height')}</td>
           </tr>          
         </table>
-      </div>
+      </Panel>
     );
   }
 });

@@ -5,18 +5,6 @@ from libthumbor import CryptoURL
 
 
 def thumb(url, **kwargs):
-    '''
-        returns a thumbor url for 'url' with **kwargs as thumbor options.
-
-        Positional arguments:
-        url -- the location of the original image
-
-        Keyword arguments:
-        For the complete list of thumbor options
-        https://github.com/globocom/thumbor/wiki/Usage
-        and the actual implementation for the url generation
-        https://github.com/heynemann/libthumbor/blob/master/libthumbor/url.py
-    '''
     if settings.THUMBOR_BASE_URL:
         # If THUMBOR_BASE_URL is explicity set, use that
         base = settings.THUMBOR_BASE_URL

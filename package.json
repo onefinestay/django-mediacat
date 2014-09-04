@@ -23,7 +23,7 @@
     "mkpath": "^0.1.0",
     "react": "^0.11.1",
     "reactify": "^0.14.0",
-    "underscore": "^1.6.0",
+    "underscore": "^1.7.0",
     "watchify": "^1.0.2",
     "jsx-loader": "^0.11.0",
     "sass-loader": "^0.2.0",
@@ -34,7 +34,8 @@
     "react-router": "^0.5.2",
     "superagent": "^0.18.2",
     "matrix-utilities": "^1.2.4",
-    "uuid-v4": "^0.1.0"
+    "uuid-v4": "^0.1.0",
+    "sifter": "^0.3.4"
   },
   "devDependencies": {
     "gulp-iconfont": "^0.1.1",

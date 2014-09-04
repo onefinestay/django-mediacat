@@ -7,33 +7,27 @@ var cx = React.addons.classSet;
 
 var UploadList = require('./upload-list');
 
+var Panel = require('./panel');
+var PanelToolbar = require('./panel-toolbar');
+
 
 var Uploads = React.createClass({
   mixins: [PureRenderMixin],
 
-  getInitialState: function() {
-    return {
-      open: true
-    };
-  },
-
   render: function() {
-    var classes = {
-      'mediacat-panel': true,
-      'mediacat-uploads': true,
-      'mediacat-panel-open': this.state.open,
-    };
+    var toolbar = (
+      <PanelToolbar>
+        Uploads
+        <span className="spacer" />
+        <button className="mediacat-panel-state"><span className="icon icon-arrow" /></button>
+      </PanelToolbar>
+    );
 
     return (
-      <div className={cx(classes)}>
-        <div className="mediacat-uploads-header mediacat-panel-header toolbar">
-          Uploads
-          <span className="spacer" />
-          <button className="mediacat-panel-state"><span className="icon icon-arrow" /></button>
-          </div>
+      <Panel className="mediacat-uploads" toolbar={toolbar}>
         <UploadList />
-      </div>
-    );
+      </Panel>
+    );    
   }
 });
 

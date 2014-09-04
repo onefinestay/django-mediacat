@@ -1,0 +1,34 @@
+@import "../includes/colors";
+
+
+.panel {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+
+	> .scrollpane {
+		flex-grow: 1;
+	}
+
+	.panel-header.toolbar {
+	  background-color: #414858;
+	  flex-grow: 0;
+	  flex-shrink: 0;
+	  align-items: stretch;
+	  padding: 5px;
+	  height: 40px;
+	  line-height: 29px;
+	  border-bottom: 1px #1a0000 solid;
+	  color: #BAC5CE;
+
+	  button, .button {
+	    padding: 2px 3px 2px 0;
+
+	    .icon {
+	      padding: 2px 3px 2px 0;
+	      font-size: 12px;
+	    }
+	  }
+	}	
+}

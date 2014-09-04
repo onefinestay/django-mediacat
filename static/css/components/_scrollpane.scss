@@ -1,6 +1,6 @@
 @import "../includes/colors";
 
-$scrollbar-size: 15px;
+$scrollbar-size: 18px;
 
 .scrollpane {
 	position: relative;
@@ -8,8 +8,9 @@ $scrollbar-size: 15px;
 	.scrollpane-scrollbar-handle {
 		position: absolute;
 		background-color: #414858;
-		opacity: .8;
+		opacity: .9;
 		cursor: pointer;
+		box-shadow: inset 1px 1px 0 0 lighten(#393f4d, 10), inset -1px -1px 0 0 darken(#393f4d, 10);
 	}		
 
 	.scrollpane-scrollbar {
@@ -34,6 +35,14 @@ $scrollbar-size: 15px;
 			left: 0;
 			right: 0;
 		}		
+	}
+
+	.scrollpane-scrollbar-track {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		right: 2px;
+		bottom: 2px;
 	}
 
 	.scrollpane-scrollbar-horizontal {

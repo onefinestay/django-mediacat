@@ -2,7 +2,10 @@
 @import "./includes/dimensions";
 @import "./includes/loaders";
 
+@import "./components/panel";
 @import "./components/scrollpane";
+@import "./components/tabs";
+
 
 $ns: mediacat;
 
@@ -118,6 +121,10 @@ body {
       flex-shrink: 0;
     }
 
+    select {
+      flex-grow: 1;
+    }
+
     .button-group {
       button, .button {
         border-radius: 0;
@@ -184,37 +191,6 @@ body {
     }
   }
 
-  .#{$ns}-panel-header {
-    background-color: #414858;
-    flex-grow: 0;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-
-    button, .button {
-      padding: 2px 3px 2px 0;
-      width: 19px;
-      height: 19px;
-      line-height: 16px;    
-
-      .icon {
-        padding: 2px 3px 2px 0;
-        font-size: 12px;
-      }
-    }
-  }    
-
-  .#{$ns}-panel-open {
-    .#{$ns}-panel-state .icon {
-      transform: rotate(90deg);
-
-      &:hover {
-        transform: rotate(45deg);
-      }
-    }
-  }  
-
   .#{$ns}-navigation {
     background-color: $sidebar-bg;
     width: $sidebar-width;
@@ -236,14 +212,17 @@ body {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+
+    > .scrollpane {
+      flex-grow: 1;
+      max-height: 200px;
+    }    
   }
 
   .#{$ns}-upload-list {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    overflow: scroll;
-    max-height: 200px;
+    padding: 0;   
   }
 
   .#{$ns}-upload {
@@ -427,11 +406,13 @@ body {
     }
 
     &.#{$ns}-document-detail {
-      > .scrollpane {
+      > .panel {
         flex-grow: 0;
         flex-shrink: 0;
-        height: 225px;
+        height: 270px;        
+      }
 
+      .scrollpane {
         .scrollpane-content {
           display: inline-block;
         }
@@ -694,86 +675,59 @@ body {
   }   
 }
 
-.#{$ns}-tabs {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-
-  .#{$ns}-tabs-buttons {
-    list-style-type: none;
-    margin: 0;
-    padding: 0 0 0 5px;
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    background-color: #414858;
-    border-bottom: 1px #1a0000 solid;
-    height: 40px;
-
-    .#{$ns}-tabs-button {
-      background-color: #414858;
-      margin: 5px 0 0;
-      padding: 0 20px;
-      line-height: 34px;
-      border: 1px solid #414858;
-      border-bottom-width: 0;
-      cursor: pointer;
-      border-radius: 1px 1px 0 0;
-      flex-shrink: 0;
-    }
-
-    .#{$ns}-tabs-button-active {
-      background-color: #2b303b;
-      margin-bottom: -1px;
-      border-color: #1a0000;
-    }
-  }
-
-  .#{$ns}-tabs-panels {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .#{$ns}-tabs-panel {
-    display: none;
-    flex-grow: 1;
-    flex-direction: row;
-  }
-
-  .#{$ns}-tabs-panel-active {
-    display: flex;
-  }
-  
+.tabs { 
   .#{$ns}-crops-panel {
     flex-grow: 1;
     display: flex;
+    flex-direction: column;
 
     > .scrollpane {
       flex-grow: 1;
     }
   }
 
+  .#{$ns}-crop-type-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .#{$ns}-crop-type-header {
+    padding: 5px 10px;
+    border-bottom: 1px solid $seperator-color;
+  }
+
   .#{$ns}-crop-list {
     margin: 0;
-    padding: 10px;
+    padding: 0;
     list-style-type: none;
 
     .#{$ns}-crop {
       padding: 10px;
       background-color: #232830;
-      margin: 0 0 10px;
+      margin: 0;
       text-align: center;
       cursor: pointer;
+      border: 1px solid #232830;
+      border-bottom-color: $seperator-color;      
+
+      &:list-child {
+        margin-bottom: 0;
+      }
+
+      .icon {
+        font-size: 18px;
+        line-height: 18px;
+      }
+
+      .icon-reject {
+        font-size: 12px;
+        line-height: 18px;
+      }
     }
 
     .#{$ns}-crop-selected {
-      border: 1px solid #414858;
-      padding: 9px;
+      border-color: #414858;
       background-color: darken(#414858, 5);
     }
   }

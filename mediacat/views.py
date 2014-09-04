@@ -1,5 +1,4 @@
-import json
-
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
@@ -119,5 +118,6 @@ class Library(TemplateView):
 
         data['category_data'] = categories
         data['uncategorized'] = uncategorized
+        data['available_crops'] = settings.MEDIACAT_AVAILABLE_CROP_RATIOS
 
         return data

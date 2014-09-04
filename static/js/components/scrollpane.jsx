@@ -23,7 +23,9 @@ var ScrollPaneHandle = React.createClass({
     }
 
     return (
-      <div className="scrollpane-scrollbar-handle" style={style} onMouseDown={this.props.onDrag} />
+      <div className="scrollpane-scrollbar-track">      
+        <div className="scrollpane-scrollbar-handle" style={style} onMouseDown={this.props.onDrag} />
+      </div>
     );
   }
 });
@@ -67,10 +69,12 @@ var ScrollPane = React.createClass({
 
   componentDidMount: function() {
     this.updateDOMDimensions();
+    this.getDOMNode().addEventListener('load', this.updateDOMDimensions);    
     window.addEventListener('resize', this.updateDOMDimensions); 
   },
 
   componentWillUnmount: function() {
+    this.getDOMNode().removeEventListener('load', this.updateDOMDimensions);    
     window.removeEventListener('resize', this.updateDOMDimensions);
   },
 
@@ -240,7 +244,7 @@ var ScrollPane = React.createClass({
         <div className="scrollpane" onWheel={this.handleWheel}>
           {shouldScrollVertical &&
           <div className="scrollpane-scrollbar scrollpane-scrollbar-vertical">
-            <ScrollPaneHandle direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
+              <ScrollPaneHandle direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
           </div>}
           {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal">
             <ScrollPaneHandle direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
