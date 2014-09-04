@@ -755,6 +755,9 @@
 	    } else {
 	      this.state = this.state.set('media', Immutable.Sequence());
 	    }
+	
+	    this.state = this.state.set('selectedMedia', null);
+	    this.state = this.state.set('selectedCrop', null);    
 	    
 	    this.emit('change');
 	  },
