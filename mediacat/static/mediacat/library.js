@@ -715,11 +715,6 @@
 	      x2 = width - x1;
 	    }
 	
-	    console.log(x1, x2, y1, y2);
-	
-	    console.log(this.getSelectedMedia().get('crops').toJS());
-	
-	
 	    var newCrop = Immutable.fromJS({
 	      applications: [],
 	      height: cropHeight,
