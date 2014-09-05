@@ -32,16 +32,16 @@ var Actions = {
       this.dispatch(Constants.CROP_DESELECTED, {crop, media});
     },
 
-    move: function(crop, dX, dY) {
-      this.dispatch(Constants.CROP_MOVE, {crop, dX, dY});
+    move: function(crop, media, dX, dY) {
+      this.dispatch(Constants.CROP_MOVE, {crop, media, dX, dY});
     },
 
-    resize: function(crop, dX, dY, position) {
-      this.dispatch(Constants.CROP_RESIZE, {crop, dX, dY, position});
+    resize: function(crop, media, dX, dY, position) {
+      this.dispatch(Constants.CROP_RESIZE, {crop, media, dX, dY, position});
     },
 
-    add: function(cropType) {
-      this.dispatch(Constants.CROP_ADD, {cropType});
+    add: function(media, cropType) {
+      this.dispatch(Constants.CROP_ADD, {media, cropType});
     }
   },
 

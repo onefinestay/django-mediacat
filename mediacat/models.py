@@ -76,10 +76,10 @@ class ImageAssociation(models.Model):
         ]
 
     def save(self, **kwargs):
-        # We want to make sure this is 1 and only 1 canonical image. To that end
-        # if this instance is canonical then turn all others to False. If this
-        # instance is not set to canonical, and there aren't any others, then
-        # force it to be True
+        # We want to make sure this is 1 and only 1 canonical image. To that
+        # end if this instance is canonical then turn all others to False. If
+        # this instance is not set to canonical, and there aren't any others,
+        # then force it to be True
 
         if self.canonical:
             self.__class__.objects.filter(image=self.image).update(canonical=False)
@@ -147,107 +147,6 @@ class ImageCrop(models.Model):
         if self.y1 and self.y2:
             return self.y2 - self.y1
         return None
-
-    @property
-    def distance_from_left(self):
-        return self.x1
-
-    @property
-    def distance_from_right(self):
-        return self.image.width - self.x2
-
-    @property
-    def distance_from_top(self):
-        return self.y1
-
-    @property
-    def distance_from_bottom(self):
-        return self.image.height - self.y2
-
-    @classmethod
-    def generate_default(cls, image, key, width, height, commit=True, score=0):
-        # We generate default crops that fill the space as much as possible
-        # We centre them too, because it seems sensible.
-
-        image_ratio = image.width / image.height
-
-        crop = cls(image=image, key=key, width=width, height=height, score=score)
-
-        # We need to allow for retina sizes. The dimensions specified in the
-        # registry are the display size, rather than the image size.
-        pixel_scale = 2
-
-        actual_width = width * pixel_scale
-        actual_height = height * pixel_scale
-
-        crop_ratio = actual_width / actual_height
-
-        if crop_ratio > image_ratio:
-            if actual_width > image.width:
-                if width > image.width:
-                    # Impossible to generate this crop
-                    return
-                actual_width = width
-                pixel_scale = 1
-
-            scale = image.width / actual_width
-
-            scaled_height = actual_height * scale
-
-            crop.x1 = 0
-            crop.x2 = image.width
-            crop.y1 = int(round((image.height - scaled_height) / 2))
-            crop.y2 = int(round(crop.y1 + scaled_height))
-            crop.scale = pixel_scale
-        elif crop_ratio == image_ratio:
-            if actual_width > image.width:
-                if width > image.width:
-                    # Impossible to generate this crop
-                    return
-                pixel_scale = 1
-            # Ratios are the same, so we fill the image
-            crop.x1 = 0
-            crop.x2 = image.width
-            crop.y1 = 0
-            crop.y2 = image.height
-            crop.scale = pixel_scale
-        else:
-            if actual_height > image.height:
-                if height > image.height:
-                    # Impossible to generate this crop
-                    return
-                actual_height = height
-                pixel_scale = 1
-
-            scale = image.height / actual_height
-
-            scaled_width = actual_width * scale
-
-            crop.x1 = int(round((image.width - scaled_width) / 2))
-            crop.x2 = int(round(crop.x1 + scaled_width))
-            crop.y1 = 0
-            crop.y2 = image.height
-            crop.scale = pixel_scale
-
-        if commit:
-            crop.save()
-        return crop
-
-    @classmethod
-    def generate_for_image(cls, image):
-        """
-        Generates any missing crop placeholders for an image
-        based on the set of dimension tuples in the crop registry.
-        """
-        image_crops = image.crops.all()
-        existing_crops = set([(im.key, im.width, im.height) for im in image_crops])
-
-        for key, width, height in crop_registry - existing_crops:
-            cls.generate_default(image, key, width, height)
-
-    @property
-    def is_retina(self):
-        return self.scale >= 2
 
 
 class ImageCropApplication(models.Model):

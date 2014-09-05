@@ -12,9 +12,9 @@ var Cropper = React.createClass({
 
   moveSelection: function(dX, dY, origin, modifier) {
     if (!modifier && origin === 'center') {
-      this.getFlux().actions.crop.move(this.props.crop, dX, dY);  
+      this.getFlux().actions.crop.move(this.props.crop, this.props.media, dX, dY);  
     } else {
-      this.getFlux().actions.crop.resize(this.props.crop, dX, dY, origin);  
+      this.getFlux().actions.crop.resize(this.props.crop, this.props.media, dX, dY, origin);  
     }   
   },
  

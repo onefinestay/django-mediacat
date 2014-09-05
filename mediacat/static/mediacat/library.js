@@ -61,6 +61,7 @@
 	var CategoryStore = __webpack_require__(/*! ./stores/categories */ 3);
 	var MediaStore = __webpack_require__(/*! ./stores/media */ 4);
 	var UploadStore = __webpack_require__(/*! ./stores/uploads */ 5);
+	var CropStore = __webpack_require__(/*! ./stores/crops */ 268);
 	
 	var Actions = __webpack_require__(/*! ./actions */ 1);
 	
@@ -69,7 +70,8 @@
 	var stores = {
 	  Categories: new CategoryStore(config.categories),
 	  Media: new MediaStore(config.media),
-	  Uploads: new UploadStore(config.uploads)
+	  Uploads: new UploadStore(config.uploads),
+	  Crops: new CropStore(config.crops)
 	};
 	
 	var flux = new Fluxxor.Flux(stores, Actions);
@@ -123,16 +125,16 @@
 	      this.dispatch(Constants.CROP_DESELECTED, {crop:crop, media:media});
 	    },
 	
-	    move: function(crop, dX, dY) {
-	      this.dispatch(Constants.CROP_MOVE, {crop:crop, dX:dX, dY:dY});
+	    move: function(crop, media, dX, dY) {
+	      this.dispatch(Constants.CROP_MOVE, {crop:crop, media:media, dX:dX, dY:dY});
 	    },
 	
-	    resize: function(crop, dX, dY, position) {
-	      this.dispatch(Constants.CROP_RESIZE, {crop:crop, dX:dX, dY:dY, position:position});
+	    resize: function(crop, media, dX, dY, position) {
+	      this.dispatch(Constants.CROP_RESIZE, {crop:crop, media:media, dX:dX, dY:dY, position:position});
 	    },
 	
-	    add: function(cropType) {
-	      this.dispatch(Constants.CROP_ADD, {cropType:cropType});
+	    add: function(media, cropType) {
+	      this.dispatch(Constants.CROP_ADD, {media:media, cropType:cropType});
 	    }
 	  },
 	
@@ -407,82 +409,11 @@
 	var request = __webpack_require__(/*! superagent */ 40);
 	
 	var Constants = __webpack_require__(/*! ../constants */ 8);
-	var matrix = __webpack_require__(/*! matrix-utilities */ 26)
-	var uuid = __webpack_require__(/*! uuid-v4 */ 18);
-	
-	
-	var getScaleMatrix = function(scale) {
-	  return [
-	    [scale, 0, 0], 
-	    [0, scale, 0], 
-	    [0, 0, 1]];
-	};
-	
-	var getTranslateMatrix = function(x, y) {
-	  return [
-	    [1, 0, x], 
-	    [0, 1, y], 
-	    [0, 0, 1]]
-	  ;
-	};
-	
-	var matrixFromValues = function(v) {
-	  return [
-	    [v.x1, v.x2],
-	    [v.y1, v.y2],
-	    [1, 1]
-	  ];
-	};
-	
-	var valuesFromMatrix = function(m) {
-	  return {
-	    x1: m[0][0],
-	    x2: m[0][1],
-	    y1: m[1][0],
-	    y2: m[1][1]
-	  };
-	};
-	
-	var scaleCoordinates = function(values, scale, x, y) {
-	  var m = matrixFromValues(values);
-	  var preTranslateMatrix = getTranslateMatrix(-x, -y);
-	  var scaleMatrix = getScaleMatrix(scale);
-	  var postTranslateMatrix = getTranslateMatrix(x, y);  
-	
-	  m = matrix.multiply(preTranslateMatrix, m);
-	  m = matrix.multiply(scaleMatrix, m);
-	  m = matrix.multiply(postTranslateMatrix, m);
-	
-	  return valuesFromMatrix(m);
-	};
-	
-	var translateCoordinates = function(values, dX, dY) {
-	  var m = matrixFromValues(values);
-	  var translateMatrix = getTranslateMatrix(dX, dY);  
-	  m = matrix.multiply(translateMatrix, m);
-	  return valuesFromMatrix(m);
-	};
-	
-	var getCropOverflow = function(media, anchorX, anchorY, values) {
-	  // Sometimes we scale too far, so work out the scale necessary to fix it.
-	  var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
-	  var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
-	  var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
-	  var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
-	
-	  return {x1:x1, y1:y1, x2:x2, y2:y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
-	};
-	
 	
 	var MediaStore = Fluxxor.createStore({
 	  actions: {
 	    CATEGORY_SELECTED: 'onCategorySelect',
 	    MEDIA_SELECTED: 'onMediaSelect',
-	    CROP_SELECTED: 'onCropSelect',
-	    CROP_DESELECTED: 'onCropDeselect',
-	    CROP_MOVE: 'onCropMove',
-	    CROP_RESIZE: 'onCropResize',
-	    CROP_ADD: 'onCropAdd',
 	    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
 	    UPLOAD_COMPLETE: 'onUploadComplete'
 	  },
@@ -529,18 +460,6 @@
 	    return this.state.get('media').find(function(m)  {return m.get('id') === id;});
 	  },
 	
-	  getSelectedCrop: function() {
-	    var id = this.state.get('selectedCrop');
-	
-	    if (!id) {
-	      return null;
-	    }
-	
-	    var media = this.getSelectedMedia();
-	
-	    return media.get('crops').find(function(c)  {return c.get('id') === id;});
-	  },
-	
 	  onFetchImagesSuccess: function(payload) {
 	    var categoryPath = payload.categoryPath;
 	
@@ -562,174 +481,6 @@
 	    this.state = this.state.withMutations(function(state) {
 	      state.set('selectedMedia', payload.media.get('id')).set('selectedCrop', null);
 	    });
-	    this.emit('change');
-	  },
-	
-	  onCropSelect: function(payload) {
-	    this.state = this.state.set('selectedCrop', payload.crop.get('id'));
-	    this.emit('change');    
-	  },
-	
-	  onCropDeselect: function(payload) {
-	    this.state = this.state.set('selectedCrop', null);
-	    this.emit('change');    
-	  },
-	
-	  onCropResize: function(payload) {
-	    var crop = payload.crop;
-	    var media = this.getSelectedMedia();
-	    var cropIndex = media.get('crops').indexOf(crop);
-	    var mediaIndex = this.state.get('media').indexOf(media);
-	
-	    var cropData = crop.toJS();
-	
-	    var width = media.get('width');
-	    var height = media.get('height');
-	
-	    var cropWidth = cropData.x2 - cropData.x1;
-	    var cropHeight = cropData.y2 - cropData.y1;
-	
-	    var dX = payload.dX;
-	    var dY = payload.dY;
-	
-	    var scale;
-	
-	    // What point do we anchor around, and how should we multiply the X and Y deltas;
-	    var anchor = {
-	      'center': [['x1', 'x2'], ['y1', 'y2'], 1, 1],
-	      'left': [['x2', 'x2'], ['y1', 'y2'], -1, 0],
-	      'right': [['x1', 'x1'], ['y1', 'y2'], 1, 0],
-	      'bottom': [['x1', 'x2'], ['y1', 'y1'], 0, 1],
-	      'top': [['x1', 'x2'], ['y2', 'y2'], 0, -1],      
-	      'top-left': [['x2', 'x2'], ['y2', 'y2'], -1, -1],
-	      'top-right': [['x1', 'x1'], ['y2', 'y2'], 1, -1],
-	      'bottom-left': [['x2', 'x2'], ['y1', 'y1'], -1, 1],
-	      'bottom-right': [['x1', 'x1'], ['y1', 'y1'], 1, 1]
-	    }[payload.position];        
-	
-	    if (Math.abs(dX) >= Math.abs(dY)) {
-	      scale = (cropWidth + (anchor[2] * dX)) / cropWidth;
-	    } else {
-	      scale = (cropHeight + (anchor[3] * dY)) / cropHeight;
-	    }
-	
-	    var x = (cropData[anchor[0][0]] + cropData[anchor[0][1]]) / 2;
-	    var y = (cropData[anchor[1][0]] + cropData[anchor[1][1]]) / 2;  
-	    var transformedData = scaleCoordinates(cropData, scale, x, y);
-	
-	    x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
-	    y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
-	    var overflow = getCropOverflow(media, x, y, transformedData);
-	
-	    if (overflow.reverseScale !== 1) {
-	      transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
-	    }
-	
-	    this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
-	  },
-	
-	  onCropMove: function(payload) {
-	    var crop = payload.crop;
-	    var media = this.getSelectedMedia();
-	    var cropIndex = media.get('crops').indexOf(crop);
-	    var mediaIndex = this.state.get('media').indexOf(media);
-	    var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
-	
-	    var dX = 0;
-	    var dY = 0;
-	
-	    if (transformedData.x1 < 0) {
-	      dX = -transformedData.x1;
-	    } else if (transformedData.x2 > media.get('width')) {
-	      dX = media.get('width') - transformedData.x2;
-	    }
-	
-	    if (transformedData.y1 < 0) {
-	      dY = -transformedData.y1;
-	    } else if (transformedData.y2 > media.get('height')) {
-	      dY = media.get('height') - transformedData.y2;
-	    }
-	
-	    if (dX || dY) {
-	      transformedData = translateCoordinates(transformedData, dX, dY);
-	    }
-	
-	    this.updateCrop(['media', mediaIndex, 'crops', cropIndex], crop, media, transformedData);
-	  },
-	
-	  updateCrop: function(path, crop, media, data) {
-	    var values = {
-	      x1: Math.round(data.x1),
-	      x2: Math.round(data.x2),
-	      y1: Math.round(data.y1),
-	      y2: Math.round(data.y2)
-	    };
-	
-	    this.state = this.state.updateIn(path, function(crop) {
-	      for (var k in values) {
-	        crop = crop.set(k, Math.round(values[k]));
-	      }
-	      return crop;
-	    }); 
-	    this.emit('change');
-	  },
-	
-	  onCropAdd: function(payload) {
-	    var cropType = payload.cropType;
-	    var media = this.getSelectedMedia();
-	
-	    var width = media.get('width');
-	    var height = media.get('height');
-	    var ratio = width / height;
-	
-	    var cropRatio = this.state.getIn(['availableCrops', cropType, 1]);
-	    var cropWidth;
-	    var cropHeight;
-	
-	    var x1;
-	    var x2;
-	    var y1;
-	    var y2;
-	
-	    if (cropRatio >= ratio) {
-	      // Touch the left and right
-	      cropWidth = width;
-	
-	      x1 = 0;
-	      x2 = cropWidth;
-	
-	      cropHeight = cropWidth / cropRatio;
-	
-	      y1 = Math.round((height - cropHeight) / 2);
-	      y2 = height - y1;
-	
-	    } else {
-	      cropHeight = height;
-	
-	      y1 = 0;
-	      y2 = cropHeight;
-	
-	      cropWidth = cropHeight * cropRatio;
-	
-	      x1 = Math.round((width - cropWidth) / 2);
-	      x2 = width - x1;
-	    }
-	
-	    var newCrop = Immutable.fromJS({
-	      applications: [],
-	      height: cropHeight,
-	      id: uuid(), // This doesn't get saved, it's just so that React has a key
-	      key: cropType,
-	      ratio: cropRatio,
-	      x1: x1,
-	      x2: x2,
-	      y1: y1,
-	      y2: y2
-	    });
-	
-	    var index = this.state.get('media').findIndex(function(m)  {return m.get('id') === media.get('id');});
-	
-	    this.state = this.state.updateIn(['media', index, 'crops'], function(crops)  {return crops.push(newCrop);});
 	    this.emit('change');
 	  },
 	
@@ -766,9 +517,7 @@
 	      this.state = this.state.updateIn(['media'], function(media)  {return media.push(newImage);});
 	      this.emit('change');
 	    }
-	  },
-	
-	
+	  }
 	});
 	
 	module.exports = MediaStore;
@@ -2172,7 +1921,7 @@
 	
 	
 	var Detail = React.createClass({displayName: 'Detail',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
 	
 	  getInitialState: function() {
 	    return {
@@ -2182,12 +1931,13 @@
 	  },
 	
 	  getStateFromFlux: function() {
-	    var store = this.getFlux().store('Media');
-	    var selected = store.getSelectedMedia();
+	    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+	    var selectedCrop = this.getFlux().store('Crops').getSelectedCrop();
+	
 	
 	    return {
-	      crop: store.getSelectedCrop(),
-	      media: selected
+	      crop: selectedCrop,
+	      media: selectedMedia
 	    };
 	  },
 	
@@ -5652,21 +5402,21 @@
 	var Select  = __webpack_require__(/*! ../select */ 60);
 	
 	var CropsPanel = React.createClass({displayName: 'CropsPanel',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 	
 	  getStateFromFlux: function() {
-	    var store = this.getFlux().store('Media');
-	    var selected = store.getSelectedMedia();
+	    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+	    var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');
 	
 	    return {
-	      media: selected,      
-	      availableCrops: store.state.get('availableCrops')
+	      media: selectedMedia,      
+	      availableCrops: availableCrops
 	    };
 	  },
 	
 	  handleAdd: function(event) {
 	  	var cropType = this.refs.cropType.getDOMNode().value;
-	  	this.getFlux().actions.crop.add(cropType);
+	  	this.getFlux().actions.crop.add(this.state.media, cropType);
 	  },
 	  
 	  render: function() {
@@ -7393,9 +7143,9 @@
 	
 	  moveSelection: function(dX, dY, origin, modifier) {
 	    if (!modifier && origin === 'center') {
-	      this.getFlux().actions.crop.move(this.props.crop, dX, dY);  
+	      this.getFlux().actions.crop.move(this.props.crop, this.props.media, dX, dY);  
 	    } else {
-	      this.getFlux().actions.crop.resize(this.props.crop, dX, dY, origin);  
+	      this.getFlux().actions.crop.resize(this.props.crop, this.props.media, dX, dY, origin);  
 	    }   
 	  },
 	 
@@ -9024,7 +8774,7 @@
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 15);
 	
 	var Crop = React.createClass({displayName: 'Crop',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
 	
 	  select: function(event) {
 	    event.preventDefault();
@@ -9036,11 +8786,11 @@
 	  },
 	
 	  getStateFromFlux: function() {
-	    var store = this.getFlux().store('Media');
-	    var selected = store.getSelectedCrop();
+	    var store = this.getFlux().store('Crops');
+	    var selected = store.state.get('selectedCrop');
 	
 	    return {
-	      selected: selected && this.props.crop.get('id') === selected.get('id')
+	      selected: selected && this.props.crop.get('id') === selected
 	    };
 	  },
 	
@@ -9089,36 +8839,31 @@
 	});
 	
 	
-	var CropType = React.createClass({displayName: 'CropType',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	var CropGroup = React.createClass({displayName: 'CropGroup',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 	
 	  getStateFromFlux: function() {
-	    var store = this.getFlux().store('Media');
-	    var selected = store.getSelectedMedia();
-	    var crops = selected ? selected.get('crops').filter(function(c)  {return c.get('key') === this.props.key;}.bind(this)) : null;
+	    var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');    
+	    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
 	
 	    return {
-	      media: selected,
-	      crops: crops
+	      media: selectedMedia,
+	      availableCrops: availableCrops
 	    };
 	  },
 	
 	  render: function() {
-	    var media = this.state.media;     
-	    var crops = this.state.crops.map(function(crop)  {return Crop({key: crop.get('id'), x1: crop.get('x1'), x2: crop.get('x2'), y1: crop.get('y1'), y2: crop.get('y2'), crop: crop, media: media});});
-	
-	    if (!crops.count()) {
-	      return null;
-	    }
+	    var media = this.state.media;
+	    var crops = this.props.crops.map(function(crop)  {return Crop({key: crop.get('id'), x1: crop.get('x1'), x2: crop.get('x2'), y1: crop.get('y1'), y2: crop.get('y2'), crop: crop, media: media});});
 	
 	    return (
 	      React.DOM.li(null, 
 	        React.DOM.div({className: "mediacat-crop-type-header"}, 
-	          this.props.config.get(0)
+	          this.state.availableCrops.get(this.props.key).get(0)
 	        ), 
-	        crops.count() ? React.DOM.ul({className: "mediacat-crop-list"}, 
+	        React.DOM.ul({className: "mediacat-crop-list"}, 
 	          crops.toJS()
-	        ) : null
+	        )
 	      )
 	    );
 	  }
@@ -9126,32 +8871,37 @@
 	
 	
 	var CropList = React.createClass({displayName: 'CropList',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 	
 	  getStateFromFlux: function() {
-	    var store = this.getFlux().store('Media');
-	    var selected = store.getSelectedMedia();
+	    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+	    var crops;
+	
+	    if (selectedMedia) {
+	      crops = this.getFlux().store('Crops').state.getIn(['crops', selectedMedia.get('id')]);
+	    }
 	
 	    return {
-	      media: selected,
-	      availableCrops: store.state.get('availableCrops'),
-	      crops: selected ? selected.get('crops') : null
+	      media: selectedMedia,
+	      crops: crops
 	    };
 	  },
 	
 	  render: function() {
 	    var media = this.state.media;    
-	    var availableCrops;
+	    var cropGroups;
 	
-	    if (!media) {
+	    if (!media || !this.state.crops) {
 	      return null;
 	    }
 	
-	    availableCrops = this.state.availableCrops.map(function(config, key)  {return CropType({key: key, config: config});});
+	    cropGroups = this.state.crops
+	      .groupBy(function(crop)  {return crop.get('key');})
+	      .map(function(crops, key)  {return CropGroup({key: key, crops: crops});});
 	
 	    return (
 	      React.DOM.ul({className: "mediacat-crop-type-list"}, 
-	        availableCrops.toJS()
+	        cropGroups.toJS()
 	      )
 	    );
 	  }
@@ -35481,6 +35231,329 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 83)))
+
+/***/ },
+/* 268 */
+/*!***********************************!*\
+  !*** ./static/js/stores/crops.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	 "use strict";
+	
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 6);
+	var Immutable = __webpack_require__(/*! immutable */ 34);
+	var request = __webpack_require__(/*! superagent */ 40);
+	
+	var Constants = __webpack_require__(/*! ../constants */ 8);
+	var matrix = __webpack_require__(/*! matrix-utilities */ 26)
+	var uuid = __webpack_require__(/*! uuid-v4 */ 18);
+	
+	
+	var getScaleMatrix = function(scale) {
+	  return [
+	    [scale, 0, 0], 
+	    [0, scale, 0], 
+	    [0, 0, 1]];
+	};
+	
+	var getTranslateMatrix = function(x, y) {
+	  return [
+	    [1, 0, x], 
+	    [0, 1, y], 
+	    [0, 0, 1]]
+	  ;
+	};
+	
+	var matrixFromValues = function(v) {
+	  return [
+	    [v.x1, v.x2],
+	    [v.y1, v.y2],
+	    [1, 1]
+	  ];
+	};
+	
+	var valuesFromMatrix = function(m) {
+	  return {
+	    x1: m[0][0],
+	    x2: m[0][1],
+	    y1: m[1][0],
+	    y2: m[1][1]
+	  };
+	};
+	
+	var scaleCoordinates = function(values, scale, x, y) {
+	  var m = matrixFromValues(values);
+	  var preTranslateMatrix = getTranslateMatrix(-x, -y);
+	  var scaleMatrix = getScaleMatrix(scale);
+	  var postTranslateMatrix = getTranslateMatrix(x, y);  
+	
+	  m = matrix.multiply(preTranslateMatrix, m);
+	  m = matrix.multiply(scaleMatrix, m);
+	  m = matrix.multiply(postTranslateMatrix, m);
+	
+	  return valuesFromMatrix(m);
+	};
+	
+	var translateCoordinates = function(values, dX, dY) {
+	  var m = matrixFromValues(values);
+	  var translateMatrix = getTranslateMatrix(dX, dY);  
+	  m = matrix.multiply(translateMatrix, m);
+	  return valuesFromMatrix(m);
+	};
+	
+	var getCropOverflow = function(media, anchorX, anchorY, values) {
+	  // Sometimes we scale too far, so work out the scale necessary to fix it.
+	  var x1 = values.x1 < 0 ? -values.x1 / (anchorX - values.x1) : 0;
+	  var y1 = values.y1 < 0 ? -values.y1 / (anchorY - values.y1): 0;
+	  var x2 = values.x2 > media.get('width') ? (values.x2 - media.get('width')) / (values.x2 - anchorX) : 0;
+	  var y2 = values.y2 > media.get('height') ? (values.y2 - media.get('height')) / (values.y2 - anchorY) : 0;
+	
+	  return {x1:x1, y1:y1, x2:x2, y2:y2, reverseScale: 1 - Math.max(x1, y1, x2, y2)};
+	};
+	
+	
+	var CropStore = Fluxxor.createStore({
+	  actions: {
+	    CATEGORY_SELECTED: 'onCategorySelect',
+	    MEDIA_SELECTED: 'onMediaSelect',
+	    CROP_SELECTED: 'onCropSelect',
+	    CROP_DESELECTED: 'onCropDeselect',
+	    CROP_MOVE: 'onCropMove',
+	    CROP_RESIZE: 'onCropResize',
+	    CROP_ADD: 'onCropAdd',
+	    FETCH_CROPS_SUCCESS: 'onFetchCropsSuccess',    
+	  },
+	
+	  initialize: function(options) {
+	    this.setMaxListeners(0);
+	    this.state = Immutable.fromJS(options);
+	  },
+	
+	  getFetchRequest: function(media, filters) {
+	    var query = {
+	      image_id: media.get('id')
+	    };
+	
+	    var onSuccess = function(response) {
+	      this.flux.actions.crops.fetchSuccess(response, media.get('id'));
+	    }.bind(this);
+	
+	    return request
+	      .get('/mediacat/crops/')
+	      .query(query)
+	      .set('Accept', 'application/json')
+	      .on('error', this.flux.actions.crops.fetchError)
+	      .end(onSuccess);
+	  },
+	
+	  getSelectedCrop: function() {
+	    var mediaId = this.flux.stores['Media'].state.get('selectedMedia');
+	    var id = this.state.get('selectedCrop');
+	
+	    if (!mediaId || !id) {
+	      return null;
+	    }
+	    return this.state.getIn(['crops', mediaId]).find(function(c)  {return c.get('id') === id;});
+	  },
+	
+	  onFetchImagesSuccess: function(payload) {
+	    var categoryPath = payload.categoryPath;
+	
+	    var req = payload.request;
+	    var media = Immutable.fromJS(payload.data);
+	
+	    var requests = this.state.get('fetchRequests');
+	    var key = requests.findKey(function(v, k)  {return v === req;});
+	    requests = requests.delete(key);    
+	    this.state = this.state.set('fetchRequests', requests);
+	
+	    if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
+	      this.state = this.state.set('media', media);
+	    }
+	    this.emit('change');
+	  },
+	
+	  onCropSelect: function(payload) {
+	    this.state = this.state.set('selectedCrop', payload.crop.get('id'));
+	    this.emit('change');    
+	  },
+	
+	  onCropDeselect: function(payload) {
+	    this.state = this.state.set('selectedCrop', null);
+	    this.emit('change');    
+	  },
+	
+	  onCropResize: function(payload) {
+	    var crop = payload.crop;
+	    var media = payload.media;
+	    var cropIndex = this.state.getIn(['crops', media.get('id')]).indexOf(crop);
+	
+	    var cropData = crop.toJS();
+	
+	    var width = media.get('width');
+	    var height = media.get('height');
+	
+	    var cropWidth = cropData.x2 - cropData.x1;
+	    var cropHeight = cropData.y2 - cropData.y1;
+	
+	    var dX = payload.dX;
+	    var dY = payload.dY;
+	
+	    var scale;
+	
+	    // What point do we anchor around, and how should we multiply the X and Y deltas;
+	    var anchor = {
+	      'center': [['x1', 'x2'], ['y1', 'y2'], 1, 1],
+	      'left': [['x2', 'x2'], ['y1', 'y2'], -1, 0],
+	      'right': [['x1', 'x1'], ['y1', 'y2'], 1, 0],
+	      'bottom': [['x1', 'x2'], ['y1', 'y1'], 0, 1],
+	      'top': [['x1', 'x2'], ['y2', 'y2'], 0, -1],      
+	      'top-left': [['x2', 'x2'], ['y2', 'y2'], -1, -1],
+	      'top-right': [['x1', 'x1'], ['y2', 'y2'], 1, -1],
+	      'bottom-left': [['x2', 'x2'], ['y1', 'y1'], -1, 1],
+	      'bottom-right': [['x1', 'x1'], ['y1', 'y1'], 1, 1]
+	    }[payload.position];        
+	
+	    if (Math.abs(dX) >= Math.abs(dY)) {
+	      scale = (cropWidth + (anchor[2] * dX)) / cropWidth;
+	    } else {
+	      scale = (cropHeight + (anchor[3] * dY)) / cropHeight;
+	    }
+	
+	    var x = (cropData[anchor[0][0]] + cropData[anchor[0][1]]) / 2;
+	    var y = (cropData[anchor[1][0]] + cropData[anchor[1][1]]) / 2;  
+	    var transformedData = scaleCoordinates(cropData, scale, x, y);
+	
+	    x = (transformedData[anchor[0][0]] + transformedData[anchor[0][1]]) / 2;
+	    y = (transformedData[anchor[1][0]] + transformedData[anchor[1][1]]) / 2;
+	    var overflow = getCropOverflow(media, x, y, transformedData);
+	
+	    if (overflow.reverseScale !== 1) {
+	      transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
+	    }
+	
+	    this.updateCrop(cropIndex, crop, media, transformedData);
+	  },
+	
+	  onCropMove: function(payload) {
+	    var crop = payload.crop;
+	    var media = payload.media;
+	    var cropIndex = this.state.getIn(['crops', media.get('id')]).indexOf(crop);
+	    var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
+	
+	    var dX = 0;
+	    var dY = 0;
+	
+	    if (transformedData.x1 < 0) {
+	      dX = -transformedData.x1;
+	    } else if (transformedData.x2 > media.get('width')) {
+	      dX = media.get('width') - transformedData.x2;
+	    }
+	
+	    if (transformedData.y1 < 0) {
+	      dY = -transformedData.y1;
+	    } else if (transformedData.y2 > media.get('height')) {
+	      dY = media.get('height') - transformedData.y2;
+	    }
+	
+	    if (dX || dY) {
+	      transformedData = translateCoordinates(transformedData, dX, dY);
+	    }
+	
+	    this.updateCrop(cropIndex, crop, media, transformedData);
+	  },
+	
+	  updateCrop: function(index, crop, media, data) {
+	    var values = {
+	      x1: Math.round(data.x1),
+	      x2: Math.round(data.x2),
+	      y1: Math.round(data.y1),
+	      y2: Math.round(data.y2)
+	    };
+	
+	    this.state = this.state.updateIn(['crops', media.get('id'), index], function(crop) {
+	      for (var k in values) {
+	        crop = crop.set(k, Math.round(values[k]));
+	      }
+	      return crop;
+	    }); 
+	    this.emit('change');
+	  },
+	
+	  onCropAdd: function(payload) {
+	    var cropType = payload.cropType;
+	    var media = payload.media;
+	
+	    var width = media.get('width');
+	    var height = media.get('height');
+	    var ratio = width / height;
+	
+	    var cropRatio = this.state.getIn(['availableCrops', cropType, 1]);
+	    var cropWidth;
+	    var cropHeight;
+	
+	    var x1;
+	    var x2;
+	    var y1;
+	    var y2;
+	
+	    if (cropRatio >= ratio) {
+	      // Touch the left and right
+	      cropWidth = width;
+	
+	      x1 = 0;
+	      x2 = cropWidth;
+	
+	      cropHeight = cropWidth / cropRatio;
+	
+	      y1 = Math.round((height - cropHeight) / 2);
+	      y2 = height - y1;
+	
+	    } else {
+	      cropHeight = height;
+	
+	      y1 = 0;
+	      y2 = cropHeight;
+	
+	      cropWidth = cropHeight * cropRatio;
+	
+	      x1 = Math.round((width - cropWidth) / 2);
+	      x2 = width - x1;
+	    }
+	
+	    var newCrop = Immutable.fromJS({
+	      applications: [],
+	      height: cropHeight,
+	      id: uuid(), // This doesn't get saved, it's just so that React has a key
+	      key: cropType,
+	      ratio: cropRatio,
+	      x1: x1,
+	      x2: x2,
+	      y1: y1,
+	      y2: y2
+	    });
+	
+	    this.state = this.state.updateIn(['crops', media.get('id')], function(crops)  {return crops.push(newCrop);});
+	    this.emit('change');
+	  },
+	
+	  onMediaSelect: function(payload) {
+	    var id = payload.media.get('id');
+	
+	    if (!this.state.getIn(['crops', id])) {
+	      this.state = this.state.updateIn(['crops'], function(groups)  {return groups.set(id, payload.media.get('crops'));});
+	      this.emit('change');
+	    }
+	  },
+	
+	  onCategorySelect: function(payload) {
+	    this.state = this.state.set('selectedCrop', null);    
+	    this.emit('change');
+	  }
+	});
+	
+	module.exports = CropStore;
 
 /***/ }
 /******/ ])

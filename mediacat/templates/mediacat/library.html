@@ -13,20 +13,23 @@
 <script>
  	var MEDIACAT_CONFIG = {
  		media: {
+ 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}, 			
  			selectedMedia: null,
- 			selectedCrop: null,
- 			loading: false,
- 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
- 			availableCrops: {{ available_crops|jsonify }}
+ 			loading: false
  		},
  		categories: {
-            basePath: {{ base_path|jsonify }},
- 			selectedPath: {{ path|jsonify }},
- 			categories: {{ category_data|jsonify }},
+ 			categories: {{ category_data|jsonify }}, 			
+ 			selectedPath: {{ path|jsonify }}, 			
+            basePath: {{ base_path|jsonify }}
  		},
  		uploads: {
- 			selectedUpload: null,
- 			uploads: [],
+ 			uploads: [], 			
+ 			selectedUpload: null
+ 		},
+ 		crops: {
+ 			crops: {},
+ 			selectedCrop: null,
+ 			availableCrops: {{ available_crops|jsonify }} 			
  		}
  	};
 </script>

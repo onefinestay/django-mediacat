@@ -14,21 +14,21 @@ var PanelToolbar = require('../panel-toolbar');
 var Select  = require('../select');
 
 var CropsPanel = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedMedia();
+    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+    var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');
 
     return {
-      media: selected,      
-      availableCrops: store.state.get('availableCrops')
+      media: selectedMedia,      
+      availableCrops: availableCrops
     };
   },
 
   handleAdd: function(event) {
   	var cropType = this.refs.cropType.getDOMNode().value;
-  	this.getFlux().actions.crop.add(cropType);
+  	this.getFlux().actions.crop.add(this.state.media, cropType);
   },
   
   render: function() {

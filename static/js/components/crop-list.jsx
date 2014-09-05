@@ -9,7 +9,7 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
 
 var Crop = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
 
   select: function(event) {
     event.preventDefault();
@@ -21,11 +21,11 @@ var Crop = React.createClass({
   },
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedCrop();
+    var store = this.getFlux().store('Crops');
+    var selected = store.state.get('selectedCrop');
 
     return {
-      selected: selected && this.props.crop.get('id') === selected.get('id')
+      selected: selected && this.props.crop.get('id') === selected
     };
   },
 
@@ -74,36 +74,31 @@ var Crop = React.createClass({
 });
 
 
-var CropType = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+var CropGroup = React.createClass({
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedMedia();
-    var crops = selected ? selected.get('crops').filter(c => c.get('key') === this.props.key) : null;
+    var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');    
+    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
 
     return {
-      media: selected,
-      crops: crops
+      media: selectedMedia,
+      availableCrops: availableCrops
     };
   },
 
   render: function() {
-    var media = this.state.media;     
-    var crops = this.state.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
-
-    if (!crops.count()) {
-      return null;
-    }
+    var media = this.state.media;
+    var crops = this.props.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
       <li>
         <div className="mediacat-crop-type-header">
-          {this.props.config.get(0)}
+          {this.state.availableCrops.get(this.props.key).get(0)}
         </div>
-        {crops.count() ? <ul className="mediacat-crop-list">
+        <ul className="mediacat-crop-list">
           {crops.toJS()}
-        </ul> : null}
+        </ul>
       </li>
     );
   }
@@ -111,32 +106,37 @@ var CropType = React.createClass({
 
 
 var CropList = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedMedia();
+    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+    var crops;
+
+    if (selectedMedia) {
+      crops = this.getFlux().store('Crops').state.getIn(['crops', selectedMedia.get('id')]);
+    }
 
     return {
-      media: selected,
-      availableCrops: store.state.get('availableCrops'),
-      crops: selected ? selected.get('crops') : null
+      media: selectedMedia,
+      crops: crops
     };
   },
 
   render: function() {
     var media = this.state.media;    
-    var availableCrops;
+    var cropGroups;
 
-    if (!media) {
+    if (!media || !this.state.crops) {
       return null;
     }
 
-    availableCrops = this.state.availableCrops.map((config, key) => <CropType key={key} config={config} />);
+    cropGroups = this.state.crops
+      .groupBy(crop => crop.get('key'))
+      .map((crops, key) => <CropGroup key={key} crops={crops} />);
 
     return (
       <ul className="mediacat-crop-type-list">
-        {availableCrops.toJS()}
+        {cropGroups.toJS()}
       </ul>
     );
   }

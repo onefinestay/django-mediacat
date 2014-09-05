@@ -14,7 +14,7 @@ var Cropper = require('./cropper');
 
 
 var Detail = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
 
   getInitialState: function() {
     return {
@@ -24,12 +24,13 @@ var Detail = React.createClass({
   },
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedMedia();
+    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+    var selectedCrop = this.getFlux().store('Crops').getSelectedCrop();
+
 
     return {
-      crop: store.getSelectedCrop(),
-      media: selected
+      crop: selectedCrop,
+      media: selectedMedia
     };
   },
 
