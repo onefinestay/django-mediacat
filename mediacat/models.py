@@ -7,9 +7,21 @@ from django.db import models
 
 from django.utils.translation import ugettext as _
 
+from uuidfield import UUIDField
+
 from .backends.thumbor import thumb
 
 crop_registry = set([(k, v[1], v[2]) for k, v in settings.MEDIALIBRARY_CROPS.items()])
+
+
+RATING_CHOICES = (
+    (5, 'Outstanding'),
+    (4, 'Excellent'),
+    (3, 'Good'),
+    (2, 'Adequate'),
+    (1, 'Bad'),
+    (0, 'Rejected'),
+)
 
 
 class Image(models.Model):
@@ -23,7 +35,14 @@ class Image(models.Model):
     file_size = models.IntegerField(blank=True, null=True)
     alt_text = models.CharField(max_length=100, null=True, blank=True)
     caption = models.TextField(blank=True, null=True)
-    rank = models.SmallIntegerField(default=0)
+    rank = models.SmallIntegerField(default=0, db_index=True)
+
+    rating = models.SmallIntegerField(
+        choices=RATING_CHOICES,
+        blank=True,
+        null=True,
+        db_index=True
+    )
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -89,27 +108,20 @@ class ImageAssociation(models.Model):
         return super(ImageAssociation, self).save(**kwargs)
 
 
-SCORE_CHOICES = (
-    (5, 'Outstanding'),
-    (4, 'Excellent'),
-    (3, 'Good'),
-    (2, 'Adequate'),
-    (1, 'Bad'),
-    (0, 'Never shown'),
-)
-
-
 CROP_KEY_CHOICES = [(k, v[0]) for k, v in settings.MEDIACAT_AVAILABLE_CROP_RATIOS.items()]
 
 
 class ImageCrop(models.Model):
-    image = models.ForeignKey(Image, related_name='crops')
-    key = models.CharField(max_length=100, choices=CROP_KEY_CHOICES)
-    width = models.SmallIntegerField()
-    height = models.SmallIntegerField()
+    uuid = UUIDField(auto=True, hyphenate=True, null=True)
 
-    score = models.SmallIntegerField(choices=SCORE_CHOICES, default=40)
-    scale = models.SmallIntegerField(default=2)
+    image = models.ForeignKey(Image, related_name='crops')
+    key = models.CharField(
+        max_length=100,
+        choices=CROP_KEY_CHOICES,
+        db_index=True,
+    )
+    width = models.SmallIntegerField(db_index=True)
+    height = models.SmallIntegerField(db_index=True)
 
     x1 = models.SmallIntegerField(verbose_name='left', blank=True, null=True)
     y1 = models.SmallIntegerField(verbose_name='top', blank=True, null=True)

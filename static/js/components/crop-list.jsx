@@ -29,10 +29,8 @@ var Crop = React.createClass({
     var store = this.getFlux().store('Crops');
     var selected = store.state.get('selectedCrop');
 
-    var key = this.props.crop.get('id') || this.props.crop.get('uuid');
-
     return {
-      selected: selected && key === selected
+      selected: selected && this.props.crop.get('uuid') === selected
     };
   },
 
@@ -97,7 +95,7 @@ var CropGroup = React.createClass({
 
   render: function() {
     var media = this.state.media;
-    var crops = this.props.crops.map(crop => <Crop key={crop.get('id') || crop.get('uuid')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
+    var crops = this.props.crops.map(crop => <Crop key={crop.get('uuid')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
       <li>

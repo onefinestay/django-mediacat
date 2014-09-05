@@ -108,18 +108,16 @@ var CropStore = Fluxxor.createStore({
   },
 
   getSelectedCrop: function() {
-    var id = this.state.get('selectedCrop');
+    var uuid = this.state.get('selectedCrop');
 
-    if (!id) {
+    if (!uuid) {
       return null;
     }
-    return this.state.getIn(['crops'], Immutable.fromJS([])).find(c => c.get('id') === id || c.get('uuid') === id);
+    return this.state.getIn(['crops'], Immutable.fromJS([])).find(c => c.get('uuid') === uuid);
   },
 
   onCropSelect: function(payload) {
-    var key = payload.crop.get('id') || payload.crop.get('uuid');
-
-    this.state = this.state.set('selectedCrop', key);
+    this.state = this.state.set('selectedCrop', payload.crop.get('uuid'));
     this.emit('change');    
   },
 
@@ -271,6 +269,7 @@ var CropStore = Fluxxor.createStore({
       applications: [],
       height: cropHeight,
       image: media.get('id'),
+      changed: true,
       uuid: uuid(), // This doesn't get saved, it's just so that React has a key
       key: cropType,
       ratio: cropRatio,
@@ -297,16 +296,8 @@ var CropStore = Fluxxor.createStore({
     this.emit('change');
   },
 
-  getSaveNewRequest: function(crop) {
-    return request
-      .post('/mediacat/crops/')
-      .send(crop.toJS())
-      .set('Accept', 'application/json')
-      .end();
-  },
-
-  getSaveExistingRequest: function(crop) {
-    var url = '/mediacat/crops/' + crop.get('id') + '/';
+  getSaveRequest: function(crop) {
+    var url = '/mediacat/crops/' + crop.get('uuid') + '/';
 
     return request
       .put(url)
@@ -317,14 +308,7 @@ var CropStore = Fluxxor.createStore({
 
   onSave: function(payload) {
     var crop = payload.crop;
-
-    if (crop.get('id')) {
-      // Exising crop
-      this.getSaveExistingRequest(crop);
-    } else {
-      // New crop;
-      this.getSaveNewRequest(crop);
-    }
+    this.getSaveRequest(crop);
   },
 
   onCategorySelect: function(payload) {

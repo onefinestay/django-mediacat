@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
 from rest_framework import generics
@@ -21,7 +22,7 @@ class ImageList(generics.ListCreateAPIView):
     )
 
     def get_queryset(self):
-        queryset = super(ImageList, self).get_queryset().prefetch_related('crops', 'associations')
+        queryset = super(ImageList, self).get_queryset().prefetch_related('associations')
         params = self.request.QUERY_PARAMS
 
         if 'object_id' in params and 'content_type_id' in params:
@@ -62,6 +63,16 @@ class CropList(generics.ListCreateAPIView):
 class CropDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ImageCrop.objects.all()
     serializer_class = serializers.ImageCropSerializer
+    lookup_field = 'uuid'
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(
+            queryset,
+            uuid=self.kwargs['uuid'].replace('-', '')
+        )
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -105,7 +116,7 @@ class Library(TemplateView):
                     images = models.Image.objects.filter(
                         associations__object_id=obj.pk,
                         associations__content_type_id=content_type_id
-                    )
+                    ).prefetch_related('associations')
                     data['media'] = serializers.ImageSerializer(images, many=True).data
             except exceptions.NoResolveException:
                 data['media'] = []

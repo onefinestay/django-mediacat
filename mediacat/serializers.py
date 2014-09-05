@@ -32,7 +32,7 @@ class ImageCropSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ImageCrop
         fields = (
-            'id',
+            'uuid',
             'image',
             'key',
             'ratio',
