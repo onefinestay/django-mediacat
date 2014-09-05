@@ -81,7 +81,8 @@ var CropStore = Fluxxor.createStore({
     CROP_MOVE: 'onCropMove',
     CROP_RESIZE: 'onCropResize',
     CROP_ADD: 'onCropAdd',
-    FETCH_CROPS_SUCCESS: 'onFetchCropsSuccess',    
+    CROP_FETCH: 'onFetch',
+    CROP_SAVE: 'onSave'
   },
 
   initialize: function(options) {
@@ -91,50 +92,34 @@ var CropStore = Fluxxor.createStore({
 
   getFetchRequest: function(media, filters) {
     var query = {
-      image_id: media.get('id')
+      image: media.get('id')
     };
 
     var onSuccess = function(response) {
-      this.flux.actions.crops.fetchSuccess(response, media.get('id'));
+      this.flux.actions.crop.fetch(response, media.get('id'));
     }.bind(this);
 
     return request
       .get('/mediacat/crops/')
       .query(query)
       .set('Accept', 'application/json')
-      .on('error', this.flux.actions.crops.fetchError)
+      .on('error', this.flux.actions.crop.fetchError)
       .end(onSuccess);
   },
 
   getSelectedCrop: function() {
-    var mediaId = this.flux.stores['Media'].state.get('selectedMedia');
     var id = this.state.get('selectedCrop');
 
-    if (!mediaId || !id) {
+    if (!id) {
       return null;
     }
-    return this.state.getIn(['crops', mediaId]).find(c => c.get('id') === id);
-  },
-
-  onFetchImagesSuccess: function(payload) {
-    var categoryPath = payload.categoryPath;
-
-    var req = payload.request;
-    var media = Immutable.fromJS(payload.data);
-
-    var requests = this.state.get('fetchRequests');
-    var key = requests.findKey((v, k) => v === req);
-    requests = requests.delete(key);    
-    this.state = this.state.set('fetchRequests', requests);
-
-    if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
-      this.state = this.state.set('media', media);
-    }
-    this.emit('change');
+    return this.state.getIn(['crops'], Immutable.fromJS([])).find(c => c.get('id') === id || c.get('uuid') === id);
   },
 
   onCropSelect: function(payload) {
-    this.state = this.state.set('selectedCrop', payload.crop.get('id'));
+    var key = payload.crop.get('id') || payload.crop.get('uuid');
+
+    this.state = this.state.set('selectedCrop', key);
     this.emit('change');    
   },
 
@@ -146,7 +131,7 @@ var CropStore = Fluxxor.createStore({
   onCropResize: function(payload) {
     var crop = payload.crop;
     var media = payload.media;
-    var cropIndex = this.state.getIn(['crops', media.get('id')]).indexOf(crop);
+    var cropIndex = this.state.get('crops').indexOf(crop);
 
     var cropData = crop.toJS();
 
@@ -192,13 +177,13 @@ var CropStore = Fluxxor.createStore({
       transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
     }
 
-    this.updateCrop(cropIndex, crop, media, transformedData);
+    this.updateCrop(cropIndex, crop, transformedData);
   },
 
   onCropMove: function(payload) {
     var crop = payload.crop;
     var media = payload.media;
-    var cropIndex = this.state.getIn(['crops', media.get('id')]).indexOf(crop);
+    var cropIndex = this.state.get('crops').indexOf(crop);
     var transformedData = translateCoordinates(crop.toJS(), payload.dX, payload.dY);
 
     var dX = 0;
@@ -220,10 +205,10 @@ var CropStore = Fluxxor.createStore({
       transformedData = translateCoordinates(transformedData, dX, dY);
     }
 
-    this.updateCrop(cropIndex, crop, media, transformedData);
+    this.updateCrop(cropIndex, crop, transformedData);
   },
 
-  updateCrop: function(index, crop, media, data) {
+  updateCrop: function(index, crop, data) {
     var values = {
       x1: Math.round(data.x1),
       x2: Math.round(data.x2),
@@ -231,10 +216,11 @@ var CropStore = Fluxxor.createStore({
       y2: Math.round(data.y2)
     };
 
-    this.state = this.state.updateIn(['crops', media.get('id'), index], function(crop) {
+    this.state = this.state.updateIn(['crops', index], function(crop) {
       for (var k in values) {
         crop = crop.set(k, Math.round(values[k]));
       }
+      crop = crop.set('changed', true);
       return crop;
     }); 
     this.emit('change');
@@ -284,7 +270,8 @@ var CropStore = Fluxxor.createStore({
     var newCrop = Immutable.fromJS({
       applications: [],
       height: cropHeight,
-      id: uuid(), // This doesn't get saved, it's just so that React has a key
+      image: media.get('id'),
+      uuid: uuid(), // This doesn't get saved, it's just so that React has a key
       key: cropType,
       ratio: cropRatio,
       x1: x1,
@@ -293,16 +280,50 @@ var CropStore = Fluxxor.createStore({
       y2: y2
     });
 
-    this.state = this.state.updateIn(['crops', media.get('id')], crops => crops.push(newCrop));
+    this.state = this.state.update('crops', crops => crops.push(newCrop));
     this.emit('change');
   },
 
   onMediaSelect: function(payload) {
-    var id = payload.media.get('id');
+    var req = this.getFetchRequest(payload.media, null);
+    this.state = this.state.set('crops', null);
+    this.state = this.state.set('selectedCrop', null);
+    this.emit('change');
+  },
 
-    if (!this.state.getIn(['crops', id])) {
-      this.state = this.state.updateIn(['crops'], groups => groups.set(id, payload.media.get('crops')));
-      this.emit('change');
+  onFetch: function(payload) {
+    var crops = Immutable.fromJS(payload.data);
+    this.state = this.state.set('crops', crops);
+    this.emit('change');
+  },
+
+  getSaveNewRequest: function(crop) {
+    return request
+      .post('/mediacat/crops/')
+      .send(crop.toJS())
+      .set('Accept', 'application/json')
+      .end();
+  },
+
+  getSaveExistingRequest: function(crop) {
+    var url = '/mediacat/crops/' + crop.get('id') + '/';
+
+    return request
+      .put(url)
+      .send(crop.toJS())
+      .set('Accept', 'application/json')
+      .end();
+  },
+
+  onSave: function(payload) {
+    var crop = payload.crop;
+
+    if (crop.get('id')) {
+      // Exising crop
+      this.getSaveExistingRequest(crop);
+    } else {
+      // New crop;
+      this.getSaveNewRequest(crop);
     }
   },
 

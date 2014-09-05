@@ -20,12 +20,19 @@ var Crop = React.createClass({
     }
   },
 
+  save: function(event) {
+    event.preventDefault();
+    this.getFlux().actions.crop.save(this.props.crop);
+  },
+
   getStateFromFlux: function() {
     var store = this.getFlux().store('Crops');
     var selected = store.state.get('selectedCrop');
 
+    var key = this.props.crop.get('id') || this.props.crop.get('uuid');
+
     return {
-      selected: selected && this.props.crop.get('id') === selected
+      selected: selected && key === selected
     };
   },
 
@@ -68,6 +75,7 @@ var Crop = React.createClass({
           <div className="mediacat-crop-preview" style={previewStyles} />
         </div>
         Usages: {crop.get('applications').length}
+        {crop.get('changed') ? <a href="javascript:;" onClick={this.save}>Save</a> : null}
       </li>
     );
   }
@@ -89,7 +97,7 @@ var CropGroup = React.createClass({
 
   render: function() {
     var media = this.state.media;
-    var crops = this.props.crops.map(crop => <Crop key={crop.get('id')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
+    var crops = this.props.crops.map(crop => <Crop key={crop.get('id') || crop.get('uuid')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
       <li>
@@ -113,7 +121,7 @@ var CropList = React.createClass({
     var crops;
 
     if (selectedMedia) {
-      crops = this.getFlux().store('Crops').state.getIn(['crops', selectedMedia.get('id')]);
+      crops = this.getFlux().store('Crops').state.get('crops');
     }
 
     return {

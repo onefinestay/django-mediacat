@@ -46,6 +46,18 @@ class CropList(generics.ListCreateAPIView):
     queryset = models.ImageCrop.objects.all()
     serializer_class = serializers.ImageCropSerializer
 
+    def get_queryset(self):
+        queryset = super(CropList, self).get_queryset().prefetch_related('applications')
+        params = self.request.QUERY_PARAMS
+
+        if 'image' in params:
+            queryset = queryset.filter(
+                image__id=params['image']
+            ).distinct()
+        else:
+            queryset = queryset.none()
+        return queryset
+
 
 class CropDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ImageCrop.objects.all()

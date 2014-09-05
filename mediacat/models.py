@@ -99,7 +99,7 @@ SCORE_CHOICES = (
 )
 
 
-CROP_KEY_CHOICES = [(k, v[0]) for k, v in settings.MEDIALIBRARY_CROPS.items()]
+CROP_KEY_CHOICES = [(k, v[0]) for k, v in settings.MEDIACAT_AVAILABLE_CROP_RATIOS.items()]
 
 
 class ImageCrop(models.Model):
@@ -120,6 +120,11 @@ class ImageCrop(models.Model):
         unique_together = (
             ('image', 'width', 'height'),
         )
+
+    def save(self, *args, **kwargs):
+        self.width = self.x2 - self.x1
+        self.height = self.y2 - self.y1
+        super(ImageCrop, self).save(*args, **kwargs)
 
     @property
     def label(self):

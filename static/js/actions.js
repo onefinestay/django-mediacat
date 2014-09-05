@@ -42,7 +42,21 @@ var Actions = {
 
     add: function(media, cropType) {
       this.dispatch(Constants.CROP_ADD, {media, cropType});
-    }
+    },
+
+    save: function(crop) {
+      this.dispatch(Constants.CROP_SAVE, {crop});
+    },
+
+    fetch: function(response,  mediaId) {
+      var data = response.body;
+      var request = response.req;
+      this.dispatch(Constants.CROP_FETCH, {data, request, mediaId});
+    },
+
+    fetchError: function(response) {
+      console.log(response);
+    }    
   },
 
   categories: {

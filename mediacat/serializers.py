@@ -16,6 +16,7 @@ class ImageCropApplicationSerializer(serializers.ModelSerializer):
 
 
 class ImageCropSerializer(serializers.ModelSerializer):
+    image = serializers.PrimaryKeyRelatedField()
     ratio = serializers.SerializerMethodField('get_ratio')
     label = serializers.SerializerMethodField('get_label')
     applications = ImageCropApplicationSerializer(many=True, required=False)
@@ -56,7 +57,7 @@ class ImageAssociationSerializer(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
     associations = ImageAssociationSerializer(many=True, required=False)
-    crops = ImageCropSerializer(many=True, required=False)
+    # crops = ImageCropSerializer(many=True, required=False)
     url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
 
@@ -96,7 +97,7 @@ class ImageSerializer(serializers.ModelSerializer):
             'date_modified',
             'height',
             'width',
-            'crops',
+            # 'crops',
             'associations',
             'associated_content_type',
             'associated_object_id',
