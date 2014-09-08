@@ -29,8 +29,28 @@ var Crop = React.createClass({
     var store = this.getFlux().store('Crops');
     var selected = store.state.get('selectedCrop');
 
+    var selectOptions = this.getFlux().store('Media').state.get('select');
+    var ratio;
+    var width;
+    var selectWidth;
+    var selectRatios;
+    var pickable = false;
+
+    if (selectOptions) {
+      ratio = this.props.crop.get('key');
+      width = this.props.crop.get('x2') - this.props.crop.get('x1');
+
+      selectRatios = selectOptions.get('ratios');
+      selectWidth = selectOptions.get('width');
+
+      if (selectRatios.contains(ratio) && width >= selectWidth) {
+        pickable = true;
+      }
+    }
+
     return {
-      selected: selected && this.props.crop.get('uuid') === selected
+      selected: selected && this.props.crop.get('uuid') === selected,
+      pickable: pickable
     };
   },
 
@@ -40,6 +60,7 @@ var Crop = React.createClass({
 
     var classes = {
       'mediacat-crop': true,
+      'mediacat-crop-pickable': this.state.pickable,
       'mediacat-crop-selected': this.state.selected
     };
 

@@ -48,6 +48,10 @@
 	content: "\E007";
 }
 
-.icon-upload:before {
+.icon-tick:before {
 	content: "\E008";
+}
+
+.icon-upload:before {
+	content: "\E009";
 }

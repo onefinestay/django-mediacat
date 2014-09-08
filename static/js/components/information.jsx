@@ -12,6 +12,8 @@ var Tabs = tabs.Tabs;
 var ImageDataPanel = require('./panels/image-data');
 var CropsPanel = require('./panels/crops');
 
+var PickButton = require('./pick-button');
+
 
 var Information = React.createClass({
   mixins: [PureRenderMixin],
@@ -19,7 +21,12 @@ var Information = React.createClass({
   render: function() {
     return (
       <div className="mediacat-information">
-        <Header />
+        <Header>
+          <div className="toolbar">
+            <div className="spacer" />
+            <PickButton />
+          </div>
+        </Header>        
         <Tabs>
           <Tab name="Crops">
             <CropsPanel />

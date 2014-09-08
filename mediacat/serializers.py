@@ -57,9 +57,9 @@ class ImageAssociationSerializer(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
     associations = ImageAssociationSerializer(many=True, required=False)
-    # crops = ImageCropSerializer(many=True, required=False)
     url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
+    can_delete = serializers.Field(source='can_delete')
 
     associated_content_type = serializers.IntegerField(
         required=False,
@@ -97,7 +97,7 @@ class ImageSerializer(serializers.ModelSerializer):
             'date_modified',
             'height',
             'width',
-            # 'crops',
+            'can_delete',
             'associations',
             'associated_content_type',
             'associated_object_id',

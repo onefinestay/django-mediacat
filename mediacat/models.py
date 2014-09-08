@@ -69,6 +69,9 @@ class Image(models.Model):
             filters=['quality({})'.format(85)]
         )
 
+    def can_delete(self):
+        return True
+
     class Meta:
         verbose_name = _('Image')
         verbose_name_plural = _('Images')

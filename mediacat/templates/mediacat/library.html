@@ -15,7 +15,12 @@
  		media: {
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}, 			
  			selectedMedia: null,
- 			loading: false
+ 			displayMode: 'grid',
+ 			loading: false,
+ 			select: {
+ 				width: 1200,
+ 				ratios: ['PORTRAIT', 'LANDSCAPE']
+ 			}
  		},
  		categories: {
  			categories: {{ category_data|jsonify }}, 			
@@ -30,6 +35,10 @@
  			crops: {},
  			selectedCrop: null,
  			availableCrops: {{ available_crops|jsonify }} 			
+ 		},
+ 		ui: {
+ 			listMode: 'grid',
+ 			informationMode: 'crops'
  		}
  	};
 </script>
