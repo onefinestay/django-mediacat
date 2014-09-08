@@ -692,24 +692,25 @@ body {
     list-style-type: none;
   }
 
+
   .#{$ns}-crop-type-header {
     padding: 5px 10px;
+    background-color: #232830;
     border-bottom: 1px solid $seperator-color;
   }
 
+
   .#{$ns}-crop-list {
-    margin: 0;
+    margin: 10px;
     padding: 0;
     list-style-type: none;
 
     .#{$ns}-crop {
-      padding: 10px;
       background-color: #232830;
-      margin: 0;
+      margin: 0 0 5px;
       text-align: center;
       cursor: pointer;
-      border: 1px solid #232830;
-      border-bottom-color: $seperator-color;      
+      border: 1px solid darken(#232830, 2.5);
 
       &:list-child {
         margin-bottom: 0;
@@ -730,6 +731,15 @@ body {
       border-color: #414858;
       background-color: darken(#414858, 5);
     }
+  }
+
+  .#{$ns}-crop-content {
+    padding: 10px;
+  }
+
+  .#{$ns}-crop-footer {
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.2);
   }
 
   .#{$ns}-crop-preview-frame {

@@ -945,19 +945,18 @@ body {
   list-style-type: none; }
 .tabs .mediacat-crop-type-header {
   padding: 5px 10px;
+  background-color: #232830;
   border-bottom: 1px solid #1a0000; }
 .tabs .mediacat-crop-list {
-  margin: 0;
+  margin: 10px;
   padding: 0;
   list-style-type: none; }
   .tabs .mediacat-crop-list .mediacat-crop {
-    padding: 10px;
     background-color: #232830;
-    margin: 0;
+    margin: 0 0 5px;
     text-align: center;
     cursor: pointer;
-    border: 1px solid #232830;
-    border-bottom-color: #1a0000; }
+    border: 1px solid #1e2229; }
     .tabs .mediacat-crop-list .mediacat-crop:list-child {
       margin-bottom: 0; }
     .tabs .mediacat-crop-list .mediacat-crop .icon {
@@ -969,6 +968,11 @@ body {
   .tabs .mediacat-crop-list .mediacat-crop-selected {
     border-color: #414858;
     background-color: #363c49; }
+.tabs .mediacat-crop-content {
+  padding: 10px; }
+.tabs .mediacat-crop-footer {
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.2); }
 .tabs .mediacat-crop-preview-frame {
   margin: 0 auto 10px;
   background-color: #1a0000;

@@ -15119,11 +15119,15 @@
 	
 	    return (
 	      React.DOM.li({className: cx(classes), onClick: this.select}, 
-	        React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
-	          React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
+	        React.DOM.div({className: "mediacat-crop-content"}, 
+	          React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
+	            React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
+	          )
 	        ), 
-	        "Usages: ", crop.get('applications').length, 
-	        crop.get('changed') ? React.DOM.a({href: "javascript:;", onClick: this.save}, "Save") : null
+	        React.DOM.div({className: "mediacat-crop-footer"}, 
+	          "Usages: ", crop.get('applications').length, 
+	          crop.get('changed') ? React.DOM.a({href: "javascript:;", onClick: this.save}, "Save") : null
+	        )
 	      )
 	    );
 	  }
@@ -35639,7 +35643,7 @@
 	    var selectWidth;
 	    var selectRatios;
 	
-	    if (crop && selectOptions) {
+	    if (crop && !crop.get('changed') && selectOptions) {
 	      ratio = crop.get('key');
 	      width = crop.get('x2') - crop.get('x1');
 	

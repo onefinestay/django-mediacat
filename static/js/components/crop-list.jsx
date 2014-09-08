@@ -90,11 +90,15 @@ var Crop = React.createClass({
 
     return (
       <li className={cx(classes)} onClick={this.select}>
-        <div className="mediacat-crop-preview-frame" style={frameStyles} >
-          <div className="mediacat-crop-preview" style={previewStyles} />
+        <div className="mediacat-crop-content">
+          <div className="mediacat-crop-preview-frame" style={frameStyles} >
+            <div className="mediacat-crop-preview" style={previewStyles} />
+          </div>
         </div>
-        Usages: {crop.get('applications').length}
-        {crop.get('changed') ? <a href="javascript:;" onClick={this.save}>Save</a> : null}
+        <div className="mediacat-crop-footer">
+          Usages: {crop.get('applications').length}
+          {crop.get('changed') ? <a href="javascript:;" onClick={this.save}>Save</a> : null}          
+        </div>
       </li>
     );
   }

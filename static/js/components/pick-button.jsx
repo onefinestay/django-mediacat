@@ -20,7 +20,7 @@ var PickButton = React.createClass({
     var selectWidth;
     var selectRatios;
 
-    if (crop && selectOptions) {
+    if (crop && !crop.get('changed') && selectOptions) {
       ratio = crop.get('key');
       width = crop.get('x2') - crop.get('x1');
 
