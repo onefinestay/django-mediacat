@@ -22,6 +22,7 @@ var Crop = React.createClass({
 
   save: function(event) {
     event.preventDefault();
+    event.stopPropagation();
     this.getFlux().actions.crop.save(this.props.crop);
   },
 

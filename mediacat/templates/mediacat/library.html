@@ -15,7 +15,6 @@
  		media: {
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}, 			
  			selectedMedia: null,
- 			displayMode: 'grid',
  			loading: false,
  			select: {
  				width: 1200,
@@ -37,8 +36,7 @@
  			availableCrops: {{ available_crops|jsonify }} 			
  		},
  		ui: {
- 			listMode: 'grid',
- 			informationMode: 'crops'
+ 			listType: 'grid'
  		}
  	};
 </script>

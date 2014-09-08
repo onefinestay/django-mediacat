@@ -36,22 +36,26 @@
 	content: "\E004";
 }
 
-.icon-grid:before {
+.icon-filmstrip:before {
 	content: "\E005";
 }
 
-.icon-reject:before {
+.icon-grid:before {
 	content: "\E006";
 }
 
-.icon-star:before {
+.icon-reject:before {
 	content: "\E007";
 }
 
-.icon-tick:before {
+.icon-star:before {
 	content: "\E008";
 }
 
-.icon-upload:before {
+.icon-tick:before {
 	content: "\E009";
+}
+
+.icon-upload:before {
+	content: "\E00A";
 }

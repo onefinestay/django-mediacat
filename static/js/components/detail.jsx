@@ -43,6 +43,12 @@ var Detail = React.createClass({
     });
   },
 
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps.mode !== this.props.mode) {
+      this.updateDOMDimensions();
+    }
+  },
+
   componentDidMount: function() {
     this.updateDOMDimensions();
     window.addEventListener('resize', this.updateDOMDimensions); 

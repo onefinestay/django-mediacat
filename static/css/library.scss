@@ -338,7 +338,7 @@ body {
       display: flex;
     }
 
-    .#{$ns}-detail {
+    .#{$ns}-detail, .#{$ns}-filmstrip {
       position: relative;
       flex-grow: 1;
 
@@ -405,7 +405,7 @@ body {
       }    
     }
 
-    &.#{$ns}-document-detail {
+    &.#{$ns}-document-detail, &.#{$ns}-document-filmstrip {
       > .panel {
         flex-grow: 0;
         flex-shrink: 0;

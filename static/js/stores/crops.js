@@ -82,7 +82,8 @@ var CropStore = Fluxxor.createStore({
     CROP_RESIZE: 'onCropResize',
     CROP_ADD: 'onCropAdd',
     CROP_FETCH: 'onFetch',
-    CROP_SAVE: 'onSave'
+    CROP_SAVE: 'onSave',
+    CROP_SAVE_SUCCESS: 'onSaveSuccess'
   },
 
   initialize: function(options) {
@@ -285,30 +286,75 @@ var CropStore = Fluxxor.createStore({
 
   onMediaSelect: function(payload) {
     var req = this.getFetchRequest(payload.media, null);
-    this.state = this.state.set('crops', null);
-    this.state = this.state.set('selectedCrop', null);
+    var requests = this.state.get('fetchRequests', Immutable.Map());
+    requests = requests.set(payload.media.get('id'), req);
+
+    this.state = this.state.withMutations(function(state) {
+      state
+        .set('crops', null)
+        .set('selectedCrop', null)
+        .set('fetchRequests', requests);
+    });
     this.emit('change');
   },
 
   onFetch: function(payload) {
+    var req = payload.request;   
     var crops = Immutable.fromJS(payload.data);
-    this.state = this.state.set('crops', crops);
+
+    var requests = this.state.get('fetchRequests');
+    requests = requests.delete(payload.mediaId);
+    this.state = this.state.set('fetchRequests', requests);
+
+    if (payload.mediaId === this.flux.stores['Media'].state.get('selectedMedia')) {
+      this.state = this.state.set('crops', crops);
+    }
     this.emit('change');
   },
 
   getSaveRequest: function(crop) {
     var url = '/mediacat/crops/' + crop.get('uuid') + '/';
 
+    var onSuccess = function(response) {
+      this.flux.actions.crop.saveSuccess(response, crop.get('uuid'));
+    }.bind(this);
+
     return request
       .put(url)
       .send(crop.toJS())
       .set('Accept', 'application/json')
-      .end();
+      .end(onSuccess);
   },
 
   onSave: function(payload) {
     var crop = payload.crop;
-    this.getSaveRequest(crop);
+    var req = this.getSaveRequest(crop);
+    var requests = this.state.get('saveRequests', Immutable.Map());
+    requests = requests.set(crop.get('uuid'), req);
+
+    this.state = this.state.withMutations(function(state) {
+      state
+        .set('saveRequests', requests);
+    });
+    this.emit('change');
+  },
+
+  onSaveSuccess: function(payload) {
+    var req = payload.request;   
+    var crop = Immutable.fromJS(payload.data);
+    var cropId = payload.cropId;
+    var index;
+
+    var requests = this.state.get('saveRequests');
+    requests = requests.delete(cropId);
+    this.state = this.state.set('saveRequests', requests);
+
+    var index = this.state.get('crops').findIndex(c => c.get('uuid') === cropId);
+
+    if (index !== -1) {
+      this.state = this.state.updateIn(['crops', index], c => crop);
+    }
+    this.emit('change');
   },
 
   onCategorySelect: function(payload) {

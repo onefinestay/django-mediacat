@@ -23,6 +23,10 @@ var Main = React.createClass({
     this.setState({mode: 'grid'});
   },
 
+  setFilmstripMode: function() {
+    this.setState({mode: 'filmstrip'});
+  },  
+
   setDetailMode: function() {
     this.setState({mode: 'detail'});
   },
@@ -31,6 +35,7 @@ var Main = React.createClass({
     var documentClasses = {
       'mediacat-document': true,
       'mediacat-document-grid': this.state.mode === 'grid',
+      'mediacat-document-filmstrip': this.state.mode === 'filmstrip',
       'mediacat-document-detail': this.state.mode === 'detail'
     };
 
@@ -39,6 +44,12 @@ var Main = React.createClass({
       'icon-grid': true,
       'active': this.state.mode === 'grid'
     };
+
+    var filmstripButtonClasses = {
+      'icon': true,
+      'icon-filmstrip': true,
+      'active': this.state.mode === 'filmstrip'
+    };    
 
     var detailButtonClasses = {
       'icon': true,
@@ -53,13 +64,14 @@ var Main = React.createClass({
             <div className="spacer" />
             <div className="button-group">
               <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />
+              <button className={cx(filmstripButtonClasses)} onClick={this.setFilmstripMode} />
               <button className={cx(detailButtonClasses)} onClick={this.setDetailMode} />
             </div>
           </div>
         </Header>
         <div className={cx(documentClasses)}>
-          {this.state.mode === 'detail' && <div className="mediacat-detail-wrapper"><Detail /></div>}
-          <ThumbnailList mode={this.state.mode} />
+          {this.state.mode !== 'grid' && <div className="mediacat-detail-wrapper"><Detail mode={this.state.mode} /></div>}
+          {this.state.mode !== 'detail' && <ThumbnailList mode={this.state.mode} />}
         </div>
       </div>
     );

@@ -48,6 +48,12 @@ var Actions = {
       this.dispatch(Constants.CROP_SAVE, {crop});
     },
 
+    saveSuccess: function(response, cropId) {
+      var data = response.body;
+      var request = response.req;      
+      this.dispatch(Constants.CROP_SAVE_SUCCESS, {data, request, cropId})
+    },
+
     fetch: function(response,  mediaId) {
       var data = response.body;
       var request = response.req;

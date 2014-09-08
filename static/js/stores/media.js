@@ -92,7 +92,9 @@ var MediaStore = Fluxxor.createStore({
       requests = requests.set(payload.category.get('path'), req);
 
       this.state = this.state.withMutations(function(state) {
-        state.set('media', Immutable.Sequence()).set('fetchRequests', requests);
+        state
+          .set('media', Immutable.Sequence())
+          .set('fetchRequests', requests);
       });
     } else {
       this.state = this.state.set('media', Immutable.Sequence());

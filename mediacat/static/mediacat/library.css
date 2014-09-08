@@ -650,19 +650,19 @@ body {
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex; }
-    .mediacat-application .mediacat-document .mediacat-detail {
+    .mediacat-application .mediacat-document .mediacat-detail, .mediacat-application .mediacat-document .mediacat-filmstrip {
       position: relative;
       -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
-      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image {
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image, .mediacat-application .mediacat-document .mediacat-filmstrip .detail-proxy-image {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0; }
-      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-placeholder {
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-placeholder, .mediacat-application .mediacat-document .mediacat-filmstrip .detail-proxy-image-placeholder {
         position: absolute;
         top: 0;
         left: 0;
@@ -674,7 +674,7 @@ body {
         opacity: 1;
         -webkit-transition: opacity 1s ease;
                 transition: opacity 1s ease; }
-      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-bg {
+      .mediacat-application .mediacat-document .mediacat-detail .detail-proxy-image-bg, .mediacat-application .mediacat-document .mediacat-filmstrip .detail-proxy-image-bg {
         position: absolute;
         top: 0;
         left: 0;
@@ -687,7 +687,7 @@ body {
         opacity: 0;
         -webkit-transition: opacity 1s ease;
                 transition: opacity 1s ease; }
-      .mediacat-application .mediacat-document .mediacat-detail img {
+      .mediacat-application .mediacat-document .mediacat-detail img, .mediacat-application .mediacat-document .mediacat-filmstrip img {
         width: 100%;
         height: 100%;
         opacity: 0;
@@ -719,7 +719,7 @@ body {
           -ms-flex-positive: 0;
               flex-grow: 0;
       height: 0; }
-    .mediacat-application .mediacat-document.mediacat-document-detail > .panel {
+    .mediacat-application .mediacat-document.mediacat-document-detail > .panel, .mediacat-application .mediacat-document.mediacat-document-filmstrip > .panel {
       -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
           -ms-flex-positive: 0;
@@ -728,12 +728,12 @@ body {
           -ms-flex-negative: 0;
               flex-shrink: 0;
       height: 270px; }
-    .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .scrollpane-content {
+    .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .scrollpane-content, .mediacat-application .mediacat-document.mediacat-document-filmstrip .scrollpane .scrollpane-content {
       display: inline-block; }
-    .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list {
+    .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list, .mediacat-application .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list {
       display: inline-block;
       white-space: nowrap; }
-      .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list li {
+      .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list li, .mediacat-application .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list li {
         display: inline-block; }
   .mediacat-application .mediacat-cropper {
     position: absolute;
