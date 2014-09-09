@@ -520,12 +520,13 @@ body {
           -ms-flex-positive: 1;
               flex-grow: 1; }
     .mediacat-application .toolbar .button-group button, .mediacat-application .toolbar .button-group .button {
-      border-radius: 0; }
+      border-radius: 0;
+      margin-left: 1px; }
       .mediacat-application .toolbar .button-group button:first-child, .mediacat-application .toolbar .button-group .button:first-child {
+        margin-left: 0;
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px; }
       .mediacat-application .toolbar .button-group button:last-child, .mediacat-application .toolbar .button-group .button:last-child {
-        margin-left: 1px;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px; }
   .mediacat-application .mediacat-header {

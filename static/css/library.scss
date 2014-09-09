@@ -125,14 +125,15 @@ body {
     .button-group {
       button, .button {
         border-radius: 0;
+        margin-left: 1px;        
 
         &:first-child {
+          margin-left: 0;
           border-top-left-radius: 2px;
           border-bottom-left-radius: 2px;
         }    
 
         &:last-child {
-          margin-left: 1px;
           border-top-right-radius: 2px;
           border-bottom-right-radius: 2px;
         }         
