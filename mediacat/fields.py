@@ -1,8 +1,12 @@
 from django.db import models
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
-from .models import ImageCrop, ImageCropApplication
+from .forms import MediaFormField
+from .models import (
+    ImageCrop,
+    ImageCropApplication,
+)
+from .widgets import MediaInput
 
 
 class MediaFieldMixin(object):
@@ -86,3 +90,14 @@ class MediaField(MediaFieldMixin, models.Field):
     def __init__(self, key, **kwargs):
         self.key = key
         super(MediaField, self).__init__(**kwargs)
+
+    def formfield(self, **kwargs):
+        widget = kwargs.pop('widget', MediaInput())
+
+        defaults = {
+            'form_class': MediaFormField,
+            'field': self,
+        }
+        defaults.update(kwargs)
+        defaults['widget'] = widget
+        return super(MediaField, self).formfield(**defaults)
