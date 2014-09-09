@@ -182,8 +182,9 @@
       background-color: #2b303b;
       height: 100%;
       width: auto;
-      border: 1px solid #1a0000;
-      color: #BAC5CE; }
+      border: 1px solid #1b1e25;
+      color: #BAC5CE;
+      box-shadow: 0 1px 0 0 #292e38; }
       .panel .panel-header.toolbar button[disabled], .panel .panel-header.toolbar .button[disabled] {
         opacity: 0.5; }
       .panel .panel-header.toolbar button .icon, .panel .panel-header.toolbar .button .icon {
@@ -253,11 +254,12 @@
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  border: 1px solid #1a0000;
+  border: 1px solid #1b1e25;
   background-color: #2b303b;
   border-radius: 2px;
   font-size: 14px;
-  cursor: pointer; }
+  cursor: pointer;
+  box-shadow: 0 1px 0 0 #292e38; }
   .select.disabled {
     opacity: 0.5; }
   .select:focus {
@@ -273,6 +275,8 @@
         -ms-flex-positive: 1;
             flex-grow: 1;
     padding: 0 10px; }
+  .select .select-placeholder {
+    opacity: 0.5; }
   .select .select-arrow {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
@@ -284,7 +288,7 @@
     width: 30px;
     text-align: center;
     display: inline-block;
-    border-left: 1px solid #1a0000; }
+    border-left: 1px solid #1b1e25; }
     .select .select-arrow .icon {
       font-size: 12px;
       -webkit-transform: rotate(90deg);
@@ -298,7 +302,7 @@
   top: 28px;
   z-index: 2;
   background: #2b303b;
-  border: 1px solid #1a0000;
+  border: 1px solid #1b1e25;
   border-top: none;
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
   max-height: 305px;

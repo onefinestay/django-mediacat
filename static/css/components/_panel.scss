@@ -31,8 +31,9 @@
 	    background-color: #2b303b;
 	    height: 100%;
 	    width: auto;
-	    border: 1px solid $seperator-color;
+	    border: 1px solid darken(#2b303b, 7.5);
 	    color: #BAC5CE;
+	    box-shadow: 0 1px 0 0 darken(#2b303b, 1);
 
 	    &[disabled] {
 	    	opacity: 0.5;

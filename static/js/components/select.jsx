@@ -255,7 +255,7 @@ var Select = React.createClass({
     });
 
     var selectedOption = this.state.selected;
-    var active = this.state.focus;
+    var active = !this.props.disabled && this.state.focus;
     var label;
     var value;
 
@@ -275,9 +275,10 @@ var Select = React.createClass({
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
       >
-        <div className="select-value-display">{label}</div>
+        <div className="select-value-display">{selectedOption ? label : <span className="select-placeholder">{this.props.placeholder}</span>}</div>
         <div className="select-arrow"><span className="icon icon-down-arrow" /></div>
         <input 
+          disabled={this.props.disabled}
           type="hidden" 
           name={this.props.name}
           value={value}
