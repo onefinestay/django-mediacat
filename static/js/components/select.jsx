@@ -3,7 +3,6 @@
 
 var React = require('react/addons');
 var _ = require('underscore');
-var Sifter = require('sifter');
 var cx = React.addons.classSet;
 
 var SearchResult = React.createClass({
@@ -42,9 +41,7 @@ var Select = React.createClass({
     valueField: React.PropTypes.string, // value field name
     labelField: React.PropTypes.string, // label field name
 
-    searchField: React.PropTypes.array, // array of search fields
-
-    options: React.PropTypes.array.isRequired, // array of objects
+    options: React.PropTypes.object.isRequired, // array of objects
     resultRenderer: React.PropTypes.func, // search result React component
 
     onSelect: React.PropTypes.func, // function called when option is selected
@@ -74,10 +71,7 @@ var Select = React.createClass({
   getInitialState: function() {
     var selected = null;
     if (this.props.value) {
-      // find selected value
-      selected = _.find(this.props.options, function(option) {
-        return option[this.props.valueField] == this.props.value;
-      }, this);
+      selected = this.props.options.find(option => option.get(this.props.valueField) === this.props.value);
     }
 
     return {
@@ -108,41 +102,14 @@ var Select = React.createClass({
     }
   },
 
-  handleChange: function(event) {
-    event.preventDefault();
-
-    var query = event.target.value;
-
-    var searcher = new Sifter(this.props.options);
-
-    var result = searcher.search(query, {
-      fields: this.props.searchField
-    });
-
-    var options = _.map(result.items, function(res) {
-      return this.props.options[res.id];
-    }, this);
-
-    var highlighted = _.first(options);
-
-    this.setState({
-      query: query,
-      options: options,
-      searchTokens: result.tokens,
-      highlighted: highlighted,
-    });
-  },
-
   handleFocus: function(event) {
     event.preventDefault();
 
     var highlighted;
     if (this.state.selected) {
-      highlighted = _.find(this.state.options, function(option) {
-        return option[this.props.valueField] == this.state.selected[this.props.valueField];
-      }, this);
+      highlighted = this.state.options.find(option => option === this.state.selected);
     } else {
-      highlighted = _.first(this.state.options);
+      highlighted = this.state.options.first();
     }
 
     this.setState({
@@ -173,21 +140,18 @@ var Select = React.createClass({
   handleArrowClick: function(event) {
     if (this.state.focus) {
       this.handleBlur(event);
-      this.refs.input.getDOMNode().blur();
     } else {
       this.handleFocus(event);
-      this.refs.input.getDOMNode().focus();
     }
   },
 
   moveUp: function(event) {
     var options = this.state.options;
-    if (options.length > 0) {
-      event.preventDefault();
-      var index = _.indexOf(options, this.state.highlighted);
-      if (!_.isUndefined(options[index - 1])) {
+    if (options.count() > 0) {
+      var index = options.indexOf(this.state.highlighted);
+      if (options.get(index - 1)) {
         this.setState({
-          highlighted: options[index - 1]
+          highlighted: options.get(index - 1)
         });
       }
     }
@@ -195,12 +159,12 @@ var Select = React.createClass({
 
   moveDown: function(event) {
     var options = this.state.options;
-    if (options.length > 0) {
+    if (options.count() > 0) {
       event.preventDefault();
-      var index = _.indexOf(options, this.state.highlighted);
-      if (!_.isUndefined(options[index + 1])) {
+      var index = options.indexOf(this.state.highlighted);
+      if (options.get(index + 1)) { 
         this.setState({
-          highlighted: options[index + 1]
+          highlighted: options.get(index + 1)
         });
       }
     }
@@ -212,7 +176,7 @@ var Select = React.createClass({
       this.setState({
         value: '',
         selected: null,
-        highlighted: _.first(this.props.options),
+        highlighted: this.props.options.first(),
         focus: true,
         options: this.props.options
       });
@@ -245,10 +209,10 @@ var Select = React.createClass({
   selectOption: function(option) {
     this.setState({
       query: null,
-      selected: option,
+      selected: option
     });
 
-    this.refs.input.getDOMNode().blur();
+    this.getDOMNode().blur();
 
     if (typeof this.props.onSelect === 'function') {
       this.props.onSelect(option);
@@ -264,16 +228,16 @@ var Select = React.createClass({
   },
 
   render: function() {
-    var options = _.map(this.state.options, function(option) {
-      var value = option[this.props.valueField];
+    var options = this.props.options.map(function(option) {
+      var value = option.get(this.props.valueField);
 
       var highlighted = this.state.highlighted &&
-        value == this.state.highlighted[this.props.valueField];
+        value == this.state.highlighted.get(this.props.valueField);
 
       return this.props.resultRenderer({
         key: value,
         value: value,
-        label: option[this.props.labelField],
+        label: option.get(this.props.labelField),
         option: option,
         tokens: this.state.searchTokens,
         selected: highlighted,
@@ -281,51 +245,46 @@ var Select = React.createClass({
         onHover: this.handleOptionHover,
         onClick: this.handleOptionClick,
       });
-    }, this);
+    }.bind(this));
 
     var classes = cx({
-      'select-autocomplete': true,
+      'select': true,
+      'disabled': this.props.disabled,
       'in-focus': this.state.focus,
       'not-in-focus': !this.state.focus
     });
 
-    var inputValue = '';
-    var selected;
+    var selectedOption = this.state.selected;
+    var active = this.state.focus;
+    var label;
+    var value;
 
-    if (this.state.query) {
-      inputValue = this.state.query;
-    } else if (this.props.value) {
-      selected = _.find(this.props.options, function(option) {
-        return option[this.props.valueField] == this.props.value;
-      }, this);
-      if (selected) {
-        inputValue = selected[this.props.labelField];
-      }
+    if (selectedOption) {
+      label = selectedOption.get(this.props.labelField);
+      value = selectedOption.get(this.props.valueField);
     }
 
     return (
-      <div className={classes}>
-        <input type="text" name={this.props.name}
-          placeholder={this.props.placeholder}
-          value={inputValue}
-          disabled={this.props.disabled}
-          onKeyDown={this.handleInput}
-          onChange={this.handleChange}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-
-          autoComplete="off"
+      <div
+        className={classes}
+        role='listbox'
+        aria-haspopup='true'
+        aria-activedescendant={active}
+        tabIndex="0"
+        onKeyDown={this.handleInput}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
+      >
+        <div className="select-value-display">{label}</div>
+        <div className="select-arrow"><span className="icon icon-down-arrow" /></div>
+        <input 
+          type="hidden" 
+          name={this.props.name}
+          value={value}
           ref="input" />
-
-        <div className="select-autocomplete-icon" onMouseDown={this.handleArrowClick}>
-          {this.state.focus ?
-            <i className="fa fa-caret-up"></i> :
-            <i className="fa fa-caret-down"></i>}
-        </div>
-
-        {this.state.focus ?
-          <ul className="select-autocomplete-options" ref="options">
-            {options}
+        {active ?
+          <ul className="select-options" ref="options">
+            {options.toJS()}
           </ul> : null}
       </div>
     );

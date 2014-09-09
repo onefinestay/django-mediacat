@@ -22,11 +22,24 @@
 	  border-bottom: 1px #1a0000 solid;
 	  color: #BAC5CE;
 
+	  .separator {
+	  	width: 5px;
+	  }
+
 	  button, .button {
-	    padding: 2px 3px 2px 0;
+	    padding: 0 10px;
+	    background-color: #2b303b;
+	    height: 100%;
+	    width: auto;
+	    border: 1px solid $seperator-color;
+	    color: #BAC5CE;
+
+	    &[disabled] {
+	    	opacity: 0.5;
+	    }
 
 	    .icon {
-	      padding: 2px 3px 2px 0;
+	      padding: 0;
 	      font-size: 12px;
 	    }
 	  }

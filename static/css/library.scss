@@ -4,6 +4,7 @@
 
 @import "./components/panel";
 @import "./components/scrollpane";
+@import "./components/select";
 @import "./components/tabs";
 
 
@@ -38,10 +39,6 @@ body {
 
   *, *:before, *:after {
     box-sizing: border-box;   
-  }
-
-  .icon {
-    font-size: 24px;
   }
 
   .hidden-file {

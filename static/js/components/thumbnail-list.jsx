@@ -60,14 +60,14 @@ var ThumbnailList = React.createClass({
   render: function() {
     var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
-    var toolbar = (
-      <PanelToolbar>
-        Sort by: <select />
-      </PanelToolbar>
-    );
+    // var toolbar = (
+    //   <PanelToolbar>
+    //     Sort by: <select />
+    //   </PanelToolbar>
+    // );
 
     return (
-      <Panel mode={this.props.mode} toolbar={toolbar}>
+      <Panel mode={this.props.mode} toolbar={null}>
         <ul className="mediacat-thumbnail-list">
           {thumbnails.toJS()}
         </ul>
