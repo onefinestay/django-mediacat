@@ -86,6 +86,27 @@ class CategoryList(generics.ListCreateAPIView):
         return categories
 
 
+class AssociationList(generics.ListCreateAPIView):
+    queryset = models.ImageAssociation.objects.all()
+    serializer_class = serializers.ImageAssociationSerializer
+
+    def get_queryset(self):
+        queryset = super(AssociationList, self).get_queryset()
+        params = self.request.QUERY_PARAMS
+
+        if 'content_type_id' in params and 'object_id' in params:
+            queryset = queryset.filter(
+                content_type_id=params['content_type_id'],
+                object_id=params['object_id'])
+        elif 'image_id' in params:
+            queryset = queryset.filter(image_id=params['image_id'])
+        else:
+            queryset = queryset.none()
+
+        return queryset
+
+
+
 class Library(TemplateView):
     template_name = 'mediacat/library.html'
 

@@ -100,6 +100,13 @@ var CategoryTreeNode = React.createClass({
     this.forceUpdate();
   },
 
+  onMouseUp: function() {
+    var droppedMedia = this.getFlux().stores.Dragging.getDraggedMedia();
+    if (droppedMedia && this.props.node.get('accepts_images')) {
+      this.getFlux().actions.media.addAssociation(this.props.node, droppedMedia);
+    }
+  },
+
   render: function() {
     var node = this.props.node;
 
@@ -135,7 +142,7 @@ var CategoryTreeNode = React.createClass({
 
     return (
       <li className={cx(classes)}>
-        <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut}>
+        <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
           {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="icon icon-dash" />}
           {node.get('name')}
           {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}

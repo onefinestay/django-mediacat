@@ -46,12 +46,16 @@ class ImageCropSerializer(serializers.ModelSerializer):
 
 class ImageAssociationSerializer(serializers.ModelSerializer):
 
+    image = serializers.PrimaryKeyRelatedField()
+    content_type = serializers.PrimaryKeyRelatedField()
+
     class Meta:
         model = models.ImageAssociation
         fields = (
             'content_type',
             'object_id',
             'canonical',
+            'image',
         )
 
 
