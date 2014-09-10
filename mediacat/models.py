@@ -10,8 +10,8 @@ from django.utils.translation import ugettext as _
 from uuidfield import UUIDField
 
 from .backends.thumbor import thumb
-
-crop_registry = set([(k, v[1], v[2]) for k, v in settings.MEDIALIBRARY_CROPS.items()])
+from .xmp.extract import extract_xmp_data
+from .exif.extract import extract_exif_data
 
 
 RATING_CHOICES = (
@@ -25,6 +25,8 @@ RATING_CHOICES = (
 
 
 class Image(models.Model):
+    uuid = UUIDField(auto=True, hyphenate=True)
+
     image_file = models.ImageField(
         upload_to='media-library',
         width_field='width',
@@ -46,9 +48,6 @@ class Image(models.Model):
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-
-    xmp_data = models.TextField(blank=True)
-    exif_data = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.image_file.name
@@ -76,13 +75,21 @@ class Image(models.Model):
         verbose_name = _('Image')
         verbose_name_plural = _('Images')
 
+
+class ImageMetadata(models.Model):
+    image = models.OneToOneField(Image, related_name='metadata')
+
+    xmp_data = models.TextField(blank=True, null=True)
+    exif_data = models.TextField(blank=True, null=True)
+
+    def extract_data(self):
+        self.xmp_data = extract_xmp_data(self.image.image_file.file)
+        self.exif_data = extract_exif_data(self.image.image_file.file)
+
     def save(self, **kwargs):
-        if False:
-            from .xmp.extract import extract_xmp_data
-            from .exif.extract import extract_exif_data
-            self.xmp_data = extract_xmp_data(self.image_file.file)
-            self.exif_data = extract_exif_data(self.image_file.file)
-        return super(Image, self).save(**kwargs)
+        if not self.pk:
+            self.extract_data()
+        super(ImageMetadata, self).save(**kwargs)
 
 
 class ImageAssociation(models.Model):
@@ -112,11 +119,13 @@ class ImageAssociation(models.Model):
         return super(ImageAssociation, self).save(**kwargs)
 
 
-CROP_KEY_CHOICES = [(k, v[0]) for k, v in settings.MEDIACAT_AVAILABLE_CROP_RATIOS.items()]
+CROP_KEY_CHOICES = [
+    (k, v[0])
+    for k, v in settings.MEDIACAT_AVAILABLE_CROP_RATIOS.items()]
 
 
 class ImageCrop(models.Model):
-    uuid = UUIDField(auto=True, hyphenate=True, null=True)
+    uuid = UUIDField(auto=True, hyphenate=True)
 
     image = models.ForeignKey(Image, related_name='crops')
     key = models.CharField(
@@ -133,9 +142,7 @@ class ImageCrop(models.Model):
     y2 = models.SmallIntegerField(verbose_name='bottom', blank=True, null=True)
 
     class Meta:
-        unique_together = (
-            ('image', 'width', 'height'),
-        )
+        pass
 
     def save(self, *args, **kwargs):
         self.width = self.x2 - self.x1
@@ -181,3 +188,11 @@ class ImageCropApplication(models.Model):
     content_type = models.ForeignKey(ContentType, blank=True, null=True)
     object_id = models.PositiveIntegerField(blank=True, null=True)
     object = generic.GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        unique_together = (
+            ('content_type', 'object_id', 'field_name'),
+        )
+        index_together = (
+            ('content_type', 'object_id', 'field_name'),
+        )

@@ -701,27 +701,35 @@ body {
     list-style-type: none;
   }
 
+  .#{$ns}-crop-type {
+    margin: 10px;
+    border: 1px solid darken(#232830, 7.5);
+    background-color: #232830;    
+    border-radius: 2px;
+    font-size: 14px; 
+    box-shadow: 0 1px 0 0 darken(#232830, 1);
+  }
+
 
   .#{$ns}-crop-type-header {
     padding: 5px 10px;
-    background-color: #232830;
-    border-bottom: 1px solid $seperator-color;
+    background-color: #2b303b;
+    border-bottom: 1px solid darken(#2b303b, 7.5);
   }
 
   .#{$ns}-crop-list {
-    margin: 10px;
+    margin: 0;
     padding: 0;
     list-style-type: none;
 
     .#{$ns}-crop {
-      background-color: #232830;
-      margin: 0 0 5px;
+      margin: 0;
       text-align: center;
       cursor: pointer;
-      border: 1px solid darken(#232830, 2.5);
+      border-bottom: 2px solid darken(#2b303b, 7.5);
 
-      &:list-child {
-        margin-bottom: 0;
+      &:last-child {
+        border-bottom-width: 0;
       }
 
       .icon {
@@ -747,7 +755,7 @@ body {
 
   .#{$ns}-crop-footer {
     padding: 5px 10px;
-    background-color: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid darken(#2b303b, 7.5);
   }
 
   .#{$ns}-crop-preview-frame {
