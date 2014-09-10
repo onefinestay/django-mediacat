@@ -1,5 +1,6 @@
-from .jpeg import is_jpeg, JPEGFile, JPEGSegment
-from .png import is_png, PNGFile, PNGChunk
+from .jpeg import is_jpeg, JPEGFile
+from .png import is_png, PNGFile
+
 
 def extract_xmp_data(image):
     image.seek(0)

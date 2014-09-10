@@ -22,10 +22,17 @@ class Migration(SchemaMigration):
             ('rating', self.gf('django.db.models.fields.SmallIntegerField')(db_index=True, null=True, blank=True)),
             ('date_created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('date_modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('xmp_data', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('exif_data', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal(u'mediacat', ['Image'])
+
+        # Adding model 'ImageMetadata'
+        db.create_table(u'mediacat_imagemetadata', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('image', self.gf('django.db.models.fields.related.OneToOneField')(related_name='metadata', unique=True, to=orm['mediacat.Image'])),
+            ('xmp_data', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('exif_data', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+        ))
+        db.send_create_signal(u'mediacat', ['ImageMetadata'])
 
         # Adding model 'ImageAssociation'
         db.create_table(u'mediacat_imageassociation', (
@@ -91,6 +98,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Image'
         db.delete_table(u'mediacat_image')
 
+        # Deleting model 'ImageMetadata'
+        db.delete_table(u'mediacat_imagemetadata')
+
         # Deleting model 'ImageAssociation'
         db.delete_table(u'mediacat_imageassociation')
 
@@ -115,7 +125,6 @@ class Migration(SchemaMigration):
             'caption': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'date_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'exif_data': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'file_size': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'height': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -123,8 +132,7 @@ class Migration(SchemaMigration):
             'rank': ('django.db.models.fields.SmallIntegerField', [], {'default': '0', 'db_index': 'True'}),
             'rating': ('django.db.models.fields.SmallIntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'uuid': ('uuidfield.fields.UUIDField', [], {'unique': 'True', 'max_length': '32', 'blank': 'True'}),
-            'width': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'xmp_data': ('django.db.models.fields.TextField', [], {'blank': 'True'})
+            'width': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'mediacat.imageassociation': {
             'Meta': {'unique_together': "(('image', 'content_type', 'object_id'),)", 'object_name': 'ImageAssociation', 'index_together': "[['image', 'content_type', 'object_id']]"},
@@ -154,6 +162,13 @@ class Migration(SchemaMigration):
             'field_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'mediacat.imagemetadata': {
+            'Meta': {'object_name': 'ImageMetadata'},
+            'exif_data': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'metadata'", 'unique': 'True', 'to': u"orm['mediacat.Image']"}),
+            'xmp_data': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
         }
     }
 

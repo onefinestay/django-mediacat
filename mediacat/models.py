@@ -10,6 +10,8 @@ from django.utils.translation import ugettext as _
 from uuidfield import UUIDField
 
 from .backends.thumbor import thumb
+from .xmp.extract import extract_xmp_data
+from .exif.extract import extract_exif_data
 
 
 RATING_CHOICES = (
@@ -47,9 +49,6 @@ class Image(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
-    xmp_data = models.TextField(blank=True)
-    exif_data = models.TextField(blank=True)
-
     def __unicode__(self):
         return self.image_file.name
 
@@ -76,12 +75,21 @@ class Image(models.Model):
         verbose_name = _('Image')
         verbose_name_plural = _('Images')
 
+
+class ImageMetadata(models.Model):
+    image = models.OneToOneField(Image, related_name='metadata')
+
+    xmp_data = models.TextField(blank=True, null=True)
+    exif_data = models.TextField(blank=True, null=True)
+
+    def extract_data(self):
+        self.xmp_data = extract_xmp_data(self.image.image_file.file)
+        self.exif_data = extract_exif_data(self.image.image_file.file)
+
     def save(self, **kwargs):
-        from .xmp.extract import extract_xmp_data
-        from .exif.extract import extract_exif_data
-        self.xmp_data = extract_xmp_data(self.image_file.file)
-        self.exif_data = extract_exif_data(self.image_file.file)
-        return super(Image, self).save(**kwargs)
+        if not self.pk:
+            self.extract_data()
+        super(ImageMetadata, self).save(**kwargs)
 
 
 class ImageAssociation(models.Model):
