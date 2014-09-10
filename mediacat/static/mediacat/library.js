@@ -15397,7 +15397,7 @@
 	    var crops = this.props.crops.map(function(crop)  {return Crop({key: crop.get('uuid'), x1: crop.get('x1'), x2: crop.get('x2'), y1: crop.get('y1'), y2: crop.get('y2'), crop: crop, media: media});});
 	
 	    return (
-	      React.DOM.li(null, 
+	      React.DOM.li({className: "mediacat-crop-type"}, 
 	        React.DOM.div({className: "mediacat-crop-type-header"}, 
 	          this.state.availableCrops.get(this.props.key).get(0)
 	        ), 

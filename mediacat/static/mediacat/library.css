@@ -1054,22 +1054,28 @@ body {
   margin: 0;
   padding: 0;
   list-style-type: none; }
+.tabs .mediacat-crop-type {
+  margin: 10px;
+  border: 1px solid #13161a;
+  background-color: #232830;
+  border-radius: 2px;
+  font-size: 14px;
+  box-shadow: 0 1px 0 0 #21262d; }
 .tabs .mediacat-crop-type-header {
   padding: 5px 10px;
-  background-color: #232830;
-  border-bottom: 1px solid #1a0000; }
+  background-color: #2b303b;
+  border-bottom: 1px solid #1b1e25; }
 .tabs .mediacat-crop-list {
-  margin: 10px;
+  margin: 0;
   padding: 0;
   list-style-type: none; }
   .tabs .mediacat-crop-list .mediacat-crop {
-    background-color: #232830;
-    margin: 0 0 5px;
+    margin: 0;
     text-align: center;
     cursor: pointer;
-    border: 1px solid #1e2229; }
-    .tabs .mediacat-crop-list .mediacat-crop:list-child {
-      margin-bottom: 0; }
+    border-bottom: 2px solid #1b1e25; }
+    .tabs .mediacat-crop-list .mediacat-crop:last-child {
+      border-bottom-width: 0; }
     .tabs .mediacat-crop-list .mediacat-crop .icon {
       font-size: 18px;
       line-height: 18px; }
@@ -1083,7 +1089,7 @@ body {
   padding: 10px; }
 .tabs .mediacat-crop-footer {
   padding: 5px 10px;
-  background-color: rgba(0, 0, 0, 0.2); }
+  border-top: 1px solid #1b1e25; }
 .tabs .mediacat-crop-preview-frame {
   margin: 0 auto 10px;
   background-color: #1a0000;
