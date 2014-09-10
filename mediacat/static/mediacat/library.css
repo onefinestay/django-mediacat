@@ -697,7 +697,7 @@ body {
       position: absolute;
       top: 0;
       right: 10px; }
-    .mediacat-application .mediacat-categories-label:hover {
+    .mediacat-application .mediacat-categories-label:hover, .mediacat-application .mediacat-categories-label.hover {
       color: #fff;
       background-color: #303642; }
   .mediacat-application .mediacat-categories-node-selected > .mediacat-categories-label {
@@ -976,7 +976,8 @@ body {
                 transition-property: none; }
       .mediacat-application .mediacat-thumbnail .proxy-image img {
         position: absolute;
-        display: block; }
+        display: block;
+        -webkit-user-drag: none; }
   .mediacat-application .mediacat-thumbnail-selected {
     background-color: #363c4a;
     border: 1px solid #414858; }
@@ -1021,6 +1022,14 @@ body {
       padding: 5px; }
     .mediacat-application .mediacat-information-panel td {
       width: 100%; }
+  .mediacat-application .mediacat-drag-placeholder {
+    position: absolute;
+    background-color: #BADA55;
+    width: 50px;
+    height: 50px;
+    border-radius: 3px;
+    z-index: 999;
+    pointer-events: none; }
 
 .tabs .mediacat-crops-panel {
   -webkit-box-flex: 1;

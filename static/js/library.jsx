@@ -13,6 +13,7 @@ var CategoryStore = require('./stores/categories');
 var MediaStore = require('./stores/media');
 var UploadStore = require('./stores/uploads');
 var CropStore = require('./stores/crops');
+var DraggingStore = require('./stores/dragging');
 
 var Actions = require('./actions');
 
@@ -22,7 +23,8 @@ var stores = {
   Categories: new CategoryStore(config.categories),
   Media: new MediaStore(config.media),
   Uploads: new UploadStore(config.uploads),
-  Crops: new CropStore(config.crops)
+  Crops: new CropStore(config.crops),
+  Dragging: new DraggingStore(config.dragging)
 };
 
 var flux = new Fluxxor.Flux(stores, Actions);

@@ -62,6 +62,7 @@
 	var MediaStore = __webpack_require__(/*! ./stores/media */ 4);
 	var UploadStore = __webpack_require__(/*! ./stores/uploads */ 5);
 	var CropStore = __webpack_require__(/*! ./stores/crops */ 6);
+	var DraggingStore = __webpack_require__(/*! ./stores/dragging */ 269);
 	
 	var Actions = __webpack_require__(/*! ./actions */ 1);
 	
@@ -71,7 +72,8 @@
 	  Categories: new CategoryStore(config.categories),
 	  Media: new MediaStore(config.media),
 	  Uploads: new UploadStore(config.uploads),
-	  Crops: new CropStore(config.crops)
+	  Crops: new CropStore(config.crops),
+	  Dragging: new DraggingStore(config.dragging)
 	};
 	
 	var flux = new Fluxxor.Flux(stores, Actions);
@@ -83,6 +85,7 @@
 	  Application({flux: flux}),
 	  document.body
 	);
+
 
 /***/ },
 /* 1 */
@@ -169,7 +172,7 @@
 	
 	    close: function(category) {
 	      this.dispatch(Constants.CATEGORY_CLOSE, {category:category});
-	    },    
+	    },
 	
 	    fetchChildrenSuccess: function(response) {
 	      var data = response.body;
@@ -200,12 +203,25 @@
 	    },
 	
 	    complete: function(response, id, file, categoryPath) {
-	      this.dispatch(Constants.UPLOAD_COMPLETE, {response:response, id:id, file:file, categoryPath:categoryPath});      
+	      this.dispatch(Constants.UPLOAD_COMPLETE, {response:response, id:id, file:file, categoryPath:categoryPath});
+	    }
+	  },
+	
+	  dragging: {
+	    grab: function(media, x, y) {
+	      this.dispatch(Constants.GRAB_MEDIA, {media:media, x:x, y:y});
+	    },
+	    drag: function(media, x, y) {
+	      this.dispatch(Constants.DRAG_MEDIA, {media:media, x:x, y:y});
+	    },
+	    drop: function(media, x, y) {
+	      this.dispatch(Constants.DROP_MEDIA, {media:media, x:x, y:y});
 	    }
 	  }
 	};
 	
 	module.exports = Actions;
+
 
 /***/ },
 /* 2 */
@@ -223,6 +239,7 @@
 	var Navigation = __webpack_require__(/*! ./navigation */ 14);
 	var Main = __webpack_require__(/*! ./main */ 15);
 	var Information = __webpack_require__(/*! ./information */ 16);
+	var DragLayer = __webpack_require__(/*! ./drag_layer */ 270);
 	
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 17);
 	
@@ -233,6 +250,7 @@
 	  render: function() {
 	    return (
 	      React.DOM.div({className: "mediacat-application"}, 
+	        DragLayer(null), 
 	        Navigation(null), 
 	        Main(null), 
 	        Information(null)
@@ -1115,10 +1133,14 @@
 	  UPLOAD_ADD: 'UPLOAD_ADD',
 	  UPLOAD_PROGRESS: 'UPLOAD_PROGRESS',
 	  UPLOAD_LOAD: 'UPLOAD_LOAD',
-	  UPLOAD_COMPLETE: 'UPLOAD_COMPLETE'
+	  UPLOAD_COMPLETE: 'UPLOAD_COMPLETE',
+	  GRAB_MEDIA: 'GRAB_MEDIA',
+	  DRAG_MEDIA: 'DRAG_MEDIA',
+	  DROP_MEDIA: 'DROP_MEDIA'
 	};
 	
 	module.exports = Constants;
+
 
 /***/ },
 /* 12 */
@@ -2075,7 +2097,7 @@
 	
 	
 	var CategoryTreeNode = React.createClass({displayName: 'CategoryTreeNode',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media", "Dragging")],
 	
 	  select: function(event) {
 	    var category = this.props.node;
@@ -2109,13 +2131,38 @@
 	    var hasRequest = false;
 	    var fetchRequest;
 	
+	    var dragStore = this.getFlux().store('Dragging')
+	
 	    if (requests) {
 	      fetchRequest = requests.get(path);
 	    }
 	    return {
 	      fetchingMedia: fetchRequest ? true : false,
-	      selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath')
+	      selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath'),
+	      dragging: dragStore.state.get('dragging')
 	    };
+	  },
+	
+	  cursor: function() {
+	    if (!this.state.dragging) {
+	      return "pointer";
+	    }
+	
+	    if (this.props.node.get('accepts_images')) {
+	      return "copy";
+	    }
+	
+	    return "not-allowed";
+	  },
+	
+	  onMouseEnter: function() {
+	    this.state.hover = true;
+	    this.forceUpdate();
+	  },
+	
+	  onMouseOut: function() {
+	    this.state.hover = false;
+	    this.forceUpdate();
 	  },
 	
 	  render: function() {
@@ -2140,14 +2187,20 @@
 	    };
 	
 	    var style = {
-	      'padding-left': 15 * depth + 'px'
+	      'padding-left': 15 * depth + 'px',
+	      'cursor': this.cursor()
 	    };
+	
+	    var labelClasses = {
+	      "mediacat-categories-label": true,
+	      "hover": this.state.hover
+	    }
 	
 	    var count = node.get('count');
 	
 	    return (
 	      React.DOM.li({className: cx(classes)}, 
-	        React.DOM.a({style: style, className: "mediacat-categories-label", href: node.get('url'), onClick: this.select}, 
+	        React.DOM.a({style: style, className: cx(labelClasses), href: node.get('url'), onClick: this.select, onMouseEnter: this.onMouseEnter, onMouseOut: this.onMouseOut}, 
 	          node.get('has_children') ? React.DOM.span({className: "icon icon-arrow", onClick: this.toggleExpanded}) : React.DOM.span({className: "icon icon-dash"}), 
 	          node.get('name'), 
 	          this.state.fetchingMedia ? LinearLoader(null) : React.DOM.div({className: "mediacat-categories-count"}, count || '-')
@@ -2263,10 +2316,20 @@
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
 	    var selected = store.getSelectedMedia();
+	    var dragStore = this.getFlux().store('Dragging');
+	    var dragging = dragStore.getDraggedMedia();
 	
 	    return {
 	      selected: selected && this.props.thumbnail.get('id') === selected.get('id')
 	    };
+	  },
+	
+	  grab: function(event) {
+	    this.getFlux().actions.dragging.grab(this.props.thumbnail, event.pageX, event.pageY);
+	  },
+	
+	  drop: function(event) {
+	    this.getFlux().actions.dragging.drop(this.props.thumbnail, event.pageX, event.pageY);
 	  },
 	
 	  render: function() {
@@ -2278,8 +2341,8 @@
 	    };
 	
 	    return (
-	      React.DOM.li({className: cx(classes), onClick: this.select}, 
-	        ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: 160, maxHeight: 160})
+	      React.DOM.li({className: cx(classes), onClick: this.select, onMouseDown: this.grab, onMouseUp: this.drop}, 
+	        ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: 160, maxHeight: 160, draggable: false})
 	      )
 	    );
 	  }
@@ -2315,6 +2378,7 @@
 	});
 	
 	module.exports = ThumbnailList;
+
 
 /***/ },
 /* 34 */
@@ -7561,6 +7625,12 @@
 	var ProxyImg = React.createClass({displayName: 'ProxyImg',
 	  mixins: [PureRenderMixin],
 	
+	  getDefaultProps: function() {
+	    return {
+	      draggable: true
+	    }
+	  },
+	
 	  getInitialState: function() {
 	    return {
 	      loaded: false,
@@ -7596,9 +7666,16 @@
 	      this.state.loadingImage.remove();
 	    }
 	  },
-	  
+	
+	  onDragStart: function(event) {
+	    if (!this.props.draggable) {
+	      event.preventDefault();
+	    }
+	  },
+	
 	  render: function() {
 	    var src = this.props.src;
+	    var draggable = this.props.draggable;
 	
 	    var containerWidth = this.props.maxWidth;
 	    var containerHeight = this.props.maxHeight;
@@ -7640,7 +7717,7 @@
 	    }
 	
 	    displayTop = (containerHeight - displayHeight) / 2;
-	    displayLeft = (containerWidth- displayWidth) / 2;  
+	    displayLeft = (containerWidth- displayWidth) / 2;
 	
 	    var classes = {
 	      'proxy-image': true,
@@ -7664,7 +7741,7 @@
 	    return (
 	      React.DOM.div({className: cx(classes)}, 
 	        React.DOM.div({className: "proxy-image-bg", style: style}, 
-	          React.DOM.img({src: src, style: imgStyle})
+	          React.DOM.img({src: src, style: imgStyle, draggable: draggable, onDragStart: this.onDragStart})
 	        )
 	      )
 	    );
@@ -7672,6 +7749,7 @@
 	});
 	
 	module.exports = ProxyImg;
+
 
 /***/ },
 /* 49 */
@@ -35284,6 +35362,153 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 85)))
+
+/***/ },
+/* 269 */
+/*!**************************************!*\
+  !*** ./static/js/stores/dragging.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	 "use strict";
+	
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 7);
+	var Immutable = __webpack_require__(/*! immutable */ 36);
+	
+	
+	var DraggingStore = Fluxxor.createStore({
+	  actions: {
+	    GRAB_MEDIA: 'onGrabMedia',
+	    DRAG_MEDIA: 'onDragMedia',
+	    DROP_MEDIA: 'onDropMedia',
+	    HOVER_OVER: 'onHoverOver',
+	    HOVER_OFF: 'onHoverOff'
+	  },
+	
+	  initialize: function(options) {
+	    this.state = Immutable.fromJS(options);
+	  },
+	
+	  onGrabMedia: function(event) {
+	    console.log("stores/dragging:onGrabMedia", event);
+	    var dragBuffer = setTimeout(function() {
+	      this.startDrag(event);
+	    }.bind(this), this.state.get('dragTimeout'));
+	    this.state = this.state.set('dragBuffer', dragBuffer);
+	    this.state = this.state.set('draggingMedia', event.media);
+	    document.addEventListener('mousemove', this.onDragMedia);
+	    document.addEventListener('mouseup', this.onDropMedia);
+	  },
+	
+	  startDrag: function(event) {
+	    console.log("stores/dragging:startDrag", event);
+	
+	    this.state = this.state.set('dragBuffer', null);
+	    this.state = this.state.set('dragging', true);
+	    if (!this.state.get('top')) {
+	      this.state = this.state.set('top', event.y);
+	    }
+	    if (!this.state.get('left')) {
+	      this.state = this.state.set('left', event.x);
+	    }
+	    this.emit('change');
+	  },
+	
+	  onDragMedia: function(event) {
+	    if (!(this.state.get('dragging') || this.state.get('dragBuffer'))) {
+	      return;
+	    }
+	
+	    if (this.state.get('dragBuffer')) {
+	      clearTimeout(this.state.get('dragBuffer'));
+	      this.state = this.state.set('dragBuffer', null);
+	      this.startDrag(event);
+	      return;
+	    }
+	
+	    this.state = this.state.set('top', event.clientY);
+	    this.state = this.state.set('left', event.clientX);
+	    this.emit('change');
+	  },
+	
+	  onDropMedia: function(event) {
+	
+	    document.removeEventListener('mousemove', this.onDragMedia);
+	    document.removeEventListener('mouseup', this.onDropMedia);
+	
+	    if (this.state.get('dragBuffer')) {
+	      console.log('clearing timeout');
+	      clearTimeout(this.state.get('dragBuffer'));
+	      this.state = this.state.set('dragBuffer', null);
+	      return;
+	    }
+	
+	    console.log("stores/dragging:onDropMedia", event);
+	    this.state = this.state.set('dragging', false);
+	    this.state = this.state.set('draggingMedia', null);
+	    this.state = this.state.set('top', null);
+	    this.state = this.state.set('left', null);
+	    this.emit('change');
+	  },
+	
+	  getDraggedMedia: function() {
+	    return this.state.get('draggingMedia');
+	  }
+	});
+	
+	
+	module.exports = DraggingStore;
+
+
+/***/ },
+/* 270 */
+/*!*********************************************!*\
+  !*** ./static/js/components/drag_layer.jsx ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 8);
+	var PureRenderMixin = __webpack_require__(/*! react */ 13).addons.PureRenderMixin;
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 7);
+	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+	
+	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 17);
+	
+	var DragLayer = React.createClass({displayName: 'DragLayer',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Dragging")],
+	
+	  getStateFromFlux: function() {
+	    var store = this.getFlux().store('Dragging')
+	    return {
+	      dragging: store.state.get('dragging'),
+	      draggingMedia: store.state.get('draggingMedia'),
+	      top: store.state.get('top') - 25,
+	      left: store.state.get('left') - 25,
+	    };
+	  },
+	
+	
+	
+	  render: function() {
+	    if (!this.state.dragging) {
+	      return null;
+	    }
+	
+	    var position = {
+	      top: this.state.top,
+	      left: this.state.left,
+	    }
+	    return (
+	      React.DOM.div({className: "mediacat-drag-placeholder", style: position})
+	    );
+	  }
+	});
+	
+	module.exports = DragLayer;
+
 
 /***/ }
 /******/ ])

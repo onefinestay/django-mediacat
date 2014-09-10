@@ -76,7 +76,7 @@ var Actions = {
 
     close: function(category) {
       this.dispatch(Constants.CATEGORY_CLOSE, {category});
-    },    
+    },
 
     fetchChildrenSuccess: function(response) {
       var data = response.body;
@@ -107,7 +107,19 @@ var Actions = {
     },
 
     complete: function(response, id, file, categoryPath) {
-      this.dispatch(Constants.UPLOAD_COMPLETE, {response, id, file, categoryPath});      
+      this.dispatch(Constants.UPLOAD_COMPLETE, {response, id, file, categoryPath});
+    }
+  },
+
+  dragging: {
+    grab: function(media, x, y) {
+      this.dispatch(Constants.GRAB_MEDIA, {media, x, y});
+    },
+    drag: function(media, x, y) {
+      this.dispatch(Constants.DRAG_MEDIA, {media, x, y});
+    },
+    drop: function(media, x, y) {
+      this.dispatch(Constants.DROP_MEDIA, {media, x, y});
     }
   }
 };

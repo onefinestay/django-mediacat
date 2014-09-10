@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from .forms import MediaFormField
@@ -34,9 +36,9 @@ class MediaFieldMixin(object):
         ct = ContentType.objects.get_for_model(instance)
         try:
             self._crop = ImageCrop.objects.get(
-                applications__object_id=instance.id,
-                applications__content_type=ct,
-                key=self.key)
+                applications_object_id=instance.id,
+                applications_content_type=ct,
+                applications_field_name=self.name)
         except ImageCrop.DoesNotExist:
             self._crop = None
 
@@ -87,17 +89,26 @@ class MediaFieldMixin(object):
 
 class MediaField(MediaFieldMixin, models.Field):
 
-    def __init__(self, key, **kwargs):
-        self.key = key
+    def __init__(self, key=None, keys=None, width=None, crops=None, **kwargs):
+        kwargs['editable'] = True
+        if key and width:
+            self.crops = ((key, width),)
+        elif keys and width:
+            self.crops = ((key, width) for key in keys)
+        elif crops:
+            self.crops = crops
+        else:
+            raise ValidationError("Improperly configured MediaField, must supply one of (key and width), (keys and width) or crops")
+
         super(MediaField, self).__init__(**kwargs)
 
-    def formfield(self, **kwargs):
-        widget = kwargs.pop('widget', MediaInput())
+    # def formfield(self, **kwargs):
+    #     widget = kwargs.pop('widget', MediaInput())
 
-        defaults = {
-            'form_class': MediaFormField,
-            'field': self,
-        }
-        defaults.update(kwargs)
-        defaults['widget'] = widget
-        return super(MediaField, self).formfield(**defaults)
+    #     defaults = {
+    #         'form_class': MediaFormField,
+    #         'field': self,
+    #     }
+    #     defaults.update(kwargs)
+    #     defaults['widget'] = widget
+    #     return super(MediaField, self).formfield(**defaults)

@@ -32,7 +32,7 @@ var CategoryTreePlaceholderNode = React.createClass({
 
 
 var CategoryTreeNode = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories", "Media", "Dragging")],
 
   select: function(event) {
     var category = this.props.node;
@@ -66,13 +66,38 @@ var CategoryTreeNode = React.createClass({
     var hasRequest = false;
     var fetchRequest;
 
+    var dragStore = this.getFlux().store('Dragging')
+
     if (requests) {
       fetchRequest = requests.get(path);
     }
     return {
       fetchingMedia: fetchRequest ? true : false,
-      selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath')
+      selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath'),
+      dragging: dragStore.state.get('dragging')
     };
+  },
+
+  cursor: function() {
+    if (!this.state.dragging) {
+      return "pointer";
+    }
+
+    if (this.props.node.get('accepts_images')) {
+      return "copy";
+    }
+
+    return "not-allowed";
+  },
+
+  onMouseEnter: function() {
+    this.state.hover = true;
+    this.forceUpdate();
+  },
+
+  onMouseOut: function() {
+    this.state.hover = false;
+    this.forceUpdate();
   },
 
   render: function() {
@@ -97,14 +122,20 @@ var CategoryTreeNode = React.createClass({
     };
 
     var style = {
-      'padding-left': 15 * depth + 'px'
+      'padding-left': 15 * depth + 'px',
+      'cursor': this.cursor()
     };
+
+    var labelClasses = {
+      "mediacat-categories-label": true,
+      "hover": this.state.hover
+    }
 
     var count = node.get('count');
 
     return (
       <li className={cx(classes)}>
-        <a style={style} className="mediacat-categories-label" href={node.get('url')} onClick={this.select}>
+        <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut}>
           {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="icon icon-dash" />}
           {node.get('name')}
           {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
