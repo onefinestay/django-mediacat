@@ -10,6 +10,12 @@ var RadialLoader = require('./loaders/radial');
 var ProxyImg = React.createClass({
   mixins: [PureRenderMixin],
 
+  getDefaultProps: function() {
+    return {
+      draggable: true
+    }
+  },
+
   getInitialState: function() {
     return {
       loaded: false,
@@ -45,9 +51,16 @@ var ProxyImg = React.createClass({
       this.state.loadingImage.remove();
     }
   },
-  
+
+  onDragStart: function(event) {
+    if (!this.props.draggable) {
+      event.preventDefault();
+    }
+  },
+
   render: function() {
     var src = this.props.src;
+    var draggable = this.props.draggable;
 
     var containerWidth = this.props.maxWidth;
     var containerHeight = this.props.maxHeight;
@@ -89,7 +102,7 @@ var ProxyImg = React.createClass({
     }
 
     displayTop = (containerHeight - displayHeight) / 2;
-    displayLeft = (containerWidth- displayWidth) / 2;  
+    displayLeft = (containerWidth- displayWidth) / 2;
 
     var classes = {
       'proxy-image': true,
@@ -113,7 +126,7 @@ var ProxyImg = React.createClass({
     return (
       <div className={cx(classes)}>
         <div className="proxy-image-bg" style={style}>
-          <img src={src} style={imgStyle} />
+          <img src={src} style={imgStyle} draggable={draggable} onDragStart={this.onDragStart} />
         </div>
       </div>
     );

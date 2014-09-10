@@ -25,10 +25,20 @@ var Thumbnail = React.createClass({
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
     var selected = store.getSelectedMedia();
+    var dragStore = this.getFlux().store('Dragging');
+    var dragging = dragStore.getDraggedMedia();
 
     return {
       selected: selected && this.props.thumbnail.get('id') === selected.get('id')
     };
+  },
+
+  grab: function(event) {
+    this.getFlux().actions.dragging.grab(this.props.thumbnail, event.pageX, event.pageY);
+  },
+
+  drop: function(event) {
+    this.getFlux().actions.dragging.drop(this.props.thumbnail, event.pageX, event.pageY);
   },
 
   render: function() {
@@ -40,8 +50,8 @@ var Thumbnail = React.createClass({
     };
 
     return (
-      <li className={cx(classes)} onClick={this.select}>
-        <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={160} maxHeight={160} />
+      <li className={cx(classes)} onClick={this.select} onMouseDown={this.grab} onMouseUp={this.drop}>
+        <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={160} maxHeight={160} draggable={false} />
       </li>
     );
   }

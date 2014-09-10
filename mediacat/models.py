@@ -77,10 +77,11 @@ class Image(models.Model):
         verbose_name_plural = _('Images')
 
     def save(self, **kwargs):
-        from .xmp.extract import extract_xmp_data
-        from .exif.extract import extract_exif_data
-        self.xmp_data = extract_xmp_data(self.image_file.file)
-        self.exif_data = extract_exif_data(self.image_file.file)
+        if False:
+            from .xmp.extract import extract_xmp_data
+            from .exif.extract import extract_exif_data
+            self.xmp_data = extract_xmp_data(self.image_file.file)
+            self.exif_data = extract_exif_data(self.image_file.file)
         return super(Image, self).save(**kwargs)
 
 

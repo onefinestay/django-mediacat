@@ -7,7 +7,10 @@ def extract_xmp_data(image):
     if is_jpeg(image):
 
         # Read in input file
-        jpeg_file = JPEGFile.read(image)
+        try:
+            jpeg_file = JPEGFile.read(image)
+        except ValueError:
+            return ''
 
         # Loop through segments and search for XMP packet
         for segment in jpeg_file.segments:
@@ -16,12 +19,15 @@ def extract_xmp_data(image):
                     return segment.bytes[32:]
 
         # No XMP data was found
-        return None
+        return ''
 
     elif is_png(image):
 
         # Read in input file
-        png_file = PNGFile.read(image)
+        try:
+            png_file = PNGFile.read(image)
+        except ValueError:
+            return ''
 
         # Loop through chunks and search for XMP packet
         for chunk in png_file.chunks:
@@ -30,7 +36,7 @@ def extract_xmp_data(image):
                     return chunk.data[22:]
 
         # No XMP data was found
-        return None
+        return ''
 
     else:
 
@@ -40,6 +46,6 @@ def extract_xmp_data(image):
             start = contents.index(b"<?xpacket begin=")
             end = contents.index(b"</x:xmpmeta>") + 12
         except ValueError:
-            return None
+            return ''
 
         return contents[start:end]

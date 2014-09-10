@@ -13,7 +13,7 @@
 <script>
  	var MEDIACAT_CONFIG = {
  		media: {
- 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %}, 			
+ 			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
  			selectedMedia: null,
  			loading: false,
  			select: {
@@ -22,22 +22,27 @@
  			}
  		},
  		categories: {
- 			categories: {{ category_data|jsonify }}, 			
- 			selectedPath: {{ path|jsonify }}, 			
+ 			categories: {{ category_data|jsonify }},
+ 			selectedPath: {{ path|jsonify }},
             basePath: {{ base_path|jsonify }}
  		},
  		uploads: {
- 			uploads: [], 			
+ 			uploads: [],
  			selectedUpload: null
  		},
  		crops: {
  			crops: {},
  			selectedCrop: null,
- 			availableCrops: {{ available_crops|jsonify }} 			
+ 			availableCrops: {{ available_crops|jsonify }}
  		},
  		ui: {
  			listType: 'grid'
- 		}
+ 		},
+    dragging: {
+        dragging: false,
+        draggingMedia: null,
+        dragTimeout: 600
+    }
  	};
 </script>
 <script src="{% static 'mediacat/library.js' %}"></script>
