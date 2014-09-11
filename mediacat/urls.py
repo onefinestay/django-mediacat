@@ -12,6 +12,8 @@ urlpatterns = patterns(
     url(r'^crops/(?P<uuid>[-\w]+)/$', views.CropDetail.as_view(), name='mediacat-crop-detail'),
     url(r'^crops/(?P<uuid>[-\w]+)/pick/(?P<width>[0-9]+)/$', views.crop_pick, name='mediacat-crop-pick'),
     url(r'^categories/(?P<path>([a-z0-9-]+/)*)$', views.CategoryList.as_view(), name='mediacat-category-list'),
+    url(r'^associations/$', views.AssociationList.as_view(), name='mediacat-association-list'),
+
     url(r'^(?P<path>([a-z0-9-]+/)*)$', views.Library.as_view(), name='mediacat-library'),
 )
 

@@ -3,6 +3,7 @@
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
 var request = require('superagent');
+var django = require('../utils/superagent-django');
 
 var Constants = require('../constants');
 
@@ -11,7 +12,8 @@ var MediaStore = Fluxxor.createStore({
     CATEGORY_SELECTED: 'onCategorySelect',
     MEDIA_SELECTED: 'onMediaSelect',
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
-    UPLOAD_COMPLETE: 'onUploadComplete'
+    UPLOAD_COMPLETE: 'onUploadComplete',
+    ADD_ASSOCIATION: 'onAddAssociation',
   },
 
   initialize: function(options) {
@@ -64,7 +66,7 @@ var MediaStore = Fluxxor.createStore({
 
     var requests = this.state.get('fetchRequests');
     var key = requests.findKey((v, k) => v === req);
-    requests = requests.delete(key);    
+    requests = requests.delete(key);
     this.state = this.state.set('fetchRequests', requests);
 
     if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
@@ -101,8 +103,8 @@ var MediaStore = Fluxxor.createStore({
     }
 
     this.state = this.state.set('selectedMedia', null);
-    this.state = this.state.set('selectedCrop', null);    
-    
+    this.state = this.state.set('selectedCrop', null);
+
     this.emit('change');
   },
 
@@ -115,6 +117,28 @@ var MediaStore = Fluxxor.createStore({
       this.state = this.state.updateIn(['media'], media => media.push(newImage));
       this.emit('change');
     }
+  },
+
+  onAddAssociation: function(payload) {
+    var categoryPath = payload.category.get('path')
+
+    var data = {
+      content_type: payload.category.get('content_type_id'),
+      object_id: payload.category.get('object_id'),
+      image: payload.media.get('id')
+    };
+
+    var onSuccess = function(response) {
+      this.flux.actions.media.addAssociationSuccess(response, categoryPath);
+    }.bind(this);
+
+    return request
+      .post('/mediacat/associations/')
+      .use(django)
+      .send(data)
+      .set('Accept', 'application/json')
+      .on('error', this.flux.actions.media.addAssociationError)
+      .end(onSuccess);
   }
 });
 

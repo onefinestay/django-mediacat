@@ -11,7 +11,8 @@ var CategoryStore = Fluxxor.createStore({
     CATEGORY_CLOSE: 'onCategoryClose',
     CATEGORY_LOAD_CHILDREN: 'onCategoryLoadChildren',
     FETCH_CATEGORY_CHILDREN_SUCCESS: 'onFetchCategoryChildrenSuccess',
-    UPLOAD_COMPLETE: 'onUploadComplete'
+    UPLOAD_COMPLETE: 'onUploadComplete',
+    ADD_ASSOCIATION_SUCCESS: 'onAddAssociationSuccess'
   },
 
   findByPath: function(path) {
@@ -152,7 +153,16 @@ var CategoryStore = Fluxxor.createStore({
     requests = requests.set(payload.category.get('path'), req);
     this.state = this.state.set('fetchRequests', requests);
     this.emit('change');
-  }
+  },
+
+  onAddAssociationSuccess: function(payload) {
+    // Increment category count
+    if (payload.categoryPath) {
+      var updatePath = this.getObjectPath(payload.categoryPath);
+      this.state = this.state.updateIn(updatePath.toJS(), cat => cat.set('count', cat.get('count') + 1));
+      this.emit('change');
+    }
+  },
 
 });
 

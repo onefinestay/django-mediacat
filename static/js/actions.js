@@ -20,6 +20,18 @@ var Actions = {
 
     fetchError: function(response) {
       console.log(response);
+    },
+
+    addAssociation: function(category, media) {
+      this.dispatch(Constants.ADD_ASSOCIATION, {category, media});
+    },
+
+    addAssociationError: function(response) {
+      console.log(response);
+    },
+
+    addAssociationSuccess: function(response, categoryPath) {
+      this.dispatch(Constants.ADD_ASSOCIATION_SUCCESS, {response, categoryPath});
     }
   },
 
@@ -50,7 +62,7 @@ var Actions = {
 
     saveSuccess: function(response, cropId) {
       var data = response.body;
-      var request = response.req;      
+      var request = response.req;
       this.dispatch(Constants.CROP_SAVE_SUCCESS, {data, request, cropId})
     },
 
