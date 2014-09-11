@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from .forms import MediaFormField

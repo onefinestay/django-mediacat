@@ -143,7 +143,7 @@ class Library(TemplateView):
             images = models.Image.objects.filter(
                 associations__object_id__isnull=True,
                 associations__content_type_id__isnull=True,
-            ).distinct()
+            ).prefetch_related('associations')
             data['media'] = serializers.ImageSerializer(images, many=True).data
             uncategorized_count = len(data['media'])
         else:
