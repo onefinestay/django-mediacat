@@ -121,16 +121,25 @@ var MediaStore = Fluxxor.createStore({
 
   onAddAssociation: function(payload) {
     var categoryPath = payload.category.get('path')
+    var image = payload.media;
 
     var data = {
       content_type: payload.category.get('content_type_id'),
       object_id: payload.category.get('object_id'),
-      image: payload.media.get('id')
+      image: image.get('id')
     };
 
     var onSuccess = function(response) {
       this.flux.actions.media.addAssociationSuccess(response, categoryPath);
     }.bind(this);
+
+    if (image.get('associations').count() === 0) {
+      var index = this.state.get('media').findIndex(m => m.get('id') === image.get('id'));
+      if (index > -1) {
+        this.state = this.state.update('media', media => media.remove(index));
+        this.emit('change');
+      }
+    }    
 
     return request
       .post('/mediacat/associations/')

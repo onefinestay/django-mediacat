@@ -32,12 +32,9 @@ class ImageList(generics.ListCreateAPIView):
             queryset = queryset.filter(
                 associations__object_id=params['object_id'],
                 associations__content_type_id=params['content_type_id']
-            ).distinct()
+            )
         else:
-            queryset = queryset.filter(
-                associations__object_id__isnull=True,
-                associations__content_type_id__isnull=True,
-            ).distinct()
+            queryset = queryset.filter(associations=None)
         return queryset
 
 
@@ -140,25 +137,25 @@ class Library(TemplateView):
 
         if path == 'uncategorized':
             child_paths = []
-            images = models.Image.objects.filter(
-                associations__object_id__isnull=True,
-                associations__content_type_id__isnull=True,
-            ).prefetch_related('associations')
+
+            images = models.Image.objects.extra(where=[
+                'id not in (select distinct(image_id) from mediacat_imageassociation)'
+            ]).prefetch_related('associations')
+
             data['media'] = serializers.ImageSerializer(images, many=True).data
             uncategorized_count = len(data['media'])
         else:
             child_paths = utils.library_paths.get_children_for_path(path)
-            uncategorized_count = models.Image.objects.filter(
-                associations__object_id__isnull=True,
-                associations__content_type_id__isnull=True,
-            ).distinct().count()
+            uncategorized_count = models.Image.objects.extra(where=[
+                'id not in (select distinct(image_id) from mediacat_imageassociation)'
+            ]).count()
             try:
                 obj = utils.resolve(path)
                 if obj:
-                    content_type_id = ContentType.objects.get_for_model(obj).pk
+                    content_type = ContentType.objects.get_for_model(obj)
                     images = models.Image.objects.filter(
                         associations__object_id=obj.pk,
-                        associations__content_type_id=content_type_id
+                        associations__content_type=content_type
                     ).prefetch_related('associations')
                     data['media'] = serializers.ImageSerializer(images, many=True).data
             except exceptions.NoResolveException:

@@ -14,6 +14,52 @@ var Panel = require('../panel');
 var PanelToolbar = require('../panel-toolbar');
 var Select  = require('../select');
 
+var CropSearchResult = React.createClass({
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],
+
+  propTypes: {
+    disabled: React.PropTypes.bool,
+    selected: React.PropTypes.bool,
+    onHover: React.PropTypes.func.isRequired,
+    onClick: React.PropTypes.func.isRequired,
+    label: React.PropTypes.string.isRequired,
+    option: React.PropTypes.object.isRequired,
+    tokens: React.PropTypes.array.isRequired,
+  },
+
+  getStateFromFlux: function() {
+    var selectOptions = this.getFlux().store('Crops').state.get('select');
+    var valid = false;
+
+    if (selectOptions) {
+      if (selectOptions.get('crops').find(c => c.get('key') === this.props.option.get('value'))) {
+        valid = true;
+      }
+    }
+
+    return {
+      valid: valid
+    };
+  },  
+
+  render: function() {
+    var classes = cx({
+      'select-result': true,
+      'selected': !!this.props.selected
+    });
+
+    return (
+      <li className={classes}
+        onMouseEnter={this.props.onHover.bind(null, this.props.option)}
+        onMouseDown={this.props.onClick.bind(null, this.props.option)}>
+        {this.props.label}
+        {this.state.valid ? <span className="icon icon-tick" /> : null}
+      </li>
+    );
+  }
+});
+
+
 var CropsPanel = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
@@ -55,7 +101,7 @@ var CropsPanel = React.createClass({
 
   	var toolbar = (
   		<PanelToolbar>
-      	<Select disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
+      	<Select resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
       	<span className="separator" />
       	<button disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd}><span className="icon icon-add" /></button>
       </PanelToolbar>

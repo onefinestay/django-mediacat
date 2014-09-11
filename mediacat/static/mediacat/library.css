@@ -314,6 +314,8 @@
 .select-result {
   cursor: pointer;
   padding: 2px 10px; }
+  .select-result .icon {
+    float: right; }
   .select-result.selected {
     background: #414858; }
   .select-result .text-match {

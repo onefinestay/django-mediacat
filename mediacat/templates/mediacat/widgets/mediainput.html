@@ -1,6 +1,6 @@
 {% load mediacat_tags %}
 
-<div class="mediacat-mediainput-widget" data-crops="{{ crops }}" data-category="{{ category }}" data-image-id={{ image.pk }} data-preview-width={{ width }}>
+<div class="mediacat-mediainput-widget" data-crops="{{ crops }}"{% if category %} data-category="{{ category }}"{% endif %} data-image-id={{ image.pk }} data-preview-width={{ width }}>
 	<input id={{ id }} type="hidden" name="{{ name }}" value="{{ value }}" />
 	{% if value and crop %}
 	<img width="{{ width }}" class="mediacat-mediainput-preview" src="{% get_crop_url crop=crop width=width %}" />

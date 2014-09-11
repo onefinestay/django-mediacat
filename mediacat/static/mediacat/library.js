@@ -595,16 +595,25 @@
 	
 	  onAddAssociation: function(payload) {
 	    var categoryPath = payload.category.get('path')
+	    var image = payload.media;
 	
 	    var data = {
 	      content_type: payload.category.get('content_type_id'),
 	      object_id: payload.category.get('object_id'),
-	      image: payload.media.get('id')
+	      image: image.get('id')
 	    };
 	
 	    var onSuccess = function(response) {
 	      this.flux.actions.media.addAssociationSuccess(response, categoryPath);
 	    }.bind(this);
+	
+	    if (image.get('associations').count() === 0) {
+	      var index = this.state.get('media').findIndex(function(m)  {return m.get('id') === image.get('id');});
+	      if (index > -1) {
+	        this.state = this.state.update('media', function(media)  {return media.remove(index);});
+	        this.emit('change');
+	      }
+	    }    
 	
 	    return request
 	      .post('/mediacat/associations/')
@@ -6167,6 +6176,52 @@
 	var PanelToolbar = __webpack_require__(/*! ../panel-toolbar */ 48);
 	var Select  = __webpack_require__(/*! ../select */ 84);
 	
+	var CropSearchResult = React.createClass({displayName: 'CropSearchResult',
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],
+	
+	  propTypes: {
+	    disabled: React.PropTypes.bool,
+	    selected: React.PropTypes.bool,
+	    onHover: React.PropTypes.func.isRequired,
+	    onClick: React.PropTypes.func.isRequired,
+	    label: React.PropTypes.string.isRequired,
+	    option: React.PropTypes.object.isRequired,
+	    tokens: React.PropTypes.array.isRequired,
+	  },
+	
+	  getStateFromFlux: function() {
+	    var selectOptions = this.getFlux().store('Crops').state.get('select');
+	    var valid = false;
+	
+	    if (selectOptions) {
+	      if (selectOptions.get('crops').find(function(c)  {return c.get('key') === this.props.option.get('value');}.bind(this))) {
+	        valid = true;
+	      }
+	    }
+	
+	    return {
+	      valid: valid
+	    };
+	  },  
+	
+	  render: function() {
+	    var classes = cx({
+	      'select-result': true,
+	      'selected': !!this.props.selected
+	    });
+	
+	    return (
+	      React.DOM.li({className: classes, 
+	        onMouseEnter: this.props.onHover.bind(null, this.props.option), 
+	        onMouseDown: this.props.onClick.bind(null, this.props.option)}, 
+	        this.props.label, 
+	        this.state.valid ? React.DOM.span({className: "icon icon-tick"}) : null
+	      )
+	    );
+	  }
+	});
+	
+	
 	var CropsPanel = React.createClass({displayName: 'CropsPanel',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 	
@@ -6208,7 +6263,7 @@
 	
 	  	var toolbar = (
 	  		PanelToolbar(null, 
-	      	Select({disabled: disabled, ref: "cropType", options: options, onSelect: this.setCropChoice, placeholder: "Select a crop to add"}), 
+	      	Select({resultRenderer: CropSearchResult, disabled: disabled, ref: "cropType", options: options, onSelect: this.setCropChoice, placeholder: "Select a crop to add"}), 
 	      	React.DOM.span({className: "separator"}), 
 	      	React.DOM.button({disabled: disabled || !this.state.cropChoice, onClick: this.handleAdd}, React.DOM.span({className: "icon icon-add"}))
 	      )

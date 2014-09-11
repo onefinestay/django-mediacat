@@ -76,6 +76,10 @@
   cursor: pointer;
   padding: 2px 10px;
 
+  .icon {
+    float: right;
+  }
+
   &.selected {
     background: #414858;
   }
