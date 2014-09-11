@@ -1,3 +1,5 @@
+import json
+
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -10,44 +12,58 @@ class MediaInput(forms.HiddenInput):
     is_hidden = False
 
     def __init__(self, *args, **kwargs):
-        self.preview_scale = kwargs.pop('preview_scale', None)
+        self.preview_scale = kwargs.pop('preview_scale', 1)
+        self.category = kwargs.pop('category', None)
         super(MediaInput, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        key = self.attrs['data-crop-key']
-
-        if isinstance(key, basestring):
-            confs = None
-            conf = settings.MEDIALIBRARY_CROPS[key]
-        else:
-            self.attrs['data-crop-key'] = ','.join(self.attrs['data-crop-key'])
-            confs = [settings.MEDIALIBRARY_CROPS[k] for k in key]
-            conf = confs[0]
-
-        width = conf[1], conf[2]
-
-        if not self.preview_scale:
-            width = 200
-        else:
-            width = int(width * self.preview_scale)
-
-        attrs['data-preview-width'] = width
-
         if value:
             try:
                 crop = models.ImageCrop.objects.get(pk=value)
-                attrs['data-image-id'] = crop.image.pk
+                image = crop.image
             except models.ImageCrop.DoesNotExist:
                 value = None
                 crop = None
-
-        if value:
-            html = super(MediaInput, self).render(name, value, attrs=attrs)
-            html += '<img width="{}" class="mediainput-preview" src="{}" />'. \
-                format(width, crop.thumbnail_url(width=width))
+                image = None
         else:
-            html = super(MediaInput, self).render(name, None, attrs=attrs)
-            html += '<img width="{}" style="background-color: #ccc;" class="mediainput-preview" src="http://placehold.it/{}x{}" />'. \
-                format(width, conf[1] * 2, conf[2] * 2)
-        html += '<a href="javascript:;" class="mediainput-library"><span class="icon-pencil"></span></a>'
-        return mark_safe('<div class="mediainput-widget">' + html + '</div>')
+            value = None
+            crop = None
+            image = None
+
+        crops = self.attrs['data-crops']
+
+        if not crop:
+            starting_crop = crops[0]
+            key, width = starting_crop
+        else:
+            key = crop.key
+            starting_crop = next((c for c in crops if c[0] == key), crops[0])
+            width = starting_crop[1]
+
+        conf = settings.MEDIACAT_AVAILABLE_CROP_RATIOS[key]
+        ratio = conf[1]
+        label = conf[0]
+
+        width = int(width * self.preview_scale)
+        height = int(round(float(width) / ratio))
+
+        category = self.category
+
+        crops = ','.join(['{}:{}'.format(*c) for c in crops])
+
+        return mark_safe(render_to_string(
+            'mediacat/widgets/mediainput.html',
+            {
+                'id': attrs['id'],
+                'name': name,
+                'category': category,
+                'ratio': ratio,
+                'label': label,
+                'width': width,
+                'height': height,
+                'value': value,
+                'crop': crop,
+                'image': image,
+                'crops': crops,
+            }
+        ))

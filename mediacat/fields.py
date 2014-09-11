@@ -23,6 +23,9 @@ class MediaFieldMixin(object):
         models.signals.post_save.connect(self._post_save, sender=cls)
         models.signals.pre_delete.connect(self._pre_delete, sender=cls)
 
+    def get_model_attr_name(self):
+        return '_mediacat_crop_{}'.format(self.name)
+
     def __get__(self, instance, instance_type=None):
         """
         retrieve image crop from by instance
@@ -30,35 +33,44 @@ class MediaFieldMixin(object):
         if instance is None:
             raise AttributeError('Can only be accessed via instance')
 
-        if hasattr(self, '_crop'):
-            return self._crop
+        if self.get_value(instance):
+            return self.get_value(instance)
 
         ct = ContentType.objects.get_for_model(instance)
         try:
-            self._crop = ImageCrop.objects.get(
-                applications_object_id=instance.id,
-                applications_content_type=ct,
-                applications_field_name=self.name)
+            self.set_value(instance, ImageCrop.objects.get(
+                applications__object_id=instance.id,
+                applications__content_type=ct,
+                applications__field_name=self.name))
         except ImageCrop.DoesNotExist:
-            self._crop = None
+            self.set_value(instance, None)
+        return self.get_value(instance)
 
-        return self._crop
+    def has_value(self, instance):
+        return hasattr(instance, self.get_model_attr_name())
+
+    def get_value(self, instance):
+        return getattr(instance, self.get_model_attr_name(), None)
+
+    def set_value(self, instance, value):
+        setattr(instance, self.get_model_attr_name(), value)
 
     def __set__(self, instance, value):
         """
         sets a crop instance as a crop instance application
         """
-        self._crop = value
+        attr_name = self.get_model_attr_name()
+        setattr(instance, attr_name, value)
 
     def _post_save(self, instance=None, created=False, **kwargs):
-        if not getattr(self, '_crop', None):
-            return
-
         if not instance:
             return
 
-        if not self._crop.pk:
-            self._crop = self._crop.save()
+        crop = self.get_value(instance)
+
+        if crop and not crop.pk:
+            crop.save()
+            self.set_value(instance, crop)
 
         ct = ContentType.objects.get_for_model(instance)
         try:
@@ -72,8 +84,8 @@ class MediaFieldMixin(object):
                 content_type=ct,
                 field_name=self.name)
 
-        if crop_application.crop_id == self._crop.id:
-            crop_application.crop = self._crop
+        if crop_application.crop_id != crop.id:
+            crop_application.crop = crop
             crop_application.save()
 
     def _pre_delete(self, instance=None, **kwargs):
@@ -85,6 +97,24 @@ class MediaFieldMixin(object):
             object_id=instance.id,
             content_type=ct,
             crop__key=self.key).delete()
+
+    def save_form_data(self, instance, data):
+        ct = ContentType.objects.get_for_model(instance)
+        try:
+            crop_application = ImageCropApplication.objects.get(
+                object_id=instance.id,
+                content_type=ct,
+                field_name=self.name)
+        except ImageCropApplication.DoesNotExist:
+            crop_application = ImageCropApplication(
+                object_id=instance.id,
+                content_type=ct,
+                field_name=self.name)
+
+        if crop_application.crop != data:
+            crop_application.crop = data
+            crop_application.save()
+
 
 
 class MediaField(MediaFieldMixin, models.Field):
@@ -102,13 +132,14 @@ class MediaField(MediaFieldMixin, models.Field):
 
         super(MediaField, self).__init__(**kwargs)
 
-    # def formfield(self, **kwargs):
-    #     widget = kwargs.pop('widget', MediaInput())
+    def formfield(self, **kwargs):
+        widget = kwargs.pop('widget', MediaInput())
 
-    #     defaults = {
-    #         'form_class': MediaFormField,
-    #         'field': self,
-    #     }
-    #     defaults.update(kwargs)
-    #     defaults['widget'] = widget
-    #     return super(MediaField, self).formfield(**defaults)
+        defaults = {
+            'crops': self.crops,
+            'form_class': MediaFormField,
+            'field': self,
+        }
+        defaults.update(kwargs)
+        defaults['widget'] = widget
+        return super(MediaField, self).formfield(**defaults)

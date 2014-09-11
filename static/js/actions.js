@@ -62,7 +62,17 @@ var Actions = {
 
     fetchError: function(response) {
       console.log(response);
-    }    
+    },
+
+    pick: function(crop) {
+      this.dispatch(Constants.CROP_PICK, {crop});
+    },
+
+    pickSuccess: function(response, cropId) {
+      var data = response.body;
+      var request = response.req;
+      this.dispatch(Constants.CROP_PICK_SUCCESS, {data, request, cropId});
+    }
   },
 
   categories: {

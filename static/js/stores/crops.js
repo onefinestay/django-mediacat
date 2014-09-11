@@ -83,7 +83,9 @@ var CropStore = Fluxxor.createStore({
     CROP_ADD: 'onCropAdd',
     CROP_FETCH: 'onFetch',
     CROP_SAVE: 'onSave',
-    CROP_SAVE_SUCCESS: 'onSaveSuccess'
+    CROP_SAVE_SUCCESS: 'onSaveSuccess',
+    CROP_PICK: 'onPick',
+    CROP_PICK_SUCCESS: 'onPickSuccess'
   },
 
   initialize: function(options) {
@@ -355,6 +357,44 @@ var CropStore = Fluxxor.createStore({
       this.state = this.state.updateIn(['crops', index], c => crop);
     }
     this.emit('change');
+  },
+
+  getPickRequest: function(crop) {
+    var width = this.state.get('select').get('previewWidth');
+    var url = '/mediacat/crops/' + crop.get('uuid') + '/pick/' + width + '/';
+
+    var onSuccess = function(response) {
+      this.flux.actions.crop.pickSuccess(response, crop.get('uuid'));
+    }.bind(this);
+
+    return request
+      .get(url)
+      .set('Accept', 'application/json')
+      .on('error', this.flux.actions.crop.pickError)
+      .end(onSuccess);
+  },
+
+  onPick: function(payload) {
+    var crop = payload.crop;
+
+    if (crop && window.opener) {
+      var existingRequest = this.state.get('pickRequest');
+
+      if (existingRequest) {
+        existingRequest.abort();
+      }
+
+      var req = this.getPickRequest(crop);
+      this.state = this.state.set('pickRequest', req);
+      this.emit('change');
+    }   
+  },
+
+  onPickSuccess: function(payload) {
+    var data = payload.data;
+    this.state = this.state.set('pickRequest', null);
+    this.emit('change');
+    window.opener.dismissMediaLibrary(window, data.crop_id, data.url);
   },
 
   onCategorySelect: function(payload) {

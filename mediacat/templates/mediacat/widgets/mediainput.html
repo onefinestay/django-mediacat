@@ -1,0 +1,11 @@
+{% load mediacat_tags %}
+
+<div class="mediacat-mediainput-widget" data-crops="{{ crops }}" data-category="{{ category }}" data-image-id={{ image.pk }} data-preview-width={{ width }}>
+	<input id={{ id }} type="hidden" name="{{ name }}" value="{{ value }}" />
+	{% if value and crop %}
+	<img width="{{ width }}" class="mediacat-mediainput-preview" src="{% get_crop_url crop=crop width=width %}" />
+	{% else %}
+	<img width="{{ width }}" style="background-color: #ccc;" class="mediacat-mediainput-preview" src="http://placehold.it/{{ width }}x{{ height }}" />
+	{% endif %}
+	<a href="javascript:;" class="mediacat-mediainput-trigger">Library</a>
+</div>

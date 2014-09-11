@@ -12,34 +12,34 @@ var PickButton = React.createClass({
 
   getStateFromFlux: function() {
     var crop = this.getFlux().store('Crops').getSelectedCrop();
-    var selectOptions = this.getFlux().store('Media').state.get('select');    
+    var selectOptions = this.getFlux().store('Crops').state.get('select');    
     var pickable = false;
 
     var ratio;
     var width;
-    var selectWidth;
-    var selectRatios;
+    var selectCrops;
 
     if (crop && !crop.get('changed') && selectOptions) {
       ratio = crop.get('key');
       width = crop.get('x2') - crop.get('x1');
 
-      selectRatios = selectOptions.get('ratios');
-      selectWidth = selectOptions.get('width');
+      selectCrops = selectOptions.get('crops');
 
-      if (selectRatios.contains(ratio) && width >= selectWidth) {
-        pickable = true;
-      }
+      selectCrops.forEach(function(c) {
+        if (c.get('key') === ratio && width >= c.get('width')) {
+          pickable = true;
+        }
+      });
     }
 
     return {
+      crop: crop,
       pickable: pickable
     };
   },  
 
   handleClick: function(event) {
-    event.preventDefault();
-    this.refs.upload.getDOMNode().click();
+    this.getFlux().actions.crop.pick(this.state.crop);
   },
 
   handleChange: function(event) {
@@ -62,7 +62,7 @@ var PickButton = React.createClass({
     };
 
     return (
-      <button className={cx(classes)} />
+      <button disabled={!this.state.pickable} className={cx(classes)} onClick={this.handleClick} />
     );
   }
 });

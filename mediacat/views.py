@@ -1,6 +1,9 @@
+import json
+
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -75,6 +78,24 @@ class CropDetail(generics.RetrieveUpdateDestroyAPIView):
         return obj
 
 
+def crop_pick(request, uuid, width):
+    try:
+        crop = models.ImageCrop.objects.select_related('image').get(
+            uuid=uuid.replace('-', '')
+        )
+    except models.ImageCrop.DoesNotExist:
+        return HttpResponseBadRequest()
+
+    data = {
+        'crop_id': crop.pk,
+        'image_id': crop.image.pk,
+        'width': width,
+        'url': crop.get_url(width=width),
+    }
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
 class CategoryList(generics.ListCreateAPIView):
     queryset = None
     serializer_class = serializers.CategorySerializer
@@ -90,6 +111,7 @@ class Library(TemplateView):
     template_name = 'mediacat/library.html'
 
     def get_context_data(self, **kwargs):
+        params = self.request.GET
         data = super(Library, self).get_context_data(**kwargs)
         path = self.kwargs['path'][:-1]
         data['path'] = path
@@ -125,6 +147,34 @@ class Library(TemplateView):
         categories = serializers.CategorySerializer(raw_categories, many=True).data
         utils.annotate_counts(categories)
 
+        if 'select' in params:
+            crop_pairs = [c.split(':') for c in params['crops'].split(',')]
+            crops = [{'key': c[0], 'width': c[1]} for c in crop_pairs]
+
+            select = {
+                'crops': crops,
+                'previewWidth': params['previewWidth'],
+            }
+        else:
+            select = None
+
+        if 'selectedCrop' in params:
+            cropId = params['selectedCrop']
+            try:
+                crop = models.ImageCrop.objects.get(pk=cropId)
+                media = crop.image
+                crops = serializers.ImageCropSerializer(
+                    media.crops.prefetch_related('applications'),
+                    many=True).data
+            except (models.ImageCrop.DoesNotExist, models.Image.DoesNotExist):
+                crop = None
+                media = None
+                crops = []
+        else:
+            crop = None
+            media = None
+            crops = []
+
         uncategorized = {
             "name": "Uncategorized",
             "content_type_id": None,
@@ -134,7 +184,7 @@ class Library(TemplateView):
             "accepts_images": True,
             "has_children": False,
             "children": None,
-            "expanded": None
+            "expanded": None,
         }
 
         categories.append(uncategorized)
@@ -142,5 +192,9 @@ class Library(TemplateView):
         data['category_data'] = categories
         data['uncategorized'] = uncategorized
         data['available_crops'] = settings.MEDIACAT_AVAILABLE_CROP_RATIOS
+        data['selectedCrop'] = crop
+        data['selectedMedia'] = media
+        data['crops'] = crops
+        data['select'] = select
 
         return data

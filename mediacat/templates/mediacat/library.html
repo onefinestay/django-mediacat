@@ -14,26 +14,25 @@
  	var MEDIACAT_CONFIG = {
  		media: {
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
- 			selectedMedia: null,
- 			loading: false,
- 			select: {
- 				width: 1200,
- 				ratios: ['PORTRAIT', 'LANDSCAPE']
- 			}
+ 			selectedMedia: {% if selectedMedia %}{{ selectedMedia.pk }}{% else %}null{% endif %},
+      initialSelectedMedia: {% if selectedMedia %}{{ selectedMedia.pk }}{% else %}null{% endif %},
+ 			loading: false
  		},
  		categories: {
  			categories: {{ category_data|jsonify }},
  			selectedPath: {{ path|jsonify }},
-            basePath: {{ base_path|jsonify }}
+      basePath: {{ base_path|jsonify }}
  		},
  		uploads: {
  			uploads: [],
  			selectedUpload: null
  		},
  		crops: {
- 			crops: {},
- 			selectedCrop: null,
- 			availableCrops: {{ available_crops|jsonify }}
+ 			crops: {% if crops %}{{ crops|jsonify }}{% else %}[]{% endif %},
+ 			selectedCrop: {% if selectedCrop %}"{{ selectedCrop.uuid }}"{% else %}null{% endif %},
+      initialSelectedCrop: {% if selectedCrop %}"{{ selectedCrop.uuid }}"{% else %}null{% endif %},
+ 			availableCrops: {{ available_crops|jsonify }},
+      select: {% if select %}{{ select|jsonify }}{% else %}null{% endif %}
  		},
  		ui: {
  			listType: 'grid'

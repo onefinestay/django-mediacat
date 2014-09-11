@@ -1,8 +1,11 @@
 from __future__ import division
 
+import hashlib
+
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.core.cache import cache
 from django.db import models
 
 from django.utils.translation import ugettext as _
@@ -175,6 +178,77 @@ class ImageCrop(models.Model):
         if self.y1 and self.y2:
             return self.y2 - self.y1
         return None
+
+    def get_cache_container_key(self):
+        return 'mediacat-crop-{}'.format(self.pk)
+
+    def get_url_cache_key(self, **kwargs):
+        parts = ":".join(['{}-{}'.format(key, value) for key, value in kwargs.items()])
+        hashed_parts = hashlib.sha1(parts).hexdigest()
+        return 'mediacat-crop-{}-url-{}'.format(self.pk, hashed_parts)
+
+    def invalidate_cache(self):
+        key = self.get_cache_container_key()
+        value = cache.get(key)
+
+        if value:
+            for url_key in value:
+                cache.delete(url_key)
+        cache.delete(self.get_cache_container_key())
+
+    def add_url_cache_key(self, url_key):
+        key = self.get_cache_container_key()
+        value = cache.get(key)
+
+        if not value:
+            value = []
+
+        value.append(url_key)
+
+        cache.set(key, value)
+
+    def get_url(self, width):
+        kwargs = {
+            'fit_in': True,
+            'crop': self.corners,
+            'width': width,
+            'filters': ['quality({})'.format(85)],
+        }
+        key = self.get_url_cache_key(**kwargs)
+        value = cache.get(key)
+
+        if value:
+            return value
+
+        url = self.image.image_file.url
+
+        if not url:
+            value = None
+        else:
+            value = thumb(url, **kwargs)
+
+        cache.set(key, value)
+        self.add_url_cache_key(key)
+
+        return value
+
+    @property
+    def url(self):
+        return self.get_url(self.width)
+
+    def url_at_width(self, width):
+        return self.get_url(width)
+
+    @property
+    def retina_url(self):
+        return self.get_url(self.width * 2)
+        return None
+
+    def retina_url_at_width(self, width):
+        return self.get_url(width * 2)
+
+    def thumbnail_url(self, width=200):
+        return self.get_url(width)
 
 
 class ImageCropApplication(models.Model):
