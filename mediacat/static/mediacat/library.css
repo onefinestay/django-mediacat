@@ -671,7 +671,11 @@ body {
       font-size: 10px;
       line-height: 1.75;
       width: 15px;
-      opacity: 0.75; }
+      opacity: 0.75;
+      vertical-align: baseline;
+      text-align: center;
+      -webkit-transition: -webkit-transform 0.15s ease;
+              transition: transform 0.15s ease; }
       .mediacat-application .mediacat-categories-label .icon-arrow:hover {
         -webkit-transform: rotate(45deg);
             -ms-transform: rotate(45deg);

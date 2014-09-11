@@ -256,6 +256,9 @@ body {
       line-height: 1.75;
       width: 15px;
       opacity: .75;
+      vertical-align: baseline;
+      text-align: center;
+      transition: transform 0.15s ease;
 
       &:hover {
         transform: rotate(45deg);
