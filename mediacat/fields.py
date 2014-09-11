@@ -23,8 +23,8 @@ class MediaFieldMixin(object):
         models.signals.post_save.connect(self._post_save, sender=cls)
         models.signals.pre_delete.connect(self._pre_delete, sender=cls)
 
-    def get_model_attr_name(self):
-        return '_mediacat_crop_{}'.format(self.name)
+    def get_model_attr_name(self, field_name=None):
+        return '_mediacat_crop_{}'.format(field_name or self.name)
 
     def __get__(self, instance, instance_type=None):
         """
@@ -33,15 +33,20 @@ class MediaFieldMixin(object):
         if instance is None:
             raise AttributeError('Can only be accessed via instance')
 
+        media_fields = [f for f in instance._meta.virtual_fields if isinstance(f, self.__class__)]
+        media_field_names = [f.name for f in media_fields]
+
         if self.get_value(instance):
             return self.get_value(instance)
 
         ct = ContentType.objects.get_for_model(instance)
         try:
-            self.set_value(instance, ImageCrop.objects.get(
-                applications__object_id=instance.id,
-                applications__content_type=ct,
-                applications__field_name=self.name))
+            applications = ImageCropApplication.objects.select_related('crop', 'crop__image').filter(
+                object_id=instance.id,
+                content_type=ct,
+                field_name__in=media_field_names
+            )
+            self.set_values(instance, applications)
         except ImageCrop.DoesNotExist:
             self.set_value(instance, None)
         return self.get_value(instance)
@@ -52,8 +57,12 @@ class MediaFieldMixin(object):
     def get_value(self, instance):
         return getattr(instance, self.get_model_attr_name(), None)
 
-    def set_value(self, instance, value):
-        setattr(instance, self.get_model_attr_name(), value)
+    def set_values(self, instance, applications):
+        for a in applications:
+            self.set_value(instance, a.crop, a.field_name)
+
+    def set_value(self, instance, value, field_name=None):
+        setattr(instance, self.get_model_attr_name(field_name), value)
 
     def __set__(self, instance, value):
         """
