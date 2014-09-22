@@ -76,6 +76,9 @@ class MediaFieldMixin(object):
 
         crop = self.get_value(instance)
 
+        if not crop:
+            return
+
         if crop and not crop.pk:
             crop.save()
             self.set_value(instance, crop)
