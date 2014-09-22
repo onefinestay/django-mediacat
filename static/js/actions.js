@@ -32,6 +32,10 @@ var Actions = {
 
     addAssociationSuccess: function(response, categoryPath) {
       this.dispatch(Constants.ADD_ASSOCIATION_SUCCESS, {response, categoryPath});
+    },
+
+    setViewMode: function(mode) {
+      this.dispatch(Constants.SET_VIEW_MODE, {mode});
     }
   },
 

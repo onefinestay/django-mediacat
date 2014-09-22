@@ -14,6 +14,8 @@ var MediaStore = Fluxxor.createStore({
     FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
     UPLOAD_COMPLETE: 'onUploadComplete',
     ADD_ASSOCIATION: 'onAddAssociation',
+    SET_VIEW_MODE: 'onSetViewMode',
+    CROP_SELECTED: 'onCropSelect'
   },
 
   initialize: function(options) {
@@ -56,6 +58,20 @@ var MediaStore = Fluxxor.createStore({
       return null;
     }
     return this.state.get('media').find(m => m.get('id') === id);
+  },
+
+  onSetViewMode: function(payload) {
+    this.state = this.state.set('viewMode', payload.mode);
+    this.emit('change');
+  },
+
+  onCropSelect: function(payload) {
+    var mode = this.state.get('viewMode');
+
+    if (mode === 'grid') {
+      this.state = this.state.set('viewMode', 'filmstrip');  
+      this.emit('change');
+    }   
   },
 
   onFetchImagesSuccess: function(payload) {

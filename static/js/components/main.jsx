@@ -5,30 +5,34 @@ var React = require('react/addons');
 var cx = React.addons.classSet;
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
+var Fluxxor = require("fluxxor");
+var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+var FluxMixin = require('./flux-mixin');
+
 var Header = require('./header');
 var ThumbnailList = require('./thumbnail-list');
 var Detail = require('./detail');
 
 
 var Main = React.createClass({
-  mixins: [PureRenderMixin],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
 
-  getInitialState: function() {
+  getStateFromFlux: function() {
     return {
-      mode: 'grid'
+      mode: this.getFlux().store('Media').state.get('viewMode')
     };
   },
 
   setGridMode: function() {
-    this.setState({mode: 'grid'});
+    this.getFlux().actions.media.setViewMode('grid');
   },
 
   setFilmstripMode: function() {
-    this.setState({mode: 'filmstrip'});
+    this.getFlux().actions.media.setViewMode('filmstrip');
   },  
 
   setDetailMode: function() {
-    this.setState({mode: 'detail'});
+    this.getFlux().actions.media.setViewMode('detail');
   },
   
   render: function() {
