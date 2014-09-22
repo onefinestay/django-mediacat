@@ -7,6 +7,8 @@
 @import "./components/select";
 @import "./components/tabs";
 
+@import "./components/thumbnail";
+
 
 $ns: mediacat;
 
@@ -386,15 +388,6 @@ body {
       }
     }
 
-    .#{$ns}-thumbnail-list {
-      margin: 0;
-      padding: 10px;
-      list-style-type: none;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-
     &.#{$ns}-document-grid {
       > .scrollpane {
         flex-grow: 1;
@@ -579,67 +572,6 @@ body {
     }
   }
 
-  .#{$ns}-thumbnail {
-    flex-shrink: 0;
-    width: 180px;
-    max-width: 270px;
-    height: 180px;
-    background-color: #2b303b;
-    padding: 9px;
-    margin: 5px;
-    background-size: cover;
-    cursor: pointer;
-    border: 1px darken(#2b303b, 5) solid;
-
-    .proxy-image {
-      width: 100%;
-      height: 100%;
-      position: relative;
-
-      .proxy-image-bg {
-        background-size: contain;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        transition: opacity 1s ease;
-      }
-
-      .proxy-image-spinner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 1;
-        transition: opacity 1s ease;
-        line-height: 100%;
-        text-align: center;
-        height: 100%;
-        width: 100%;
-      }
-
-      &.proxy-image-preloaded {
-        .proxy-image-bg,
-        .proxy-image-spinner {
-          transition-property: none;
-        }
-      }
-
-      img {
-        position: absolute;
-        display: block;
-        -webkit-user-drag: none;
-      }
-    }
-  }
-
-  .#{$ns}-thumbnail-selected {
-    background-color: lighten(#2b303b, 5);
-    border: 1px solid #414858;
-  }
-
   .#{$ns}-information {
     background-color: $sidebar-bg;
     width: $sidebar-width;
@@ -678,12 +610,12 @@ body {
 
   .#{$ns}-drag-placeholder {
     position: absolute;
-    background-color: #BADA55;
-    width: 50px;
-    height: 50px;
-    border-radius: 3px;
     z-index: 999;
     pointer-events:none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    transform: scale(0.5);
   }
 }
 
@@ -772,5 +704,7 @@ body {
     position: absolute;
     background-color: #414858;
   }
+
+
 
 }

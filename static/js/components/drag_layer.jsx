@@ -7,6 +7,7 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var FluxMixin = require('./flux-mixin');
+var Thumbnail = require('./thumbnail');
 
 var DragLayer = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Dragging")],
@@ -16,8 +17,8 @@ var DragLayer = React.createClass({
     return {
       dragging: store.state.get('dragging'),
       draggingMedia: store.state.get('draggingMedia'),
-      top: store.state.get('top') - 25,
-      left: store.state.get('left') - 25,
+      top: store.state.get('top') - 100,
+      left: store.state.get('left') - 100,
     };
   },
 
@@ -33,7 +34,9 @@ var DragLayer = React.createClass({
       left: this.state.left,
     }
     return (
-      <div className="mediacat-drag-placeholder" style={position}></div>
+      <ul className="thumbnail-list mediacat-drag-placeholder" style={position}>
+        <Thumbnail thumbnail={this.state.draggingMedia} />
+      </ul>
     );
   }
 });

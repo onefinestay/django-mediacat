@@ -100,6 +100,12 @@ var MediaStore = Fluxxor.createStore({
 
   onCategorySelect: function(payload) {
     if (payload.category.get('accepts_images')) {
+      var mode = this.state.get('viewMode');
+
+      if (mode === 'detail') {
+        this.state = this.state.set('viewMode', 'grid');  
+      }
+
       var req = this.getFetchRequest(payload.category, null);
 
       var requests = this.state.get('fetchRequests');
