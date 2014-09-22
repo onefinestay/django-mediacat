@@ -2278,6 +2278,12 @@
 	    this.getFlux().actions.media.select(this.props.thumbnail);
 	  },
 	
+	  handleDoubleClick: function(event) {
+	    event.preventDefault();
+	    this.getFlux().actions.media.select(this.props.thumbnail);
+	    this.getFlux().actions.media.setViewMode('detail');
+	  },
+	
 	  getStateFromFlux: function() {
 	    var store = this.getFlux().store('Media');
 	    var selected = store.getSelectedMedia();
@@ -2306,7 +2312,7 @@
 	    };
 	
 	    return (
-	      React.DOM.li({className: cx(classes), onClick: this.select, onMouseDown: this.grab, onMouseUp: this.drop}, 
+	      React.DOM.li({className: cx(classes), onClick: this.select, onDoubleClick: this.handleDoubleClick, onMouseDown: this.grab, onMouseUp: this.drop}, 
 	        ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: 160, maxHeight: 160, draggable: false})
 	      )
 	    );
