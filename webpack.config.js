@@ -22,7 +22,7 @@ module.exports = {
         loaders: [
           'style-loader',
           ExtractTextPlugin.loader({remove:true}),
-          'css-loader',
+          'css-loader?sourceMap=true',
           'autoprefixer-loader',
           'sass-loader?precision=10&outputStyle=expanded&sourceMap=true',
         ]

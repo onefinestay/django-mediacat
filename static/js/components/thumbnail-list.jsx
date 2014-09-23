@@ -18,12 +18,20 @@ var Thumbnail = require('./thumbnail');
 var Select = require('./select');
 
 var sortOptions = Immutable.fromJS([
-  {value: 'manual', label: 'Manual'},
-  {value: '-rating', label: 'Rating (Highest First'},
-  {value: 'rating', label: 'Rating (Lowest First'},
-  {value: '-date', label: 'Date Uploaded (Newest First)'},
-  {value: 'date', label: 'Date Uploaded (Oldest First)'}
+  {value: 'manual_asc', label: 'Manual'},
+  {value: 'rating_desc', label: 'Rating (Highest First'},
+  {value: 'rating_asc', label: 'Rating (Lowest First'},
+  {value: 'date_desc', label: 'Date Uploaded (Newest First)'},
+  {value: 'date_asc', label: 'Date Uploaded (Oldest First)'}
 ]);
+
+var sorters = {
+  manual_asc: function(a, b) { return a.get('rank') <= b.get('rank'); },
+  rating_asc: function(a, b) { return a.get('rating') <= b.get('rating'); },  
+  rating_desc: function(a, b) { return a.get('rating') >= b.get('rating'); },
+  date_asc: function(a, b) { return a.get('date_created') <= b.get('date_created'); },
+  date_desc: function(a, b) { return a.get('date_created') >= b.get('date_created'); }
+};
 
 var ThumbnailList = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
@@ -40,7 +48,22 @@ var ThumbnailList = React.createClass({
   },  
 
   render: function() {
-    var thumbnails = this.state.media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var sort = this.state.sortBy;
+    var media = this.state.media.sort(sorters[sort]);
+
+    if (sort === 'manual') {
+      media = media.sort('rank');
+    } else if (sort === '-rating') {
+      media = media.sort('rating');
+    } else if (sort === 'rating') {
+      media = media.sort('rating');
+    } else if (sort === '-date') {
+      media = media.sort('date_created');
+    } else if (sort === 'date') {
+      media = media.sort('date_created');
+    }
+
+    var thumbnails = media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
       <PanelToolbar>

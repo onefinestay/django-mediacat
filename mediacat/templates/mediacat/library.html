@@ -16,7 +16,7 @@
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
  			selectedMedia: {% if selectedMedia %}{{ selectedMedia.pk }}{% else %}null{% endif %},
       initialSelectedMedia: {% if selectedMedia %}{{ selectedMedia.pk }}{% else %}null{% endif %},
-      sortBy: 'manual',
+      sortBy: 'manual_asc',
       viewMode: 'grid',
  			loading: false
  		},

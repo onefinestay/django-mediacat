@@ -135,38 +135,30 @@
             animation-delay: -0.16s; }
 
 .panel {
-  -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: stretch;
   -webkit-align-items: stretch;
       -ms-flex-align: stretch;
           align-items: stretch; }
   .panel > .scrollpane {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
   .panel .panel-header.toolbar {
     background-color: #414858;
-    -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
             flex-grow: 0;
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0;
-    -webkit-box-align: stretch;
     -webkit-align-items: stretch;
         -ms-flex-align: stretch;
             align-items: stretch;
@@ -241,12 +233,9 @@
 
 .select {
   position: relative;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -266,12 +255,10 @@
   .select.not-in-focus input {
     cursor: default; }
   .select.fill-width {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
   .select .select-value-display {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
@@ -282,7 +269,6 @@
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0;
-    -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
             flex-grow: 0;
@@ -325,16 +311,12 @@
 .tabs {
   margin: 0;
   padding: 0;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
@@ -342,12 +324,9 @@
     list-style-type: none;
     margin: 0;
     padding: 5px;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
@@ -358,7 +337,6 @@
     height: 40px;
     box-shadow: inset 0 1px 2px 0 #20242c, inset 0 -1px 2px 0 #262a34; }
     .tabs .tabs-buttons .tabs-button {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1;
@@ -390,32 +368,24 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
   .tabs .tabs-panel {
     display: none;
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row; }
   .tabs .tabs-panel-active {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
@@ -424,12 +394,9 @@
   margin: 0;
   padding: 10px;
   list-style-type: none;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -497,12 +464,9 @@ html {
 
 body {
   margin: 0;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
@@ -520,12 +484,9 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row; }
@@ -575,16 +536,12 @@ body {
       padding: 5px 10px;
       width: 50px; }
   .mediacat-application .toolbar {
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
@@ -592,13 +549,11 @@ body {
       display: inline-block;
       margin-right: 10px; }
     .mediacat-application .toolbar .spacer {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
     .mediacat-application .toolbar .separator {
       width: 10px;
-      -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
           -ms-flex-positive: 0;
               flex-grow: 0;
@@ -606,7 +561,6 @@ body {
           -ms-flex-negative: 0;
               flex-shrink: 0; }
     .mediacat-application .toolbar select {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
@@ -628,14 +582,12 @@ body {
     padding: 10px;
     line-height: 37px;
     border-bottom: 1px #1a0000 solid;
-    -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
             flex-grow: 0;
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex; }
@@ -657,7 +609,6 @@ body {
       font-weight: 300;
       box-shadow: inset 0px 1px 0px 0px #89C0D2; }
       .mediacat-application .mediacat-header input[type=search] {
-        -webkit-box-flex: 1;
         -webkit-flex-grow: 1;
             -ms-flex-positive: 1;
                 flex-grow: 1;
@@ -671,7 +622,6 @@ body {
   .mediacat-application .mediacat-navigation {
     background-color: #2B303B;
     width: 320px;
-    -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
             flex-grow: 0;
@@ -680,29 +630,22 @@ body {
             flex-shrink: 0;
     border-right: 1px #1a0000 solid;
     color: #BAC5CE;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
     .mediacat-application .mediacat-navigation > .scrollpane {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
   .mediacat-application .mediacat-uploads {
     border-top: 1px #1a0000 solid;
     list-style-type: none;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
@@ -710,7 +653,6 @@ body {
         -ms-flex-negative: 0;
             flex-shrink: 0; }
     .mediacat-application .mediacat-uploads > .scrollpane {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1;
@@ -726,7 +668,6 @@ body {
     padding: 0;
     list-style-type: none;
     overflow-y: scroll;
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
@@ -793,48 +734,37 @@ body {
           -ms-transform: rotate(45deg);
               transform: rotate(45deg); }
   .mediacat-application .mediacat-content {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
   .mediacat-application .mediacat-document {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
     .mediacat-application .mediacat-document .mediacat-detail-wrapper {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1;
       background-color: #0d0f13;
       position: relative;
       padding: 20px;
-      display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex; }
     .mediacat-application .mediacat-document .mediacat-detail, .mediacat-application .mediacat-document .mediacat-filmstrip {
       position: relative;
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
@@ -875,18 +805,15 @@ body {
         opacity: 0;
         display: block; }
     .mediacat-application .mediacat-document.mediacat-document-grid > .scrollpane {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
     .mediacat-application .mediacat-document.mediacat-document-grid .mediacat-detail {
-      -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
           -ms-flex-positive: 0;
               flex-grow: 0;
       height: 0; }
     .mediacat-application .mediacat-document.mediacat-document-detail > .panel, .mediacat-application .mediacat-document.mediacat-document-filmstrip > .panel {
-      -webkit-box-flex: 0;
       -webkit-flex-grow: 0;
           -ms-flex-positive: 0;
               flex-grow: 0;
@@ -999,7 +926,6 @@ body {
   .mediacat-application .mediacat-information {
     background-color: #2B303B;
     width: 320px;
-    -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
             flex-grow: 0;
@@ -1008,17 +934,13 @@ body {
             flex-shrink: 0;
     border-left: 1px #1a0000 solid;
     color: #BAC5CE;
-    display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column; }
     .mediacat-application .mediacat-information > .mediacat-tabs {
-      -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
@@ -1052,21 +974,16 @@ body {
       margin: 0; }
 
 .tabs .mediacat-crops-panel {
-  -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column; }
   .tabs .mediacat-crops-panel > .scrollpane {
-    -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
@@ -1119,3 +1036,5 @@ body {
 .tabs .mediacat-crop-preview {
   position: absolute;
   background-color: #414858; }
+
+/*# sourceMappingURL=library.css.map*/

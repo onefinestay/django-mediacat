@@ -7,6 +7,7 @@ var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
+var moment = require('moment');
 
 
 var Panel = require('../panel');
@@ -38,7 +39,11 @@ var ImageDataPanel = React.createClass({
           <tr>
             <th scope="row">Height</th>
             <td>{media && media.get('height')}</td>
-          </tr>          
+          </tr>
+          <tr>
+            <th scope="row">Date Uploaded</th>
+            <td>{media && moment(media.get('date_created')).format('LLL')}</td>
+          </tr>       
         </table>
       </Panel>
     );

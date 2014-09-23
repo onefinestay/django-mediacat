@@ -96,6 +96,7 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'rank',
+            'rating',
             'image_file',
             'date_created',
             'date_modified',

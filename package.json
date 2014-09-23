@@ -9,30 +9,27 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fluxxor": "1.4.0",
+    "fluxxor": "1.4.1",
     "immutable": "2.0.17",
-    "react": "0.11.1",
-    "underscore": "1.7.0",
-    "superagent": "0.18.2",
     "matrix-utilities": "1.2.4",
-    "uuid-v4": "0.1.0",
-    "sifter": "0.3.4"
+    "moment": "^2.8.3",
+    "react": "0.11.2",
+    "sifter": "0.3.4",
+    "superagent": "0.18.2",
+    "underscore": "1.7.0",
+    "uuid-v4": "0.1.0"
   },
   "devDependencies": {
-    "gulp": "3.8.7",
-    "gulp-autoprefixer": "0.0.10",
-    "gulp-duration": "0.0.0",
-    "gulp-sass": "0.7.3",
-    "gulp-util": "3.0.1",    
+    "gulp": "3.8.8",
     "jsx-loader": "0.11.0",
     "sass-loader": "0.2.0",
-    "style-loader": "0.7.1",
-    "css-loader": "0.7.1",   
-    "autoprefixer-loader": "1.0.0",    
-    "extract-text-webpack-plugin": "0.2.5",    
+    "style-loader": "0.8.0",
+    "css-loader": "0.9.0",
+    "autoprefixer-loader": "1.0.0",
+    "extract-text-webpack-plugin": "0.3.1",
     "gulp-iconfont": "0.1.2",
     "gulp-sketch": "0.0.5",
     "gulp-iconfont-css": "0.0.9",
-    "webpack": "1.4.0-beta3"
+    "webpack": "1.4.3"
   }
 }
