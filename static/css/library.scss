@@ -110,6 +110,11 @@ body {
     flex-direction: row;
     flex-grow: 1;
 
+    label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
     .spacer {
       flex-grow: 1;
     }
@@ -122,6 +127,10 @@ body {
 
     select {
       flex-grow: 1;
+    }
+
+    .select {
+      min-width: 230px;
     }
 
     .button-group {
@@ -616,6 +625,11 @@ body {
     padding: 0;
     list-style-type: none;
     transform: scale(0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    li {
+      margin: 0;
+    }
   }
 }
 

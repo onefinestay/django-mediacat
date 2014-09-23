@@ -241,10 +241,6 @@
 
 .select {
   position: relative;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -269,6 +265,11 @@
     border-bottom-right-radius: 0; }
   .select.not-in-focus input {
     cursor: default; }
+  .select.fill-width {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1; }
   .select .select-value-display {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
@@ -587,6 +588,9 @@ body {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
+    .mediacat-application .toolbar label {
+      display: inline-block;
+      margin-right: 10px; }
     .mediacat-application .toolbar .spacer {
       -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
@@ -606,6 +610,8 @@ body {
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
+    .mediacat-application .toolbar .select {
+      min-width: 230px; }
     .mediacat-application .toolbar .button-group button, .mediacat-application .toolbar .button-group .button {
       border-radius: 0;
       margin-left: 1px; }
@@ -1040,7 +1046,10 @@ body {
     list-style-type: none;
     -webkit-transform: scale(0.5);
         -ms-transform: scale(0.5);
-            transform: scale(0.5); }
+            transform: scale(0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+    .mediacat-application .mediacat-drag-placeholder li {
+      margin: 0; }
 
 .tabs .mediacat-crops-panel {
   -webkit-box-flex: 1;

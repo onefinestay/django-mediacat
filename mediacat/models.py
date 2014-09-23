@@ -71,8 +71,17 @@ class Image(models.Model):
             filters=['quality({})'.format(85)]
         )
 
+    @property
+    def num_applications(self):
+        pass
+
+    @property
+    def num_crops(self):
+        pass
+
+    @property
     def can_delete(self):
-        return True
+        return self.num_applications == 0
 
     class Meta:
         verbose_name = _('Image')

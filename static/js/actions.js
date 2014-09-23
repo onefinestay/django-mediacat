@@ -36,6 +36,10 @@ var Actions = {
 
     setViewMode: function(mode) {
       this.dispatch(Constants.SET_VIEW_MODE, {mode});
+    },
+
+    setSort: function(sort) {
+      this.dispatch(Constants.SET_MEDIA_SORT, {sort});
     }
   },
 

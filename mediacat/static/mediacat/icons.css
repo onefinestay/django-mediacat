@@ -28,42 +28,46 @@
 	content: "\E002";
 }
 
-.icon-dash:before {
+.icon-crop:before {
 	content: "\E003";
 }
 
-.icon-detail:before {
+.icon-dash:before {
 	content: "\E004";
 }
 
-.icon-down-arrow:before {
+.icon-detail:before {
 	content: "\E005";
 }
 
-.icon-empty-star:before {
+.icon-down-arrow:before {
 	content: "\E006";
 }
 
-.icon-filmstrip:before {
+.icon-empty-star:before {
 	content: "\E007";
 }
 
-.icon-grid:before {
+.icon-filmstrip:before {
 	content: "\E008";
 }
 
-.icon-reject:before {
+.icon-grid:before {
 	content: "\E009";
 }
 
-.icon-star:before {
+.icon-reject:before {
 	content: "\E00A";
 }
 
-.icon-tick:before {
+.icon-star:before {
 	content: "\E00B";
 }
 
-.icon-upload:before {
+.icon-tick:before {
 	content: "\E00C";
+}
+
+.icon-upload:before {
+	content: "\E00D";
 }

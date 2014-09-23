@@ -15,7 +15,8 @@ var MediaStore = Fluxxor.createStore({
     UPLOAD_COMPLETE: 'onUploadComplete',
     ADD_ASSOCIATION: 'onAddAssociation',
     SET_VIEW_MODE: 'onSetViewMode',
-    CROP_SELECTED: 'onCropSelect'
+    CROP_SELECTED: 'onCropSelect',
+    SET_MEDIA_SORT: 'onSetSort'
   },
 
   initialize: function(options) {
@@ -62,6 +63,11 @@ var MediaStore = Fluxxor.createStore({
 
   onSetViewMode: function(payload) {
     this.state = this.state.set('viewMode', payload.mode);
+    this.emit('change');
+  },
+
+  onSetSort: function(payload) {
+    this.state = this.state.set('sortBy', payload.sort);
     this.emit('change');
   },
 

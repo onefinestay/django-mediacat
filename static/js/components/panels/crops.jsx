@@ -101,7 +101,7 @@ var CropsPanel = React.createClass({
 
   	var toolbar = (
   		<PanelToolbar>
-      	<Select resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
+      	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
       	<span className="separator" />
       	<button disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd}><span className="icon icon-add" /></button>
       </PanelToolbar>

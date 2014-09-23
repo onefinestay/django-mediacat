@@ -2,7 +2,6 @@
 
 .select {
   position: relative;
-  flex-grow: 1;
   display: flex;
   flex-direction: row;
   border: 1px solid darken(#2b303b, 7.5);
@@ -29,6 +28,10 @@
     input {
       cursor: default;
     }
+  }
+
+  &.fill-width {
+    flex-grow: 1;
   }
 
   .select-value-display {

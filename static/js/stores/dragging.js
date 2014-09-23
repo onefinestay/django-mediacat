@@ -14,6 +14,7 @@ var DraggingStore = Fluxxor.createStore({
   },
 
   initialize: function(options) {
+    this.setMaxListeners(0);    
     this.state = Immutable.fromJS(options);
   },
 

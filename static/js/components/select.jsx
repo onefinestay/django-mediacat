@@ -248,6 +248,7 @@ var Select = React.createClass({
     }.bind(this));
 
     var classes = cx({
+      'fill-width': this.props.fillWidth,
       'select': true,
       'disabled': this.props.disabled,
       'in-focus': this.state.focus,
