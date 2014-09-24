@@ -103,11 +103,13 @@ class MediaFieldMixin(object):
         if not instance:
             return
 
+        keys = [c[0] for c in self.crops]
+
         ct = ContentType.objects.get_for_model(instance)
         ImageCropApplication.objects.filter(
             object_id=instance.id,
             content_type=ct,
-            crop__key=self.key).delete()
+            crop__key__in=keys).delete()
 
     def save_form_data(self, instance, data):
         ct = ContentType.objects.get_for_model(instance)
