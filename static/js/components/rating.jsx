@@ -37,7 +37,7 @@ var Rating = React.createClass({
     var rating = media.get('rating');
     var iconClasses;
 
-    if (this.state.highlight) {
+    if (this.state.highlight !== null) {
       iconClasses = Immutable.Repeat('highlight icon-star', this.state.highlight).toVector().concat(Immutable.Repeat('icon-empty-star', 5 - this.state.highlight).toVector());
     } else {
       if (rating !== undefined && rating !== null) {
@@ -55,7 +55,11 @@ var Rating = React.createClass({
 
     return (
       <div className="media-rating">
-        <span className="icon icon-reject" />
+        <span
+         onMouseOver={this.onMouseOver.bind(this, - 1)} 
+         onMouseOut={this.onMouseOut.bind(this, - 1)}
+         onClick={this.onClick.bind(this, - 1)}
+         className="icon icon-reject" />
         {icons.toJS()}
       </div>
     );

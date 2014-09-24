@@ -26,6 +26,10 @@ var Actions = {
       console.log(response);
     },
 
+    saveSuccess: function(response, media) {
+      
+    },
+
     addAssociation: function(category, media) {
       this.dispatch(Constants.ADD_ASSOCIATION, {category, media});
     },

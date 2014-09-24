@@ -950,7 +950,9 @@ body {
     .mediacat-application .mediacat-information .media-rating .no-rating {
       opacity: 0.25; }
     .mediacat-application .mediacat-information .media-rating .icon-reject {
-      opacity: 0.5; }
+      opacity: 0.25; }
+      .mediacat-application .mediacat-information .media-rating .icon-reject:hover {
+        opacity: 1; }
   .mediacat-application .mediacat-information-panel {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;

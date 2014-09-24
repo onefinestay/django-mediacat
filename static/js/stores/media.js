@@ -53,6 +53,21 @@ var MediaStore = Fluxxor.createStore({
       .end(onSuccess);
   },
 
+  getPatchRequest: function(media, data) {
+    var url = '/mediacat/images/' + media.get('id') + '/';
+
+    var onSuccess = function(response) {
+      this.flux.actions.media.saveSuccess(response, media);
+    }.bind(this);    
+
+    return request
+      .patch(url)
+      .send(data)
+      .set('Accept', 'application/json')
+      .on('error', this.flux.actions.media.saveError)
+      .end(onSuccess);
+  },
+
   getSelectedMedia: function() {
     var id = this.state.get('selectedMedia');
 
@@ -64,6 +79,7 @@ var MediaStore = Fluxxor.createStore({
 
   onSetRating: function(payload) {
     var index = this.state.get('media').indexOf(payload.media);
+    this.getPatchRequest(payload.media, {rating: payload.rating});
     this.state = this.state.updateIn(['media', index], media => media.set('rating', payload.rating));
     this.emit('change');
   },
