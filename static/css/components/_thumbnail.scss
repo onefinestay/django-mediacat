@@ -16,10 +16,28 @@ $ns: mediacat;
   height: 180px;
   background-color: #2b303b;
   padding: 9px;
-  margin: 5px;
+  margin: 0;
   background-size: cover;
   cursor: pointer;
   border: 1px darken(#2b303b, 5) solid;
+  position: relative;
+
+  .dragover-guide {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 4px;
+    background-color: #3ea2c1;
+    z-index: 1;
+  }
+
+  .dragover-guide-before {
+    left: -3px;
+  }
+
+  .dragover-guide-after {
+    right: -3px;
+  }
 
   .proxy-image {
     width: 100%;

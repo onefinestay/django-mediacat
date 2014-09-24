@@ -93,7 +93,7 @@ var ThumbnailList = React.createClass({
       media = media.sort('date_created');
     }
 
-    var thumbnails = media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var thumbnails = media.map(thumbnail => <Thumbnail onMouseOverBefore={this.handleMouseOverBeforeThumbnail} onMouseOverAfter={this.handleMouseOverAfterThumbnail} key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
       <PanelToolbar>

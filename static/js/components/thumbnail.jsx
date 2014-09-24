@@ -14,6 +14,12 @@ var ProxyImg = require('./proxy-img');
 var Thumbnail = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
 
+  getInitialState: function() {
+    return {
+      dragOverPosition: null
+    };
+  },
+
   select: function(event) {
     event.preventDefault();
     this.getFlux().actions.media.select(this.props.thumbnail);
@@ -23,6 +29,39 @@ var Thumbnail = React.createClass({
     event.preventDefault();
     this.getFlux().actions.media.select(this.props.thumbnail);
     this.getFlux().actions.media.setViewMode('detail');
+  },
+
+  handleMouseEnter: function(event) {
+    var draggedMedia = this.getFlux().stores.Dragging.getDraggedMedia();
+    if (draggedMedia && draggedMedia !== this.props.thumbnail) {
+      console.log('dragging over me!');
+    }
+  },
+
+  handleMouseLeave: function(event) {
+    var draggedMedia = this.getFlux().stores.Dragging.getDraggedMedia();
+    if (draggedMedia && draggedMedia !== this.props.thumbnail) {
+      this.setState({dragOverPosition: null});
+    }    
+  },
+
+  handleMouseMove: function(event) {
+    var elRect;
+    var offsetX;
+    var offsetY;
+
+    var draggedMedia = this.getFlux().stores.Dragging.getDraggedMedia();
+    if (draggedMedia && draggedMedia !== this.props.thumbnail) {
+      elRect = this.getDOMNode().getBoundingClientRect();
+      offsetX = event.clientX - elRect.left;
+      offsetY = event.clientY - elRect.top;
+     
+      if (offsetX <= (elRect.width / 2)) {
+        this.setState({dragOverPosition: 'before'});
+      } else {
+        this.setState({dragOverPosition: 'after'});
+      }
+    }
   },
 
   getStateFromFlux: function() {
@@ -51,8 +90,18 @@ var Thumbnail = React.createClass({
     };
 
     return (
-      <li className={cx(classes)} onClick={this.select} onDoubleClick={this.handleDoubleClick} onMouseDown={this.grab} onMouseUp={this.drop}>
+      <li 
+        className={cx(classes)} 
+        onClick={this.select} 
+        onDoubleClick={this.handleDoubleClick} 
+        onMouseDown={this.grab} 
+        onMouseUp={this.drop} 
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave} 
+        onMouseMove={this.handleMouseMove}>
+        {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="dragover-guide dragover-guide-before" /> : null}
         <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={160} maxHeight={160} draggable={false} />
+        {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="dragover-guide dragover-guide-after" /> : null}
       </li>
     );
   }
