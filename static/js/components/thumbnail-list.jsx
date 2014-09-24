@@ -26,28 +26,39 @@ var sortOptions = Immutable.fromJS([
   {value: 'date_asc', label: 'Date Uploaded (Oldest First)'}
 ]);
 
+var nullFirstAscSorter = function(a, b) {
+  if (a === b) {
+    return 0;
+  }
+  if (a === null || a < b) {
+    return -1;
+  }
+  if (a === null || a > b) {
+    return 1;
+  }
+  return 0;
+};
+
+var nullLastDescSorter = function(a, b) {
+  if (a === b) {
+    return 0;
+  }    
+
+  if (b === null || b < a) {
+    return -1;
+  }
+  if (a === null || b > a) {
+    return 1;
+  }   
+  return 0;
+};
+
 var sorters = {
-  manual_asc: function(a, b) { return a.get('rank') <= b.get('rank'); },
-  rating_asc: function(a, b) { 
-    if (a.get('rating') === null) {
-      return 0;
-    }
-    if (b.get('rating') === null) {
-      return 0;
-    }
-    return a.get('rating') > b.get('rating');
-  },  
-  rating_desc: function(a, b) {
-    if (a.get('rating') === null) {
-      return -1;
-    }
-    if (b.get('rating') === null) {
-      return 0;
-    }
-    return a.get('rating') > b.get('rating');
-  },
-  date_asc: function(a, b) { return moment(a.get('date_created')).isBefore(moment(b.get('date_created'))); },
-  date_desc: function(a, b) { return moment(b.get('date_created')).isBefore(moment(a.get('date_created'))); }
+  manual_asc: (a, b) => nullFirstAscSorter(a.get('rank'), b.get('rank')),
+  rating_asc: (a, b) => nullFirstAscSorter(a.get('rating'), b.get('rating')),
+  rating_desc: (a, b) => nullLastDescSorter(a.get('rating'), b.get('rating')),
+  date_asc: (a, b) => nullFirstAscSorter(new Date(a.get('date_created')), new Date(b.get('date_created'))),
+  date_desc: (a, b) => nullLastDescSorter(new Date(a.get('date_created')), new Date(b.get('date_created')))
 };
 
 var ThumbnailList = React.createClass({
