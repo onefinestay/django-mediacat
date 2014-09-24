@@ -8,6 +8,10 @@ var Actions = {
       this.dispatch(Constants.MEDIA_SELECTED, {media});
     },
 
+    setRating: function(media, rating) {
+      this.dispatch(Constants.MEDIA_SET_RATING, {media, rating});
+    },
+
     fetch: function(category, filters) {
       this.dispatch(Constants.FETCH_IMAGES, {category, filters});
     },

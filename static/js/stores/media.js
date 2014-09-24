@@ -16,7 +16,8 @@ var MediaStore = Fluxxor.createStore({
     ADD_ASSOCIATION: 'onAddAssociation',
     SET_VIEW_MODE: 'onSetViewMode',
     CROP_SELECTED: 'onCropSelect',
-    SET_MEDIA_SORT: 'onSetSort'
+    SET_MEDIA_SORT: 'onSetSort',
+    MEDIA_SET_RATING: 'onSetRating'
   },
 
   initialize: function(options) {
@@ -59,6 +60,12 @@ var MediaStore = Fluxxor.createStore({
       return null;
     }
     return this.state.get('media').find(m => m.get('id') === id);
+  },
+
+  onSetRating: function(payload) {
+    var index = this.state.get('media').indexOf(payload.media);
+    this.state = this.state.updateIn(['media', index], media => media.set('rating', payload.rating));
+    this.emit('change');
   },
 
   onSetViewMode: function(payload) {

@@ -944,6 +944,13 @@ body {
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
               flex-grow: 1; }
+    .mediacat-application .mediacat-information .media-rating .icon {
+      font-size: 24px;
+      cursor: pointer; }
+    .mediacat-application .mediacat-information .media-rating .no-rating {
+      opacity: 0.25; }
+    .mediacat-application .mediacat-information .media-rating .icon-reject {
+      opacity: 0.5; }
   .mediacat-application .mediacat-information-panel {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;

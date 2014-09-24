@@ -594,6 +594,21 @@ body {
     > .#{$ns}-tabs {
       flex-grow: 1;
     }
+
+    .media-rating {
+      .icon {
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .no-rating {
+        opacity: 0.25;
+      }
+
+      .icon-reject {
+        opacity: 0.5;
+      }
+    }
   }
 
   .#{$ns}-information-panel {

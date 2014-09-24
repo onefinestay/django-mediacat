@@ -9,7 +9,7 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
 var moment = require('moment');
 
-
+var Rating = require('../rating');
 var Panel = require('../panel');
 var PanelToolbar = require('../panel-toolbar');
 
@@ -43,7 +43,11 @@ var ImageDataPanel = React.createClass({
           <tr>
             <th scope="row">Date Uploaded</th>
             <td>{media && moment(media.get('date_created')).format('LLL')}</td>
-          </tr>       
+          </tr>
+          <tr>
+            <th scope="row">Rating</th>
+            <td>{media ? <Rating media={media} /> : null}</td>
+          </tr>
         </table>
       </Panel>
     );

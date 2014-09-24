@@ -6,6 +6,7 @@ var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
+var moment = require('moment');
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Panel = require('./panel');
@@ -19,18 +20,34 @@ var Select = require('./select');
 
 var sortOptions = Immutable.fromJS([
   {value: 'manual_asc', label: 'Manual'},
-  {value: 'rating_desc', label: 'Rating (Highest First'},
-  {value: 'rating_asc', label: 'Rating (Lowest First'},
+  {value: 'rating_desc', label: 'Rating (Highest First)'},
+  {value: 'rating_asc', label: 'Rating (Lowest First)'},
   {value: 'date_desc', label: 'Date Uploaded (Newest First)'},
   {value: 'date_asc', label: 'Date Uploaded (Oldest First)'}
 ]);
 
 var sorters = {
   manual_asc: function(a, b) { return a.get('rank') <= b.get('rank'); },
-  rating_asc: function(a, b) { return a.get('rating') <= b.get('rating'); },  
-  rating_desc: function(a, b) { return a.get('rating') >= b.get('rating'); },
-  date_asc: function(a, b) { return a.get('date_created') <= b.get('date_created'); },
-  date_desc: function(a, b) { return a.get('date_created') >= b.get('date_created'); }
+  rating_asc: function(a, b) { 
+    if (a.get('rating') === null) {
+      return 0;
+    }
+    if (b.get('rating') === null) {
+      return 0;
+    }
+    return a.get('rating') > b.get('rating');
+  },  
+  rating_desc: function(a, b) {
+    if (a.get('rating') === null) {
+      return -1;
+    }
+    if (b.get('rating') === null) {
+      return 0;
+    }
+    return a.get('rating') > b.get('rating');
+  },
+  date_asc: function(a, b) { return moment(a.get('date_created')).isBefore(moment(b.get('date_created'))); },
+  date_desc: function(a, b) { return moment(b.get('date_created')).isBefore(moment(a.get('date_created'))); }
 };
 
 var ThumbnailList = React.createClass({

@@ -40,34 +40,38 @@
 	content: "\E005";
 }
 
-.icon-down-arrow:before {
+.icon-dot:before {
 	content: "\E006";
 }
 
-.icon-empty-star:before {
+.icon-down-arrow:before {
 	content: "\E007";
 }
 
-.icon-filmstrip:before {
+.icon-empty-star:before {
 	content: "\E008";
 }
 
-.icon-grid:before {
+.icon-filmstrip:before {
 	content: "\E009";
 }
 
-.icon-reject:before {
+.icon-grid:before {
 	content: "\E00A";
 }
 
-.icon-star:before {
+.icon-reject:before {
 	content: "\E00B";
 }
 
-.icon-tick:before {
+.icon-star:before {
 	content: "\E00C";
 }
 
-.icon-upload:before {
+.icon-tick:before {
 	content: "\E00D";
+}
+
+.icon-upload:before {
+	content: "\E00E";
 }
