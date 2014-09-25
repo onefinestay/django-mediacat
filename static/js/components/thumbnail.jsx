@@ -9,7 +9,7 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var FluxMixin = require('./flux-mixin');
 var ProxyImg = require('./proxy-img');
-
+var Rating = require('./rating');
 
 var Thumbnail = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Dragging")],
@@ -152,6 +152,9 @@ var Thumbnail = React.createClass({
         {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="dragover-guide dragover-guide-before" /> : null}
         <div style={style} className="mediacat-thumbnail-content">
           <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
+        </div>
+        <div className="mediacat-thumbnail-footer">
+          <Rating media={thumbnail} interactable={false} /> 
         </div>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="dragover-guide dragover-guide-after" /> : null}
       </li>

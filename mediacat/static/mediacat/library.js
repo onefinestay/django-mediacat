@@ -6150,7 +6150,7 @@
 	
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	var ProxyImg = __webpack_require__(/*! ./proxy-img */ 52);
-	
+	var Rating = __webpack_require__(/*! ./rating */ 88);
 	
 	var Thumbnail = React.createClass({displayName: 'Thumbnail',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Dragging")],
@@ -6293,6 +6293,9 @@
 	        this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? React.DOM.div({className: "dragover-guide dragover-guide-before"}) : null, 
 	        React.DOM.div({style: style, className: "mediacat-thumbnail-content"}, 
 	          ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: thumbnailSize, maxHeight: thumbnailSize, draggable: false})
+	        ), 
+	        React.DOM.div({className: "mediacat-thumbnail-footer"}, 
+	          Rating({media: thumbnail, interactable: false})
 	        ), 
 	        this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? React.DOM.div({className: "dragover-guide dragover-guide-after"}) : null
 	      )
@@ -16615,6 +16618,12 @@
 	var Rating = React.createClass({displayName: 'Rating',
 	  mixins: [PureRenderMixin, FluxMixin],
 	
+	  getDefaultProps: function() {
+	    return  {
+	      interactable: true
+	    };
+	  },
+	
 	  getInitialState: function() {
 	    return {
 	      highlight: null
@@ -16637,6 +16646,7 @@
 	  render: function() {
 	    var media = this.props.media;
 	    var rating = media.get('rating');
+	    var interactable = this.props.interactable;
 	    var iconClasses;
 	
 	    if (this.state.highlight !== null) {
@@ -16649,19 +16659,20 @@
 	      }
 	    }
 	
+	
 	    var icons = iconClasses.map(function(className, i)  {return React.DOM.span({
-	      onMouseOver: this.onMouseOver.bind(this, i), 
-	      onMouseOut: this.onMouseOut.bind(this, i), 
-	      onClick: this.onClick.bind(this, i), 
+	      onMouseOver: interactable && this.onMouseOver.bind(this, i), 
+	      onMouseOut: interactable && this.onMouseOut.bind(this, i), 
+	      onClick: interactable && this.onClick.bind(this, i), 
 	      className: 'icon ' + className});}.bind(this));
 	
 	    return (
 	      React.DOM.div({className: "media-rating"}, 
-	        React.DOM.span({
+	        interactable ? React.DOM.span({
 	         onMouseOver: this.onMouseOver.bind(this, - 1), 
 	         onMouseOut: this.onMouseOut.bind(this, - 1), 
 	         onClick: this.onClick.bind(this, - 1), 
-	         className: "icon icon-reject"}), 
+	         className: "icon icon-reject"}) : null, 
 	        icons.toJS()
 	      )
 	    );

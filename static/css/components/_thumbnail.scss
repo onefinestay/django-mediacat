@@ -15,7 +15,7 @@ $ns: mediacat;
   margin: 0;
   background-size: cover;
   cursor: pointer;
-  border: 1px darken(#2b303b, 5) solid;
+  border: 1px darken(#232830, 3) solid;
   margin-right: -1px;
   margin-bottom: -1px;
   position: relative;
@@ -25,6 +25,24 @@ $ns: mediacat;
     height: 180px;
     padding: 9px;
   }
+
+  .#{$ns}-thumbnail-footer {
+    border-top: 1px darken(#2b303b, 5) solid;
+    background-color: rgba(0, 0, 0, 0.125);
+    padding: 5px;
+    text-align: center;
+
+    .media-rating {
+      display: inline-block;
+      opacity: 0.25;
+      line-height: 1;
+
+      .icon {
+        line-height: 1;
+        vertical-align: middle;
+      }
+    }
+  }  
 
   .dragover-guide {
     position: absolute;

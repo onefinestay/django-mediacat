@@ -412,7 +412,7 @@
   margin: 0;
   background-size: cover;
   cursor: pointer;
-  border: 1px #20242c solid;
+  border: 1px #1d2127 solid;
   margin-right: -1px;
   margin-bottom: -1px;
   position: relative; }
@@ -420,6 +420,18 @@
     width: 180px;
     height: 180px;
     padding: 9px; }
+  .mediacat-thumbnail .mediacat-thumbnail-footer {
+    border-top: 1px #20242c solid;
+    background-color: rgba(0, 0, 0, 0.125);
+    padding: 5px;
+    text-align: center; }
+    .mediacat-thumbnail .mediacat-thumbnail-footer .media-rating {
+      display: inline-block;
+      opacity: 0.25;
+      line-height: 1; }
+      .mediacat-thumbnail .mediacat-thumbnail-footer .media-rating .icon {
+        line-height: 1;
+        vertical-align: middle; }
   .mediacat-thumbnail .dragover-guide {
     position: absolute;
     top: -2px;
@@ -766,7 +778,8 @@ body {
     display: flex;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
-            flex-direction: column; }
+            flex-direction: column;
+    background-color: #1d2127; }
     .mediacat-application .mediacat-document .mediacat-detail-wrapper {
       -webkit-flex-grow: 1;
           -ms-flex-positive: 1;
@@ -834,7 +847,7 @@ body {
       -webkit-flex-shrink: 0;
           -ms-flex-negative: 0;
               flex-shrink: 0;
-      height: 270px; }
+      height: 280px; }
     .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .scrollpane-content, .mediacat-application .mediacat-document.mediacat-document-filmstrip .scrollpane .scrollpane-content {
       display: inline-block; }
     .mediacat-application .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list, .mediacat-application .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list {

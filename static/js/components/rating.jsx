@@ -13,6 +13,12 @@ var Immutable = require('immutable');
 var Rating = React.createClass({
   mixins: [PureRenderMixin, FluxMixin],
 
+  getDefaultProps: function() {
+    return  {
+      interactable: true
+    };
+  },
+
   getInitialState: function() {
     return {
       highlight: null
@@ -35,6 +41,7 @@ var Rating = React.createClass({
   render: function() {
     var media = this.props.media;
     var rating = media.get('rating');
+    var interactable = this.props.interactable;
     var iconClasses;
 
     if (this.state.highlight !== null) {
@@ -47,19 +54,20 @@ var Rating = React.createClass({
       }
     }
 
+
     var icons = iconClasses.map((className, i) => <span 
-      onMouseOver={this.onMouseOver.bind(this, i)} 
-      onMouseOut={this.onMouseOut.bind(this, i)}
-      onClick={this.onClick.bind(this, i)}
+      onMouseOver={interactable && this.onMouseOver.bind(this, i)} 
+      onMouseOut={interactable && this.onMouseOut.bind(this, i)}
+      onClick={interactable && this.onClick.bind(this, i)}
       className={'icon ' + className} />);
 
     return (
       <div className="media-rating">
-        <span
+        {interactable ? <span
          onMouseOver={this.onMouseOver.bind(this, - 1)} 
          onMouseOut={this.onMouseOut.bind(this, - 1)}
          onClick={this.onClick.bind(this, - 1)}
-         className="icon icon-reject" />
+         className="icon icon-reject" /> : null}
         {icons.toJS()}
       </div>
     );
