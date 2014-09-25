@@ -424,7 +424,8 @@
     bottom: -2px;
     width: 4px;
     background-color: #3ea2c1;
-    z-index: 1; }
+    z-index: 1;
+    border-radius: 2px; }
   .mediacat-thumbnail .dragover-guide-before {
     left: -3px; }
   .mediacat-thumbnail .dragover-guide-after {

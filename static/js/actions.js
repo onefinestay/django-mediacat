@@ -12,6 +12,14 @@ var Actions = {
       this.dispatch(Constants.MEDIA_SET_RATING, {media, rating});
     },
 
+    moveBefore: function(media, target) {
+      this.dispatch(Constants.MEDIA_MOVE_BEFORE,  {media, target});
+    },
+
+    moveAfter: function(media, target) {
+      this.dispatch(Constants.MEDIA_MOVE_AFTER,  {media, target});
+    },
+
     fetch: function(category, filters) {
       this.dispatch(Constants.FETCH_IMAGES, {category, filters});
     },
@@ -27,7 +35,7 @@ var Actions = {
     },
 
     saveSuccess: function(response, media) {
-      
+
     },
 
     addAssociation: function(category, media) {
@@ -150,14 +158,14 @@ var Actions = {
   },
 
   dragging: {
-    grab: function(media, x, y) {
-      this.dispatch(Constants.GRAB_MEDIA, {media, x, y});
+    dragStart: function(media, x, y) {
+      this.dispatch(Constants.DRAG_MEDIA_START, {media, x, y});
     },
-    drag: function(media, x, y) {
-      this.dispatch(Constants.DRAG_MEDIA, {media, x, y});
+    dragMove: function(x, y) {
+      this.dispatch(Constants.DRAG_MEDIA_MOVE, {x, y});
     },
-    drop: function(media, x, y) {
-      this.dispatch(Constants.DROP_MEDIA, {media, x, y});
+    dragEnd: function(x, y) {
+      this.dispatch(Constants.DRAG_MEDIA_END, {x, y});
     }
   }
 };

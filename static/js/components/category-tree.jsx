@@ -74,12 +74,12 @@ var CategoryTreeNode = React.createClass({
     return {
       fetchingMedia: fetchRequest ? true : false,
       selected: this.props.node.get('path') === this.getFlux().store('Categories').state.get('selectedPath'),
-      dragging: dragStore.state.get('dragging')
+      draggingMedia: dragStore.state.get('draggingMedia')
     };
   },
 
   cursor: function() {
-    if (!this.state.dragging) {
+    if (!this.state.draggingMedia) {
       return "pointer";
     }
 
@@ -101,9 +101,9 @@ var CategoryTreeNode = React.createClass({
   },
 
   onMouseUp: function() {
-    var droppedMedia = this.getFlux().stores.Dragging.getDraggedMedia();
-    if (droppedMedia && this.props.node.get('accepts_images')) {
-      this.getFlux().actions.media.addAssociation(this.props.node, droppedMedia);
+    var draggingMedia = this.state.draggingMedia;
+    if (draggingMedia && this.props.node.get('accepts_images')) {
+      this.getFlux().actions.media.addAssociation(this.props.node, draggingMedia);
     }
   },
 

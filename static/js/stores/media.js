@@ -7,6 +7,36 @@ var django = require('../utils/superagent-django');
 
 var Constants = require('../constants');
 
+var ascSorter = function(a, b) {
+  // Sort ascending, null values come first
+  if (a === b) {
+    return 0;
+  }
+  if (a === null || a < b) {
+    return -1;
+  }
+  if (b === null || a > b) {
+    return 1;
+  }
+  return 0;
+};
+
+var descSorter = function(a, b) {
+  // Sort descending, null values come last
+  if (a === b) {
+    return 0;
+  }    
+
+  if (b === null || b < a) {
+    return -1;
+  }
+  if (a === null || b > a) {
+    return 1;
+  }
+  return 0;
+};
+
+
 var MediaStore = Fluxxor.createStore({
   actions: {
     CATEGORY_SELECTED: 'onCategorySelect',
@@ -17,12 +47,36 @@ var MediaStore = Fluxxor.createStore({
     SET_VIEW_MODE: 'onSetViewMode',
     CROP_SELECTED: 'onCropSelect',
     SET_MEDIA_SORT: 'onSetSort',
-    MEDIA_SET_RATING: 'onSetRating'
+    MEDIA_SET_RATING: 'onSetRating',
+    MEDIA_MOVE_BEFORE: 'onMoveBefore',
+    MEDIA_MOVE_AFTER: 'onMoveAfter'
   },
 
   initialize: function(options) {
     this.setMaxListeners(0);
     this.state = Immutable.fromJS(options);
+  },
+
+  sortOptions: Immutable.fromJS([
+    {value: 'manual_asc', label: 'Manual'},
+    {value: 'rating_desc', label: 'Rating (Highest First)'},
+    {value: 'rating_asc', label: 'Rating (Lowest First)'},
+    {value: 'date_desc', label: 'Date Uploaded (Newest First)'},
+    {value: 'date_asc', label: 'Date Uploaded (Oldest First)'}
+  ]),
+
+  sorters: {
+    manual_asc: (a, b) => ascSorter(a.get('rank'), b.get('rank')),
+    rating_asc: (a, b) => ascSorter(a.get('rating'), b.get('rating')),
+    rating_desc: (a, b) => descSorter(a.get('rating'), b.get('rating')),
+    date_asc: (a, b) => ascSorter(new Date(a.get('date_created')), new Date(b.get('date_created'))),
+    date_desc: (a, b) => descSorter(new Date(a.get('date_created')), new Date(b.get('date_created')))
+  },
+
+  getSortedMedia: function() {
+    var sort = this.state.get('sortBy');
+
+    return this.state.get('media').sort(this.sorters[sort]);
   },
 
   getFetchRequest: function(category, filters) {
@@ -68,6 +122,21 @@ var MediaStore = Fluxxor.createStore({
       .end(onSuccess);
   },
 
+  getBatchPatchRequest: function(data) {
+    var url = '/mediacat/images/';
+
+    var onSuccess = function(response) {
+      //this.flux.actions.media.batchSaveSuccess(response);
+    }.bind(this);    
+
+    return request
+      .patch(url)
+      .send(data)
+      .set('Accept', 'application/json')
+      .on('error', this.flux.actions.media.batchSaveError)
+      .end(onSuccess);    
+  },
+
   getSelectedMedia: function() {
     var id = this.state.get('selectedMedia');
 
@@ -82,6 +151,65 @@ var MediaStore = Fluxxor.createStore({
     this.getPatchRequest(payload.media, {rating: payload.rating});
     this.state = this.state.updateIn(['media', index], media => media.set('rating', payload.rating));
     this.emit('change');
+  },
+
+  reorderMedia: function(sortedMedia, oldIndex, newIndex) {
+    var idList = sortedMedia.map(m => m.get('id'));
+    var newIdList;
+
+    var el = idList.get(oldIndex);
+    newIdList = idList.splice(oldIndex, 1).splice(newIndex, 0, el);
+
+    var media = this.state.get('media').map((m, i) => m.set('rank', newIdList.indexOf(m.get('id'))));
+    this.state = this.state.set('media', media);
+
+    this.emit('change');    
+
+    var data = media.map(function(media, i) {
+      return {
+        id: media.get('id'), 
+        rank: media.get('rank')
+      }; 
+    });
+    this.getBatchPatchRequest(data.toJS());
+  },  
+
+  onMoveBefore: function(payload) {
+    var sortedMedia = this.getSortedMedia();
+
+    var media = payload.media;
+    var target = payload.target;
+
+    var startIndex = sortedMedia.indexOf(media);
+    var endIndex = sortedMedia.indexOf(target);
+
+    if (startIndex !== null && endIndex !== null) {
+      if (startIndex !== endIndex - 1) {
+        if (endIndex > startIndex) {
+          endIndex --;
+        }
+        this.reorderMedia(sortedMedia, startIndex, endIndex);
+      }
+    }
+  },
+
+  onMoveAfter: function(payload) {
+    var sortedMedia = this.getSortedMedia();
+
+    var media = payload.media;
+    var target = payload.target;
+
+    var startIndex = sortedMedia.indexOf(media);
+    var endIndex = sortedMedia.indexOf(target);
+
+    if (startIndex !== null && endIndex !== null) {
+      if (endIndex < startIndex) {
+        endIndex ++;
+      }      
+      if (startIndex !== endIndex) {
+        this.reorderMedia(sortedMedia, startIndex, endIndex);
+      }
+    }    
   },
 
   onSetViewMode: function(payload) {

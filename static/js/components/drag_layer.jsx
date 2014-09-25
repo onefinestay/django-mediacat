@@ -13,28 +13,27 @@ var DragLayer = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Dragging")],
 
   getStateFromFlux: function() {
-    var store = this.getFlux().store('Dragging')
+    var store = this.getFlux().store('Dragging');
+
     return {
-      dragging: store.state.get('dragging'),
       draggingMedia: store.state.get('draggingMedia'),
       top: store.state.get('top') - 100,
       left: store.state.get('left') - 100,
     };
   },
 
-
-
   render: function() {
-    if (!this.state.dragging) {
+    if (!this.state.draggingMedia) {
       return null;
     }
 
-    var position = {
+    var style = {
       top: this.state.top,
       left: this.state.left,
-    }
+    };
+
     return (
-      <ul className="thumbnail-list mediacat-drag-placeholder" style={position}>
+      <ul className="thumbnail-list mediacat-drag-placeholder" style={style}>
         <Thumbnail thumbnail={this.state.draggingMedia} />
       </ul>
     );

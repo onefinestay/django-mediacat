@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
@@ -9,6 +10,8 @@ from django.views.generic import TemplateView
 
 from rest_framework import generics
 from rest_framework import parsers
+from rest_framework import status
+from rest_framework.response import Response
 
 from . import models
 from . import serializers
@@ -16,10 +19,59 @@ from . import utils
 from . import exceptions
 
 
-class ImageList(generics.ListCreateAPIView):
+class BulkUpdateModelMixin(object):
+    """
+    Update model instances in bulk by using the Serializer's
+    ``many=True`` ability from Django REST >= 2.2.5.
+    """
+
+    def get_object(self):
+        return self.get_queryset()
+
+    def bulk_update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+
+        errors = {}
+        data = []
+
+        for item in request.DATA:
+            pk = item['id']
+
+            serializer = self.get_serializer(self.filter_queryset(
+                super(ImageList, self).get_queryset()).get(pk=pk),
+                data=item,
+                partial=partial
+            )
+
+            if not serializer.is_valid():
+                errors[pk] = serializer.errors
+                continue
+
+            try:
+                self.pre_save(serializer.object)
+            except ValidationError as err:
+                errors[pk] = err.message_dict
+
+            obj = serializer.save(force_update=True)
+            self.post_save(obj, created=False)
+
+            data.append(serializer.data)
+
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    def partial_bulk_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.bulk_update(request, *args, **kwargs)
+
+
+class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
     parser_classes = (
+        parsers.JSONParser,
         parsers.MultiPartParser,
         parsers.FormParser,
     )
@@ -36,6 +88,10 @@ class ImageList(generics.ListCreateAPIView):
         else:
             queryset = queryset.filter(associations=None)
         return queryset
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_bulk_update(request, *args, **kwargs)
+
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
