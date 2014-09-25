@@ -18,8 +18,19 @@ var ProxyImg = require('./proxy-img');
 var Thumbnail = require('./thumbnail');
 var Select = require('./select');
 
+var elMetrics = require('../utils/element-metrics');
+
+var minSize = 145;
+
 var ThumbnailList = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+
+  getInitialState: function() {
+    return {
+      width: null,
+      height: null      
+    };
+  },  
 
   getStateFromFlux: function() {
     return {
@@ -29,6 +40,30 @@ var ThumbnailList = React.createClass({
     };
   },
 
+  updateDOMDimensions: function() {
+    var el = this.refs.content.getDOMNode();
+
+    this.setState({
+      width: elMetrics.innerWidth(el),
+      height: elMetrics.innerHeight(el)
+    });
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps.mode !== this.props.mode) {
+      this.updateDOMDimensions();
+    }
+  },
+
+  componentDidMount: function() {
+    this.updateDOMDimensions();
+    window.addEventListener('resize', this.updateDOMDimensions); 
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this.updateDOMDimensions);
+  },  
+
   setSort: function(option) {
     this.getFlux().actions.media.setSort(option.get('value'));
   },  
@@ -37,7 +72,16 @@ var ThumbnailList = React.createClass({
     var sort = this.state.sortBy;
     var media = this.state.media;
 
-    var thumbnails = media.map(thumbnail => <Thumbnail key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var size;
+    var numPerRow;
+
+    if (this.props.mode === 'grid' && this.state.width && this.state.height) {
+      numPerRow = Math.floor(this.state.width / minSize);
+      size = (this.state.width - numPerRow) / numPerRow;
+      console.log(size);     
+    }
+
+    var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
       <PanelToolbar>
@@ -49,7 +93,7 @@ var ThumbnailList = React.createClass({
 
     return (
       <Panel mode={this.props.mode} toolbar={toolbar}>
-        <ul className="mediacat-thumbnail-list">
+        <ul className="mediacat-thumbnail-list" ref="content">
           {thumbnails.toJS()}
         </ul>
       </Panel>

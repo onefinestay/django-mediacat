@@ -2,7 +2,7 @@ $ns: mediacat;
 
 .#{$ns}-thumbnail-list {
   margin: 0;
-  padding: 10px;
+  padding: 5px;
   list-style-type: none;
   display: flex;
   flex-direction: row;
@@ -11,22 +11,26 @@ $ns: mediacat;
 
 .#{$ns}-thumbnail {
   flex-shrink: 0;
-  width: 180px;
-  max-width: 270px;
-  height: 180px;
   background-color: #2b303b;
-  padding: 9px;
   margin: 0;
   background-size: cover;
   cursor: pointer;
   border: 1px darken(#2b303b, 5) solid;
+  margin-right: -1px;
+  margin-bottom: -1px;
   position: relative;
+
+  .#{$ns}-thumbnail-content {
+    width: 180px;
+    height: 180px;
+    padding: 9px;
+  }
 
   .dragover-guide {
     position: absolute;
     top: -2px;
     bottom: -2px;
-    width: 4px;
+    width: 5px;
     background-color: #3ea2c1;
     z-index: 1;
     border-radius: 2px;
@@ -85,6 +89,5 @@ $ns: mediacat;
 }
 
 .#{$ns}-thumbnail-selected {
-  background-color: lighten(#2b303b, 5);
-  border: 1px solid #414858;
+  background-color: lighten(#2b303b, 10);
 }

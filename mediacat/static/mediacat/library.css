@@ -392,7 +392,7 @@
 
 .mediacat-thumbnail-list {
   margin: 0;
-  padding: 10px;
+  padding: 5px;
   list-style-type: none;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -408,21 +408,23 @@
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
-  width: 180px;
-  max-width: 270px;
-  height: 180px;
   background-color: #2b303b;
-  padding: 9px;
   margin: 0;
   background-size: cover;
   cursor: pointer;
   border: 1px #20242c solid;
+  margin-right: -1px;
+  margin-bottom: -1px;
   position: relative; }
+  .mediacat-thumbnail .mediacat-thumbnail-content {
+    width: 180px;
+    height: 180px;
+    padding: 9px; }
   .mediacat-thumbnail .dragover-guide {
     position: absolute;
     top: -2px;
     bottom: -2px;
-    width: 4px;
+    width: 5px;
     background-color: #3ea2c1;
     z-index: 1;
     border-radius: 2px; }
@@ -465,8 +467,7 @@
       user-drag: none; }
 
 .mediacat-thumbnail-selected {
-  background-color: #363c4a;
-  border: 1px solid #414858; }
+  background-color: #414858; }
 
 html {
   background-color: #232830;

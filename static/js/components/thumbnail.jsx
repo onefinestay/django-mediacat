@@ -128,8 +128,19 @@ var Thumbnail = React.createClass({
       'mediacat-thumbnail-selected': this.state.selected
     };
 
+    var style;
+    var thumbnailSize = 160;
+
+    if (this.props.size) {
+      style = {
+        width: this.props.size + 'px',
+        height: this.props.size + 'px',
+      };
+      thumbnailSize = this.props.size - 22;
+    }
+
     return (
-      <li 
+      <li
         className={cx(classes)} 
         onClick={this.select} 
         onDoubleClick={this.handleDoubleClick} 
@@ -139,7 +150,9 @@ var Thumbnail = React.createClass({
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="dragover-guide dragover-guide-before" /> : null}
-        <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={160} maxHeight={160} draggable={false} />
+        <div style={style} className="mediacat-thumbnail-content">
+          <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
+        </div>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="dragover-guide dragover-guide-after" /> : null}
       </li>
     );

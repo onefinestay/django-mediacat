@@ -243,14 +243,14 @@ var ScrollPane = React.createClass({
       return (
         <div className="scrollpane" onWheel={this.handleWheel}>
           {shouldScrollVertical &&
-          <div className="scrollpane-scrollbar scrollpane-scrollbar-vertical">
-              <ScrollPaneHandle direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
+          <div className="scrollpane-scrollbar scrollpane-scrollbar-vertical" ref="vertical-scrollbar">
+              <ScrollPaneHandle ref="vertical-scrollbar-handle" direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
           </div>}
-          {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal">
-            <ScrollPaneHandle direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
+          {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal" ref="horizontal-scrollbar">
+            <ScrollPaneHandle ref="horizontal-scrollbar-handle" direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
           </div>}
-          <div className={cx(viewportClasses)}>
-          <div className="scrollpane-content" style={contentStyles}>
+          <div className={cx(viewportClasses)} ref="viewport">
+          <div className="scrollpane-content" style={contentStyles} ref="content">
             {this.props.children}
           </div>
           </div>
@@ -259,8 +259,8 @@ var ScrollPane = React.createClass({
     } else {
       return (
         <div className="scrollpane scrollpane-loading">
-          <div className="scrollpane-viewport">
-          <div className="scrollpane-content">
+          <div className="scrollpane-viewport" ref="viewport">
+          <div className="scrollpane-content" ref="content">
             {this.props.children}
           </div>        
           </div>

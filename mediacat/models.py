@@ -58,7 +58,7 @@ class Image(models.Model):
     def get_original_url(self):
         return self.image_file.url
 
-    def get_thumbnail_url(self, width=160):
+    def get_thumbnail_url(self, width=200):
         url = self.image_file.url
 
         if not url:

@@ -2827,8 +2827,19 @@
 	var Thumbnail = __webpack_require__(/*! ./thumbnail */ 39);
 	var Select = __webpack_require__(/*! ./select */ 53);
 	
+	var elMetrics = __webpack_require__(/*! ../utils/element-metrics */ 353);
+	
+	var minSize = 145;
+	
 	var ThumbnailList = React.createClass({displayName: 'ThumbnailList',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	
+	  getInitialState: function() {
+	    return {
+	      width: null,
+	      height: null      
+	    };
+	  },  
 	
 	  getStateFromFlux: function() {
 	    return {
@@ -2838,6 +2849,30 @@
 	    };
 	  },
 	
+	  updateDOMDimensions: function() {
+	    var el = this.refs.content.getDOMNode();
+	
+	    this.setState({
+	      width: elMetrics.innerWidth(el),
+	      height: elMetrics.innerHeight(el)
+	    });
+	  },
+	
+	  componentDidUpdate: function(prevProps, prevState) {
+	    if (prevProps.mode !== this.props.mode) {
+	      this.updateDOMDimensions();
+	    }
+	  },
+	
+	  componentDidMount: function() {
+	    this.updateDOMDimensions();
+	    window.addEventListener('resize', this.updateDOMDimensions); 
+	  },
+	
+	  componentWillUnmount: function() {
+	    window.removeEventListener('resize', this.updateDOMDimensions);
+	  },  
+	
 	  setSort: function(option) {
 	    this.getFlux().actions.media.setSort(option.get('value'));
 	  },  
@@ -2846,7 +2881,16 @@
 	    var sort = this.state.sortBy;
 	    var media = this.state.media;
 	
-	    var thumbnails = media.map(function(thumbnail)  {return Thumbnail({key: thumbnail.get('id'), thumbnail: thumbnail});});
+	    var size;
+	    var numPerRow;
+	
+	    if (this.props.mode === 'grid' && this.state.width && this.state.height) {
+	      numPerRow = Math.floor(this.state.width / minSize);
+	      size = (this.state.width - numPerRow) / numPerRow;
+	      console.log(size);     
+	    }
+	
+	    var thumbnails = media.map(function(thumbnail)  {return Thumbnail({size: size, key: thumbnail.get('id'), thumbnail: thumbnail});});
 	
 	    var toolbar = (
 	      PanelToolbar(null, 
@@ -2858,7 +2902,7 @@
 	
 	    return (
 	      Panel({mode: this.props.mode, toolbar: toolbar}, 
-	        React.DOM.ul({className: "mediacat-thumbnail-list"}, 
+	        React.DOM.ul({className: "mediacat-thumbnail-list", ref: "content"}, 
 	          thumbnails.toJS()
 	        )
 	      )
@@ -6225,6 +6269,17 @@
 	      'mediacat-thumbnail-selected': this.state.selected
 	    };
 	
+	    var style;
+	    var thumbnailSize = 160;
+	
+	    if (this.props.size) {
+	      style = {
+	        width: this.props.size + 'px',
+	        height: this.props.size + 'px',
+	      };
+	      thumbnailSize = this.props.size - 22;
+	    }
+	
 	    return (
 	      React.DOM.li({
 	        className: cx(classes), 
@@ -6236,7 +6291,9 @@
 	        onMouseUp: this.handleMouseUp, 
 	        onMouseMove: this.handleMouseMove}, 
 	        this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? React.DOM.div({className: "dragover-guide dragover-guide-before"}) : null, 
-	        ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: 160, maxHeight: 160, draggable: false}), 
+	        React.DOM.div({style: style, className: "mediacat-thumbnail-content"}, 
+	          ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: thumbnailSize, maxHeight: thumbnailSize, draggable: false})
+	        ), 
 	        this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? React.DOM.div({className: "dragover-guide dragover-guide-after"}) : null
 	      )
 	    );
@@ -8107,14 +8164,14 @@
 	      return (
 	        React.DOM.div({className: "scrollpane", onWheel: this.handleWheel}, 
 	          shouldScrollVertical &&
-	          React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-vertical"}, 
-	              ScrollPaneHandle({direction: "vertical", handleSize: verticalHandleSize, position: this.state.scrollY, onDrag: this.handleDragY})
+	          React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-vertical", ref: "vertical-scrollbar"}, 
+	              ScrollPaneHandle({ref: "vertical-scrollbar-handle", direction: "vertical", handleSize: verticalHandleSize, position: this.state.scrollY, onDrag: this.handleDragY})
 	          ), 
-	          shouldScrollHorizontal && React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-horizontal"}, 
-	            ScrollPaneHandle({direction: "horizontal", handleSize: horizontalHandleSize, position: this.state.scrollX, onDrag: this.handleDragX})
+	          shouldScrollHorizontal && React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-horizontal", ref: "horizontal-scrollbar"}, 
+	            ScrollPaneHandle({ref: "horizontal-scrollbar-handle", direction: "horizontal", handleSize: horizontalHandleSize, position: this.state.scrollX, onDrag: this.handleDragX})
 	          ), 
-	          React.DOM.div({className: cx(viewportClasses)}, 
-	          React.DOM.div({className: "scrollpane-content", style: contentStyles}, 
+	          React.DOM.div({className: cx(viewportClasses), ref: "viewport"}, 
+	          React.DOM.div({className: "scrollpane-content", style: contentStyles, ref: "content"}, 
 	            this.props.children
 	          )
 	          )
@@ -8123,8 +8180,8 @@
 	    } else {
 	      return (
 	        React.DOM.div({className: "scrollpane scrollpane-loading"}, 
-	          React.DOM.div({className: "scrollpane-viewport"}, 
-	          React.DOM.div({className: "scrollpane-content"}, 
+	          React.DOM.div({className: "scrollpane-viewport", ref: "viewport"}, 
+	          React.DOM.div({className: "scrollpane-content", ref: "content"}, 
 	            this.props.children
 	          )
 	          )
@@ -46089,6 +46146,53 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 91)))
+
+/***/ },
+/* 353 */
+/*!********************************************!*\
+  !*** ./static/js/utils/element-metrics.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var parseDimension = function(d) {
+	  return parseFloat(d) || 0
+	};
+	
+	
+	var elementStyles = function(el) {
+	  return window.getComputedStyle(el);
+	};
+	
+	
+	var innerWidth = function(el) {
+	  var styles = elementStyles(el);
+	  var boxModel = styles['box-sizing'];
+	  var width = parseDimension(styles['width']);
+	
+	  if (boxModel === 'border-box') {
+	    width -= parseDimension(styles['padding-left']);
+	    width -= parseDimension(styles['padding-right']);
+	  }
+	
+	  return width;
+	}
+	
+	var innerHeight = function(el) {
+	  var styles = elementStyles(el);
+	  var boxModel = styles['box-sizing'];
+	  var height = parseDimension(styles['height']);
+	
+	  if (boxModel === 'border-box') {
+	    height -= parseDimension(styles['padding-top']);
+	    height -= parseDimension(styles['padding-bottom']);
+	  }
+	
+	  return height;
+	}
+	
+	module.exports = {
+	  innerWidth:innerWidth, innerHeight:innerHeight
+	};
 
 /***/ }
 /******/ ])
