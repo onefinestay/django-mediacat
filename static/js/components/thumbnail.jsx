@@ -125,16 +125,17 @@ var Thumbnail = React.createClass({
 
     var classes = {
       'mediacat-thumbnail': true,
+      'mediacat-thumbnail-rejected': thumbnail.get('rating') === 0,
       'mediacat-thumbnail-selected': this.state.selected
     };
 
-    var style;
+    var contentStyle;
     var thumbnailSize = 160;
 
     if (this.props.size) {
-      style = {
+      contentStyle = {
         width: this.props.size + 'px',
-        height: this.props.size + 'px',
+        height: this.props.size + 'px'
       };
       thumbnailSize = this.props.size - 22;
     }
@@ -150,7 +151,7 @@ var Thumbnail = React.createClass({
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="dragover-guide dragover-guide-before" /> : null}
-        <div style={style} className="mediacat-thumbnail-content">
+        <div style={contentStyle} className="mediacat-thumbnail-content">
           <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
         </div>
         <div className="mediacat-thumbnail-footer">

@@ -438,7 +438,7 @@
     bottom: -2px;
     width: 5px;
     background-color: #3ea2c1;
-    z-index: 1;
+    z-index: 2;
     border-radius: 2px; }
   .mediacat-thumbnail .dragover-guide-before {
     left: -3px; }
@@ -478,8 +478,13 @@
       display: block;
       user-drag: none; }
 
+.mediacat-thumbnail-rejected {
+  background-color: #22262f; }
+
 .mediacat-thumbnail-selected {
   background-color: #414858; }
+  .mediacat-thumbnail-selected.mediacat-thumbnail-rejected {
+    background-color: #343a47; }
 
 html {
   background-color: #232830;

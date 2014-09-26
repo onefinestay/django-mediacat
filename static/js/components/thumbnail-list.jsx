@@ -42,7 +42,6 @@ var ThumbnailList = React.createClass({
 
   updateDOMDimensions: function() {
     var el = this.refs.content.getDOMNode();
-
     this.setState({
       width: elMetrics.innerWidth(el),
       height: elMetrics.innerHeight(el)
@@ -50,8 +49,15 @@ var ThumbnailList = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState) {
+    var timer;
+
     if (prevProps.mode !== this.props.mode) {
       this.updateDOMDimensions();
+      // Add a small delay to allow scrollbars to happen
+      timer = setTimeout(function() {
+        this.updateDOMDimensions();
+        clearTimeout(timer);
+      }.bind(this), 4);
     }
   },
 
@@ -77,8 +83,7 @@ var ThumbnailList = React.createClass({
 
     if (this.props.mode === 'grid' && this.state.width && this.state.height) {
       numPerRow = Math.floor(this.state.width / minSize);
-      size = (this.state.width - numPerRow) / numPerRow;
-      console.log(size);     
+      size = (this.state.width - (numPerRow + 1)) / numPerRow;
     }
 
     var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);

@@ -2851,7 +2851,6 @@
 	
 	  updateDOMDimensions: function() {
 	    var el = this.refs.content.getDOMNode();
-	
 	    this.setState({
 	      width: elMetrics.innerWidth(el),
 	      height: elMetrics.innerHeight(el)
@@ -2859,8 +2858,15 @@
 	  },
 	
 	  componentDidUpdate: function(prevProps, prevState) {
+	    var timer;
+	
 	    if (prevProps.mode !== this.props.mode) {
 	      this.updateDOMDimensions();
+	      // Add a small delay to allow scrollbars to happen
+	      timer = setTimeout(function() {
+	        this.updateDOMDimensions();
+	        clearTimeout(timer);
+	      }.bind(this), 4);
 	    }
 	  },
 	
@@ -2886,8 +2892,7 @@
 	
 	    if (this.props.mode === 'grid' && this.state.width && this.state.height) {
 	      numPerRow = Math.floor(this.state.width / minSize);
-	      size = (this.state.width - numPerRow) / numPerRow;
-	      console.log(size);     
+	      size = (this.state.width - (numPerRow + 1)) / numPerRow;
 	    }
 	
 	    var thumbnails = media.map(function(thumbnail)  {return Thumbnail({size: size, key: thumbnail.get('id'), thumbnail: thumbnail});});
@@ -6266,16 +6271,17 @@
 	
 	    var classes = {
 	      'mediacat-thumbnail': true,
+	      'mediacat-thumbnail-rejected': thumbnail.get('rating') === 0,
 	      'mediacat-thumbnail-selected': this.state.selected
 	    };
 	
-	    var style;
+	    var contentStyle;
 	    var thumbnailSize = 160;
 	
 	    if (this.props.size) {
-	      style = {
+	      contentStyle = {
 	        width: this.props.size + 'px',
-	        height: this.props.size + 'px',
+	        height: this.props.size + 'px'
 	      };
 	      thumbnailSize = this.props.size - 22;
 	    }
@@ -6291,7 +6297,7 @@
 	        onMouseUp: this.handleMouseUp, 
 	        onMouseMove: this.handleMouseMove}, 
 	        this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? React.DOM.div({className: "dragover-guide dragover-guide-before"}) : null, 
-	        React.DOM.div({style: style, className: "mediacat-thumbnail-content"}, 
+	        React.DOM.div({style: contentStyle, className: "mediacat-thumbnail-content"}, 
 	          ProxyImg({src: thumbnail.get('thumbnail'), width: thumbnail.get('width'), height: thumbnail.get('height'), maxWidth: thumbnailSize, maxHeight: thumbnailSize, draggable: false})
 	        ), 
 	        React.DOM.div({className: "mediacat-thumbnail-footer"}, 
@@ -46177,12 +46183,12 @@
 	
 	var innerWidth = function(el) {
 	  var styles = elementStyles(el);
-	  var boxModel = styles['box-sizing'];
+	  var boxModel = styles['boxSizing'];
 	  var width = parseDimension(styles['width']);
 	
 	  if (boxModel === 'border-box') {
-	    width -= parseDimension(styles['padding-left']);
-	    width -= parseDimension(styles['padding-right']);
+	    width -= parseDimension(styles['paddingLeft']);
+	    width -= parseDimension(styles['paddingRight']);
 	  }
 	
 	  return width;
@@ -46190,12 +46196,12 @@
 	
 	var innerHeight = function(el) {
 	  var styles = elementStyles(el);
-	  var boxModel = styles['box-sizing'];
+	  var boxModel = styles['boxSizing'];
 	  var height = parseDimension(styles['height']);
 	
 	  if (boxModel === 'border-box') {
-	    height -= parseDimension(styles['padding-top']);
-	    height -= parseDimension(styles['padding-bottom']);
+	    height -= parseDimension(styles['paddingTop']);
+	    height -= parseDimension(styles['paddingBottom']);
 	  }
 	
 	  return height;

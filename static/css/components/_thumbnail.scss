@@ -50,7 +50,7 @@ $ns: mediacat;
     bottom: -2px;
     width: 5px;
     background-color: #3ea2c1;
-    z-index: 1;
+    z-index: 2;
     border-radius: 2px;
   }
 
@@ -106,6 +106,16 @@ $ns: mediacat;
   }
 }
 
+.#{$ns}-thumbnail-rejected {
+  background-color: darken(#2b303b, 4);
+}
+
 .#{$ns}-thumbnail-selected {
   background-color: lighten(#2b303b, 10);
+
+  &.#{$ns}-thumbnail-rejected {
+    background-color: lighten(#2b303b, 4);
+  }
 }
+
+
