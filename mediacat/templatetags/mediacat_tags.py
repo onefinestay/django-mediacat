@@ -14,16 +14,8 @@ def jsonify(object):
 
 
 @register.simple_tag
-def get_crop_url(crop, width=None):
+def get_crop_url(crop, width=None, scale=1):
     if width:
-        return crop.url_at_width(width)
+        return crop.url_at_width(width * scale)
     else:
-        return crop.url
-
-
-@register.simple_tag
-def get_retina_crop_url(crop, width=None):
-    if width:
-        return crop.retina_url_at_width(width)
-    else:
-        return crop.retina_url
+        return crop.url_at_width(crop.width * scale)
