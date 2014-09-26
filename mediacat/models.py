@@ -251,16 +251,17 @@ class ImageCrop(models.Model):
     def url_at_width(self, width):
         return self.get_url(width)
 
-    @property
-    def retina_url(self):
-        return self.get_url(self.width * 2)
-        return None
-
-    def retina_url_at_width(self, width):
-        return self.get_url(width * 2)
-
     def thumbnail_url(self, width=200):
         return self.get_url(width)
+
+    def available_scales(self, width, cap=3):
+        """
+        Returns a list of available integer scale multipliers, for a display
+        width (pixels).
+        """
+        crop_width = self.width
+        scales = crop_width // width
+        return range(1, min(scales + 1, cap + 1))
 
 
 class ImageCropApplication(models.Model):

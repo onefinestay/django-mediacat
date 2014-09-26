@@ -19,3 +19,8 @@ def get_crop_url(crop, width=None, scale=1):
         return crop.url_at_width(width * scale)
     else:
         return crop.url_at_width(crop.width * scale)
+
+
+@register.assignment_tag
+def get_available_crop_scales(crop, width):
+    return crop.available_scales(width=width)
