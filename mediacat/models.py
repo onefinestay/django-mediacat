@@ -87,7 +87,7 @@ class Image(models.Model):
         verbose_name = _('Image')
         verbose_name_plural = _('Images')
         index_together = (
-            ('rating', 'rank',),
+            ('rank', 'rating',),
         )
 
 
@@ -117,7 +117,7 @@ class ImageAssociation(models.Model):
     class Meta:
         unique_together = ('image', 'content_type', 'object_id')
         index_together = [
-            ['image', 'content_type', 'object_id']
+            ['image', 'object_id', 'content_type']
         ]
 
     def save(self, **kwargs):
@@ -281,5 +281,5 @@ class ImageCropApplication(models.Model):
             ('content_type', 'object_id', 'field_name'),
         )
         index_together = (
-            ('content_type', 'object_id', 'field_name'),
+            ('object_id', 'content_type', 'field_name'),
         )

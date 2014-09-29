@@ -8,13 +8,37 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding index on 'Image', fields ['rating', 'rank']
-        db.create_index(u'mediacat_image', ['rating', 'rank'])
+        # Removing index on 'ImageCropApplication', fields ['content_type', 'object_id', 'field_name']
+        db.delete_index(u'mediacat_imagecropapplication', ['content_type_id', 'object_id', 'field_name'])
+
+        # Adding index on 'ImageCropApplication', fields ['object_id', 'content_type', 'field_name']
+        db.create_index(u'mediacat_imagecropapplication', ['object_id', 'content_type_id', 'field_name'])
+
+        # Adding index on 'Image', fields ['rank', 'rating']
+        db.create_index(u'mediacat_image', ['rank', 'rating'])
+
+        # Removing index on 'ImageAssociation', fields ['image', 'content_type', 'object_id']
+        db.delete_index(u'mediacat_imageassociation', ['image_id', 'content_type_id', 'object_id'])
+
+        # Adding index on 'ImageAssociation', fields ['image', 'object_id', 'content_type']
+        db.create_index(u'mediacat_imageassociation', ['image_id', 'object_id', 'content_type_id'])
 
 
     def backwards(self, orm):
-        # Removing index on 'Image', fields ['rating', 'rank']
-        db.delete_index(u'mediacat_image', ['rating', 'rank'])
+        # Removing index on 'ImageAssociation', fields ['image', 'object_id', 'content_type']
+        db.delete_index(u'mediacat_imageassociation', ['image_id', 'object_id', 'content_type_id'])
+
+        # Adding index on 'ImageAssociation', fields ['image', 'content_type', 'object_id']
+        db.create_index(u'mediacat_imageassociation', ['image_id', 'content_type_id', 'object_id'])
+
+        # Removing index on 'Image', fields ['rank', 'rating']
+        db.delete_index(u'mediacat_image', ['rank', 'rating'])
+
+        # Removing index on 'ImageCropApplication', fields ['object_id', 'content_type', 'field_name']
+        db.delete_index(u'mediacat_imagecropapplication', ['object_id', 'content_type_id', 'field_name'])
+
+        # Adding index on 'ImageCropApplication', fields ['content_type', 'object_id', 'field_name']
+        db.create_index(u'mediacat_imagecropapplication', ['content_type_id', 'object_id', 'field_name'])
 
 
     models = {
@@ -26,7 +50,7 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'mediacat.image': {
-            'Meta': {'object_name': 'Image', 'index_together': "(('rating', 'rank'),)"},
+            'Meta': {'object_name': 'Image', 'index_together': "(('rank', 'rating'),)"},
             'alt_text': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'caption': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'date_created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
@@ -41,7 +65,7 @@ class Migration(SchemaMigration):
             'width': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'mediacat.imageassociation': {
-            'Meta': {'unique_together': "(('image', 'content_type', 'object_id'),)", 'object_name': 'ImageAssociation', 'index_together': "[['image', 'content_type', 'object_id']]"},
+            'Meta': {'unique_together': "(('image', 'content_type', 'object_id'),)", 'object_name': 'ImageAssociation', 'index_together': "[['image', 'object_id', 'content_type']]"},
             'canonical': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -62,7 +86,7 @@ class Migration(SchemaMigration):
             'y2': ('django.db.models.fields.SmallIntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         u'mediacat.imagecropapplication': {
-            'Meta': {'unique_together': "(('content_type', 'object_id', 'field_name'),)", 'object_name': 'ImageCropApplication', 'index_together': "(('content_type', 'object_id', 'field_name'),)"},
+            'Meta': {'unique_together': "(('content_type', 'object_id', 'field_name'),)", 'object_name': 'ImageCropApplication', 'index_together': "(('object_id', 'content_type', 'field_name'),)"},
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True', 'blank': 'True'}),
             'crop': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'applications'", 'to': u"orm['mediacat.ImageCrop']"}),
             'field_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),

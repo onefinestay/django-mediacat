@@ -124,7 +124,11 @@ class MediaFieldMixin(object):
                 content_type=ct,
                 field_name=self.name)
 
-        if crop_application.crop != data:
+        try:
+            if crop_application.crop != data:
+                crop_application.crop = data
+                crop_application.save()
+        except ImageCrop.DoesNotExist:
             crop_application.crop = data
             crop_application.save()
 
