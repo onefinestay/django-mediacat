@@ -61,7 +61,7 @@ var MediaStore = Fluxxor.createStore({
       constants.MEDIA_GET_SUCCESS, this.onMediaGetSuccess,    
       constants.MEDIA_SELECTED, this.onMediaSelect,
       constants.UPLOAD_COMPLETE, this.onUploadComplete,
-      constants.ADD_ASSOCIATION, this.onAddAssociation,
+      constants.ASSOCIATIONS_CREATE_START, this.onAssociationsCreateStart,
       constants.SET_VIEW_MODE, this.onSetViewMode,
       constants.CROP_SELECTED, this.onCropSelect,
       constants.SET_MEDIA_SORT, this.onSetSort,
@@ -261,37 +261,6 @@ var MediaStore = Fluxxor.createStore({
       this.state = this.state.updateIn(['media'], media => media.push(newImage));
       this.emit('change');
     }
-  },
-
-  onAddAssociation: function(payload) {
-    var categoryPath = payload.category.get('path')
-    var image = payload.media;
-
-    var data = {
-      content_type: payload.category.get('content_type_id'),
-      object_id: payload.category.get('object_id'),
-      image: image.get('id')
-    };
-
-    var onSuccess = function(response) {
-      this.flux.actions.media.addAssociationSuccess(response, categoryPath);
-    }.bind(this);
-
-    if (image.get('associations').count() === 0) {
-      var index = this.state.get('media').findIndex(m => m.get('id') === image.get('id'));
-      if (index > -1) {
-        this.state = this.state.update('media', media => media.remove(index));
-        this.emit('change');
-      }
-    }    
-
-    return request
-      .post('/mediacat/associations/')
-      .use(django)
-      .send(data)
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.media.addAssociationError)
-      .end(onSuccess);
   }
 });
 

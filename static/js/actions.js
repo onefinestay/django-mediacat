@@ -8,7 +8,7 @@ var CropService = require('./services/crop-service');
 var restRoot = '/mediacat';
 
 
-var associationsService = new RestService({
+var associationService = new RestService({
   root: restRoot,
   resource: 'associations'
 });
@@ -34,15 +34,16 @@ var mediaService = new RestService({
 var Actions = {
   media: {
     select: function(media) {
+      var mediaId = media.get('id');
       this.dispatch(Constants.MEDIA_SELECTED, {media});
 
       var query = {
-        image: media.get('id')
+        image: mediaId
       };
 
       var request = cropService.get(query).then(function(response) {
         var data = response.body;     
-        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request, mediaId: media.get('id')});
+        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request, mediaId});
       }.bind(this));
       this.dispatch(Constants.CROP_GET_START, {media, request});
     },
@@ -61,15 +62,20 @@ var Actions = {
     },
 
     addAssociation: function(category, media) {
-      this.dispatch(Constants.ADD_ASSOCIATION, {category, media});
-    },
+      var categoryPath = category.get('path');
+      var mediaId = media.get('id');
 
-    addAssociationError: function(response) {
-      console.log(response);
-    },
+      var data = {
+        content_type: category.get('content_type_id'),
+        object_id: category.get('object_id'),
+        image: mediaId
+      };
 
-    addAssociationSuccess: function(response, categoryPath) {
-      this.dispatch(Constants.ADD_ASSOCIATION_SUCCESS, {response, categoryPath});
+      var request = associationService.create(data).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.ASSOCIATIONS_CREATE_SUCCESS, {data, request, categoryPath, mediaId});
+      }.bind(this));
+      this.dispatch(Constants.ASSOCIATIONS_CREATE_START, {category, media, request});
     },
 
     setViewMode: function(mode) {
@@ -124,8 +130,14 @@ var Actions = {
 
   categories: {
     select: function(category) {
+      var categoryPath = category.get('path');
+      var categoryRequest = categoryService.getOne(categoryPath).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.CATEGORY_GET_SUCCESS, {data, request: categoryRequest, categoryPath});
+      }.bind(this));
+      this.dispatch(Constants.CATEGORY_GET_START, {category, request: categoryRequest});
+
       if (category.get('accepts_images')) {
-        var categoryPath = category.get('path');
         var content_type_id = category.get('content_type_id');
         var object_id = category.get('object_id');
 
@@ -134,11 +146,11 @@ var Actions = {
           object_id: object_id,
         };
 
-        var request = mediaService.get(query).then(function(response) {
+        var mediaRequest = mediaService.get(query).then(function(response) {
           var data = response.body;     
-          this.dispatch(Constants.MEDIA_GET_SUCCESS, {data, request, categoryPath});
+          this.dispatch(Constants.MEDIA_GET_SUCCESS, {data, request: mediaRequest, categoryPath});
         }.bind(this));
-        this.dispatch(Constants.MEDIA_GET_START, {category, request});
+        this.dispatch(Constants.MEDIA_GET_START, {category, request: mediaRequest});
       }
       this.dispatch(Constants.CATEGORY_SELECTED, {category});
     },
@@ -162,7 +174,12 @@ var Actions = {
     },
 
     loadChildren: function(category) {
-      this.dispatch(Constants.CATEGORY_LOAD_CHILDREN, {category});
+      var categoryPath = category.get('path');
+      var categoryRequest = categoryService.getOne(categoryPath).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.CATEGORY_GET_SUCCESS, {data, request: categoryRequest, categoryPath});
+      }.bind(this));
+      this.dispatch(Constants.CATEGORY_GET_START, {category, request: categoryRequest});
     }
   },
 

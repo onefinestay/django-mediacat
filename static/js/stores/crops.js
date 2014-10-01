@@ -2,7 +2,6 @@
 
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
-var request = require('superagent');
 
 var constants = require('../constants');
 var matrix = require('matrix-utilities')
@@ -332,21 +331,6 @@ var CropStore = Fluxxor.createStore({
     this.emit('change');
   },
 
-  getPickRequest: function(crop) {
-    var width = this.state.get('select').get('previewWidth');
-    var url = '/mediacat/crops/' + crop.get('uuid') + '/pick/' + width + '/';
-
-    var onSuccess = function(response) {
-      this.flux.actions.crop.pickSuccess(response, crop.get('uuid'));
-    }.bind(this);
-
-    return request
-      .get(url)
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.crop.pickError)
-      .end(onSuccess);
-  },
-
   onPickStart: function(payload) {
     var crop = payload.crop;
 
@@ -357,8 +341,7 @@ var CropStore = Fluxxor.createStore({
         existingRequest.abort();
       }
 
-      var req = this.getPickRequest(crop);
-      this.state = this.state.set('pickRequest', req);
+      this.state = this.state.set('pickRequest', payload.request);
       this.emit('change');
     }   
   },

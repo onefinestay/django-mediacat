@@ -42,9 +42,6 @@ var CategoryTreeNode = React.createClass({
     if (!category.get('expanded')) {
       this.getFlux().actions.categories.open(category);
     }
-    if (category.get('has_children') && !category.get('children')) {
-      this.getFlux().actions.categories.loadChildren(category);
-    }
   },
 
   toggleExpanded: function(event) {
@@ -66,7 +63,7 @@ var CategoryTreeNode = React.createClass({
     var hasRequest = false;
     var fetchRequest;
 
-    var dragStore = this.getFlux().store('Dragging')
+    var dragStore = this.getFlux().store('Dragging');
 
     if (requests) {
       fetchRequest = requests.get(path);
@@ -136,7 +133,7 @@ var CategoryTreeNode = React.createClass({
     var labelClasses = {
       "mediacat-categories-label": true,
       "hover": this.state.hover
-    }
+    };
 
     var count = node.get('count');
 

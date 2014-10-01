@@ -2,17 +2,17 @@
 
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
-var request = require('superagent');
+
 
 var CategoryStore = Fluxxor.createStore({
   actions: {
     CATEGORY_SELECTED: 'onCategorySelect',
     CATEGORY_OPEN: 'onCategoryOpen',
     CATEGORY_CLOSE: 'onCategoryClose',
-    CATEGORY_LOAD_CHILDREN: 'onCategoryLoadChildren',
-    FETCH_CATEGORY_CHILDREN_SUCCESS: 'onFetchCategoryChildrenSuccess',
+    CATEGORY_GET_START: 'onCategoryGetStart',
+    CATEGORY_GET_SUCCESS: 'onCategoryGetSuccess',
     UPLOAD_COMPLETE: 'onUploadComplete',
-    ADD_ASSOCIATION_SUCCESS: 'onAddAssociationSuccess'
+    ASSOCIATIONS_CREATE_SUCCESS: 'onAssociationsCreateSuccess'
   },
 
   findByPath: function(path) {
@@ -125,16 +125,8 @@ var CategoryStore = Fluxxor.createStore({
     return this.state.getIn(this.getObjectPath(path).toJS());
   },
 
-  getFetchChildrenRequest: function(category, filters) {
-    return request
-      .get('/mediacat/categories/' + category.get('path') + '/')
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.categories.fetchChildrenError)
-      .end(this.flux.actions.categories.fetchChildrenSuccess);
-  },
-
-  onFetchCategoryChildrenSuccess: function(payload) {
-    if (payload.data) {
+  onCategoryGetSuccess: function(payload) {
+    if (payload.data && payload.data.length > 0) {
       var parentPath = payload.data[0].path.split('/').slice(0, -1).join('/');
       var children = Immutable.fromJS(payload.data);
       var updatePath = this.getObjectPath(parentPath);
@@ -143,19 +135,19 @@ var CategoryStore = Fluxxor.createStore({
     }
   },
 
-  onCategoryLoadChildren: function(payload) {
-    var req = this.getFetchChildrenRequest(payload.category, null);
+  onCategoryGetStart: function(payload) {
+    var request = payload.request;
     var requests = this.state.get('fetchRequests');
 
     if (!requests) {
       requests = Immutable.Map();
     }
-    requests = requests.set(payload.category.get('path'), req);
+    requests = requests.set(payload.category.get('path'), request);
     this.state = this.state.set('fetchRequests', requests);
     this.emit('change');
   },
 
-  onAddAssociationSuccess: function(payload) {
+  onAssociationsCreateSuccess: function(payload) {
     // Increment category count
     if (payload.categoryPath) {
       var updatePath = this.getObjectPath(payload.categoryPath);

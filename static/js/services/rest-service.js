@@ -22,8 +22,31 @@ class RestService {
       .promise();
   }
 
-  create() {
-    return;
+  getOne(id) {
+    var root = this.options.root;
+    var resource = this.options.resource;
+    var url = `${root}/${resource}/${id}/`;
+
+    return request
+      .get(url)
+      .use(django)
+      .use(bluebird)      
+      .set('Accept', 'application/json')
+      .promise();
+  }
+
+  create(data) {
+    var root = this.options.root;
+    var resource = this.options.resource;
+    var url = `${root}/${resource}/`;
+
+    return request
+      .post(url)
+      .use(django)
+      .use(bluebird)      
+      .send(data)
+      .set('Accept', 'application/json')
+      .promise();
   }
 
   update(id, data) {
