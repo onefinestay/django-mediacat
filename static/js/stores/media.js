@@ -5,7 +5,7 @@ var Immutable = require('immutable');
 var request = require('superagent');
 var django = require('../utils/superagent-django');
 
-var Constants = require('../constants');
+var constants = require('../constants');
 
 var ascSorter = function(a, b) {
   // Sort ascending, null values come first
@@ -36,23 +36,39 @@ var descSorter = function(a, b) {
   return 0;
 };
 
+var sortChain = function() {
+  /*
+   * Chain sorting functions, so that if the result from one is zero (ie equal), we try the next one
+   */
+  return function(a, b) {
+    var result;
+
+    for (var f in arguments) {
+      result = f(a, b);
+      if (result !== 0) {
+        return result;
+      }
+    }
+    return result;
+  }
+};
 
 var MediaStore = Fluxxor.createStore({
-  actions: {
-    CATEGORY_SELECTED: 'onCategorySelect',
-    MEDIA_SELECTED: 'onMediaSelect',
-    FETCH_IMAGES_SUCCESS: 'onFetchImagesSuccess',
-    UPLOAD_COMPLETE: 'onUploadComplete',
-    ADD_ASSOCIATION: 'onAddAssociation',
-    SET_VIEW_MODE: 'onSetViewMode',
-    CROP_SELECTED: 'onCropSelect',
-    SET_MEDIA_SORT: 'onSetSort',
-    MEDIA_SET_RATING: 'onSetRating',
-    MEDIA_MOVE_BEFORE: 'onMoveBefore',
-    MEDIA_MOVE_AFTER: 'onMoveAfter'
-  },
-
   initialize: function(options) {
+    this.bindActions(
+      constants.CATEGORY_SELECTED, this.onCategorySelect,
+      constants.MEDIA_GET_START, this.onMediaGetStart,
+      constants.MEDIA_GET_SUCCESS, this.onMediaGetSuccess,    
+      constants.MEDIA_SELECTED, this.onMediaSelect,
+      constants.UPLOAD_COMPLETE, this.onUploadComplete,
+      constants.ADD_ASSOCIATION, this.onAddAssociation,
+      constants.SET_VIEW_MODE, this.onSetViewMode,
+      constants.CROP_SELECTED, this.onCropSelect,
+      constants.SET_MEDIA_SORT, this.onSetSort,
+      constants.MEDIA_SET_RATING, this.onSetRating,
+      constants.MEDIA_MOVE_BEFORE, this.onMoveBefore,
+      constants.MEDIA_MOVE_AFTER, this.onMoveAfter      
+    );
     this.setMaxListeners(0);
     this.state = Immutable.fromJS(options);
   },
@@ -77,49 +93,6 @@ var MediaStore = Fluxxor.createStore({
     var sort = this.state.get('sortBy');
 
     return this.state.get('media').sort(this.sorters[sort]);
-  },
-
-  getFetchRequest: function(category, filters) {
-    var categoryPath = null;
-    var content_type_id = null;
-    var object_id = null;
-
-    if (category) {
-      categoryPath = category.get('path');
-      content_type_id = category.get('content_type_id');
-      object_id = category.get('object_id');
-    }
-
-    var query = {
-      content_type_id: content_type_id,
-      object_id: object_id,
-    };
-
-    var onSuccess = function(response) {
-      this.flux.actions.media.fetchSuccess(response, categoryPath);
-    }.bind(this);
-
-    return request
-      .get('/mediacat/images/')
-      .query(query)
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.media.fetchError)
-      .end(onSuccess);
-  },
-
-  getPatchRequest: function(media, data) {
-    var url = '/mediacat/images/' + media.get('id') + '/';
-
-    var onSuccess = function(response) {
-      this.flux.actions.media.saveSuccess(response, media);
-    }.bind(this);    
-
-    return request
-      .patch(url)
-      .send(data)
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.media.saveError)
-      .end(onSuccess);
   },
 
   getBatchPatchRequest: function(data) {
@@ -148,7 +121,6 @@ var MediaStore = Fluxxor.createStore({
 
   onSetRating: function(payload) {
     var index = this.state.get('media').indexOf(payload.media);
-    this.getPatchRequest(payload.media, {rating: payload.rating});
     this.state = this.state.updateIn(['media', index], media => media.set('rating', payload.rating));
     this.emit('change');
   },
@@ -231,7 +203,20 @@ var MediaStore = Fluxxor.createStore({
     }   
   },
 
-  onFetchImagesSuccess: function(payload) {
+  onMediaGetStart: function(payload) {
+    var request = payload.request;
+    var requests = this.state.get('fetchRequests');
+
+    if (!requests) {
+      requests = Immutable.Map();
+    }
+    requests = requests.set(payload.category.get('path'), request);
+
+    this.state = this.state.set('fetchRequests', requests);
+    this.emit('change');
+  },  
+
+  onMediaGetSuccess: function(payload) {
     var categoryPath = payload.categoryPath;
 
     var req = payload.request;
@@ -256,34 +241,14 @@ var MediaStore = Fluxxor.createStore({
   },
 
   onCategorySelect: function(payload) {
-    if (payload.category.get('accepts_images')) {
-      var mode = this.state.get('viewMode');
-
-      if (mode === 'detail') {
-        this.state = this.state.set('viewMode', 'grid');  
+    this.state = this.state.withMutations(function(state) {
+      if (payload.category.get('accepts_images') && state.get('viewMode') === 'detail') {
+        state = state.set('viewMode', 'grid');  
       }
-
-      var req = this.getFetchRequest(payload.category, null);
-
-      var requests = this.state.get('fetchRequests');
-
-      if (!requests) {
-        requests = Immutable.Map();
-      }
-      requests = requests.set(payload.category.get('path'), req);
-
-      this.state = this.state.withMutations(function(state) {
-        state
-          .set('media', Immutable.Sequence())
-          .set('fetchRequests', requests);
-      });
-    } else {
-      this.state = this.state.set('media', Immutable.Sequence());
-    }
-
-    this.state = this.state.set('selectedMedia', null);
-    this.state = this.state.set('selectedCrop', null);
-
+      state = state.set('media', Immutable.Sequence());
+      state = state.set('selectedMedia', null);
+      state = state.set('selectedCrop', null);      
+    })
     this.emit('change');
   },
 

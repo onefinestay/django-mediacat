@@ -2,10 +2,7 @@
 
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
-var request = require('superagent');
 var uuid = require('uuid-v4');
-
-var django = require('../utils/superagent-django');
 
 
 var UIStore = Fluxxor.createStore({

@@ -1,14 +1,54 @@
 "use strict";
 
 var Constants = require('./constants');
+var RestService = require('./services/rest-service');
+var CropService = require('./services/crop-service');
+
+
+var restRoot = '/mediacat';
+
+
+var associationsService = new RestService({
+  root: restRoot,
+  resource: 'associations'
+});
+
+var categoryService = new RestService({
+  root: restRoot,
+  resource: 'categories'
+});
+
+var cropService = new CropService({
+  root: restRoot,
+  resource: 'crops'
+});
+
+var mediaService = new RestService({
+  root: restRoot,
+  resource: 'images'
+});
+
+
+
 
 var Actions = {
   media: {
     select: function(media) {
       this.dispatch(Constants.MEDIA_SELECTED, {media});
+
+      var query = {
+        image: media.get('id')
+      };
+
+      var request = cropService.get(query).then(function(response) {
+        var data = response.body;     
+        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request, mediaId: media.get('id')});
+      }.bind(this));
+      this.dispatch(Constants.CROP_GET_START, {media, request});
     },
 
     setRating: function(media, rating) {
+      mediaService.patch(media.get('id'), {rating})
       this.dispatch(Constants.MEDIA_SET_RATING, {media, rating});
     },
 
@@ -18,24 +58,6 @@ var Actions = {
 
     moveAfter: function(media, target) {
       this.dispatch(Constants.MEDIA_MOVE_AFTER,  {media, target});
-    },
-
-    fetch: function(category, filters) {
-      this.dispatch(Constants.FETCH_IMAGES, {category, filters});
-    },
-
-    fetchSuccess: function(response, categoryPath) {
-      var data = response.body;
-      var request = response.req;
-      this.dispatch(Constants.FETCH_IMAGES_SUCCESS, {data, request, categoryPath});
-    },
-
-    fetchError: function(response) {
-      console.log(response);
-    },
-
-    saveSuccess: function(response, media) {
-
     },
 
     addAssociation: function(category, media) {
@@ -81,38 +103,43 @@ var Actions = {
     },
 
     save: function(crop) {
-      this.dispatch(Constants.CROP_SAVE, {crop});
+      var request = cropService.update(crop.get('uuid'), crop.toJS()).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.CROP_SAVE_SUCCESS, {data, request, cropId: crop.get('uuid')});
+      }.bind(this));
+      this.dispatch(Constants.CROP_SAVE_START, {request, crop});
     },
 
-    saveSuccess: function(response, cropId) {
-      var data = response.body;
-      var request = response.req;
-      this.dispatch(Constants.CROP_SAVE_SUCCESS, {data, request, cropId})
+    pick: function(crop, previewWidth) {
+      if (window.opener) {
+        var request = cropService.pick(crop.get('uuid'), previewWidth).then(function(response) {
+          var data = response.body;
+          window.opener.dismissMediaLibrary(window, data.crop_id, data.url);
+          this.dispatch(Constants.CROP_PICK_SUCCESS, {data, request, cropId: crop.get('uuid')});
+        }.bind(this));
+        this.dispatch(Constants.CROP_PICK_START, {request, crop}); 
+      }
     },
-
-    fetch: function(response,  mediaId) {
-      var data = response.body;
-      var request = response.req;
-      this.dispatch(Constants.CROP_FETCH, {data, request, mediaId});
-    },
-
-    fetchError: function(response) {
-      console.log(response);
-    },
-
-    pick: function(crop) {
-      this.dispatch(Constants.CROP_PICK, {crop});
-    },
-
-    pickSuccess: function(response, cropId) {
-      var data = response.body;
-      var request = response.req;
-      this.dispatch(Constants.CROP_PICK_SUCCESS, {data, request, cropId});
-    }
   },
 
   categories: {
     select: function(category) {
+      if (category.get('accepts_images')) {
+        var categoryPath = category.get('path');
+        var content_type_id = category.get('content_type_id');
+        var object_id = category.get('object_id');
+
+        var query = {
+          content_type_id: content_type_id,
+          object_id: object_id,
+        };
+
+        var request = mediaService.get(query).then(function(response) {
+          var data = response.body;     
+          this.dispatch(Constants.MEDIA_GET_SUCCESS, {data, request, categoryPath});
+        }.bind(this));
+        this.dispatch(Constants.MEDIA_GET_START, {category, request});
+      }
       this.dispatch(Constants.CATEGORY_SELECTED, {category});
     },
 

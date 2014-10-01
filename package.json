@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^2.3.4",
     "fluxxor": "1.4.1",
     "immutable": "2.0.17",
     "matrix-utilities": "1.2.4",
