@@ -2,8 +2,6 @@
 
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
-var request = require('superagent');
-var django = require('../utils/superagent-django');
 
 var constants = require('../constants');
 
@@ -95,21 +93,6 @@ var MediaStore = Fluxxor.createStore({
     return this.state.get('media').sort(this.sorters[sort]);
   },
 
-  getBatchPatchRequest: function(data) {
-    var url = '/mediacat/images/';
-
-    var onSuccess = function(response) {
-      //this.flux.actions.media.batchSaveSuccess(response);
-    }.bind(this);    
-
-    return request
-      .patch(url)
-      .send(data)
-      .set('Accept', 'application/json')
-      .on('error', this.flux.actions.media.batchSaveError)
-      .end(onSuccess);    
-  },
-
   getSelectedMedia: function() {
     var id = this.state.get('selectedMedia');
 
@@ -135,15 +118,7 @@ var MediaStore = Fluxxor.createStore({
     var media = this.state.get('media').map((m, i) => m.set('rank', newIdList.indexOf(m.get('id'))));
     this.state = this.state.set('media', media);
 
-    this.emit('change');    
-
-    var data = media.map(function(media, i) {
-      return {
-        id: media.get('id'), 
-        rank: media.get('rank')
-      }; 
-    });
-    this.getBatchPatchRequest(data.toJS());
+    this.emit('change');
   },  
 
   onMoveBefore: function(payload) {

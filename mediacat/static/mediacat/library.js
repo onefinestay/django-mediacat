@@ -151,11 +151,38 @@
 	    },
 	
 	    moveBefore: function(media, target) {
-	      this.dispatch(Constants.MEDIA_MOVE_BEFORE,  {media:media, target:target});
+	      this.dispatch(Constants.MEDIA_MOVE_BEFORE, {media:media, target:target});
+	
+	      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+	        return {
+	          id: media.get('id'), 
+	          rank: media.get('rank')
+	        }; 
+	      });
+	      
+	      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
+	        var data = response.body;
+	        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data:data});
+	      }.bind(this));
+	      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request:request, data: patchData});
 	    },
 	
 	    moveAfter: function(media, target) {
-	      this.dispatch(Constants.MEDIA_MOVE_AFTER,  {media:media, target:target});
+	      this.dispatch(Constants.MEDIA_MOVE_AFTER, {media:media, target:target});
+	
+	      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+	        return {
+	          id: media.get('id'), 
+	          rank: media.get('rank')
+	        }; 
+	      });
+	
+	      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
+	        var data = response.body;
+	        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data:data});
+	      }.bind(this));
+	
+	      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request:request, data: patchData});
 	    },
 	
 	    addAssociation: function(category, media) {
@@ -541,8 +568,6 @@
 	
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 8);
 	var Immutable = __webpack_require__(/*! immutable */ 42);
-	var request = __webpack_require__(/*! superagent */ 49);
-	var django = __webpack_require__(/*! ../utils/superagent-django */ 21);
 	
 	var constants = __webpack_require__(/*! ../constants */ 10);
 	
@@ -634,21 +659,6 @@
 	    return this.state.get('media').sort(this.sorters[sort]);
 	  },
 	
-	  getBatchPatchRequest: function(data) {
-	    var url = '/mediacat/images/';
-	
-	    var onSuccess = function(response) {
-	      //this.flux.actions.media.batchSaveSuccess(response);
-	    }.bind(this);    
-	
-	    return request
-	      .patch(url)
-	      .send(data)
-	      .set('Accept', 'application/json')
-	      .on('error', this.flux.actions.media.batchSaveError)
-	      .end(onSuccess);    
-	  },
-	
 	  getSelectedMedia: function() {
 	    var id = this.state.get('selectedMedia');
 	
@@ -674,15 +684,7 @@
 	    var media = this.state.get('media').map(function(m, i)  {return m.set('rank', newIdList.indexOf(m.get('id')));});
 	    this.state = this.state.set('media', media);
 	
-	    this.emit('change');    
-	
-	    var data = media.map(function(media, i) {
-	      return {
-	        id: media.get('id'), 
-	        rank: media.get('rank')
-	      }; 
-	    });
-	    this.getBatchPatchRequest(data.toJS());
+	    this.emit('change');
 	  },  
 	
 	  onMoveBefore: function(payload) {
@@ -1242,15 +1244,17 @@
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 8);
 	var Immutable = __webpack_require__(/*! immutable */ 42);
 	
+	var constants = __webpack_require__(/*! ../constants */ 10);
+	
 	
 	var DraggingStore = Fluxxor.createStore({
-	  actions: {
-	    DRAG_MEDIA_START: 'onDragMediaStart',
-	    DRAG_MEDIA_MOVE: 'onDragMediaMove',
-	    DRAG_MEDIA_END: 'onDragMediaStartEnd'
-	  },
-	
 	  initialize: function(options) {
+	    this.bindActions(
+	      constants.DRAG_MEDIA_START, this.onDragMediaStart,
+	      constants.DRAG_MEDIA_MOVE, this.onDragMediaMove,
+	      constants.DRAG_MEDIA_END, this.onDragMediaStartEnd 
+	    );
+	
 	    this.setMaxListeners(0);    
 	    this.state = Immutable.fromJS(options);
 	  },
@@ -1336,6 +1340,9 @@
 	
 	  MEDIA_GET_START: 'MEDIA_GET_START',
 	  MEDIA_GET_SUCCESS: 'MEDIA_GET_SUCCESS',
+	  MEDIA_PATCHMANY_START: 'MEDIA_PATCHMANY_START',
+	  MEDIA_PATCHMANY_SUCCESS: 'MEDIA_PATCHMANY_SUCCESS',
+	
 	  MEDIA_SELECTED: 'MEDIA_SELECTED',
 	  MEDIA_SET_RATING: 'MEDIA_SET_RATING',
 	  MEDIA_MOVE_BEFORE: 'MEDIA_MOVE_BEFORE',

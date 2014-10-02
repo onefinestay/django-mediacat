@@ -3,15 +3,17 @@
 var Fluxxor = require('fluxxor');
 var Immutable = require('immutable');
 
+var constants = require('../constants');
+
 
 var DraggingStore = Fluxxor.createStore({
-  actions: {
-    DRAG_MEDIA_START: 'onDragMediaStart',
-    DRAG_MEDIA_MOVE: 'onDragMediaMove',
-    DRAG_MEDIA_END: 'onDragMediaStartEnd'
-  },
-
   initialize: function(options) {
+    this.bindActions(
+      constants.DRAG_MEDIA_START, this.onDragMediaStart,
+      constants.DRAG_MEDIA_MOVE, this.onDragMediaMove,
+      constants.DRAG_MEDIA_END, this.onDragMediaStartEnd 
+    );
+
     this.setMaxListeners(0);    
     this.state = Immutable.fromJS(options);
   },

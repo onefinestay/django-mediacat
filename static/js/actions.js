@@ -55,11 +55,38 @@ var Actions = {
     },
 
     moveBefore: function(media, target) {
-      this.dispatch(Constants.MEDIA_MOVE_BEFORE,  {media, target});
+      this.dispatch(Constants.MEDIA_MOVE_BEFORE, {media, target});
+
+      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+        return {
+          id: media.get('id'), 
+          rank: media.get('rank')
+        }; 
+      });
+      
+      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
+      }.bind(this));
+      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
     },
 
     moveAfter: function(media, target) {
-      this.dispatch(Constants.MEDIA_MOVE_AFTER,  {media, target});
+      this.dispatch(Constants.MEDIA_MOVE_AFTER, {media, target});
+
+      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+        return {
+          id: media.get('id'), 
+          rank: media.get('rank')
+        }; 
+      });
+
+      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
+      }.bind(this));
+
+      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
     },
 
     addAssociation: function(category, media) {
