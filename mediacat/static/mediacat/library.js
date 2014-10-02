@@ -371,17 +371,23 @@
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 8);
 	var Immutable = __webpack_require__(/*! immutable */ 42);
 	
+	var constants = __webpack_require__(/*! ../constants */ 10);
+	
 	
 	var CategoryStore = Fluxxor.createStore({
-	  actions: {
-	    CATEGORY_SELECTED: 'onCategorySelect',
-	    CATEGORY_OPEN: 'onCategoryOpen',
-	    CATEGORY_CLOSE: 'onCategoryClose',
-	    CATEGORY_GET_START: 'onCategoryGetStart',
-	    CATEGORY_GET_SUCCESS: 'onCategoryGetSuccess',
-	    UPLOAD_COMPLETE: 'onUploadComplete',
-	    ASSOCIATIONS_CREATE_SUCCESS: 'onAssociationsCreateSuccess'
-	  },
+	  initialize: function(options) {
+	    this.bindActions(
+	      constants.CATEGORY_SELECTED, this.onCategorySelect,
+	      constants.CATEGORY_OPEN, this.onCategoryOpen,
+	      constants.CATEGORY_CLOSE, this.onCategoryClose,
+	      constants.CATEGORY_GET_START, this.onCategoryGetStart,
+	      constants.CATEGORY_GET_SUCCESS, this.onCategoryGetSuccess,
+	      constants.UPLOAD_COMPLETE, this.onUploadComplete,
+	      constants.ASSOCIATIONS_CREATE_SUCCESS, this.onAssociationsCreateSuccess
+	    );
+	    this.setMaxListeners(0);
+	    this.state = Immutable.fromJS(options);
+	  },  
 	
 	  findByPath: function(path) {
 	    var match;
@@ -449,11 +455,6 @@
 	    });
 	
 	    return result;
-	  },
-	
-	  initialize: function(options) {
-	    this.setMaxListeners(0);
-	    this.state = Immutable.fromJS(options);
 	  },
 	
 	  onCategorySelect: function(payload) {
