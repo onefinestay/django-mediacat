@@ -1,5 +1,6 @@
 var RestService = require('./rest-service');
 
+var request = require('superagent');
 var bluebird = require('../utils/superagent-bluebird');
 var django = require('../utils/superagent-django');
 

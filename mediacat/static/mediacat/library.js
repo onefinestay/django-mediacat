@@ -97,9 +97,12 @@
 	"use strict";
 	
 	var Constants = __webpack_require__(/*! ./constants */ 10);
-	var RestService = __webpack_require__(/*! ./services/rest-service */ 19);
-	var CropService = __webpack_require__(/*! ./services/crop-service */ 20);
 	
+	var CropService = __webpack_require__(/*! ./services/crop-service */ 20);
+	var MediaService = __webpack_require__(/*! ./services/media-service */ 392);
+	var RestService = __webpack_require__(/*! ./services/rest-service */ 19);
+	
+	var uuid = __webpack_require__(/*! uuid-v4 */ 23);
 	
 	var restRoot = '/mediacat';
 	
@@ -119,12 +122,10 @@
 	  resource: 'crops'
 	});
 	
-	var mediaService = new RestService({
+	var mediaService = new MediaService({
 	  root: restRoot,
 	  resource: 'images'
 	});
-	
-	
 	
 	
 	var Actions = {
@@ -281,19 +282,22 @@
 	
 	  uploads: {
 	    add: function(file, category) {
-	      this.dispatch(Constants.UPLOAD_ADD, {file:file, category:category});
-	    },
+	      var id = uuid();
+	      var categoryPath = category.get('path');
 	
-	    progress: function(event, id, file, categoryPath) {
-	      this.dispatch(Constants.UPLOAD_PROGRESS, {event:event, id:id, file:file, categoryPath:categoryPath});
-	    },
+	      var onProgress = function(event) {
+	        this.dispatch(Constants.UPLOAD_PROGRESS, {event:event, id:id, file:file, categoryPath:categoryPath});
+	      }.bind(this);
 	
-	    load: function(event, id, file, categoryPath) {
-	      this.dispatch(Constants.UPLOAD_LOAD, {event:event, id:id, file:file, categoryPath:categoryPath});
-	    },
+	      var onTransferComplete = function(event) {
+	        this.dispatch(Constants.UPLOAD_TRANSFER_COMPLETE, {event:event, id:id, file:file, categoryPath:categoryPath});
+	      }.bind(this);        
 	
-	    complete: function(response, id, file, categoryPath) {
-	      this.dispatch(Constants.UPLOAD_COMPLETE, {response:response, id:id, file:file, categoryPath:categoryPath});
+	      var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
+	        var data = response.body;
+	        this.dispatch(Constants.UPLOAD_SUCCESS, {data:data, id:id, file:file, categoryPath:categoryPath, request:request});
+	      }.bind(this));
+	      this.dispatch(Constants.UPLOAD_START, {id:id, file:file, categoryPath:categoryPath, request:request});
 	    }
 	  },
 	
@@ -594,7 +598,7 @@
 	      constants.MEDIA_GET_START, this.onMediaGetStart,
 	      constants.MEDIA_GET_SUCCESS, this.onMediaGetSuccess,    
 	      constants.MEDIA_SELECTED, this.onMediaSelect,
-	      constants.UPLOAD_COMPLETE, this.onUploadComplete,
+	      constants.UPLOAD_SUCCESS, this.onUploadSuccess,
 	      constants.ASSOCIATIONS_CREATE_START, this.onAssociationsCreateStart,
 	      constants.SET_VIEW_MODE, this.onSetViewMode,
 	      constants.CROP_SELECTED, this.onCropSelect,
@@ -786,12 +790,12 @@
 	    this.emit('change');
 	  },
 	
-	  onUploadComplete: function(payload) {
+	  onUploadSuccess: function(payload) {
 	    var categoryPath = payload.categoryPath;
 	    var newImage;
 	
 	    if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {
-	      newImage = Immutable.fromJS(payload.response.body);
+	      newImage = Immutable.fromJS(payload.data);
 	      this.state = this.state.updateIn(['media'], function(media)  {return media.push(newImage);});
 	      this.emit('change');
 	    }
@@ -812,70 +816,22 @@
 	
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 8);
 	var Immutable = __webpack_require__(/*! immutable */ 42);
-	var request = __webpack_require__(/*! superagent */ 49);
-	var uuid = __webpack_require__(/*! uuid-v4 */ 23);
-	
-	var django = __webpack_require__(/*! ../utils/superagent-django */ 21);
+	var constants = __webpack_require__(/*! ../constants */ 10);
 	
 	
 	var UploadStore = Fluxxor.createStore({
-	  actions: {
-	    UPLOAD_ADD: 'onUploadAdd',
-	    UPLOAD_PROGRESS: 'onUploadProgress',
-	    UPLOAD_LOAD: 'onUploadLoad',
-	    UPLOAD_COMPLETE: 'onUploadComplete'
-	  },
-	
 	  initialize: function(options) {
+	    this.bindActions(
+	      constants.UPLOAD_START, this.onUploadStart,
+	      constants.UPLOAD_PROGRESS, this.onUploadProgress,
+	      constants.UPLOAD_TRANSFER_COMPLETE, this.onUploadTransferComplete,    
+	      constants.UPLOAD_SUCCESS, this.onUploadSuccess   
+	    );    
 	    this.setMaxListeners(0);
 	    this.state = Immutable.fromJS(options);
 	  },
 	
-	  getUploadRequest: function(id, file, category) {
-	    var content_type = null;
-	    var object_id = null;
-	    var categoryPath = null;
-	
-	    if (category) {
-	      categoryPath = category.get('path');
-	      content_type = category.get('content_type_id');
-	      object_id = category.get('object_id');
-	    }
-	
-	    var onProgress = function(event) {
-	      this.flux.actions.uploads.progress(event, id, file, categoryPath);
-	    }.bind(this);
-	
-	    var onLoad = function(event) {
-	      this.flux.actions.uploads.load(event, id, file, categoryPath);
-	    }.bind(this);
-	
-	    var onComplete = function(response) {
-	      this.flux.actions.uploads.complete(response, id, file, categoryPath);
-	    }.bind(this);
-	
-	    var req = request.post('/mediacat/images/').use(django);
-	
-	    if (content_type && object_id) {
-	      req = req
-	        .field('associated_content_type', content_type)
-	        .field('associated_object_id', object_id);
-	    }
-	
-	    req = req
-	      .field('image_file', file)
-	      .end(onComplete);
-	
-	    req.xhr.upload.addEventListener("progress", onProgress, false);
-	    req.xhr.addEventListener("load", onLoad, false);
-	    return req;
-	  },  
-	
-	  onUploadAdd: function(payload) {
-	    payload.id = uuid();
-	    payload.progress = 0;
-	    payload.complete = false;
-	    payload.request = this.getUploadRequest(payload.id, payload.file, payload.category);
+	  onUploadStart: function(payload) {
 	    this.state = this.state.updateIn(['uploads'], function(uploads)  {return uploads.push(Immutable.fromJS(payload));});
 	    this.emit('change');
 	  },
@@ -884,18 +840,17 @@
 	    var index = this.state.get('uploads').findIndex(function(upload)  {return upload.get('id') === payload.id;});
 	    var event = payload.event;
 	    var progress = Math.round(event.loaded * 100 / event.total);
-	
 	    this.state = this.state.updateIn(['uploads', index], function(upload)  {return upload.set('progress', progress);});
 	    this.emit('change');
 	  },
 	
-	  onUploadLoad: function(payload) {
+	  onUploadTransferComplete: function(payload) {
 	    var index = this.state.get('uploads').findIndex(function(upload)  {return upload.get('id') === payload.id;});
 	    this.state = this.state.updateIn(['uploads', index], function(upload)  {return upload.set('progress', 100);});
 	    this.emit('change');
 	  },
 	
-	  onUploadComplete: function(payload) {
+	  onUploadSuccess: function(payload) {
 	    var index = this.state.get('uploads').findIndex(function(upload)  {return upload.get('id') === payload.id;});
 	    this.state = this.state.updateIn(['uploads', index], function(upload)  {return upload.set('complete', true);});
 	    this.emit('change');
@@ -1410,10 +1365,10 @@
 	  CATEGORY_OPEN: 'CATEGORY_OPEN',
 	  CATEGORY_CLOSE: 'CATEGORY_CLOSE',
 	
-	  UPLOAD_ADD: 'UPLOAD_ADD',
+	  UPLOAD_START: 'UPLOAD_START',
 	  UPLOAD_PROGRESS: 'UPLOAD_PROGRESS',
-	  UPLOAD_LOAD: 'UPLOAD_LOAD',
-	  UPLOAD_COMPLETE: 'UPLOAD_COMPLETE',
+	  UPLOAD_TRANSFER_COMPLETE: 'UPLOAD_TRANSFER_COMPLETE',
+	  UPLOAD_SUCCESS: 'UPLOAD_SUCCESS',
 	  DRAG_MEDIA_START: 'DRAG_MEDIA_START',
 	  DRAG_MEDIA_MOVE: 'DRAG_MEDIA_MOVE',
 	  DRAG_MEDIA_END: 'DRAG_MEDIA_END'
@@ -1863,6 +1818,7 @@
 
 	var RestService = __webpack_require__(/*! ./rest-service */ 19);
 	
+	var request = __webpack_require__(/*! superagent */ 49);
 	var bluebird = __webpack_require__(/*! ../utils/superagent-bluebird */ 41);
 	var django = __webpack_require__(/*! ../utils/superagent-django */ 21);
 	
@@ -3407,7 +3363,7 @@
 	var Promise = __webpack_require__(/*! bluebird */ 182);
 	
 	module.exports = function(request) {
-		request.promise = function() {
+		request.promise = function(onProgress, onTransferComplete) {
 	    return new Promise(function(resolve, reject) {
 	      request.end(function(err, res) {
 	        if (err && reject) {
@@ -3416,6 +3372,12 @@
 	        	resolve(res);
 	        }
 	      });
+	      if (onProgress) {
+	    		request.xhr.upload.addEventListener("progress", onProgress, false);
+	      }
+	      if (onTransferComplete) {
+	      	request.xhr.addEventListener("load", onTransferComplete, false);
+	      }
 	    });
 	  };
 		return request;
@@ -51753,6 +51715,52 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 98)))
+
+/***/ },
+/* 392 */
+/*!*********************************************!*\
+  !*** ./static/js/services/media-service.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var RestService = __webpack_require__(/*! ./rest-service */ 19);
+	
+	var request = __webpack_require__(/*! superagent */ 49);
+	var bluebird = __webpack_require__(/*! ../utils/superagent-bluebird */ 41);
+	var django = __webpack_require__(/*! ../utils/superagent-django */ 21);
+	
+	
+	for(var RestService____Key in RestService){if(RestService.hasOwnProperty(RestService____Key)){MediaService[RestService____Key]=RestService[RestService____Key];}}var ____SuperProtoOfRestService=RestService===null?null:RestService.prototype;MediaService.prototype=Object.create(____SuperProtoOfRestService);MediaService.prototype.constructor=MediaService;MediaService.__superConstructor__=RestService;function MediaService(){"use strict";if(RestService!==null){RestService.apply(this,arguments);}}
+	
+		MediaService.prototype.upload=function(file, category, onProgress, onTransferComplete) {"use strict";
+	    var root = this.options.root;
+	    var resource = this.options.resource;
+	    var url = (root + "/" + resource + "/");
+	
+	    var content_type = null;
+	    var object_id = null;
+	
+	    if (category) {
+	      content_type = category.get('content_type_id');
+	      object_id = category.get('object_id');
+	    }
+	
+	    var req = request
+	      .post(url)
+	      .use(django)
+	      .use(bluebird)
+	      .field('image_file', file);
+	
+	    if (content_type && object_id) {
+	      req = req
+	        .field('associated_content_type', content_type)
+	        .field('associated_object_id', object_id);
+	    }
+	    return req.promise(onProgress, onTransferComplete);
+		};
+	
+	
+	module.exports = MediaService;
 
 /***/ }
 /******/ ])

@@ -1,7 +1,7 @@
 var Promise = require("bluebird");
 
 module.exports = function(request) {
-	request.promise = function() {
+	request.promise = function(onProgress, onTransferComplete) {
     return new Promise(function(resolve, reject) {
       request.end(function(err, res) {
         if (err && reject) {
@@ -10,6 +10,12 @@ module.exports = function(request) {
         	resolve(res);
         }
       });
+      if (onProgress) {
+    		request.xhr.upload.addEventListener("progress", onProgress, false);
+      }
+      if (onTransferComplete) {
+      	request.xhr.addEventListener("load", onTransferComplete, false);
+      }
     });
   };
 	return request;

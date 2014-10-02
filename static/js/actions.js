@@ -1,9 +1,12 @@
 "use strict";
 
 var Constants = require('./constants');
-var RestService = require('./services/rest-service');
-var CropService = require('./services/crop-service');
 
+var CropService = require('./services/crop-service');
+var MediaService = require('./services/media-service');
+var RestService = require('./services/rest-service');
+
+var uuid = require('uuid-v4');
 
 var restRoot = '/mediacat';
 
@@ -23,12 +26,10 @@ var cropService = new CropService({
   resource: 'crops'
 });
 
-var mediaService = new RestService({
+var mediaService = new MediaService({
   root: restRoot,
   resource: 'images'
 });
-
-
 
 
 var Actions = {
@@ -185,19 +186,22 @@ var Actions = {
 
   uploads: {
     add: function(file, category) {
-      this.dispatch(Constants.UPLOAD_ADD, {file, category});
-    },
+      var id = uuid();
+      var categoryPath = category.get('path');
 
-    progress: function(event, id, file, categoryPath) {
-      this.dispatch(Constants.UPLOAD_PROGRESS, {event, id, file, categoryPath});
-    },
+      var onProgress = function(event) {
+        this.dispatch(Constants.UPLOAD_PROGRESS, {event, id, file, categoryPath});
+      }.bind(this);
 
-    load: function(event, id, file, categoryPath) {
-      this.dispatch(Constants.UPLOAD_LOAD, {event, id, file, categoryPath});
-    },
+      var onTransferComplete = function(event) {
+        this.dispatch(Constants.UPLOAD_TRANSFER_COMPLETE, {event, id, file, categoryPath});
+      }.bind(this);        
 
-    complete: function(response, id, file, categoryPath) {
-      this.dispatch(Constants.UPLOAD_COMPLETE, {response, id, file, categoryPath});
+      var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.UPLOAD_SUCCESS, {data, id, file, categoryPath, request});
+      }.bind(this));
+      this.dispatch(Constants.UPLOAD_START, {id, file, categoryPath, request});
     }
   },
 
