@@ -2875,12 +2875,13 @@
 	
 	    return {
 	      crop: crop,
+	      previewWidth: selectOptions.get('previewWidth'),
 	      pickable: pickable
 	    };
 	  },  
 	
 	  handleClick: function(event) {
-	    this.getFlux().actions.crop.pick(this.state.crop);
+	    this.getFlux().actions.crop.pick(this.state.crop, this.state.previewWidth);
 	  },
 	
 	  handleChange: function(event) {
