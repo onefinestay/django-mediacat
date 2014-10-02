@@ -34,7 +34,7 @@ var PickButton = React.createClass({
 
     return {
       crop: crop,
-      previewWidth: selectOptions.get('previewWidth'),
+      previewWidth: selectOptions && selectOptions.get('previewWidth'),
       pickable: pickable
     };
   },  
