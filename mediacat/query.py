@@ -9,27 +9,41 @@ from .models import ImageCropApplication
 
 class MediacatQuerySet(QuerySet):
 
-    def attach_media(self, objects):
-        media_fields = [f for f in self.model._meta.virtual_fields if isinstance(f, MediaField)]
-        media_field_names = [f.name for f in media_fields]
-        ids = [o.pk for o in objects]
+    def __init__(self, *args, **kwargs):
+        self._defer_media = False
+        super(MediacatQuerySet, self).__init__(*args, **kwargs)
 
+    def _clone(self, *args, **kwargs):
+        clone = super(MediacatQuerySet, self)._clone(*args, **kwargs)
+        clone._defer_media = self._defer_media
+        return clone
+
+    def defer_media(self):
+        clone = self._clone()
+        clone._defer_media = True
+        return clone
+
+    def attach_media(self, objects):
+        ids = [o.pk for o in objects]
         ct = ContentType.objects.get_for_model(self.model)
 
-        applications = ImageCropApplication.objects.select_related('crop', 'crop__image').filter(
-            object_id__in=ids,
-            content_type=ct,
-            field_name__in=media_field_names
-        )
+        all_applications = ImageCropApplication \
+            .objects \
+            .select_related('crop', 'crop__image') \
+            .filter(
+                object_id__in=ids,
+                content_type=ct
+            )
+
         applications_dict = defaultdict(list)
 
-        for a in applications:
+        for a in all_applications:
             applications_dict[a.object_id].append(a)
 
-        for o in objects:
-            for a in applications_dict[o.pk]:
-                attr_name = '_mediacat_crop_{}'.format(a.field_name)
-                setattr(o, attr_name, a.crop)
+        for instance in objects:
+            raw_applications = applications_dict[instance.pk]
+            applications = {a.field_name: a.crop for a in raw_applications}
+            setattr(instance, MediaField.get_cache_name(), applications)
 
         return objects
 
@@ -48,7 +62,12 @@ class MediacatQuerySet(QuerySet):
                     reached_end = True
                     break
 
-            real_results = self.attach_media(base_result_objects)
+            if not self._defer_media:
+                print 'loading media'
+                real_results = self.attach_media(base_result_objects)
+            else:
+                print 'not loading media'
+                real_results = base_result_objects
 
             for o in real_results:
                 yield o
