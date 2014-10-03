@@ -1,6 +1,8 @@
 from django.db import models
+from django.db.models.fields.subclassing import Creator
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
+from django.db import transaction
 
 from .forms import MediaFormField
 from .models import (
@@ -10,131 +12,114 @@ from .models import (
 from .widgets import MediaInput
 
 
-class MediaFieldMixin(object):
-    def contribute_to_class(self, cls, name):
-        self.set_attributes_from_name(name)
-        self.model = cls
-        cls._meta.add_virtual_field(self)
+def post_save_hook(sender, **kwargs):
+    instance = kwargs['instance']
 
-        # Connect myself as the descriptor for this field
-        setattr(cls, name, self)
+    if not instance:
+        return
 
-        models.signals.post_save.connect(self._post_save, sender=cls)
-        models.signals.pre_delete.connect(self._pre_delete, sender=cls)
+    applications = getattr(instance, MediaField.get_cache_name())
+    ct = ContentType.objects.get_for_model(instance)
 
-    def get_model_attr_name(self, field_name=None):
-        return '_mediacat_crop_{}'.format(field_name or self.name)
-
-    def __get__(self, instance, instance_type=None):
-        """
-        retrieve image crop from by instance
-        """
-        if instance is None:
-            raise AttributeError('Can only be accessed via instance')
-
-        media_fields = [f for f in instance._meta.virtual_fields if isinstance(f, self.__class__)]
-        media_field_names = [f.name for f in media_fields]
-
-        if self.get_value(instance):
-            return self.get_value(instance)
-
-        ct = ContentType.objects.get_for_model(instance)
-        try:
-            applications = ImageCropApplication.objects.select_related('crop', 'crop__image').filter(
-                object_id=instance.id,
-                content_type=ct,
-                field_name__in=media_field_names
-            )
-            self.set_values(instance, applications)
-        except ImageCrop.DoesNotExist:
-            self.set_value(instance, None)
-        return self.get_value(instance)
-
-    def has_value(self, instance):
-        return hasattr(instance, self.get_model_attr_name())
-
-    def get_value(self, instance):
-        return getattr(instance, self.get_model_attr_name(), None)
-
-    def set_values(self, instance, applications):
-        for a in applications:
-            self.set_value(instance, a.crop, a.field_name)
-
-    def set_value(self, instance, value, field_name=None):
-        setattr(instance, self.get_model_attr_name(field_name), value)
-
-    def __set__(self, instance, value):
-        """
-        sets a crop instance as a crop instance application
-        """
-        attr_name = self.get_model_attr_name()
-        setattr(instance, attr_name, value)
-
-    def _post_save(self, instance=None, created=False, **kwargs):
-        if not instance:
-            return
-
-        crop = self.get_value(instance)
-
-        if not crop:
-            return
-
-        if crop and not crop.pk:
-            crop.save()
-            self.set_value(instance, crop)
-
-        ct = ContentType.objects.get_for_model(instance)
-        try:
-            crop_application = ImageCropApplication.objects.get(
-                object_id=instance.id,
-                content_type=ct,
-                field_name=self.name)
-        except ImageCropApplication.DoesNotExist:
-            crop_application = ImageCropApplication(
-                object_id=instance.id,
-                content_type=ct,
-                field_name=self.name)
-
-        if crop_application.crop_id != crop.id:
-            crop_application.crop = crop
-            crop_application.save()
-
-    def _pre_delete(self, instance=None, **kwargs):
-        if not instance:
-            return
-
-        keys = [c[0] for c in self.crops]
-
-        ct = ContentType.objects.get_for_model(instance)
+    with transaction.atomic():
+        # Clear existing applications
         ImageCropApplication.objects.filter(
             object_id=instance.id,
             content_type=ct,
-            crop__key__in=keys).delete()
+        ).delete()
 
-    def save_form_data(self, instance, data):
+        new_applications = []
+
+        for field_name, crop in applications.items():
+            new_applications.append(ImageCropApplication(
+                object_id=instance.id,
+                content_type=ct,
+                field_name=field_name,
+                crop=crop
+            ))
+
+        if new_applications:
+            ImageCropApplication.objects.bulk_create(new_applications)
+
+
+def pre_delete_hook(sender, **kwargs):
+    instance = kwargs['instance']
+
+    if not instance:
+        return
+
+    ct = ContentType.objects.get_for_model(instance)
+
+    ImageCropApplication.objects.filter(
+        object_id=instance.id,
+        content_type=ct,
+    ).delete()
+
+
+class MediaFieldCreator(Creator):
+    def __init__(self, field):
+        self.field = field
+        self.cache_name = field.get_cache_name()
+
+    def get_db_applications(self, instance):
         ct = ContentType.objects.get_for_model(instance)
-        try:
-            crop_application = ImageCropApplication.objects.get(
+
+        raw_applications = ImageCropApplication \
+            .objects \
+            .select_related('crop', 'crop__image') \
+            .filter(
                 object_id=instance.id,
                 content_type=ct,
-                field_name=self.name)
-        except ImageCropApplication.DoesNotExist:
-            crop_application = ImageCropApplication(
-                object_id=instance.id,
-                content_type=ct,
-                field_name=self.name)
+            )
+        return {a.field_name: a.crop for a in raw_applications}
+
+    def __get__(self, instance, owner=None):
+        if instance is None:
+            raise AttributeError('Can only be accessed via instance')
 
         try:
-            if crop_application.crop != data:
-                crop_application.crop = data
-                crop_application.save()
-        except ImageCrop.DoesNotExist:
-            crop_application.crop = data
-            crop_application.save()
+            applications = getattr(instance, self.cache_name)
+        except AttributeError:
+            applications = self.get_db_applications(instance)
+            setattr(instance, self.cache_name, applications)
+
+        return applications.get(self.field.attname, None)
+
+    def __set__(self, instance, value):
+        try:
+            applications = getattr(instance, self.cache_name)
+        except AttributeError:
+            applications = self.get_db_applications(instance)
+        applications[self.field.attname] = value
 
 
+class MediaFieldMeta(models.SubfieldBase):
+    def __new__(cls, name, bases, attrs):
+        def contribute_to_class(self, cls, name):
+            self.set_attributes_from_name(name)
+            self.model = cls
+            cls._meta.add_virtual_field(self)
+            cls._meta.local_fields.append(self) # Hack to make this work with modelforms
+            setattr(cls, self.name, MediaFieldCreator(self))
 
-class MediaField(MediaFieldMixin, models.Field):
+            models.signals.post_save.connect(
+                post_save_hook,
+                sender=cls,
+                dispatch_uid='mediacat_post_save_hook',
+            )
+            models.signals.pre_delete.connect(
+                pre_delete_hook,
+                sender=cls,
+                dispatch_uid='mediacat_pre_delete_hook',
+            )
+
+        new_class = super(MediaFieldMeta, cls).__new__(cls, name, bases, attrs)
+        new_class.contribute_to_class = contribute_to_class
+        return new_class
+
+
+class MediaField(models.Field):
+    __metaclass__ = MediaFieldMeta
 
     def __init__(self, key=None, keys=None, width=None, crops=None, **kwargs):
         kwargs['editable'] = True
@@ -148,6 +133,20 @@ class MediaField(MediaFieldMixin, models.Field):
             raise ValidationError("Improperly configured MediaField, must supply one of (key and width), (keys and width) or crops")
 
         super(MediaField, self).__init__(**kwargs)
+
+    # def save_form_data(self, instance, data):
+    #     setattr(instance, self.name, data)
+
+    @classmethod
+    def get_cache_name(cls):
+        return '_mediacat_crop_cache'
+
+    def get_attname(self):
+        return self.name
+
+    def get_attname_column(self):
+        attname = self.get_attname()
+        return attname, None
 
     def formfield(self, **kwargs):
         widget = kwargs.pop('widget', MediaInput())

@@ -3,14 +3,14 @@ from collections import defaultdict
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query import QuerySet
 
-from .fields import MediaFieldMixin
+from .fields import MediaField
 from .models import ImageCropApplication
 
 
 class MediacatQuerySet(QuerySet):
 
     def attach_media(self, objects):
-        media_fields = [f for f in self.model._meta.virtual_fields if isinstance(f, MediaFieldMixin)]
+        media_fields = [f for f in self.model._meta.virtual_fields if isinstance(f, MediaField)]
         media_field_names = [f.name for f in media_fields]
         ids = [o.pk for o in objects]
 
