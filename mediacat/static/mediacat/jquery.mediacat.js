@@ -75,7 +75,6 @@
       var self = this;
 
       window.dismissMediaLibrary = function(win, pk, url) {
-        debugger;
         self.input.val(pk);
         self.input.trigger('change');
         self.preview.attr('src', url);

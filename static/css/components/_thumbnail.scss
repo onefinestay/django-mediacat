@@ -111,11 +111,7 @@ $ns: mediacat;
 }
 
 .#{$ns}-thumbnail-selected {
-  background-color: lighten(#2b303b, 10);
-
-  &.#{$ns}-thumbnail-rejected {
-    background-color: lighten(#2b303b, 4);
-  }
+  background-color: #414858;
 }
 
 
