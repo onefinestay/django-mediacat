@@ -57,25 +57,38 @@ var ScrollPane = React.createClass({
       width: el.offsetWidth,
       height: el.offsetHeight,
       contentWidth: contentEl.offsetWidth,
-      contentHeight: contentEl.offsetHeight
+      contentHeight: contentEl.offsetHeight,
+      observer: null,
     });
-  },
-
-  componentDidUpdate: function(prevProps, prevState) {
-    if (prevProps !== this.props) {
-      this.updateDOMDimensions();
-    }
   },
 
   componentDidMount: function() {
     this.updateDOMDimensions();
     this.getDOMNode().addEventListener('load', this.updateDOMDimensions);    
     window.addEventListener('resize', this.updateDOMDimensions); 
+
+    var el = this.getDOMNode();
+
+    var observer = new MutationObserver(function(mutations) {
+      this.updateDOMDimensions();
+    }.bind(this));
+
+    var config = {
+      subtree: true,
+      childList: true
+    };
+
+    observer.observe(el, config);
+    this.setState({observer});
   },
 
   componentWillUnmount: function() {
     this.getDOMNode().removeEventListener('load', this.updateDOMDimensions);    
     window.removeEventListener('resize', this.updateDOMDimensions);
+
+    if (this.state.observer) {
+      this.state.observer.disconnect();
+    }
   },
 
   handleDragX: function(event) {

@@ -64,10 +64,28 @@ var ThumbnailList = React.createClass({
   componentDidMount: function() {
     this.updateDOMDimensions();
     window.addEventListener('resize', this.updateDOMDimensions); 
+
+    var el = this.getDOMNode();
+
+    var observer = new MutationObserver(function(mutations) {
+      this.updateDOMDimensions();
+    }.bind(this));
+
+    var config = {
+      subtree: true,
+      childList: true
+    };
+
+    observer.observe(el, config);
+    this.setState({observer});
   },
 
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.updateDOMDimensions);
+
+    if (this.state.observer) {
+      this.state.observer.disconnect();
+    }    
   },  
 
   setSort: function(option) {
