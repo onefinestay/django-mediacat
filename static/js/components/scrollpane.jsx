@@ -64,7 +64,6 @@ var ScrollPane = React.createClass({
 
   componentDidMount: function() {
     this.updateDOMDimensions();
-    this.getDOMNode().addEventListener('load', this.updateDOMDimensions);    
     window.addEventListener('resize', this.updateDOMDimensions); 
 
     var el = this.getDOMNode();
@@ -83,7 +82,6 @@ var ScrollPane = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.getDOMNode().removeEventListener('load', this.updateDOMDimensions);    
     window.removeEventListener('resize', this.updateDOMDimensions);
 
     if (this.state.observer) {
