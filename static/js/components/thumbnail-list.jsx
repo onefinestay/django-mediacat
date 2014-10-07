@@ -50,8 +50,6 @@ var ThumbnailList = React.createClass({
   },
 
   componentWillMount: function() {
-    console.log('Mounting thumbnail list');
-
     var keyboard = this.getKeyboard();
     var flux = this.getFlux();
 
@@ -83,7 +81,6 @@ var ThumbnailList = React.createClass({
   },
 
   componentWillUnmount: function() {
-    console.log('Unmounting thumbnail list');
     window.removeEventListener('resize', this.updateDOMDimensions);
 
     if (this.state.observer) {

@@ -368,13 +368,13 @@
 	  };
 	
 	  Keyboard.prototype.pushCopy=function() {"use strict";
-	    this.keyStack = this.keyStack.toVector().push(this.keyStack.last());
+	    this.keyStack = this.keyStack.push(this.keyStack.last());
 	  };
 	
 	  Keyboard.prototype.pop=function() {"use strict";
 	    if (this.keyStack.count() > 1) {
 	      Mousetrap.reset();      
-	      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1);
+	      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1).toVector();
 	      this.keyStack.last().forEach(function(k) {
 	        Mousetrap.bind(k.key, k.action);
 	      })
@@ -392,7 +392,7 @@
 	    var index = this.keyStack.last().findIndex(function(k)  {return k.key === key;});
 	
 	    if (index >= 0) {
-	      this.keyStack = this.keyStack.updateIn([-1], function(keys)  {return keys.splice(index, 1);});
+	      this.keyStack = this.keyStack.updateIn([-1], function(keys)  {return keys.splice(index, 1).toVector();});
 	    }
 	    Mousetrap.unbind(key);
 	  };
@@ -3888,8 +3888,6 @@
 	  },
 	
 	  componentWillMount: function() {
-	    console.log('Mounting thumbnail list');
-	
 	    var keyboard = this.getKeyboard();
 	    var flux = this.getFlux();
 	
@@ -3921,7 +3919,6 @@
 	  },
 	
 	  componentWillUnmount: function() {
-	    console.log('Unmounting thumbnail list');
 	    window.removeEventListener('resize', this.updateDOMDimensions);
 	
 	    if (this.state.observer) {
