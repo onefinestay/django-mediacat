@@ -367,10 +367,14 @@
 	    Mousetrap.reset();
 	  };
 	
+	  Keyboard.prototype.pushCopy=function() {"use strict";
+	    this.keyStack = this.keyStack.toVector().push(this.keyStack.last());
+	  };
+	
 	  Keyboard.prototype.pop=function() {"use strict";
 	    if (this.keyStack.count() > 1) {
 	      Mousetrap.reset();      
-	      this.keyStack = this.keyStack.pop();
+	      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1);
 	      this.keyStack.last().forEach(function(k) {
 	        Mousetrap.bind(k.key, k.action);
 	      })
@@ -388,7 +392,7 @@
 	    var index = this.keyStack.last().findIndex(function(k)  {return k.key === key;});
 	
 	    if (index >= 0) {
-	      this.keyStack = this.keyStack.updateIn([-1], function(keys)  {return keys.remove(index);});
+	      this.keyStack = this.keyStack.updateIn([-1], function(keys)  {return keys.splice(index, 1);});
 	    }
 	    Mousetrap.unbind(key);
 	  };
@@ -1557,6 +1561,7 @@
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 19);
+	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 395);
 	
 	var Header = __webpack_require__(/*! ./header */ 34);
 	var ThumbnailList = __webpack_require__(/*! ./thumbnail-list */ 40);
@@ -1564,13 +1569,44 @@
 	
 	
 	var Main = React.createClass({displayName: 'Main',
-	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, KeyboardMixin, FluxMixin, StoreWatchMixin("Media")],
 	
 	  getStateFromFlux: function() {
 	    return {
 	      mode: this.getFlux().store('Media').state.get('viewMode')
 	    };
 	  },
+	
+	  componentWillMount: function() {
+	    console.log('Mounting main');
+	    var keyboard = this.getKeyboard();
+	    var flux = this.getFlux();
+	
+	    keyboard.on('1', this.setRating.bind(this, 1));
+	    keyboard.on('2', this.setRating.bind(this, 2));
+	    keyboard.on('3', this.setRating.bind(this, 3));
+	    keyboard.on('4', this.setRating.bind(this, 4));
+	    keyboard.on('5', this.setRating.bind(this, 5));
+	    keyboard.on('0', this.setRating.bind(this, 0));
+	  },
+	
+	  componentWillUnmount: function() {
+	    var keyboard = this.getKeyboard();
+	
+	    keyboard.off('1');
+	    keyboard.off('2');
+	    keyboard.off('3');
+	    keyboard.off('4');
+	    keyboard.off('5');
+	    keyboard.off('0');
+	  },
+	
+	  setRating: function(rating, event) {
+	    var selected = this.getFlux().store('Media').getSelectedMedia();
+	    if (selected) {
+	      this.getFlux().actions.media.setRating(selected, rating);
+	    }
+	  },  
 	
 	  setGridMode: function() {
 	    this.getFlux().actions.media.setViewMode('grid');
@@ -3851,17 +3887,18 @@
 	    });
 	  },
 	
-	  componentDidUpdate: function(prevProps, prevState) {
-	    var timer;
+	  componentWillMount: function() {
+	    console.log('Mounting thumbnail list');
 	
-	    if (prevProps.mode !== this.props.mode) {
-	      this.updateDOMDimensions();
-	      // Add a small delay to allow scrollbars to happen
-	      timer = setTimeout(function() {
-	        this.updateDOMDimensions();
-	        clearTimeout(timer);
-	      }.bind(this), 4);
-	    }
+	    var keyboard = this.getKeyboard();
+	    var flux = this.getFlux();
+	
+	    keyboard.pushCopy();    
+	
+	    keyboard.on('up', this.cursorUp);
+	    keyboard.on('down', this.cursorDown);
+	    keyboard.on('left', this.cursorLeft);
+	    keyboard.on('right', this.cursorRight);    
 	  },
 	
 	  componentDidMount: function() {
@@ -3881,23 +3918,10 @@
 	
 	    observer.observe(el, config);
 	    this.setState({observer:observer});
-	
-	    var keyboard = this.getKeyboard();
-	    var flux = this.getFlux();
-	
-	    keyboard.on('1', this.setRating.bind(this, 1));
-	    keyboard.on('2', this.setRating.bind(this, 2));
-	    keyboard.on('3', this.setRating.bind(this, 3));
-	    keyboard.on('4', this.setRating.bind(this, 4));
-	    keyboard.on('5', this.setRating.bind(this, 5));
-	    keyboard.on('0', this.setRating.bind(this, 0));
-	    keyboard.on('up', this.cursorUp);
-	    keyboard.on('down', this.cursorDown);
-	    keyboard.on('left', this.cursorLeft);
-	    keyboard.on('right', this.cursorRight);
 	  },
 	
 	  componentWillUnmount: function() {
+	    console.log('Unmounting thumbnail list');
 	    window.removeEventListener('resize', this.updateDOMDimensions);
 	
 	    if (this.state.observer) {
@@ -3905,19 +3929,9 @@
 	    }
 	
 	    var keyboard = this.getKeyboard();
-	
-	    keyboard.off('1');
-	    keyboard.off('2');
-	    keyboard.off('3');
-	    keyboard.off('4');
-	    keyboard.off('5');
-	    keyboard.off('0');
-	    keyboard.off('up');
-	    keyboard.off('down');
-	    keyboard.off('left');
-	    keyboard.off('right');
+	    keyboard.pop();
 	  },
-	
+	 
 	  setRating: function(rating, event) {
 	    var selected = this.getFlux().store('Media').getSelectedMedia();
 	    if (selected) {
@@ -8017,6 +8031,13 @@
 	    });
 	  },
 	
+	  componentDidUpdate: function(prevProps, prevState) {
+	    if (prevProps !== this.props) {
+	      this.updateDOMDimensions();
+	    }
+	  },
+	  
+	
 	  componentDidMount: function() {
 	    this.updateDOMDimensions();
 	    window.addEventListener('resize', this.updateDOMDimensions); 
@@ -8464,12 +8485,15 @@
 	  },
 	
 	  handleImageLoad: function() {
-	    this.state.loadingImage.removeEventListener('load', this.handleImageLoad);
-	    this.state.loadingImage.remove();
-	    this.setState({
-	      loaded: true,
-	      loadingImage: null
-	    });
+	    if (this.state.loadingImage) {
+	      this.state.loadingImage.removeEventListener('load', this.handleImageLoad);
+	      this.state.loadingImage.remove();
+	
+	      this.setState({
+	        loaded: true,
+	        loadingImage: null
+	      });      
+	    }
 	  },
 	
 	  componentDidMount: function() {

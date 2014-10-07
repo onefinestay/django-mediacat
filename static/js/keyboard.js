@@ -11,10 +11,14 @@ class Keyboard {
     Mousetrap.reset();
   }
 
+  pushCopy() {
+    this.keyStack = this.keyStack.toVector().push(this.keyStack.last());
+  }
+
   pop() {
     if (this.keyStack.count() > 1) {
       Mousetrap.reset();      
-      this.keyStack = this.keyStack.pop();
+      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1);
       this.keyStack.last().forEach(function(k) {
         Mousetrap.bind(k.key, k.action);
       })
@@ -32,7 +36,7 @@ class Keyboard {
     var index = this.keyStack.last().findIndex(k => k.key === key);
 
     if (index >= 0) {
-      this.keyStack = this.keyStack.updateIn([-1], keys => keys.remove(index));
+      this.keyStack = this.keyStack.updateIn([-1], keys => keys.splice(index, 1));
     }
     Mousetrap.unbind(key);
   }

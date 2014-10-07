@@ -25,12 +25,15 @@ var ProxyImg = React.createClass({
   },
 
   handleImageLoad: function() {
-    this.state.loadingImage.removeEventListener('load', this.handleImageLoad);
-    this.state.loadingImage.remove();
-    this.setState({
-      loaded: true,
-      loadingImage: null
-    });
+    if (this.state.loadingImage) {
+      this.state.loadingImage.removeEventListener('load', this.handleImageLoad);
+      this.state.loadingImage.remove();
+
+      this.setState({
+        loaded: true,
+        loadingImage: null
+      });      
+    }
   },
 
   componentDidMount: function() {

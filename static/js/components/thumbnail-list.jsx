@@ -49,17 +49,18 @@ var ThumbnailList = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-    var timer;
+  componentWillMount: function() {
+    console.log('Mounting thumbnail list');
 
-    if (prevProps.mode !== this.props.mode) {
-      this.updateDOMDimensions();
-      // Add a small delay to allow scrollbars to happen
-      timer = setTimeout(function() {
-        this.updateDOMDimensions();
-        clearTimeout(timer);
-      }.bind(this), 4);
-    }
+    var keyboard = this.getKeyboard();
+    var flux = this.getFlux();
+
+    keyboard.pushCopy();    
+
+    keyboard.on('up', this.cursorUp);
+    keyboard.on('down', this.cursorDown);
+    keyboard.on('left', this.cursorLeft);
+    keyboard.on('right', this.cursorRight);    
   },
 
   componentDidMount: function() {
@@ -79,23 +80,10 @@ var ThumbnailList = React.createClass({
 
     observer.observe(el, config);
     this.setState({observer});
-
-    var keyboard = this.getKeyboard();
-    var flux = this.getFlux();
-
-    keyboard.on('1', this.setRating.bind(this, 1));
-    keyboard.on('2', this.setRating.bind(this, 2));
-    keyboard.on('3', this.setRating.bind(this, 3));
-    keyboard.on('4', this.setRating.bind(this, 4));
-    keyboard.on('5', this.setRating.bind(this, 5));
-    keyboard.on('0', this.setRating.bind(this, 0));
-    keyboard.on('up', this.cursorUp);
-    keyboard.on('down', this.cursorDown);
-    keyboard.on('left', this.cursorLeft);
-    keyboard.on('right', this.cursorRight);
   },
 
   componentWillUnmount: function() {
+    console.log('Unmounting thumbnail list');
     window.removeEventListener('resize', this.updateDOMDimensions);
 
     if (this.state.observer) {
@@ -103,19 +91,9 @@ var ThumbnailList = React.createClass({
     }
 
     var keyboard = this.getKeyboard();
-
-    keyboard.off('1');
-    keyboard.off('2');
-    keyboard.off('3');
-    keyboard.off('4');
-    keyboard.off('5');
-    keyboard.off('0');
-    keyboard.off('up');
-    keyboard.off('down');
-    keyboard.off('left');
-    keyboard.off('right');
+    keyboard.pop();
   },
-
+ 
   setRating: function(rating, event) {
     var selected = this.getFlux().store('Media').getSelectedMedia();
     if (selected) {

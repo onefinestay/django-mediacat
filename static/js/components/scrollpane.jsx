@@ -62,6 +62,12 @@ var ScrollPane = React.createClass({
     });
   },
 
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps !== this.props) {
+      this.updateDOMDimensions();
+    }
+  },  
+
   componentDidMount: function() {
     this.updateDOMDimensions();
     window.addEventListener('resize', this.updateDOMDimensions); 
