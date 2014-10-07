@@ -9254,7 +9254,7 @@
 	    }
 	
 	
-	    var icons = iconClasses.map(function(className, i)  {return React.DOM.span({
+	    var icons = iconClasses.map(function(className, i)  {return React.DOM.span({key: i, 
 	      onMouseOver: interactable && this.onMouseOver.bind(this, i), 
 	      onMouseOut: interactable && this.onMouseOut.bind(this, i), 
 	      onClick: interactable && this.onClick.bind(this, i), 

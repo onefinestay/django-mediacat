@@ -55,7 +55,7 @@ var Rating = React.createClass({
     }
 
 
-    var icons = iconClasses.map((className, i) => <span 
+    var icons = iconClasses.map((className, i) => <span key={i}
       onMouseOver={interactable && this.onMouseOver.bind(this, i)} 
       onMouseOut={interactable && this.onMouseOut.bind(this, i)}
       onClick={interactable && this.onClick.bind(this, i)}
