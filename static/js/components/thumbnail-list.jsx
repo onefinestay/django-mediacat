@@ -13,6 +13,7 @@ var Panel = require('./panel');
 var PanelToolbar = require('./panel-toolbar');
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
+var KeyboardMixin = require('./keyboard-mixin');
 var ProxyImg = require('./proxy-img');
 
 var Thumbnail = require('./thumbnail');
@@ -23,7 +24,7 @@ var elMetrics = require('../utils/element-metrics');
 var minSize = 145;
 
 var ThumbnailList = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media"), KeyboardMixin],
 
   getInitialState: function() {
     return {
@@ -78,14 +79,105 @@ var ThumbnailList = React.createClass({
 
     observer.observe(el, config);
     this.setState({observer});
+
+    var keyboard = this.getKeyboard();
+    var flux = this.getFlux();
+
+    keyboard.on('up', this.cursorUp);
+    keyboard.on('down', this.cursorDown);
+    keyboard.on('left', this.cursorLeft);
+    keyboard.on('right', this.cursorRight);
   },
+
+  cursorUp: function() {
+    var numPerRow = Math.floor(this.state.width / minSize);
+    var selected = this.getFlux().store('Media').getSelectedMedia();
+
+    if (selected) {
+      var media = this.state.media;
+
+      var index = media.indexOf(selected);
+
+      if (index < numPerRow) {
+        return;
+      }
+      this.getFlux().actions.media.select(media.get(index - numPerRow));
+    }
+  },
+
+  cursorDown: function() {
+    var numPerRow = Math.floor(this.state.width / minSize);
+    var selected = this.getFlux().store('Media').getSelectedMedia();
+
+    if (selected) {
+      var media = this.state.media;
+
+      var numRows = Math.ceil(media.count() / numPerRow);
+      var index = media.indexOf(selected);      
+      var indexRowNum = Math.floor(index / numPerRow);
+
+      console.log(numPerRow, numRows, index, indexRowNum);
+
+      if (indexRowNum >= numRows - 1) {
+        return;
+      }
+
+      var newIndex = index + numPerRow;
+
+      if (newIndex > media.count() - 1) {
+        newIndex = media.count() - 1;
+      }
+      this.getFlux().actions.media.select(media.get(newIndex));
+    }
+  },
+
+  cursorLeft: function() {
+    var selected = this.getFlux().store('Media').getSelectedMedia();
+
+    if (selected) {
+      var media = this.state.media;
+
+      var index = media.indexOf(selected);
+
+      var newIndex = index -1;
+
+      if (newIndex < 0) {
+        newIndex = 0;
+      }
+      this.getFlux().actions.media.select(media.get(newIndex));
+    }
+  },
+
+  cursorRight: function() {
+    var selected = this.getFlux().store('Media').getSelectedMedia();
+
+    if (selected) {
+      var media = this.state.media;
+
+      var index = media.indexOf(selected);
+
+      var newIndex = index + 1;
+
+      if (newIndex > media.count() - 1) {
+        newIndex = media.count() - 1;
+      }
+      this.getFlux().actions.media.select(media.get(newIndex));
+    }
+  },  
 
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.updateDOMDimensions);
 
     if (this.state.observer) {
       this.state.observer.disconnect();
-    }    
+    }
+
+    var keyboard = this.getKeyboard();
+
+    keyboard.off('up');
+    keyboard.off('down');
+    keyboard.off('left');
+    keyboard.off('right');
   },  
 
   setSort: function(option) {

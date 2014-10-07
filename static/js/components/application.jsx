@@ -10,10 +10,11 @@ var Information = require('./information');
 var DragLayer = require('./drag_layer');
 
 var FluxMixin = require('./flux-mixin');
+var KeyboardMixin = require('./keyboard-mixin');
 
 
 var Application = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin],
+  mixins: [PureRenderMixin, FluxMixin, KeyboardMixin],
 
   render: function() {
     return (

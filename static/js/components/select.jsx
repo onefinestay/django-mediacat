@@ -4,6 +4,7 @@
 var React = require('react/addons');
 var _ = require('underscore');
 var cx = React.addons.classSet;
+var KeyboardMixin = require('./keyboard-mixin');
 
 var SearchResult = React.createClass({
   propTypes: {
@@ -31,6 +32,34 @@ var SearchResult = React.createClass({
     );
   }
 });
+
+
+var SelectOptions = React.createClass({
+  mixins: [KeyboardMixin],
+
+  componentDidMount: function() {
+    var keyboard = this.getKeyboard();
+    keyboard.push();
+    keyboard.on('escape', this.props.onClose);
+    keyboard.on('enter', this.props.onEnter);
+    keyboard.on('up', this.props.onCursorUp);
+    keyboard.on('down', this.props.onCursorDown);
+  },
+
+  componentWillUnmount: function() {
+    var keyboard = this.getKeyboard();
+    keyboard.pop();
+  },    
+
+  render: function() {
+    return (
+      <ul className="select-options" ref="options">
+        {this.props.options.toJS()}
+      </ul>
+    );
+  }
+});
+
 
 var Select = React.createClass({
   propTypes: {
@@ -84,24 +113,6 @@ var Select = React.createClass({
     };
   },
 
-  //
-  // events
-  //
-  handleInput: function(event) {
-    var keys = {
-      13: this.enter,
-      38: this.moveUp,
-      40: this.moveDown,
-      8: this.remove
-    };
-
-    if (_.contains(_.keys(keys), event.keyCode + "")) {
-      if (typeof keys[event.keyCode] == 'function') {
-        keys[event.keyCode](event);
-      }
-    }
-  },
-
   handleFocus: function(event) {
     event.preventDefault();
 
@@ -118,11 +129,21 @@ var Select = React.createClass({
     });
   },
 
-  handleBlur: function(event) {
-    event.preventDefault();
+  open: function() {
+    this.setState({
+      focus: true
+    });
+  },
+
+  close: function() {
     this.setState({
       focus: false
-    });
+    })
+  },
+
+  handleBlur: function(event) {
+    event.preventDefault();
+    this.close();
   },
 
   handleOptionHover: function(option, event) {
@@ -225,6 +246,8 @@ var Select = React.createClass({
 
   componentDidUpdate: function() {
     this.updateScrollPosition();
+
+    var active = !this.props.disabled && this.state.focus;
   },
 
   render: function() {
@@ -272,8 +295,8 @@ var Select = React.createClass({
         aria-haspopup='true'
         aria-activedescendant={active}
         tabIndex="0"
-        onKeyDown={this.handleInput}
         onFocus={this.handleFocus}
+        onClick={this.open}
         onBlur={this.handleBlur}
       >
         <div className="select-value-display">{selectedOption ? label : <span className="select-placeholder">{this.props.placeholder}</span>}</div>
@@ -284,10 +307,13 @@ var Select = React.createClass({
           name={this.props.name}
           value={value}
           ref="input" />
-        {active ?
-          <ul className="select-options" ref="options">
-            {options.toJS()}
-          </ul> : null}
+        {active ? <SelectOptions
+          options={options}
+          onClose={this.close}
+          onCursorUp={this.moveUp}
+          onCursorDown={this.moveDown}
+          onEnter={this.enter}
+        /> : null}
       </div>
     );
   }

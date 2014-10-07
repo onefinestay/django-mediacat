@@ -17,6 +17,8 @@ var DraggingStore = require('./stores/dragging');
 
 var Actions = require('./actions');
 
+var Keyboard = require('./keyboard');
+
 var config = window.MEDIACAT_CONFIG;
 
 var stores = {
@@ -28,11 +30,12 @@ var stores = {
 };
 
 var flux = new Fluxxor.Flux(stores, Actions);
+var keyboard = new Keyboard();
+
 
 window.React = React;
 
-
 React.renderComponent(
-  <Application flux={flux} />,
+  <Application flux={flux} keyboard={keyboard} />,
   document.body
 );
