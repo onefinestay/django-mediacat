@@ -242,22 +242,6 @@ var Actions = {
     dragEnd: function(x, y) {
       this.dispatch(Constants.DRAG_MEDIA_END, {x, y});
     }
-  },
-
-  keyboard: {
-    cursorUp: function(event, combo) {
-      console.log('Up');
-    },
-    cursorDown: function(event, combo) {
-      console.log('Down');
-    },
-    cursorLeft: function(event, combo) {
-      console.log('Left');
-    },
-    cursorRight: function(event, combo) {
-      console.log('Right');
-    },
-
   }
 };
 

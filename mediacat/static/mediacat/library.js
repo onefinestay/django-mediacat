@@ -341,22 +341,6 @@
 	    dragEnd: function(x, y) {
 	      this.dispatch(Constants.DRAG_MEDIA_END, {x:x, y:y});
 	    }
-	  },
-	
-	  keyboard: {
-	    cursorUp: function(event, combo) {
-	      console.log('Up');
-	    },
-	    cursorDown: function(event, combo) {
-	      console.log('Down');
-	    },
-	    cursorLeft: function(event, combo) {
-	      console.log('Left');
-	    },
-	    cursorRight: function(event, combo) {
-	      console.log('Right');
-	    },
-	
 	  }
 	};
 	
@@ -3933,8 +3917,6 @@
 	      var numRows = Math.ceil(media.count() / numPerRow);
 	      var index = media.indexOf(selected);      
 	      var indexRowNum = Math.floor(index / numPerRow);
-	
-	      console.log(numPerRow, numRows, index, indexRowNum);
 	
 	      if (indexRowNum >= numRows - 1) {
 	        return;

@@ -116,8 +116,6 @@ var ThumbnailList = React.createClass({
       var index = media.indexOf(selected);      
       var indexRowNum = Math.floor(index / numPerRow);
 
-      console.log(numPerRow, numRows, index, indexRowNum);
-
       if (indexRowNum >= numRows - 1) {
         return;
       }
