@@ -88,6 +88,7 @@ var CropsPanel = React.createClass({
   handleAdd: function(event) {
   	var cropType = this.state.cropChoice;
   	this.getFlux().actions.crop.add(this.state.media, cropType);
+    this.refs.addButton.getDOMNode().focus();
   },
   
   render: function() {
@@ -103,7 +104,7 @@ var CropsPanel = React.createClass({
   		<PanelToolbar>
       	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
       	<span className="separator" />
-      	<button disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd}><span className="icon icon-add" /></button>
+      	<button disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton"><span className="icon icon-add" /></button>
       </PanelToolbar>
   	);
 

@@ -25,7 +25,6 @@ var Main = React.createClass({
   },
 
   componentWillMount: function() {
-    console.log('Mounting main');
     var keyboard = this.getKeyboard();
     var flux = this.getFlux();
 

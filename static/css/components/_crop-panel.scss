@@ -1,0 +1,32 @@
+$ns: mediacat;
+
+.#{$ns}-crops-panel {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  > .scrollpane {
+    flex-grow: 1;
+  }
+}
+
+.#{$ns}-crop-type-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.#{$ns}-crop-type {
+  margin: 10px;
+  border: 1px solid darken(#232830, 7.5);
+  background-color: #232830;    
+  border-radius: 2px;
+  font-size: 14px; 
+  box-shadow: 0 1px 0 0 darken(#232830, 1);
+}
+
+.#{$ns}-crop-type-header {
+  padding: 5px 10px;
+  background-color: #2b303b;
+  border-bottom: 1px solid darken(#2b303b, 7.5);
+} 

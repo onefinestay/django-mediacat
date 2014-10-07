@@ -1,0 +1,48 @@
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+
+  label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  .separator {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 10px;    
+  }
+
+  select {
+    flex-grow: 1;
+  }
+
+  .select {
+    min-width: 230px;
+  }
+
+  .button-group {
+    button, 
+    .button {
+      border-radius: 0;
+      margin-left: 1px;
+
+      &:first-child {
+        border-bottom-left-radius: 2px;
+        border-top-left-radius: 2px;        
+        margin-left: 0;        
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 2px;
+        border-top-right-radius: 2px;        
+      }
+
+    }
+  }
+}

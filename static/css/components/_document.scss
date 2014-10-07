@@ -1,0 +1,43 @@
+$ns: mediacat;
+
+
+.#{$ns}-document {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: darken(#232830, 3);
+
+  &.#{$ns}-document-grid {
+    > .scrollpane {
+      flex-grow: 1;
+    }
+
+    .#{$ns}-detail {
+      flex-grow: 0;
+      height: 0;
+    }
+  }
+
+  &.#{$ns}-document-detail, &.#{$ns}-document-filmstrip {
+    > .panel {
+      flex-grow: 0;
+      flex-shrink: 0;
+      height: 280px;
+    }
+
+    .scrollpane {
+      .scrollpane-content {
+        display: inline-block;
+      }
+
+      .#{$ns}-thumbnail-list {
+        display: inline-block;
+        white-space: nowrap;
+
+        li {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}

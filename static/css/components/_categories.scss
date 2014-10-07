@@ -1,0 +1,97 @@
+@import '../includes/colors';
+
+$ns: mediacat;
+
+
+.#{$ns}-categories {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  overflow-y: scroll;
+  flex-grow: 1;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.#{$ns}-categories-label {
+  display: block;
+  padding: 5px 20px;
+  cursor: pointer;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.5;
+
+  .icon-arrow {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 10px;
+    line-height: 1.75;
+    width: 15px;
+    opacity: .75;
+    vertical-align: baseline;
+    text-align: center;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: rotate(45deg);
+    }
+  }
+
+  .icon-dash {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 10px;
+    line-height: 1.75;
+    width: 15px;
+    opacity: 0;
+    text-align: center;
+  }
+
+  .loading {
+    opacity: .35;
+  }
+
+  .linear-loader {
+    left: auto;
+    right: 5px;
+  }
+
+  .#{$ns}-categories-count {
+    padding: 5px;
+    opacity: .35;
+    font-size: 12px;
+    line-height: 1.75;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+
+  &:hover, &.hover {
+    color: #fff;
+    background-color: lighten(#2b303b, 2.5);
+  }
+}
+
+.#{$ns}-categories-node-selected {
+  > .#{$ns}-categories-label {
+    background-color: lighten(#2b303b, 10);
+    color: #fff;
+    text-shadow: 1px 1px 0 black;
+  }
+}
+
+.#{$ns}-categories-node-open {
+  > .#{$ns}-categories-label {
+    .icon-arrow {
+      transform: rotate(90deg);
+
+      &:hover {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}

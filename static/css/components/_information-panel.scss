@@ -1,0 +1,58 @@
+@import '../includes/colors';
+
+$ns: mediacat;
+
+.#{$ns}-information {
+  background-color: $sidebar-bg;
+  width: $sidebar-width;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-left: 1px $seperator-color solid;
+  color: $sidebar-fg;
+  display: flex;
+  flex-direction: column;
+
+  > .#{$ns}-tabs {
+    flex-grow: 1;
+  }
+
+  .media-rating {
+    .icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .no-rating {
+      opacity: 0.25;
+    }
+
+    .icon-reject {
+      opacity: 0.25;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.#{$ns}-information-panel {
+  flex-shrink: 0;
+  width: 320px;
+  overflow-y: scroll;
+  background-color: $sidebar-bg;
+  padding: 10px;
+
+  table {
+    width: 100%;
+    border: 1px $seperator-color solid;
+  }
+
+  th, td {
+    padding: 5px;
+  }
+
+  td {
+    width: 100%;
+  }
+}
