@@ -1,18 +1,17 @@
-$ns: mediacat;
-
 .#{$ns}-application {
-  box-sizing: border-box;
-  user-select: none;
-
-  position: absolute;
-  top: 0;
   bottom: 0;
-  left: 0;
-  right: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  user-select: none;
 
-  *, *:before, *:after {
+  *, 
+  *:before, 
+  *:after {
     box-sizing: border-box;
   }
 }

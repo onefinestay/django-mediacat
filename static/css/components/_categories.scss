@@ -1,14 +1,9 @@
-@import '../includes/colors';
-
-$ns: mediacat;
-
-
 .#{$ns}-categories {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  overflow-y: scroll;
   flex-grow: 1;
+  list-style-type: none;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 0;
 
   ul {
     list-style-type: none;
@@ -18,23 +13,23 @@ $ns: mediacat;
 }
 
 .#{$ns}-categories-label {
-  display: block;
-  padding: 5px 20px;
   cursor: pointer;
-  position: relative;
+  display: block;
   font-size: 14px;
   line-height: 1.5;
+  padding: 5px 20px;
+  position: relative;
 
   .icon-arrow {
     display: inline-block;
-    margin-right: 5px;
     font-size: 10px;
     line-height: 1.75;
-    width: 15px;
+    margin-right: 5px;
     opacity: .75;
-    vertical-align: baseline;
     text-align: center;
-    transition: transform 0.15s ease;
+    transition: transform .15s ease;
+    vertical-align: baseline;
+    width: 15px;
 
     &:hover {
       transform: rotate(45deg);
@@ -43,12 +38,12 @@ $ns: mediacat;
 
   .icon-dash {
     display: inline-block;
-    margin-right: 5px;
     font-size: 10px;
     line-height: 1.75;
-    width: 15px;
+    margin-right: 5px;
     opacity: 0;
     text-align: center;
+    width: 15px;
   }
 
   .loading {
@@ -61,18 +56,19 @@ $ns: mediacat;
   }
 
   .#{$ns}-categories-count {
-    padding: 5px;
-    opacity: .35;
     font-size: 12px;
     line-height: 1.75;
+    opacity: .35;
+    padding: 5px;
     position: absolute;
-    top: 0;
     right: 10px;
+    top: 0;
   }
 
-  &:hover, &.hover {
-    color: #fff;
+  &:hover, 
+  &.hover {
     background-color: lighten(#2b303b, 2.5);
+    color: #fff;
   }
 }
 
@@ -80,7 +76,7 @@ $ns: mediacat;
   > .#{$ns}-categories-label {
     background-color: lighten(#2b303b, 10);
     color: #fff;
-    text-shadow: 1px 1px 0 black;
+    text-shadow: 1px 1px 0 #000;
   }
 }
 

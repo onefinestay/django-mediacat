@@ -1,17 +1,17 @@
+$ns: mediacat;
+
 @import './includes/colors';
 @import './includes/dimensions';
 @import './includes/loaders';
 
 @import './components/common/button';
-@import './components/common/input';
-@import './components/common/select';
-
 @import './components/common/header';
-@import './components/common/toolbar';
-
+@import './components/common/input';
 @import './components/common/panel';
 @import './components/common/scrollpane';
+@import './components/common/select';
 @import './components/common/tabs';
+@import './components/common/toolbar';
 
 @import './components/application';
 @import './components/categories';

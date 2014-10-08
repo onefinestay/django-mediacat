@@ -1,56 +1,54 @@
-$ns: mediacat;
-
 .#{$ns}-detail-wrapper {
-  flex-grow: 1;
   background-color: darken(#232830, 10);
-  position: relative;
-  padding: 20px;
   display: flex;
+  flex-grow: 1;
+  padding: 20px;
+  position: relative;
 }
 
 .#{$ns}-detail, .#{$ns}-filmstrip {
-  position: relative;
   flex-grow: 1;
+  position: relative;
 
   .detail-proxy-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   .detail-proxy-image-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0;
+    left: 0;
     opacity: 1;
+    position: absolute;
+    right: 0;
+    top: 0;
     transition: opacity 1s ease;
   }
 
   .detail-proxy-image-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0;
+    left: 0;
     opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
     transition: opacity 1s ease;
+    z-index: 1;
   }
 
   img {
-    width: 100%;
+    display: block;
     height: 100%;
     opacity: 0;
-    display: block;
+    width: 100%;
   }
 }

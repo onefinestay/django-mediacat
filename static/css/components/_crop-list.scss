@@ -1,15 +1,13 @@
-$ns: mediacat;
-
 .#{$ns}-crop-list {
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  list-style-type: none;
 
   .#{$ns}-crop {
+    border-bottom: 2px solid darken(#2b303b, 7.5);
+    cursor: pointer;
     margin: 0;
     text-align: center;
-    cursor: pointer;
-    border-bottom: 2px solid darken(#2b303b, 7.5);
 
     &:last-child {
       border-bottom-width: 0;
@@ -27,8 +25,8 @@ $ns: mediacat;
   }
 
   .#{$ns}-crop-selected {
-    border-color: #414858;
     background-color: darken(#414858, 5);
+    border-color: #414858;
   }
 }
 
@@ -37,18 +35,18 @@ $ns: mediacat;
 }
 
 .#{$ns}-crop-footer {
-  padding: 5px 10px;
   border-top: 1px solid darken(#2b303b, 7.5);
+  padding: 5px 10px;
 }
 
 .#{$ns}-crop-preview-frame {
-  margin: 0 auto 10px;
   background-color: #1a0000;
-  position: relative;
   box-sizing: content-box;
+  margin: 0 auto 10px;
+  position: relative;
 }
 
 .#{$ns}-crop-preview {
-  position: absolute;
   background-color: #414858;
+  position: absolute;
 }

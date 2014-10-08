@@ -1,26 +1,22 @@
-@import '../includes/colors';
-
-$ns: mediacat;
-
 .#{$ns}-uploads {
-    border-top: 1px $seperator-color solid;
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
+  border-top: 1px $seperator-color solid;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  list-style-type: none; 
 
-    > .scrollpane {
-      flex-grow: 1;
-      max-height: 200px;
-    }
+  > .scrollpane {
+    flex-grow: 1;
+    max-height: 200px;
   }
+}
 
-  .#{$ns}-upload-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
+.#{$ns}-upload-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
-  .#{$ns}-upload {
-    padding: 10px;
-  }
+.#{$ns}-upload {
+  padding: 10px;
+}

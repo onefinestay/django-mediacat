@@ -1,16 +1,12 @@
-@import '../includes/colors';
-
-$ns: mediacat;
-
 .#{$ns}-navigation {
   background-color: $sidebar-bg;
-  width: $sidebar-width;
-  flex-grow: 0;
-  flex-shrink: 0;
   border-right: 1px $seperator-color solid;
   color: $sidebar-fg;
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: $sidebar-width;
 
   > .scrollpane {
     flex-grow: 1;

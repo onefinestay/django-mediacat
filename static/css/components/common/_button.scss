@@ -6,25 +6,25 @@ button,
 .button {
   border: 0;
   border-radius: 2px;
-  cursor: pointer;  
-  display: inline-block;  
+  cursor: pointer;
+  display: inline-block;
   font-size: 16px;
-  font-weight: 300;  
-  height: 37px;  
+  font-weight: 300;
+  height: 37px;
   letter-spacing: .0625em;
   line-height: 27px;
   margin: 0;
-  overflow: hidden;  
+  overflow: hidden;
   padding: 5px 50px;
-  position: relative;  
+  position: relative;
   text-align: center;
 
   .button-mask {
-    bottom: 0;    
+    bottom: 0;
     left: 0;
-    position: absolute;        
+    position: absolute;
     right: 0;
-    top: 0;    
+    top: 0;
   }
 
   &:hover {
@@ -36,7 +36,7 @@ button,
   }
 
   &.disabled {
-    cursor: default;    
+    cursor: default;
     opacity: .5;
 
     &:hover {

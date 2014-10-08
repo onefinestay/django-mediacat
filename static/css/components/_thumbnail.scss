@@ -1,108 +1,106 @@
-$ns: mediacat;
-
 .#{$ns}-thumbnail-list {
-  margin: 0;
-  padding: 5px;
-  list-style-type: none;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  list-style-type: none;  
+  margin: 0;
+  padding: 5px;  
 }
 
 .#{$ns}-thumbnail {
-  flex-shrink: 0;
   background-color: #2b303b;
-  margin: 0;
   background-size: cover;
-  cursor: pointer;
   border: 1px darken(#232830, 3) solid;
-  margin-right: -1px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 0;  
   margin-bottom: -1px;
+  margin-right: -1px;
   position: relative;
+}
 
-  .#{$ns}-thumbnail-content {
-    width: 180px;
-    height: 180px;
-    padding: 9px;
-  }
+.#{$ns}-thumbnail-content {
+  height: 180px;
+  padding: 9px;
+  width: 180px;
+}
 
-  .#{$ns}-thumbnail-footer {
-    border-top: 1px darken(#2b303b, 5) solid;
-    background-color: rgba(0, 0, 0, 0.125);
-    padding: 5px;
-    text-align: center;
+.#{$ns}-thumbnail-footer {
+  background-color: rgba(0, 0, 0, .125);
+  border-top: 1px darken(#2b303b, 5) solid;
+  padding: 5px;
+  text-align: center;
 
-    .media-rating {
-      display: inline-block;
-      opacity: 0.25;
+  .media-rating {
+    display: inline-block;
+    line-height: 1;
+    opacity: .25;
+
+    .icon {
       line-height: 1;
-
-      .icon {
-        line-height: 1;
-        vertical-align: middle;
-      }
+      vertical-align: middle;
     }
-  }  
-
-  .dragover-guide {
-    position: absolute;
-    top: -2px;
-    bottom: -2px;
-    width: 5px;
-    background-color: #3ea2c1;
-    z-index: 2;
-    border-radius: 2px;
   }
+}
 
-  .dragover-guide-before {
-    left: -3px;
-  }
+.dragover-guide {
+  background-color: #3ea2c1;
+  border-radius: 2px;
+  bottom: -2px;
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  z-index: 2;
+}
 
-  .dragover-guide-after {
-    right: -3px;
-  }
+.dragover-guide-before {
+  left: -3px;
+}
 
-  .proxy-image {
-    width: 100%;
+.dragover-guide-after {
+  right: -3px;
+}
+
+.proxy-image {
+  height: 100%;
+  position: relative;
+  width: 100%;
+
+  .proxy-image-bg {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;      
     height: 100%;
-    position: relative;
+    opacity: 0;
+    transition: opacity 1s ease;      
+    width: 100%;     
+  }
 
-    .proxy-image-bg {
-      background-size: contain;
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      transition: opacity 1s ease;
-    }
+  .proxy-image-spinner {
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    line-height: 100%;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    transition: opacity 1s ease;
+    width: 100%;
+  }
 
+  &.proxy-image-preloaded {
+    .proxy-image-bg,
     .proxy-image-spinner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      opacity: 1;
-      transition: opacity 1s ease;
-      line-height: 100%;
-      text-align: center;
-      height: 100%;
-      width: 100%;
+      transition-property: none;
     }
+  }
 
-    &.proxy-image-preloaded {
-      .proxy-image-bg,
-      .proxy-image-spinner {
-        transition-property: none;
-      }
-    }
-
-    img {
-      display: block;
-      position: absolute;      
-      user-drag: none;
-    }
+  img {
+    display: block;
+    position: absolute;      
+    user-drag: none;
   }
 }
 
@@ -113,5 +111,3 @@ $ns: mediacat;
 .#{$ns}-thumbnail-selected {
   background-color: #414858;
 }
-
-

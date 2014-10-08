@@ -1,16 +1,12 @@
-@import '../includes/colors';
-
-$ns: mediacat;
-
 .#{$ns}-information {
   background-color: $sidebar-bg;
-  width: $sidebar-width;
-  flex-grow: 0;
-  flex-shrink: 0;
   border-left: 1px $seperator-color solid;
   color: $sidebar-fg;
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: $sidebar-width;
 
   > .#{$ns}-tabs {
     flex-grow: 1;
@@ -18,16 +14,16 @@ $ns: mediacat;
 
   .media-rating {
     .icon {
-      font-size: 24px;
       cursor: pointer;
+      font-size: 24px;
     }
 
     .no-rating {
-      opacity: 0.25;
+      opacity: .25;
     }
 
     .icon-reject {
-      opacity: 0.25;
+      opacity: .25;
 
       &:hover {
         opacity: 1;
@@ -37,18 +33,19 @@ $ns: mediacat;
 }
 
 .#{$ns}-information-panel {
-  flex-shrink: 0;
-  width: 320px;
-  overflow-y: scroll;
   background-color: $sidebar-bg;
+  flex-shrink: 0;
+  overflow-y: scroll;
   padding: 10px;
+  width: 320px;
 
   table {
-    width: 100%;
     border: 1px $seperator-color solid;
+    width: 100%;
   }
 
-  th, td {
+  th, 
+  td {
     padding: 5px;
   }
 

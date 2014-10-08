@@ -1,14 +1,12 @@
-$ns: mediacat;
-  
 .#{$ns}-drag-placeholder {
-  position: absolute;
-  z-index: 999;
-  pointer-events:none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  list-style-type: none;
+  pointer-events: none;
+  position: absolute;
   transform: scale(.5);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+  z-index: 999;
 
   li {
     margin: 0;

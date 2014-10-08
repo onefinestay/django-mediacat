@@ -1,42 +1,42 @@
 .tabs {
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  margin: 0;
+  padding: 0;
 
   .tabs-buttons {
-    list-style-type: none;
-    margin: 0;
-    padding: 5px;
+    background-color: #2b303b;
+    box-shadow: inset 0 1px 2px 0 darken(#2b303b, 5), inset 0 -1px 2px 0 darken(#2b303b, 2.5);
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
-    background-color: #2b303b;
     height: 40px;
-    box-shadow: inset 0 1px 2px 0 darken(#2b303b, 5), inset 0 -1px 2px 0 darken(#2b303b, 2.5);
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
 
     .tabs-button {
-      flex-grow: 1;
+      align-items: stretch;
       background-color: #2b303b;
-      margin: 0;
-      line-height: 26px;
-      flex-align: stretch;
-      flex-shrink: 0;
-      text-align: center;
       border: 1px solid #414858;
-      cursor: pointer;
       box-shadow: 0 1px 0 0 darken(#2b303b, 5);
+      cursor: pointer;
+      flex-grow: 1;
+      flex-shrink: 0;
+      line-height: 26px;
+      margin: 0;
+      text-align: center;
 
       &:first-child {
-        border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
         border-right-width: 0;
+        border-top-left-radius: 2px;
       }
 
       &:last-child {
-        border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
+        border-top-right-radius: 2px;
       }
 
       &:hover {
@@ -55,18 +55,18 @@
   }
 
   .tabs-panels {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
   }
 
   .tabs-panel {
     display: none;
-    flex-grow: 1;
     flex-direction: row;
+    flex-grow: 1;
   }
 
   .tabs-panel-active {

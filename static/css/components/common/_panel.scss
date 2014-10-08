@@ -1,48 +1,46 @@
-@import '../../includes/colors';
-
-
 .panel {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
-	> .scrollpane {
-		flex-grow: 1;
-	}
+  > .scrollpane {
+    flex-grow: 1;
+  }
 
-	.panel-header.toolbar {
-	  background-color: #414858;
-	  flex-grow: 0;
-	  flex-shrink: 0;
-	  align-items: stretch;
-	  padding: 5px;
-	  height: 40px;
-	  line-height: 29px;
-	  border-bottom: 1px #1a0000 solid;
-	  color: #BAC5CE;
+  .panel-header.toolbar {
+    align-items: stretch;
+    background-color: #414858;
+    border-bottom: 1px #1a0000 solid;
+    color: #bac5ce;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 40px;
+    line-height: 29px;
+    padding: 5px;
 
-	  .separator {
-	  	width: 5px;
-	  }
+    .separator {
+      width: 5px;
+    }
 
-	  button, .button {
-	    padding: 0 10px;
-	    background-color: #2b303b;
-	    height: 100%;
-	    width: auto;
-	    border: 1px solid darken(#2b303b, 7.5);
-	    color: #BAC5CE;
-	    box-shadow: 0 1px 0 0 darken(#2b303b, 1);
+    button,
+    .button {
+      background-color: #2b303b;
+      border: 1px solid darken(#2b303b, 7.5);
+      box-shadow: 0 1px 0 0 darken(#2b303b, 1);
+      color: #bac5ce;
+      height: 100%;
+      padding: 0 10px;
+      width: auto;
 
-	    &[disabled] {
-	    	opacity: 0.5;
-	    }
+      &[disabled] {
+        opacity: .5;
+      }
 
-	    .icon {
-	      padding: 0;
-	      font-size: 12px;
-	    }
-	  }
-	}	
+      .icon {
+        font-size: 12px;
+        padding: 0;
+      }
+    }
+  } 
 }

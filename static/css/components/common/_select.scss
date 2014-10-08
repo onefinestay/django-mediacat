@@ -1,18 +1,16 @@
-@import '../../includes/colors';
-
 .select {
-  position: relative;
+  background-color: #2b303b;    
+  border: 1px solid darken(#2b303b, 7.5);
+  border-radius: 2px;
+  box-shadow: 0 1px 0 0 darken(#2b303b, 1);
+  cursor: pointer;
   display: flex;
   flex-direction: row;
-  border: 1px solid darken(#2b303b, 7.5);
-  background-color: #2b303b;    
-  border-radius: 2px;
   font-size: 14px; 
-  cursor: pointer;
-  box-shadow: 0 1px 0 0 darken(#2b303b, 1);
+  position: relative;
 
   &.disabled {
-    opacity: 0.5;
+    opacity: .5;
   }
 
   &:focus {
@@ -40,16 +38,16 @@
   }
 
   .select-placeholder {
-    opacity: 0.5;
+    opacity: .5;
   }
 
   .select-arrow {
-    flex-shrink: 0;
-    flex-grow: 0;
-    width: 30px;    
-    text-align: center;
-    display: inline-block;
     border-left: 1px solid darken(#2b303b, 7.5);
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: center;
+    width: 30px;    
 
     .icon {
       font-size: 12px;
@@ -59,20 +57,20 @@
 }
 
 .select-options {
-  left: -1px;
-  right: -1px;
-  position: absolute;
-  top: 28px;
-  z-index: 2;
   background: #2b303b;
   border: 1px solid darken(#2b303b, 7.5);
-  border-top: none;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
-  max-height: 305px;
-  overflow: auto;
+  border-top-width: 0;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+  left: -1px;
   list-style-type: none;
   margin: 0;
+  max-height: 305px;
+  overflow: auto;
   padding: 0;
+  position: absolute;
+  right: -1px;
+  top: 28px;
+  z-index: 2;
 }
 
 .select-result {
