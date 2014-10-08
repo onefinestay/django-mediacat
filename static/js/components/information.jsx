@@ -20,13 +20,11 @@ var Information = React.createClass({
   
   render: function() {
     return (
-      <div className="mediacat-information">
-        <Header>
-          <div className="toolbar">
-            <div className="spacer" />
-            <PickButton />
-          </div>
-        </Header>        
+      <div className="mediacat-information mediacat-column mediacat-column--sidebar">
+        <div className="toolbar">
+          <div className="spacer" />
+          <PickButton />
+        </div>
         <Tabs>
           <Tab name="Crops">
             <CropsPanel />

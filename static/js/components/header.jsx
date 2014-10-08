@@ -10,7 +10,7 @@ var Header = React.createClass({
 
   render: function() {
     return (
-      <div className="mediacat-header">
+      <div className="mediacat-header toolbar">
         {this.props.children}
       </div>
     );

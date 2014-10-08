@@ -1,8 +1,13 @@
-
 .toolbar {
+  align-items: stretch;  
+  border-bottom: 1px $seperator-color solid;
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 57px;
+  line-height: 37px;
+  padding: $toolbar-el-spacing;
 
   label {
     display: inline-block;
@@ -45,5 +50,78 @@
       }
 
     }
+  }
+
+  .#{$ns}-column > & {
+    background-color: $header-bg;
+
+    button, 
+    .button {
+      background-color: $header-button-bg;
+      box-shadow: 0 1px 0 0 $header-button-shadow;
+      color: $header-button-text;
+
+      &.active {
+        background-color: $header-button-active-bg;
+        box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
+        color: $header-button-active-text;
+      }
+
+      &.icon {
+        font-size: 24px;
+      }
+    }
+
+    input {
+      box-shadow: inset 0 1px 0 0 $header-button-shadow;
+      display: block;
+      font-weight: 300;
+      height: 30px;
+      margin: 0;
+      width: 100%;
+
+      &[type=search] {
+        border: 0;      
+        border-radius: 2px;
+        flex-grow: 1;
+        font-family: $font-family;
+        font-size: $font-size;
+        height: 37px;
+        line-height: 27px;
+        padding: 5px 10px 5px 5px;
+      }
+    }
+  }
+
+  .panel > & { 
+    background-color: $panel-toolbar-bg;
+    color: $panel-toolbar-text;   
+    height: 40px;
+    line-height: 29px;
+    padding: $panel-toolbar-el-spacing;
+
+    .separator {
+      width: $panel-toolbar-el-spacing;
+    }
+
+    button,
+    .button {
+      background-color: $panel-toolbar-button-bg;
+      border: 1px solid $panel-toolbar-button-border;
+      box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;
+      color: $panel-toolbar-button-text;
+      height: 100%;
+      padding: 0 10px;
+      width: auto;
+
+      &[disabled] {
+        opacity: .5;
+      }
+
+      .icon {
+        font-size: 12px;
+        padding: 0;
+      }
+    }    
   }
 }

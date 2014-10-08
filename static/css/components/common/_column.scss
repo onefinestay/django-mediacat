@@ -1,0 +1,21 @@
+.#{$ns}-column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  &:first-of-type {
+  	border-right: 1px $seperator-color solid;
+  }
+
+  &:last-of-type {
+  	border-left: 1px $seperator-color solid;  	
+  }
+
+  &--sidebar {
+  	background-color: $sidebar-bg;
+  	flex-grow: 0;
+  	flex-shrink: 0;
+  	width: $sidebar-width;
+  	color: $sidebar-text;
+  }
+}

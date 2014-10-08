@@ -1,13 +1,4 @@
 .#{$ns}-navigation {
-  background-color: $sidebar-bg;
-  border-right: 1px $seperator-color solid;
-  color: $sidebar-text;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: $sidebar-width;
-
   > .scrollpane {
     flex-grow: 1;
   }

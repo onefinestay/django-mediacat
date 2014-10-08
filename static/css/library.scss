@@ -6,7 +6,7 @@ $ns: mediacat;
 @import './variables/loaders';
 
 @import './components/common/button';
-@import './components/common/header';
+@import './components/common/column';
 @import './components/common/input';
 @import './components/common/panel';
 @import './components/common/scrollpane';
@@ -16,7 +16,6 @@ $ns: mediacat;
 
 @import './components/application';
 @import './components/categories';
-@import './components/content';
 @import './components/crop-list';
 @import './components/crop-panel';
 @import './components/cropper';

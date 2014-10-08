@@ -1,13 +1,4 @@
 .#{$ns}-information {
-  background-color: $sidebar-bg;
-  border-left: 1px $seperator-color solid;
-  color: $sidebar-text;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: $sidebar-width;
-
   > .#{$ns}-tabs {
     flex-grow: 1;
   }

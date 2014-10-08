@@ -93,17 +93,15 @@ var Main = React.createClass({
     };
 
     return (
-      <div className="mediacat-content">
-        <Header>
-          <div className="toolbar">
-            <div className="spacer" />
-            <div className="button-group">
-              <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />
-              <button className={cx(filmstripButtonClasses)} onClick={this.setFilmstripMode} />
-              <button className={cx(detailButtonClasses)} onClick={this.setDetailMode} />
-            </div>
+      <div className="mediacat-content mediacat-column">
+        <div className="toolbar">
+          <div className="spacer" />
+          <div className="button-group">
+            <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />
+            <button className={cx(filmstripButtonClasses)} onClick={this.setFilmstripMode} />
+            <button className={cx(detailButtonClasses)} onClick={this.setDetailMode} />
           </div>
-        </Header>
+        </div>
         <div className={cx(documentClasses)}>
           {this.state.mode !== 'grid' && <div className="mediacat-detail-wrapper"><Detail mode={this.state.mode} /></div>}
           {this.state.mode !== 'detail' && <ThumbnailList mode={this.state.mode} />}

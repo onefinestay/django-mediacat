@@ -27,14 +27,12 @@ var Navigation = React.createClass({
   
   render: function() {
     return (
-      <div className="mediacat-navigation">
-        <Header>
-          <div className="toolbar">
-            <UploadButton />
-            <div className="separator" />
-            <Search />
-          </div>
-        </Header>
+      <div className="mediacat-navigation mediacat-column mediacat-column--sidebar">
+        <div className="toolbar">
+          <UploadButton />
+          <div className="separator" />
+          <Search />
+        </div>
         <CategoryTree />
         {this.state.hasUploads ? <Uploads /> : null}
       </div>
