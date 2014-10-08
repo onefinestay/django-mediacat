@@ -964,12 +964,6 @@ input.hidden-file {
   .mediacat-information-panel td {
     width: 100%; }
 
-.mediacat-navigation > .scrollpane {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
-
 .mediacat-thumbnail-list {
   display: -webkit-box;
   display: -webkit-flex;
