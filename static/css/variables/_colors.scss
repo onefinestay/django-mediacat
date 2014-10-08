@@ -1,0 +1,38 @@
+$teal: #3ea2c1;
+$white: #fff;
+$slate: #2b303b;
+$light-slate: lighten($slate, 10);
+$v-light-slate: lighten($slate, 50);
+$dark-slate: darken($slate, 20);
+
+$body-bg: $dark-slate;
+$body-text: $white;
+
+$seperator-color: darken($dark-slate, 20);
+
+$header-bg: $teal;
+
+$header-button-bg: $white;
+$header-button-text: $teal;
+$header-button-shadow: darken($header-button-bg, 15);
+
+$header-button-active-bg: darken($header-button-bg, 15);
+$header-button-active-highlight: lighten($header-bg, 15);
+$header-button-active-shadow: darken($header-bg, 25);
+$header-button-active-text: lighten($header-bg, 10);
+
+$header-input-bg: $white;
+$header-input-text: $teal;
+
+$sidebar-bg: $slate;
+$sidebar-text: $v-light-slate;
+
+$panel-toolbar-bg: $light-slate;
+$panel-toolbar-text: $v-light-slate;
+
+$panel-toolbar-button-bg: $slate;
+$panel-toolbar-button-border: darken($panel-toolbar-button-bg, 7.5);
+$panel-toolbar-button-shadow: darken($panel-toolbar-button-bg, 1);
+$panel-toolbar-button-text: $v-light-slate;
+
+$crop-mask-bg: rgba(0, 0, 0, .5);

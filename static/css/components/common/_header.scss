@@ -1,5 +1,5 @@
 .#{$ns}-header {
-  background-color: $header-color;
+  background-color: $header-bg;
   border-bottom: 1px $seperator-color solid;
   display: flex;
   flex-grow: 0;
@@ -10,14 +10,14 @@
 
   button, 
   .button {
-    background-color: #fff;
-    box-shadow: 0 1px 0 0 darken(#00c0ff, 20);
-    color: desaturate($base-color, 49);
+    background-color: $header-button-bg;
+    box-shadow: 0 1px 0 0 $header-button-shadow;
+    color: $header-button-text;
 
     &.active {
-      background-color: darken(#00c0ff, 20);
-      box-shadow: inset 0 1px 0 0 darken(#00c0ff, 30), inset 0 -1px 0 0 lighten(#00c0ff, 10);
-      color: lighten(desaturate($base-color, 49), 10);
+      background-color: $header-button-active-bg;
+      box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
+      color: $header-button-active-text;
     }
 
     &.icon {
@@ -26,7 +26,7 @@
   }
 
   input {
-    box-shadow: inset 0 1px 0 0 #89c0d2;
+    box-shadow: inset 0 1px 0 0 $header-button-shadow;
     display: block;
     font-weight: 300;
     height: 30px;
@@ -37,8 +37,8 @@
       border: 0;      
       border-radius: 2px;
       flex-grow: 1;
-      font-family: Nunito, sans-serif;
-      font-size: 14px;
+      font-family: $font-family;
+      font-size: $font-size;
       height: 37px;
       line-height: 27px;
       padding: 5px 10px 5px 5px;

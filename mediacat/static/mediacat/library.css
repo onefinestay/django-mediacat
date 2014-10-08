@@ -173,7 +173,7 @@ button, .button {
 
 .mediacat-header {
   background-color: #3ea2c1;
-  border-bottom: 1px #1a0000 solid;
+  border-bottom: 1px black solid;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -190,16 +190,16 @@ button, .button {
   padding: 10px; }
   .mediacat-header button, .mediacat-header .button {
     background-color: #fff;
-    box-shadow: 0 1px 0 0 #007599;
+    box-shadow: 0 1px 0 0 #d9d9d9;
     color: #3ea2c1; }
     .mediacat-header button.active, .mediacat-header .button.active {
-      background-color: #007599;
-      box-shadow: inset 0 1px 0 0 #004e66, inset 0 -1px 0 0 #33cfff;
-      color: #65b6cd; }
+      background-color: #d9d9d9;
+      box-shadow: inset 0 1px 0 0 #1f5161, inset 0 -1px 0 0 #78bed4;
+      color: #65b5cd; }
     .mediacat-header button.icon, .mediacat-header .button.icon {
       font-size: 24px; }
   .mediacat-header input {
-    box-shadow: inset 0 1px 0 0 #89c0d2;
+    box-shadow: inset 0 1px 0 0 #d9d9d9;
     display: block;
     font-weight: 300;
     height: 30px;
@@ -247,14 +247,14 @@ input.hidden-file {
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
-  .panel .panel-header.toolbar {
+  .panel .toolbar {
     -webkit-box-align: stretch;
     -webkit-align-items: stretch;
         -ms-flex-align: stretch;
             align-items: stretch;
     background-color: #414858;
-    border-bottom: 1px #1a0000 solid;
-    color: #bac5ce;
+    border-bottom: 1px black solid;
+    color: #a6aebf;
     -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
@@ -265,19 +265,19 @@ input.hidden-file {
     height: 40px;
     line-height: 29px;
     padding: 5px; }
-    .panel .panel-header.toolbar .separator {
+    .panel .toolbar .separator {
       width: 5px; }
-    .panel .panel-header.toolbar button, .panel .panel-header.toolbar .button {
+    .panel .toolbar button, .panel .toolbar .button {
       background-color: #2b303b;
       border: 1px solid #1b1e25;
       box-shadow: 0 1px 0 0 #292e38;
-      color: #bac5ce;
+      color: #a6aebf;
       height: 100%;
       padding: 0 10px;
       width: auto; }
-      .panel .panel-header.toolbar button[disabled], .panel .panel-header.toolbar .button[disabled] {
+      .panel .toolbar button[disabled], .panel .toolbar .button[disabled] {
         opacity: 0.5; }
-      .panel .panel-header.toolbar button .icon, .panel .panel-header.toolbar .button .icon {
+      .panel .toolbar button .icon, .panel .toolbar .button .icon {
         font-size: 12px;
         padding: 0; }
 
@@ -295,7 +295,7 @@ input.hidden-file {
     .scrollpane .scrollpane-scrollbar:hover .scrollpane-scrollbar-handle {
       opacity: 1; }
   .scrollpane .scrollpane-scrollbar-vertical {
-    border-left: 1px solid #1a0000;
+    border-left: 1px solid black;
     bottom: 0;
     right: 0;
     top: 0;
@@ -965,8 +965,8 @@ input.hidden-file {
 
 .mediacat-information {
   background-color: #2b303b;
-  border-left: 1px #1a0000 solid;
-  color: #bac5ce;
+  border-left: 1px black solid;
+  color: #a6aebf;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1008,7 +1008,7 @@ input.hidden-file {
   padding: 10px;
   width: 320px; }
   .mediacat-information-panel table {
-    border: 1px #1a0000 solid;
+    border: 1px black solid;
     width: 100%; }
   .mediacat-information-panel th, .mediacat-information-panel td {
     padding: 5px; }
@@ -1017,8 +1017,8 @@ input.hidden-file {
 
 .mediacat-navigation {
   background-color: #2b303b;
-  border-right: 1px #1a0000 solid;
-  color: #bac5ce;
+  border-right: 1px black solid;
+  color: #a6aebf;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1146,7 +1146,7 @@ input.hidden-file {
   background-color: #414858; }
 
 .mediacat-uploads {
-  border-top: 1px #1a0000 solid;
+  border-top: 1px black solid;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1176,7 +1176,7 @@ input.hidden-file {
   padding: 10px; }
 
 html {
-  background-color: #232830;
+  background-color: black;
   color: #fff;
   font-family: Nunito, sans-serif;
   font-size: 14px;

@@ -8,27 +8,27 @@
     flex-grow: 1;
   }
 
-  .panel-header.toolbar {
+  .toolbar {
     align-items: stretch;
-    background-color: #414858;
-    border-bottom: 1px #1a0000 solid;
-    color: #bac5ce;
+    background-color: $panel-toolbar-bg;
+    border-bottom: 1px $seperator-color solid;
+    color: $panel-toolbar-text;
     flex-grow: 0;
     flex-shrink: 0;
     height: 40px;
     line-height: 29px;
-    padding: 5px;
+    padding: $panel-toolbar-el-spacing;
 
     .separator {
-      width: 5px;
+      width: $panel-toolbar-el-spacing;
     }
 
     button,
     .button {
-      background-color: #2b303b;
-      border: 1px solid darken(#2b303b, 7.5);
-      box-shadow: 0 1px 0 0 darken(#2b303b, 1);
-      color: #bac5ce;
+      background-color: $panel-toolbar-button-bg;
+      border: 1px solid $panel-toolbar-button-border;
+      box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;
+      color: $panel-toolbar-button-text;
       height: 100%;
       padding: 0 10px;
       width: auto;

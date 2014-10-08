@@ -3,7 +3,7 @@
   z-index: 1;
 
   .#{$ns}-cropper-mask {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: $crop-mask-bg;
     position: absolute;
   }
 

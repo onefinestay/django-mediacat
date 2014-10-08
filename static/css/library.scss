@@ -1,8 +1,9 @@
 $ns: mediacat;
 
-@import './includes/colors';
-@import './includes/dimensions';
-@import './includes/loaders';
+@import './variables/colors';
+@import './variables/dimensions';
+@import './variables/fonts';
+@import './variables/loaders';
 
 @import './components/common/button';
 @import './components/common/header';
@@ -28,11 +29,11 @@ $ns: mediacat;
 @import './components/uploads';
 
 html {
-  background-color: $background-color;
-  color: $text-color;
-  font-family: Nunito, sans-serif;  
-  font-size: 14px;
-  font-weight: 300;
+  background-color: $body-bg;
+  color: $body-text;
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-weight;
 }
 
 body {

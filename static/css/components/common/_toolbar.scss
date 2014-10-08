@@ -1,3 +1,4 @@
+
 .toolbar {
   display: flex;
   flex-direction: row;
@@ -5,7 +6,7 @@
 
   label {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: $toolbar-el-spacing;
   }
 
   .spacer {
@@ -15,7 +16,7 @@
   .separator {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 10px;
+    width: $toolbar-el-spacing;
   }
 
   select {
