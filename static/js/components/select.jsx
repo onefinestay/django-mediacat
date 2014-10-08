@@ -2,7 +2,6 @@
 "use strict";
 
 var React = require('react/addons');
-var _ = require('underscore');
 var cx = React.addons.classSet;
 var KeyboardMixin = require('./keyboard-mixin');
 

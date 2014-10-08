@@ -5,7 +5,6 @@
 var React = require('react/addons');
 var cx = React.addons.classSet;
 var Tab = require('./tab');
-var _ = require('underscore');
 
 
 var Tabs = React.createClass({
@@ -19,7 +18,7 @@ var Tabs = React.createClass({
   activateTab: function(index) {
     var tabs = this.props.children;
 
-    if (!_.isArray(tabs)) {
+    if (!Array.isArray(tabs)) {
       tabs = [tabs];
     } 
 
@@ -33,7 +32,7 @@ var Tabs = React.createClass({
   render: function() {
     var tabs = this.props.children;
 
-    if (!_.isArray(tabs)) {
+    if (!Array.isArray(tabs)) {
       tabs = [tabs];
     }    
     
@@ -59,7 +58,7 @@ var Tabs = React.createClass({
         'tabs-panel': true
       });
 
-      tabButtons.push(<li key={tab.props.name} className={buttonClasses} onClick={_.partial(this.activateTab, i)}>{tab.props.name}</li>);
+      tabButtons.push(<li key={tab.props.name} className={buttonClasses} onClick={this.activateTab.bind(this, i)}>{tab.props.name}</li>);
       tabBodies.push(<li key={tab.props.name} className={panelClasses}>{tab.props.children}</li>);
     }
 
