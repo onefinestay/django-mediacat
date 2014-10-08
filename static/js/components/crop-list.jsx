@@ -61,10 +61,9 @@ var Crop = React.createClass({
 
     var classes = {
       'mediacat-crop': true,
+      'mediacat-crop--pickable': this.state.pickable,
+      'mediacat-crop--selected': this.state.selected,
       'mediacat-list__item': true,
-      'mediacat-list__item--crop': true,
-      'mediacat-list__item--crop-pickable': this.state.pickable,
-      'mediacat-list__item--crop-selected': this.state.selected
     };
 
     var frameWidth = 150;

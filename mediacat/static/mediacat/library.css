@@ -706,7 +706,7 @@ input.hidden-file {
   .mediacat-crop .icon-reject {
     font-size: 12px;
     line-height: 18px; }
-  .mediacat-crop-selected {
+  .mediacat-crop--selected {
     background-color: #363c49;
     border-color: #414858; }
   .mediacat-crop__content {
