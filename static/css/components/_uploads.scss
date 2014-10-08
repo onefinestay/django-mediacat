@@ -3,17 +3,10 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  list-style-type: none; 
 
   > .scrollpane {
     max-height: 200px;
   }
-}
-
-.#{$ns}-upload-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
 
 .#{$ns}-upload {

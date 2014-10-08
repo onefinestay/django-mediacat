@@ -33,7 +33,7 @@ var DragLayer = React.createClass({
     };
 
     return (
-      <ul className="thumbnail-list mediacat-drag-placeholder" style={style}>
+      <ul className="thumbnail-list mediacat-drag-placeholder mediacat-list mediacat-list--thumbnails" style={style}>
         <Thumbnail thumbnail={this.state.draggingMedia} />
       </ul>
     );

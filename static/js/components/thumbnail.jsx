@@ -125,6 +125,8 @@ var Thumbnail = React.createClass({
 
     var classes = {
       'mediacat-thumbnail': true,
+      'mediacat-list__item': true,
+      'mediacat-list__item--thumbnail': true,          
       'mediacat-thumbnail-rejected': thumbnail.get('rating') === 0,
       'mediacat-thumbnail-selected': this.state.selected
     };

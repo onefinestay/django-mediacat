@@ -34,6 +34,8 @@ var Upload = React.createClass({
 
     var classes = {
       'mediacat-upload': true,
+      'mediacat-list__item': true,
+      'mediacat-list__item--upload': true,      
       'mediacat-upload-selected': this.state.selected
     };
 
@@ -71,7 +73,7 @@ var UploadList = React.createClass({
     var uploads = this.state.uploads.map(upload => <Upload key={upload.get('id')} upload={upload} />);
 
     return (
-      <ul className="mediacat-upload-list">
+      <ul className="mediacat-upload-list mediacat-list mediacat-list--uploads">
         {uploads.toJS()}
       </ul>
     );

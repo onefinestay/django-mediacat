@@ -8,7 +8,6 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var FluxMixin = require('./flux-mixin');
 
-var Header = require('./header');
 var Search = require('./search');
 var UploadButton = require('./upload-button');
 var CategoryTree = require('./category-tree');

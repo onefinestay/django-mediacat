@@ -200,7 +200,7 @@ var ThumbnailList = React.createClass({
 
     return (
       <Panel mode={this.props.mode} toolbar={toolbar}>
-        <ul className="mediacat-thumbnail-list" ref="content">
+        <ul className="mediacat-thumbnail-list mediacat-list mediacat-list--thumbnails" ref="content">
           {thumbnails.toJS()}
         </ul>
       </Panel>

@@ -1498,7 +1498,6 @@
 	
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	
-	var Header = __webpack_require__(/*! ./header */ 35);
 	var Search = __webpack_require__(/*! ./search */ 38);
 	var UploadButton = __webpack_require__(/*! ./upload-button */ 39);
 	var CategoryTree = __webpack_require__(/*! ./category-tree */ 40);
@@ -1551,7 +1550,6 @@
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 19);
 	
-	var Header = __webpack_require__(/*! ./header */ 35);
 	var ThumbnailList = __webpack_require__(/*! ./thumbnail-list */ 36);
 	var Detail = __webpack_require__(/*! ./detail */ 37);
 	
@@ -1667,7 +1665,6 @@
 	var React = __webpack_require__(/*! react/addons */ 10);
 	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
 	
-	var Header = __webpack_require__(/*! ./header */ 35);
 	var tabs = __webpack_require__(/*! ./tabs/tabs */ 47);
 	var Tab = tabs.Tab;
 	var Tabs = tabs.Tabs;
@@ -1745,7 +1742,7 @@
 	    };
 	
 	    return (
-	      React.DOM.ul({className: "thumbnail-list mediacat-drag-placeholder", style: style}, 
+	      React.DOM.ul({className: "thumbnail-list mediacat-drag-placeholder mediacat-list mediacat-list--thumbnails", style: style}, 
 	        Thumbnail({thumbnail: this.state.draggingMedia})
 	      )
 	    );
@@ -3430,34 +3427,7 @@
 	}));
 
 /***/ },
-/* 35 */
-/*!*****************************************!*\
-  !*** ./static/js/components/header.jsx ***!
-  \*****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 */
-	var React = __webpack_require__(/*! react/addons */ 10);
-	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
-	
-	
-	var Header = React.createClass({displayName: 'Header',
-	  mixins: [PureRenderMixin],
-	
-	  render: function() {
-	    return (
-	      React.DOM.div({className: "mediacat-header toolbar"}, 
-	        this.props.children
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Header;
-
-/***/ },
+/* 35 */,
 /* 36 */
 /*!*************************************************!*\
   !*** ./static/js/components/thumbnail-list.jsx ***!
@@ -3666,7 +3636,7 @@
 	
 	    return (
 	      Panel({mode: this.props.mode, toolbar: toolbar}, 
-	        React.DOM.ul({className: "mediacat-thumbnail-list", ref: "content"}, 
+	        React.DOM.ul({className: "mediacat-thumbnail-list mediacat-list mediacat-list--thumbnails", ref: "content"}, 
 	          thumbnails.toJS()
 	        )
 	      )
@@ -3955,8 +3925,14 @@
 	      'padding-left': 15 * this.props.depth + 'px'
 	    };
 	
+	    var classes = {
+	      'mediacat-categories-node': true,
+	      'mediacat-list__item': true,
+	      'mediacat-list__item--category': true,   
+	    };
+	
 	    return (
-	      React.DOM.li({className: "mediacat-categories-node"}, 
+	      React.DOM.li({className: cx(classes)}, 
 	        React.DOM.a({style: style, className: "mediacat-categories-label"}, 
 	          React.DOM.span({className: "icon icon-dash"}), 
 	          React.DOM.span({className: "loading"}, "Loading...")
@@ -4058,6 +4034,8 @@
 	    var classes = {
 	      'mediacat-categories-node': true,
 	      'mediacat-categories-node-open': isOpen,
+	      'mediacat-list__item': true,
+	      'mediacat-list__item--category': true,    
 	      'mediacat-categories-node-selected': this.state.selected
 	    };
 	
@@ -4080,8 +4058,8 @@
 	          node.get('name'), 
 	          this.state.fetchingMedia ? LinearLoader(null) : React.DOM.div({className: "mediacat-categories-count"}, count || '-')
 	        ), 
-	        isOpen && hasChildren && loadedChildren ? React.DOM.ul({className: "mediacat-categories-children"}, nodes.toJS()) : null, 
-	        isOpen && hasChildren && !loadedChildren ? React.DOM.ul({className: "mediacat-categories-children"}, CategoryTreePlaceholderNode({depth: depth + 1})) : null
+	        isOpen && hasChildren && loadedChildren ? React.DOM.ul({className: "mediacat-categories-children mediacat-list mediacat-list--categories"}, nodes.toJS()) : null, 
+	        isOpen && hasChildren && !loadedChildren ? React.DOM.ul({className: "mediacat-categories-children mediacat-list mediacat-list--categories"}, CategoryTreePlaceholderNode({depth: depth + 1})) : null
 	      )
 	    );
 	  }
@@ -4104,7 +4082,7 @@
 	
 	    return (
 	      ScrollPane(null, 
-	        React.DOM.ul({className: "mediacat-categories"}, 
+	        React.DOM.ul({className: "mediacat-categories mediacat-list mediacat-list--categories"}, 
 	          nodes.toJS()
 	        )
 	      )
@@ -4370,6 +4348,8 @@
 	
 	    var classes = {
 	      'mediacat-thumbnail': true,
+	      'mediacat-list__item': true,
+	      'mediacat-list__item--thumbnail': true,          
 	      'mediacat-thumbnail-rejected': thumbnail.get('rating') === 0,
 	      'mediacat-thumbnail-selected': this.state.selected
 	    };
@@ -8838,6 +8818,8 @@
 	
 	    var classes = {
 	      'mediacat-upload': true,
+	      'mediacat-list__item': true,
+	      'mediacat-list__item--upload': true,      
 	      'mediacat-upload-selected': this.state.selected
 	    };
 	
@@ -8875,7 +8857,7 @@
 	    var uploads = this.state.uploads.map(function(upload)  {return Upload({key: upload.get('id'), upload: upload});});
 	
 	    return (
-	      React.DOM.ul({className: "mediacat-upload-list"}, 
+	      React.DOM.ul({className: "mediacat-upload-list mediacat-list mediacat-list--uploads"}, 
 	        uploads.toJS()
 	      )
 	    );
@@ -16728,8 +16710,10 @@
 	
 	    var classes = {
 	      'mediacat-crop': true,
-	      'mediacat-crop-pickable': this.state.pickable,
-	      'mediacat-crop-selected': this.state.selected
+	      'mediacat-list__item': true,
+	      'mediacat-list__item--crop': true,
+	      'mediacat-list__item--crop-pickable': this.state.pickable,
+	      'mediacat-list__item--crop-selected': this.state.selected
 	    };
 	
 	    var frameWidth = 150;
@@ -16758,12 +16742,12 @@
 	
 	    return (
 	      React.DOM.li({className: cx(classes), onClick: this.select}, 
-	        React.DOM.div({className: "mediacat-crop-content"}, 
-	          React.DOM.div({className: "mediacat-crop-preview-frame", style: frameStyles}, 
-	            React.DOM.div({className: "mediacat-crop-preview", style: previewStyles})
+	        React.DOM.div({className: "mediacat-crop__content"}, 
+	          React.DOM.div({className: "mediacat-crop__preview-frame", style: frameStyles}, 
+	            React.DOM.div({className: "mediacat-crop__preview", style: previewStyles})
 	          )
 	        ), 
-	        React.DOM.div({className: "mediacat-crop-footer"}, 
+	        React.DOM.div({className: "mediacat-crop__footer"}, 
 	          "Usages: ", crop.get('applications').length, 
 	          crop.get('changed') ? React.DOM.a({href: "javascript:;", onClick: this.save}, "Save") : null
 	        )
@@ -16791,11 +16775,11 @@
 	    var crops = this.props.crops.map(function(crop)  {return Crop({key: crop.get('uuid'), x1: crop.get('x1'), x2: crop.get('x2'), y1: crop.get('y1'), y2: crop.get('y2'), crop: crop, media: media});});
 	
 	    return (
-	      React.DOM.li({className: "mediacat-crop-type"}, 
-	        React.DOM.div({className: "mediacat-crop-type-header"}, 
+	      React.DOM.li({className: "mediacat-crop-group mediacat-list__item mediacat-list__item--crop-group"}, 
+	        React.DOM.div({className: "mediacat-crop-group__header"}, 
 	          this.state.availableCrops.get(this.props.key).get(0)
 	        ), 
-	        React.DOM.ul({className: "mediacat-crop-list"}, 
+	        React.DOM.ul({className: "mediacat-list mediacat-list--crops"}, 
 	          crops.toJS()
 	        )
 	      )
@@ -16834,7 +16818,7 @@
 	      .map(function(crops, key)  {return CropGroup({key: key, crops: crops});});
 	
 	    return (
-	      React.DOM.ul({className: "mediacat-crop-type-list"}, 
+	      React.DOM.ul({className: "mediacat-list mediacat-list--crop-groups"}, 
 	        cropGroups.toJS()
 	      )
 	    );

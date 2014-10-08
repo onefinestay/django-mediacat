@@ -19,8 +19,14 @@ var CategoryTreePlaceholderNode = React.createClass({
       'padding-left': 15 * this.props.depth + 'px'
     };
 
+    var classes = {
+      'mediacat-categories-node': true,
+      'mediacat-list__item': true,
+      'mediacat-list__item--category': true,   
+    };
+
     return (
-      <li className="mediacat-categories-node">
+      <li className={cx(classes)}>
         <a style={style} className="mediacat-categories-label">
           <span className="icon icon-dash" />
           <span className="loading">Loading...</span>
@@ -122,6 +128,8 @@ var CategoryTreeNode = React.createClass({
     var classes = {
       'mediacat-categories-node': true,
       'mediacat-categories-node-open': isOpen,
+      'mediacat-list__item': true,
+      'mediacat-list__item--category': true,    
       'mediacat-categories-node-selected': this.state.selected
     };
 
@@ -144,8 +152,8 @@ var CategoryTreeNode = React.createClass({
           {node.get('name')}
           {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
         </a>
-        {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-categories-children">{nodes.toJS()}</ul> : null}
-        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
+        {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-categories-children mediacat-list mediacat-list--categories">{nodes.toJS()}</ul> : null}
+        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children mediacat-list mediacat-list--categories"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
       </li>
     );
   }
@@ -168,7 +176,7 @@ var CategoryTree = React.createClass({
 
     return (
       <ScrollPane>
-        <ul className="mediacat-categories">
+        <ul className="mediacat-categories mediacat-list mediacat-list--categories">
           {nodes.toJS()}
         </ul>
       </ScrollPane>

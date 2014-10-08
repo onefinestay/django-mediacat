@@ -207,6 +207,14 @@ input.hidden-file {
   visibility: hidden;
   width: 0; }
 
+.mediacat-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .mediacat-list__item {
+    margin: 0;
+    padding: 0; }
+
 .panel {
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
@@ -607,10 +615,6 @@ input.hidden-file {
   list-style-type: none;
   margin: 0;
   padding: 0; }
-  .mediacat-categories ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0; }
 
 .mediacat-categories-label {
   cursor: pointer;
@@ -673,82 +677,52 @@ input.hidden-file {
         -ms-transform: rotate(45deg);
             transform: rotate(45deg); }
 
-.mediacat-crop-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-  .mediacat-crop-list .mediacat-crop {
-    border-bottom: 2px solid #1b1e25;
-    cursor: pointer;
-    margin: 0;
-    text-align: center; }
-    .mediacat-crop-list .mediacat-crop:last-child {
-      border-bottom-width: 0; }
-    .mediacat-crop-list .mediacat-crop .icon {
-      font-size: 18px;
-      line-height: 18px; }
-    .mediacat-crop-list .mediacat-crop .icon-reject {
-      font-size: 12px;
-      line-height: 18px; }
-  .mediacat-crop-list .mediacat-crop-selected {
-    background-color: #363c49;
-    border-color: #414858; }
+.mediacat-list--crop-groups {
+  padding: 5px; }
 
-.mediacat-crop-content {
-  padding: 10px; }
-
-.mediacat-crop-footer {
-  border-top: 1px solid #1b1e25;
-  padding: 5px 10px; }
-
-.mediacat-crop-preview-frame {
-  background-color: #1a0000;
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
-  margin: 0 auto 10px;
-  position: relative; }
-
-.mediacat-crop-preview {
-  background-color: #414858;
-  position: absolute; }
-
-.mediacat-crops-panel {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
-  .mediacat-crops-panel > .scrollpane {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1; }
-
-.mediacat-crop-type-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-
-.mediacat-crop-type {
+.mediacat-crop-group {
   background-color: #232830;
   border: 1px solid #13161a;
   border-radius: 2px;
   box-shadow: 0 1px 0 0 #21262d;
   font-size: 14px;
-  margin: 10px; }
+  margin-bottom: 5px; }
+  .mediacat-crop-group:last-of-type {
+    margin-bottom: 0; }
+  .mediacat-crop-group__header {
+    background-color: #2b303b;
+    border-bottom: 1px solid #1b1e25;
+    padding: 5px 10px; }
 
-.mediacat-crop-type-header {
-  background-color: #2b303b;
-  border-bottom: 1px solid #1b1e25;
-  padding: 5px 10px; }
+.mediacat-crop {
+  border-bottom: 2px solid #1b1e25;
+  cursor: pointer;
+  text-align: center; }
+  .mediacat-crop:last-child {
+    border-bottom-width: 0; }
+  .mediacat-crop .icon {
+    font-size: 18px;
+    line-height: 18px; }
+  .mediacat-crop .icon-reject {
+    font-size: 12px;
+    line-height: 18px; }
+  .mediacat-crop-selected {
+    background-color: #363c49;
+    border-color: #414858; }
+  .mediacat-crop__content {
+    padding: 10px; }
+  .mediacat-crop__footer {
+    border-top: 1px solid #1b1e25;
+    padding: 5px 10px; }
+  .mediacat-crop__preview-frame {
+    background-color: #1a0000;
+    -moz-box-sizing: content-box;
+         box-sizing: content-box;
+    margin: 0 auto 10px;
+    position: relative; }
+  .mediacat-crop__preview {
+    background-color: #414858;
+    position: absolute; }
 
 .mediacat-cropper {
   position: absolute;
@@ -1009,8 +983,6 @@ input.hidden-file {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
-  list-style-type: none;
-  margin: 0;
   padding: 5px; }
 
 .mediacat-thumbnail {
@@ -1112,15 +1084,9 @@ input.hidden-file {
           flex-direction: column;
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
-          flex-shrink: 0;
-  list-style-type: none; }
+          flex-shrink: 0; }
   .mediacat-uploads > .scrollpane {
     max-height: 200px; }
-
-.mediacat-upload-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
 
 .mediacat-upload {
   padding: 10px; }

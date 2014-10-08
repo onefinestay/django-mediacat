@@ -10,7 +10,6 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
 var KeyboardMixin = require('./keyboard-mixin');
 
-var Header = require('./header');
 var ThumbnailList = require('./thumbnail-list');
 var Detail = require('./detail');
 

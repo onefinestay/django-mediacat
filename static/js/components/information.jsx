@@ -4,7 +4,6 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
-var Header = require('./header');
 var tabs = require('./tabs/tabs');
 var Tab = tabs.Tab;
 var Tabs = tabs.Tabs;

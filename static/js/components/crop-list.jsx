@@ -61,8 +61,10 @@ var Crop = React.createClass({
 
     var classes = {
       'mediacat-crop': true,
-      'mediacat-crop-pickable': this.state.pickable,
-      'mediacat-crop-selected': this.state.selected
+      'mediacat-list__item': true,
+      'mediacat-list__item--crop': true,
+      'mediacat-list__item--crop-pickable': this.state.pickable,
+      'mediacat-list__item--crop-selected': this.state.selected
     };
 
     var frameWidth = 150;
@@ -91,12 +93,12 @@ var Crop = React.createClass({
 
     return (
       <li className={cx(classes)} onClick={this.select}>
-        <div className="mediacat-crop-content">
-          <div className="mediacat-crop-preview-frame" style={frameStyles} >
-            <div className="mediacat-crop-preview" style={previewStyles} />
+        <div className="mediacat-crop__content">
+          <div className="mediacat-crop__preview-frame" style={frameStyles} >
+            <div className="mediacat-crop__preview" style={previewStyles} />
           </div>
         </div>
-        <div className="mediacat-crop-footer">
+        <div className="mediacat-crop__footer">
           Usages: {crop.get('applications').length}
           {crop.get('changed') ? <a href="javascript:;" onClick={this.save}>Save</a> : null}          
         </div>
@@ -124,11 +126,11 @@ var CropGroup = React.createClass({
     var crops = this.props.crops.map(crop => <Crop key={crop.get('uuid')} x1={crop.get('x1')} x2={crop.get('x2')} y1={crop.get('y1')} y2={crop.get('y2')} crop={crop} media={media} />);
 
     return (
-      <li className="mediacat-crop-type">
-        <div className="mediacat-crop-type-header">
+      <li className="mediacat-crop-group mediacat-list__item mediacat-list__item--crop-group">
+        <div className="mediacat-crop-group__header">
           {this.state.availableCrops.get(this.props.key).get(0)}
         </div>
-        <ul className="mediacat-crop-list">
+        <ul className="mediacat-list mediacat-list--crops">
           {crops.toJS()}
         </ul>
       </li>
@@ -167,7 +169,7 @@ var CropList = React.createClass({
       .map((crops, key) => <CropGroup key={key} crops={crops} />);
 
     return (
-      <ul className="mediacat-crop-type-list">
+      <ul className="mediacat-list mediacat-list--crop-groups">
         {cropGroups.toJS()}
       </ul>
     );
