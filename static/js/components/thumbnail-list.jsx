@@ -10,7 +10,7 @@ var moment = require('moment');
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Panel = require('./panel');
-var PanelToolbar = require('./panel-toolbar');
+var Toolbar = require('./toolbar');
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
 var KeyboardMixin = require('./keyboard-mixin');
@@ -195,11 +195,11 @@ var ThumbnailList = React.createClass({
     );
 
     var toolbar = (
-      <PanelToolbar>
-        <div className="spacer" />
+      <Toolbar theme="panel">
+        <div className="mediacat-toolbar__spacer" />
         <label>Sort by:</label>
         <Select value={this.state.sortBy} ref="sortBy" options={this.state.sortOptions} onSelect={this.setSort} placeholder="Sort by" />
-      </PanelToolbar>
+      </Toolbar>
     );
 
     return (

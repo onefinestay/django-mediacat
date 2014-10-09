@@ -8,8 +8,10 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
-
 var Document = require('./document');
+var Icon = require('./icon');
+var Button = require('./button');
+var Toolbar = require('./toolbar');
 
 
 var Main = React.createClass({
@@ -35,33 +37,27 @@ var Main = React.createClass({
   
   render: function() {
     var gridButtonClasses = {
-      'icon': true,
-      'icon-grid': true,
       'active': this.state.mode === 'grid'
     };
 
     var filmstripButtonClasses = {
-      'icon': true,
-      'icon-filmstrip': true,
       'active': this.state.mode === 'filmstrip'
     };    
 
     var detailButtonClasses = {
-      'icon': true,
-      'icon-detail': true,
       'active': this.state.mode === 'detail'
     };
 
     return (
       <div className="mediacat-content mediacat-column">
-        <div className="toolbar">
-          <div className="spacer" />
-          <div className="button-group">
-            <button className={cx(gridButtonClasses)} onClick={this.setGridMode} />
-            <button className={cx(filmstripButtonClasses)} onClick={this.setFilmstripMode} />
-            <button className={cx(detailButtonClasses)} onClick={this.setDetailMode} />
+        <Toolbar theme="column">
+          <div className="mediacat-toolbar__spacer" />
+          <div className="mediacat-button-group">
+            <Button active={this.state.mode === 'grid'} onClick={this.setGridMode} glyph="grid" />
+            <Button active={this.state.mode === 'filmstrip'} onClick={this.setFilmstripMode} glyph="filmstrip" />
+            <Button active={this.state.mode === 'detail'} onClick={this.setDetailMode} glyph="detail" />
           </div>
-        </div>
+        </Toolbar>
         <Document mode={this.state.mode} />
       </div>
     );

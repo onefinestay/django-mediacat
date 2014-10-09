@@ -1,23 +1,54 @@
-.button-wrapper {
-  display: inline-block;
-}
-
-button,
-.button {
+.#{$ns}-button {
   border: 0;
   border-radius: 2px;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 14px;
   height: 37px;
-  letter-spacing: .0625em;
-  line-height: 27px;
+  line-height: 37px;
   margin: 0;
   overflow: hidden;
-  padding: 5px 50px;
+  padding: 0 10px;
   position: relative;
   text-align: center;
+
+  &--disabled {
+    opacity: .5;
+  }
+
+  &--header {
+    background-color: $header-button-bg;
+    box-shadow: 0 1px 0 0 $header-button-shadow;
+    color: $header-button-text;
+
+    &--active {
+      background-color: $header-button-active-bg;
+      box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
+      color: $header-button-active-text;
+    }
+  }
+
+  &--panel {
+    background-color: $panel-toolbar-button-bg;
+    border: 1px solid $panel-toolbar-button-border;
+    box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;
+    color: $panel-toolbar-button-text;
+    height: 27px;
+    line-height: 27px;
+
+    &--active {
+      background-color: $header-button-active-bg;
+      box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
+      color: $header-button-active-text;
+    }
+  }
+
+  &__caption {
+    display: inline-block;
+    font-weight: 100px;
+    line-height: 37px;
+    margin-left: 5px;
+  }
 
   .button-mask {
     bottom: 0;
@@ -34,19 +65,23 @@ button,
   &:focus {
     outline: none;
   }
+}
 
-  &.disabled {
-    cursor: default;
-    opacity: .5;
 
-    &:hover {
-      opacity: .5;
+.#{$ns}-button-group {
+  .#{$ns}-button {
+    border-radius: 0;
+    margin-left: 1px;
+
+    &:first-child {
+      border-bottom-left-radius: 2px;
+      border-top-left-radius: 2px;
+      margin-left: 0;
     }
-  }
 
-  &.icon {
-    font-size: 24px;
-    padding: 5px 10px;
-    width: 50px;
+    &:last-child {
+      border-bottom-right-radius: 2px;
+      border-top-right-radius: 2px;
+    }    
   }
 }

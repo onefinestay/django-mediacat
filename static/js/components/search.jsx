@@ -10,7 +10,7 @@ var Search = React.createClass({
   
   render: function() {
     return (
-      <input type="search" placeholder="Enter search query" />
+      <input className="mediacat-input mediacat-input--search" type="search" placeholder="Enter search query" />
     );
   }
 });

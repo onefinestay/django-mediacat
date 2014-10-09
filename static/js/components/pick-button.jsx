@@ -4,8 +4,8 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-
 var FluxMixin = require('./flux-mixin');
+var Button = require('./button');
 
 var PickButton = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
@@ -57,13 +57,11 @@ var PickButton = React.createClass({
   render: function() {
     var classes = {
       'button': true,
-      'icon': true,
-      'icon-tick': true,
       'disabled': !this.state.pickable
     };
 
     return (
-      <button disabled={!this.state.pickable} className={cx(classes)} onClick={this.handleClick} />
+      <Button disabled={!this.state.pickable} onClick={this.handleClick} glyph="tick" />
     );
   }
 });

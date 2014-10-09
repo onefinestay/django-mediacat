@@ -11,8 +11,9 @@ var Immutable = require('immutable');
 
 var CropList = require('../crop-list');
 var Panel = require('../panel');
-var PanelToolbar = require('../panel-toolbar');
+var Toolbar = require('../toolbar');
 var Select  = require('../select');
+var Button = require('../button');
 
 var CropSearchResult = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],
@@ -101,11 +102,11 @@ var CropsPanel = React.createClass({
     var disabled = this.state.media ? false : true;
 
   	var toolbar = (
-  		<PanelToolbar>
+  		<Toolbar theme="panel">
       	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
       	<span className="separator" />
-      	<button disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton"><span className="icon icon-add" /></button>
-      </PanelToolbar>
+      	<Button glyph="add" placement="panel" disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton" />
+      </Toolbar>
   	);
 
     return (

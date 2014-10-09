@@ -11,6 +11,7 @@ var ScrollPane = require('./scrollpane');
 var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
 var LinearLoader = require('./loaders/linear');
+var Icon = require('./icon');
 
 
 var CategoryTreePlaceholderNode = React.createClass({
@@ -143,7 +144,7 @@ var CategoryTreeNode = React.createClass({
       <li className="mediacat-list__item mediacat-list__item--category">
         <div className={cx(classes)}>
           <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
-            {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="icon icon-dash" />}
+            {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : <Icon glyph="dash" />}
             {node.get('name')}
             {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-category__count">{count || '-'}</div>}
           </a>

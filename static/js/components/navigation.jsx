@@ -11,7 +11,7 @@ var FluxMixin = require('./flux-mixin');
 var Search = require('./search');
 var UploadButton = require('./upload-button');
 var CategoryTree = require('./category-tree');
-
+var Toolbar = require('./toolbar');
 var Uploads = require('./uploads');
 
 
@@ -27,11 +27,11 @@ var Navigation = React.createClass({
   render: function() {
     return (
       <div className="mediacat-navigation mediacat-column mediacat-column--sidebar">
-        <div className="toolbar">
+        <Toolbar theme="column">
           <UploadButton />
-          <div className="separator" />
+          <div className="mediacat_toolbar__separator" />
           <Search />
-        </div>
+        </Toolbar>
         <CategoryTree />
         {this.state.hasUploads ? <Uploads /> : null}
       </div>

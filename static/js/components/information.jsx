@@ -10,7 +10,7 @@ var Tabs = tabs.Tabs;
 
 var ImageDataPanel = require('./panels/image-data');
 var CropsPanel = require('./panels/crops');
-
+var Toolbar = require('./toolbar');
 var PickButton = require('./pick-button');
 
 
@@ -20,10 +20,10 @@ var Information = React.createClass({
   render: function() {
     return (
       <div className="mediacat-information mediacat-column mediacat-column--sidebar">
-        <div className="toolbar">
-          <div className="spacer" />
+        <Toolbar theme="column">
+          <div className="mediacat-toolbar__spacer" />
           <PickButton />
-        </div>
+        </Toolbar>
         <Tabs>
           <Tab name="Crops">
             <CropsPanel />

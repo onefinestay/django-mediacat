@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var _ = require('underscore');
+var Icon = require('./icons');
 
 var MediacatPicker = React.createClass({
 
@@ -65,7 +66,7 @@ var MediacatPicker = React.createClass({
       <div className="mediainput-widget">
         <div className="module-image-placeholder" style={style} />
         <img width="100%" className="mediainput-preview" src={value.previewURL} />
-        <a onClick={this.handleClick} className="mediainput-library"><span className="icon-pencil"></span></a>
+        <a onClick={this.handleClick} className="mediainput-library"><Icon glyph="pencil" /></a>
         <input
           ref="image"
           value={value.id}

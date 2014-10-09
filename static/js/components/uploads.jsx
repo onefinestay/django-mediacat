@@ -9,6 +9,7 @@ var UploadList = require('./upload-list');
 
 var Panel = require('./panel');
 var PanelToolbar = require('./panel-toolbar');
+var Icon = require('./icon');
 
 
 var Uploads = React.createClass({
@@ -19,7 +20,7 @@ var Uploads = React.createClass({
       <PanelToolbar>
         Uploads
         <span className="spacer" />
-        <button className="mediacat-panel-state"><span className="icon icon-arrow" /></button>
+        <button className="mediacat-panel-state"><Icon glyph="arrow" /></button>
       </PanelToolbar>
     );
 

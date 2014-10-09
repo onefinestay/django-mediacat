@@ -4,6 +4,7 @@
 var React = require('react/addons');
 var cx = React.addons.classSet;
 var KeyboardMixin = require('./keyboard-mixin');
+var Icon = require('./icon');
 
 var SearchResult = React.createClass({
   propTypes: {
@@ -299,7 +300,7 @@ var Select = React.createClass({
         onBlur={this.handleBlur}
       >
         <div className="select-value-display">{selectedOption ? label : <span className="select-placeholder">{this.props.placeholder}</span>}</div>
-        <div className="select-arrow"><span className="icon icon-down-arrow" /></div>
+        <div className="select-arrow"><Icon glyph="down-arrow" /></div>
         <input 
           disabled={this.props.disabled}
           type="hidden" 

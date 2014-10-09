@@ -4,8 +4,8 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-
 var FluxMixin = require('./flux-mixin');
+var Icon = require('./icon');
 
 var UploadButton = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
@@ -37,16 +37,15 @@ var UploadButton = React.createClass({
     var disabled = !this.state.category || !this.state.category.get('accepts_images');
 
     var classes = {
-      'button': true,
-      'icon': true,
-      'icon-upload': true,
-      'disabled': disabled
+      'mediacat-button': true,
+      'mediacat-button--disabled': disabled
     };
 
     return (
       <div className={cx(classes)}>
-        <div className="button-mask" onClick={this.handleClick} />
-        <input className="hidden-file" type="file" multiple={true} ref="upload"
+        <Icon glyph="upload" />
+        <div className="mediacat-button__mask" onClick={this.handleClick} />
+        <input className="mediacat-input--hidden-file" type="file" multiple={true} ref="upload"
           accept="image/jpeg, image/png, image/gif"
           onChange={this.handleChange} disabled={disabled} />
       </div>

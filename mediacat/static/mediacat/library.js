@@ -1500,7 +1500,7 @@
 	var Search = __webpack_require__(/*! ./search */ 35);
 	var UploadButton = __webpack_require__(/*! ./upload-button */ 36);
 	var CategoryTree = __webpack_require__(/*! ./category-tree */ 37);
-	
+	var Toolbar = __webpack_require__(/*! ./toolbar */ 397);
 	var Uploads = __webpack_require__(/*! ./uploads */ 38);
 	
 	
@@ -1516,9 +1516,9 @@
 	  render: function() {
 	    return (
 	      React.DOM.div({className: "mediacat-navigation mediacat-column mediacat-column--sidebar"}, 
-	        React.DOM.div({className: "toolbar"}, 
+	        Toolbar({theme: "column"}, 
 	          UploadButton(null), 
-	          React.DOM.div({className: "separator"}), 
+	          React.DOM.div({className: "mediacat_toolbar__separator"}), 
 	          Search(null)
 	        ), 
 	        CategoryTree(null), 
@@ -1547,8 +1547,10 @@
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
-	
 	var Document = __webpack_require__(/*! ./document */ 394);
+	var Icon = __webpack_require__(/*! ./icon */ 395);
+	var Button = __webpack_require__(/*! ./button */ 396);
+	var Toolbar = __webpack_require__(/*! ./toolbar */ 397);
 	
 	
 	var Main = React.createClass({displayName: 'Main',
@@ -1574,31 +1576,25 @@
 	  
 	  render: function() {
 	    var gridButtonClasses = {
-	      'icon': true,
-	      'icon-grid': true,
 	      'active': this.state.mode === 'grid'
 	    };
 	
 	    var filmstripButtonClasses = {
-	      'icon': true,
-	      'icon-filmstrip': true,
 	      'active': this.state.mode === 'filmstrip'
 	    };    
 	
 	    var detailButtonClasses = {
-	      'icon': true,
-	      'icon-detail': true,
 	      'active': this.state.mode === 'detail'
 	    };
 	
 	    return (
 	      React.DOM.div({className: "mediacat-content mediacat-column"}, 
-	        React.DOM.div({className: "toolbar"}, 
-	          React.DOM.div({className: "spacer"}), 
-	          React.DOM.div({className: "button-group"}, 
-	            React.DOM.button({className: cx(gridButtonClasses), onClick: this.setGridMode}), 
-	            React.DOM.button({className: cx(filmstripButtonClasses), onClick: this.setFilmstripMode}), 
-	            React.DOM.button({className: cx(detailButtonClasses), onClick: this.setDetailMode})
+	        Toolbar({theme: "column"}, 
+	          React.DOM.div({className: "mediacat-toolbar__spacer"}), 
+	          React.DOM.div({className: "mediacat-button-group"}, 
+	            Button({active: this.state.mode === 'grid', onClick: this.setGridMode, glyph: "grid"}), 
+	            Button({active: this.state.mode === 'filmstrip', onClick: this.setFilmstripMode, glyph: "filmstrip"}), 
+	            Button({active: this.state.mode === 'detail', onClick: this.setDetailMode, glyph: "detail"})
 	          )
 	        ), 
 	        Document({mode: this.state.mode})
@@ -1628,7 +1624,7 @@
 	
 	var ImageDataPanel = __webpack_require__(/*! ./panels/image-data */ 45);
 	var CropsPanel = __webpack_require__(/*! ./panels/crops */ 46);
-	
+	var Toolbar = __webpack_require__(/*! ./toolbar */ 397);
 	var PickButton = __webpack_require__(/*! ./pick-button */ 41);
 	
 	
@@ -1638,8 +1634,8 @@
 	  render: function() {
 	    return (
 	      React.DOM.div({className: "mediacat-information mediacat-column mediacat-column--sidebar"}, 
-	        React.DOM.div({className: "toolbar"}, 
-	          React.DOM.div({className: "spacer"}), 
+	        Toolbar({theme: "column"}, 
+	          React.DOM.div({className: "mediacat-toolbar__spacer"}), 
 	          PickButton(null)
 	        ), 
 	        Tabs(null, 
@@ -3404,7 +3400,7 @@
 	  
 	  render: function() {
 	    return (
-	      React.DOM.input({type: "search", placeholder: "Enter search query"})
+	      React.DOM.input({className: "mediacat-input mediacat-input--search", type: "search", placeholder: "Enter search query"})
 	    );
 	  }
 	});
@@ -3424,8 +3420,8 @@
 	var cx = React.addons.classSet;
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-	
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
+	var Icon = __webpack_require__(/*! ./icon */ 395);
 	
 	var UploadButton = React.createClass({displayName: 'UploadButton',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
@@ -3457,16 +3453,15 @@
 	    var disabled = !this.state.category || !this.state.category.get('accepts_images');
 	
 	    var classes = {
-	      'button': true,
-	      'icon': true,
-	      'icon-upload': true,
-	      'disabled': disabled
+	      'mediacat-button': true,
+	      'mediacat-button--disabled': disabled
 	    };
 	
 	    return (
 	      React.DOM.div({className: cx(classes)}, 
-	        React.DOM.div({className: "button-mask", onClick: this.handleClick}), 
-	        React.DOM.input({className: "hidden-file", type: "file", multiple: true, ref: "upload", 
+	        Icon({glyph: "upload"}), 
+	        React.DOM.div({className: "mediacat-button__mask", onClick: this.handleClick}), 
+	        React.DOM.input({className: "mediacat-input--hidden-file", type: "file", multiple: true, ref: "upload", 
 	          accept: "image/jpeg, image/png, image/gif", 
 	          onChange: this.handleChange, disabled: disabled})
 	      )
@@ -3496,6 +3491,7 @@
 	var CategoryTree = __webpack_require__(/*! ./category-tree */ 37);
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	var LinearLoader = __webpack_require__(/*! ./loaders/linear */ 63);
+	var Icon = __webpack_require__(/*! ./icon */ 395);
 	
 	
 	var CategoryTreePlaceholderNode = React.createClass({displayName: 'CategoryTreePlaceholderNode',
@@ -3628,7 +3624,7 @@
 	      React.DOM.li({className: "mediacat-list__item mediacat-list__item--category"}, 
 	        React.DOM.div({className: cx(classes)}, 
 	          React.DOM.a({style: style, className: cx(labelClasses), href: node.get('url'), onClick: this.select, onMouseEnter: this.onMouseEnter, onMouseOut: this.onMouseOut, onMouseUp: this.onMouseUp}, 
-	            node.get('has_children') ? React.DOM.span({className: "icon icon-arrow", onClick: this.toggleExpanded}) : React.DOM.span({className: "icon icon-dash"}), 
+	            node.get('has_children') ? Icon({glyph: "arrow", onClick: this.toggleExpanded}) : Icon({glyph: "dash"}), 
 	            node.get('name'), 
 	            this.state.fetchingMedia ? LinearLoader(null) : React.DOM.div({className: "mediacat-category__count"}, count || '-')
 	          ), 
@@ -3686,6 +3682,7 @@
 	
 	var Panel = __webpack_require__(/*! ./panel */ 55);
 	var PanelToolbar = __webpack_require__(/*! ./panel-toolbar */ 56);
+	var Icon = __webpack_require__(/*! ./icon */ 395);
 	
 	
 	var Uploads = React.createClass({displayName: 'Uploads',
@@ -3696,7 +3693,7 @@
 	      PanelToolbar(null, 
 	        "Uploads", 
 	        React.DOM.span({className: "spacer"}), 
-	        React.DOM.button({className: "mediacat-panel-state"}, React.DOM.span({className: "icon icon-arrow"}))
+	        React.DOM.button({className: "mediacat-panel-state"}, Icon({glyph: "arrow"}))
 	      )
 	    );
 	
@@ -3729,7 +3726,7 @@
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 	
 	var Panel = __webpack_require__(/*! ./panel */ 55);
-	var PanelToolbar = __webpack_require__(/*! ./panel-toolbar */ 56);
+	var Toolbar = __webpack_require__(/*! ./toolbar */ 397);
 	var CategoryTree = __webpack_require__(/*! ./category-tree */ 37);
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 19);
@@ -3914,8 +3911,8 @@
 	    );
 	
 	    var toolbar = (
-	      PanelToolbar(null, 
-	        React.DOM.div({className: "spacer"}), 
+	      Toolbar({theme: "panel"}, 
+	        React.DOM.div({className: "mediacat-toolbar__spacer"}), 
 	        React.DOM.label(null, "Sort by:"), 
 	        Select({value: this.state.sortBy, ref: "sortBy", options: this.state.sortOptions, onSelect: this.setSort, placeholder: "Sort by"})
 	      )
@@ -4115,8 +4112,8 @@
 	var cx = React.addons.classSet;
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-	
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
+	var Button = __webpack_require__(/*! ./button */ 396);
 	
 	var PickButton = React.createClass({displayName: 'PickButton',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],
@@ -4168,13 +4165,11 @@
 	  render: function() {
 	    var classes = {
 	      'button': true,
-	      'icon': true,
-	      'icon-tick': true,
 	      'disabled': !this.state.pickable
 	    };
 	
 	    return (
-	      React.DOM.button({disabled: !this.state.pickable, className: cx(classes), onClick: this.handleClick})
+	      Button({disabled: !this.state.pickable, onClick: this.handleClick, glyph: "tick"})
 	    );
 	  }
 	});
@@ -7487,8 +7482,9 @@
 	
 	var CropList = __webpack_require__(/*! ../crop-list */ 64);
 	var Panel = __webpack_require__(/*! ../panel */ 55);
-	var PanelToolbar = __webpack_require__(/*! ../panel-toolbar */ 56);
+	var Toolbar = __webpack_require__(/*! ../toolbar */ 397);
 	var Select  = __webpack_require__(/*! ../select */ 58);
+	var Button = __webpack_require__(/*! ../button */ 396);
 	
 	var CropSearchResult = React.createClass({displayName: 'CropSearchResult',
 	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],
@@ -7577,10 +7573,10 @@
 	    var disabled = this.state.media ? false : true;
 	
 	  	var toolbar = (
-	  		PanelToolbar(null, 
+	  		Toolbar({theme: "panel"}, 
 	      	Select({fillWidth: true, resultRenderer: CropSearchResult, disabled: disabled, ref: "cropType", options: options, onSelect: this.setCropChoice, placeholder: "Select a crop to add"}), 
 	      	React.DOM.span({className: "separator"}), 
-	      	React.DOM.button({disabled: disabled || !this.state.cropChoice, onClick: this.handleAdd, ref: "addButton"}, React.DOM.span({className: "icon icon-add"}))
+	      	Button({glyph: "add", placement: "panel", disabled: disabled || !this.state.cropChoice, onClick: this.handleAdd, ref: "addButton"})
 	      )
 	  	);
 	
@@ -8583,6 +8579,7 @@
 	var React = __webpack_require__(/*! react/addons */ 10);
 	var cx = React.addons.classSet;
 	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 19);
+	var Icon = __webpack_require__(/*! ./icon */ 395);
 	
 	var SearchResult = React.createClass({displayName: 'SearchResult',
 	  propTypes: {
@@ -8878,7 +8875,7 @@
 	        onBlur: this.handleBlur
 	      }, 
 	        React.DOM.div({className: "select-value-display"}, selectedOption ? label : React.DOM.span({className: "select-placeholder"}, this.props.placeholder)), 
-	        React.DOM.div({className: "select-arrow"}, React.DOM.span({className: "icon icon-down-arrow"})), 
+	        React.DOM.div({className: "select-arrow"}, Icon({glyph: "down-arrow"})), 
 	        React.DOM.input({
 	          disabled: this.props.disabled, 
 	          type: "hidden", 
@@ -9146,7 +9143,7 @@
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
 	var moment = __webpack_require__(/*! moment */ 98);
 	var Immutable = __webpack_require__(/*! immutable */ 43);
-	
+	var Icon = __webpack_require__(/*! ./icon */ 395);
 	
 	var Rating = React.createClass({displayName: 'Rating',
 	  mixins: [PureRenderMixin, FluxMixin],
@@ -9180,24 +9177,22 @@
 	    var media = this.props.media;
 	    var rating = media.get('rating');
 	    var interactable = this.props.interactable;
-	    var iconClasses;
+	    var glyphs;
 	
 	    if (this.state.highlight !== null) {
-	      iconClasses = Immutable.Repeat('highlight icon-star', this.state.highlight).toVector().concat(Immutable.Repeat('icon-empty-star', 5 - this.state.highlight).toVector());
+	      glyphs = Immutable.Repeat('star', this.state.highlight).toVector().concat(Immutable.Repeat('empty-star', 5 - this.state.highlight).toVector());
 	    } else {
 	      if (rating !== undefined && rating !== null) {
-	        iconClasses = Immutable.Repeat('icon-star', rating).toVector().concat(Immutable.Repeat('icon-empty-star', 5 - rating).toVector());
+	        glyphs = Immutable.Repeat('star', rating).toVector().concat(Immutable.Repeat('empty-star', 5 - rating).toVector());
 	      } else {
-	        iconClasses = Immutable.Repeat('icon-empty-star no-rating', 5);
+	        glyphs = Immutable.Repeat('empty-star', 5);
 	      }
 	    }
 	
-	
-	    var icons = iconClasses.map(function(className, i)  {return React.DOM.span({key: i, 
+	    var icons = glyphs.map(function(glyph, i)  {return Icon({glyph: glyph, key: i, 
 	      onMouseOver: interactable && this.onMouseOver.bind(this, i), 
 	      onMouseOut: interactable && this.onMouseOut.bind(this, i), 
-	      onClick: interactable && this.onClick.bind(this, i), 
-	      className: 'icon ' + className});}.bind(this));
+	      onClick: interactable && this.onClick.bind(this, i)});}.bind(this));
 	
 	    return (
 	      React.DOM.div({className: "media-rating"}, 
@@ -51454,6 +51449,172 @@
 	});
 	
 	module.exports = Document;
+
+/***/ },
+/* 395 */
+/*!***************************************!*\
+  !*** ./static/js/components/icon.jsx ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 10);
+	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	
+	
+	var Icon = React.createClass({displayName: 'Icon',
+		mixins: [PureRenderMixin],
+	
+		propTypes: {
+			glyph: React.PropTypes.string.isRequired,
+			size: React.PropTypes.oneOf(['large', 'small'])
+		},
+	
+		getDefaultProps: function() {
+			return {
+				glyph: 'add',
+				size: null
+			};
+		},
+	
+	  render: function() {
+	  	var $__0=      this.props,glyph=$__0.glyph,size=$__0.size,other=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{glyph:1,size:1});
+	
+	  	var classes = {
+	  		'icon': true,
+	  		'mediacat-icon': true,
+	  	}
+	
+	  	classes['icon-' + glyph] = true;
+	
+	  	if (size) {
+	  		classes['mediacat-icon--' + size] = true;	
+	  	}
+	  	
+			return this.transferPropsTo(
+				React.DOM.span({className: cx(classes)})
+			);
+	  }
+	});
+	
+	module.exports = Icon;
+
+
+/***/ },
+/* 396 */
+/*!*****************************************!*\
+  !*** ./static/js/components/button.jsx ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 10);
+	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	
+	var Icon = __webpack_require__(/*! ./icon */ 395);
+	
+	
+	var Button = React.createClass({displayName: 'Button',
+		mixins: [PureRenderMixin],
+	
+	  propTypes: {
+	    glyph: React.PropTypes.string,
+	    active: React.PropTypes.bool.isRequired,
+	    disabled: React.PropTypes.bool.isRequired,
+	    placement: React.PropTypes.oneOf([
+	      'header', 
+	      'panel'
+	    ]).isRequired,
+	  },
+	
+		getDefaultProps: function() {
+			return {
+				glyph: null,
+				caption: null,
+	      active: false,
+	      disabled: false,
+	      placement: 'header'
+			};
+		},
+	
+	  render: function() {
+	    var $__0=       this.props,glyph=$__0.glyph,active=$__0.active,disabled=$__0.disabled,children=$__0.children,placement=$__0.placement,other=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{glyph:1,active:1,disabled:1,children:1,placement:1});
+	
+	    var classes = {
+	      'mediacat-button': true,
+	      'mediacat-button--active': active,
+	      'mediacat-button--disabled': disabled,
+	    };
+	
+	    if (placement) {
+	      classes['mediacat-button--' + placement] = true;
+	      classes['mediacat-button--' + placement + '--active'] = active;
+	      classes['mediacat-button--' + placement + '--disabled'] = disabled;
+	    }
+	
+	    return this.transferPropsTo(
+	      React.DOM.button({onClick: other.onClick, disabled: disabled, className: cx(classes)}, 
+	        glyph ? Icon({glyph: glyph, size: placement === 'header' ? 'large' : null}) : null, 
+	        children ? React.DOM.span({className: "mediacat-button__caption"}, children) : null
+	      )    
+	    );
+	  }
+	});
+	
+	module.exports = Button;
+
+
+/***/ },
+/* 397 */
+/*!******************************************!*\
+  !*** ./static/js/components/toolbar.jsx ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 10);
+	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
+	var cx = React.addons.classSet;
+	
+	
+	var Toolbar = React.createClass({displayName: 'Toolbar',
+	  mixins: [PureRenderMixin],
+	
+	  getDefaultProps: function() {
+	    return {
+	      theme: 'column'
+	    };
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      open: true
+	    };
+	  },
+	
+	  render: function() {
+	    var classes = {
+	      'mediacat-toolbar': true
+	    };
+	    classes['mediacat-toolbar--theme-' + this.props.theme] = true;
+	
+	    return (
+	      React.DOM.div({className: cx(classes)}, 
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Toolbar;        
 
 /***/ }
 /******/ ])

@@ -1,0 +1,10 @@
+.#{$ns}-icon {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  vertical-align: middle;
+
+  &--large {
+    font-size: 24px;
+  }
+}

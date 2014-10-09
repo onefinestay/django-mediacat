@@ -8,7 +8,7 @@ var Fluxxor = require("fluxxor");
 var FluxMixin = require('./flux-mixin');
 var moment = require('moment');
 var Immutable = require('immutable');
-
+var Icon = require('./icon');
 
 var Rating = React.createClass({
   mixins: [PureRenderMixin, FluxMixin],
@@ -42,24 +42,22 @@ var Rating = React.createClass({
     var media = this.props.media;
     var rating = media.get('rating');
     var interactable = this.props.interactable;
-    var iconClasses;
+    var glyphs;
 
     if (this.state.highlight !== null) {
-      iconClasses = Immutable.Repeat('highlight icon-star', this.state.highlight).toVector().concat(Immutable.Repeat('icon-empty-star', 5 - this.state.highlight).toVector());
+      glyphs = Immutable.Repeat('star', this.state.highlight).toVector().concat(Immutable.Repeat('empty-star', 5 - this.state.highlight).toVector());
     } else {
       if (rating !== undefined && rating !== null) {
-        iconClasses = Immutable.Repeat('icon-star', rating).toVector().concat(Immutable.Repeat('icon-empty-star', 5 - rating).toVector());
+        glyphs = Immutable.Repeat('star', rating).toVector().concat(Immutable.Repeat('empty-star', 5 - rating).toVector());
       } else {
-        iconClasses = Immutable.Repeat('icon-empty-star no-rating', 5);
+        glyphs = Immutable.Repeat('empty-star', 5);
       }
     }
 
-
-    var icons = iconClasses.map((className, i) => <span key={i}
+    var icons = glyphs.map((glyph, i) => <Icon glyph={glyph} key={i}
       onMouseOver={interactable && this.onMouseOver.bind(this, i)} 
       onMouseOut={interactable && this.onMouseOut.bind(this, i)}
-      onClick={interactable && this.onClick.bind(this, i)}
-      className={'icon ' + className} />);
+      onClick={interactable && this.onClick.bind(this, i)} />);
 
     return (
       <div className="media-rating">

@@ -7,22 +7,6 @@
 
 .#{$ns}-category {
 
-  &--selected > &__label {
-    background-color: lighten(#2b303b, 10);
-    color: #fff;
-    text-shadow: 1px 1px 0 #000;
-  }
-
-  &--open > &__label {
-    .icon {
-      transform: rotate(90deg);
-
-      &:hover {
-        transform: rotate(45deg);
-      }
-    }
-  }
-
   .icon {
     font-size: 12px;
     margin-right: 5px;
@@ -88,4 +72,21 @@
     right: 10px;
     top: 0;    
   }
+
+  &--selected > &__label {
+    background-color: lighten(#2b303b, 10);
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  &--open > &__label {
+    .icon {
+      transform: rotate(90deg);
+
+      &:hover {
+        transform: rotate(45deg);
+      }
+    }
+  }
+  
 }
