@@ -12,7 +12,7 @@
   position: relative;
   text-align: center;
 
-  &--disabled {
+  &.#{$ns}-is-disabled {
     opacity: .5;
   }
 
@@ -21,7 +21,7 @@
     box-shadow: 0 1px 0 0 $header-button-shadow;
     color: $header-button-text;
 
-    &--active {
+    &.#{$ns}-is-active {
       background-color: $header-button-active-bg;
       box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
       color: $header-button-active-text;
@@ -33,10 +33,10 @@
     border: 1px solid $panel-toolbar-button-border;
     box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;
     color: $panel-toolbar-button-text;
-    height: 27px;
+    height: 29px;
     line-height: 27px;
 
-    &--active {
+    &.#{$ns}-is-active {
       background-color: $header-button-active-bg;
       box-shadow: inset 0 1px 0 0 $header-button-active-shadow, inset 0 -1px 0 0 $header-button-active-highlight;
       color: $header-button-active-text;

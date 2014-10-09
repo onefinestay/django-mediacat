@@ -1,4 +1,4 @@
-.select {
+.#{$ns}-select {
   background-color: #2b303b;    
   border: 1px solid darken(#2b303b, 7.5);
   border-radius: 2px;
@@ -8,8 +8,9 @@
   flex-direction: row;
   font-size: 14px; 
   position: relative;
+  line-height: 27px;
 
-  &.disabled {
+  &.#{$ns}-is-disabled {
     opacity: .5;
   }
 
@@ -17,75 +18,56 @@
     outline: none;
   }
 
-  &.in-focus {
+  &--open {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; 
   }
 
-  &.not-in-focus {
-    input {
-      cursor: default;
-    }
-  }
-
-  &.fill-width {
+  &--stretch {
     flex-grow: 1;
   }
 
-  .select-value-display {
+  &__value-label {
     flex-grow: 1;
     padding: 0 10px;
   }
 
-  .select-placeholder {
+  &__placeholder { 
     opacity: .5;
   }
 
-  .select-arrow {
+  &__open-button {
     border-left: 1px solid darken(#2b303b, 7.5);
     display: inline-block;
     flex-grow: 0;
     flex-shrink: 0;
     text-align: center;
     width: 30px;    
-
-    .icon {
-      font-size: 12px;
-      transform: rotate(90deg);
-    }
-  }
-}
-
-.select-options {
-  background: #2b303b;
-  border: 1px solid darken(#2b303b, 7.5);
-  border-top-width: 0;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
-  left: -1px;
-  list-style-type: none;
-  margin: 0;
-  max-height: 305px;
-  overflow: auto;
-  padding: 0;
-  position: absolute;
-  right: -1px;
-  top: 28px;
-  z-index: 2;
-}
-
-.select-result {
-  cursor: pointer;
-  padding: 2px 10px;
-
-  .icon {
-    float: right;
   }
 
-  &.selected {
-    background: #414858;
+  &__options {
+    background: #2b303b;
+    border: 1px solid darken(#2b303b, 7.5);
+    border-top-width: 0;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    left: -1px;
+    list-style-type: none;
+    margin: 0;
+    max-height: 305px;
+    overflow: auto;
+    padding: 0;
+    position: absolute;
+    right: -1px;
+    top: 28px;
+    z-index: 2;
   }
 
-  .text-match {
-    font-weight: bold;
+  &__option {
+    cursor: pointer;
+    padding: 0 10px;
+
+    &.#{$ns}-is-selected {
+      background: #414858;
+    }    
   }
 }

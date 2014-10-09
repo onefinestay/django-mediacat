@@ -14,6 +14,7 @@ var Panel = require('../panel');
 var Toolbar = require('../toolbar');
 var Select  = require('../select');
 var Button = require('../button');
+var Icon = require('../icon');
 
 var CropSearchResult = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],
@@ -45,8 +46,8 @@ var CropSearchResult = React.createClass({
 
   render: function() {
     var classes = cx({
-      'select-result': true,
-      'selected': !!this.props.selected
+      'mediacat-select__option': true,
+      'mediacat-is-selected': !!this.props.selected
     });
 
     return (
@@ -54,7 +55,7 @@ var CropSearchResult = React.createClass({
         onMouseEnter={this.props.onHover.bind(null, this.props.option)}
         onMouseDown={this.props.onClick.bind(null, this.props.option)}>
         {this.props.label}
-        {this.state.valid ? <span className="icon icon-tick" /> : null}
+        {this.state.valid ? <Icon glyph="tick" /> : null}
       </li>
     );
   }

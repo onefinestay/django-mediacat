@@ -6,7 +6,8 @@ var cx = React.addons.classSet;
 var KeyboardMixin = require('./keyboard-mixin');
 var Icon = require('./icon');
 
-var SearchResult = React.createClass({
+
+var SelectOption = React.createClass({
   propTypes: {
     disabled: React.PropTypes.bool,
     selected: React.PropTypes.bool,
@@ -19,8 +20,8 @@ var SearchResult = React.createClass({
 
   render: function() {
     var classes = cx({
-      'select-result': true,
-      'selected': !!this.props.selected
+      'mediacat-select__option': true,
+      'mediacat-is-selected': !!this.props.selected
     });
 
     return (
@@ -53,7 +54,7 @@ var SelectOptions = React.createClass({
 
   render: function() {
     return (
-      <ul className="select-options" ref="options">
+      <ul className="mediacat-select__options" ref="options">
         {this.props.options.toJS()}
       </ul>
     );
@@ -93,7 +94,7 @@ var Select = React.createClass({
       valueField: 'value',
       labelField: 'label',
       searchField: ['label'],
-      resultRenderer: SearchResult,
+      resultRenderer: SelectOption,
     };
   },
 
@@ -138,7 +139,7 @@ var Select = React.createClass({
   close: function() {
     this.setState({
       focus: false
-    })
+    });
   },
 
   handleBlur: function(event) {
@@ -270,18 +271,19 @@ var Select = React.createClass({
       });
     }.bind(this));
 
-    var classes = cx({
-      'fill-width': this.props.fillWidth,
-      'select': true,
-      'disabled': this.props.disabled,
-      'in-focus': this.state.focus,
-      'not-in-focus': !this.state.focus
-    });
-
     var selectedOption = this.state.selected;
     var active = !this.props.disabled && this.state.focus;
     var label;
     var value;
+
+    var classes = cx({
+      'mediacat-select': true,
+      'mediacat-select--open': active,
+      'mediacat-select--closed': !active,
+      'mediacat-select--stretch': this.props.fillWidth,      
+      'mediacat-is-disabled': this.props.disabled,
+    });    
+
 
     if (selectedOption) {
       label = selectedOption.get(this.props.labelField);
@@ -299,8 +301,8 @@ var Select = React.createClass({
         onClick={this.open}
         onBlur={this.handleBlur}
       >
-        <div className="select-value-display">{selectedOption ? label : <span className="select-placeholder">{this.props.placeholder}</span>}</div>
-        <div className="select-arrow"><Icon glyph="down-arrow" /></div>
+        <div className="mediacat-select__value-label">{selectedOption ? label : <span className="mediacat-select__placeholder">{this.props.placeholder}</span>}</div>
+        <div className="mediacat-select__open-button"><Icon glyph="down-arrow" /></div>
         <input 
           disabled={this.props.disabled}
           type="hidden" 

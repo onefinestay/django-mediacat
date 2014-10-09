@@ -36,14 +36,12 @@ var Button = React.createClass({
 
     var classes = {
       'mediacat-button': true,
-      'mediacat-button--active': active,
-      'mediacat-button--disabled': disabled,
+      'mediacat-is-active': active,
+      'mediacat-is-disabled': disabled,
     };
 
     if (placement) {
       classes['mediacat-button--' + placement] = true;
-      classes['mediacat-button--' + placement + '--active'] = active;
-      classes['mediacat-button--' + placement + '--disabled'] = disabled;
     }
 
     return this.transferPropsTo(

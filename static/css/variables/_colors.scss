@@ -16,7 +16,7 @@ $header-button-bg: $white;
 $header-button-text: $teal;
 $header-button-shadow: darken($header-button-bg, 15);
 
-$header-button-active-bg: darken($header-button-bg, 15);
+$header-button-active-bg: darken($header-bg, 15);
 $header-button-active-highlight: lighten($header-bg, 15);
 $header-button-active-shadow: darken($header-bg, 25);
 $header-button-active-text: lighten($header-bg, 10);
