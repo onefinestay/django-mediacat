@@ -4097,7 +4097,7 @@
 	
 	    if (readyToDisplay && crop) {
 	      return (
-	        React.DOM.div({className: "mediacat-detail mediacat-detail-crop"}, 
+	        React.DOM.div({className: "mediacat-detail mediacat-detail--crop"}, 
 	          DetailProxyImage({
 	            key: media.get('thumbnail'), 
 	            width: displayWidth, 
@@ -9048,8 +9048,8 @@
 	    };
 	
 	    var classes = {
-	      'detail-proxy-image': true,
-	      'detail-proxy-image-preloaded': this.state.alreadyLoaded ? true : false
+	      'mediacat-detail__proxy-image': true,
+	      'mediacat-detail__proxy-image--preloaded': this.state.alreadyLoaded ? true : false
 	    };
 	
 	    var placeholderStyle = {
@@ -9066,11 +9066,11 @@
 	    };
 	    return (
 	      React.DOM.div({className: cx(classes), style: containerStyle}, 
-	        React.DOM.div({className: "detail-proxy-image-placeholder", style: placeholderStyle}), 
-	        React.DOM.div({className: "detail-proxy-image-bg", style: style}, 
-	          React.DOM.img({src: src})
+	        React.DOM.div({className: "mediacat-detail__proxy-image__placeholder", style: placeholderStyle}), 
+	        React.DOM.div({className: "mediacat-detail__proxy-image__bg", style: style}, 
+	          React.DOM.img({className: "mediacat-detail__proxy-image__image", src: src})
 	        ), 
-	        React.DOM.div({className: "detail-proxy-image-spinner", style: spinnerStyle}, RadialLoader(null))
+	        React.DOM.div({className: "mediacat-detail__proxy-image__spinner", style: spinnerStyle}, RadialLoader(null))
 	      )
 	    );
 	  }

@@ -58,8 +58,8 @@ var DetailProxyImage = React.createClass({
     };
 
     var classes = {
-      'detail-proxy-image': true,
-      'detail-proxy-image-preloaded': this.state.alreadyLoaded ? true : false
+      'mediacat-detail__proxy-image': true,
+      'mediacat-detail__proxy-image--preloaded': this.state.alreadyLoaded ? true : false
     };
 
     var placeholderStyle = {
@@ -76,11 +76,11 @@ var DetailProxyImage = React.createClass({
     };
     return (
       <div className={cx(classes)} style={containerStyle}>
-        <div className="detail-proxy-image-placeholder" style={placeholderStyle} />
-        <div className="detail-proxy-image-bg" style={style}>
-          <img src={src} />
+        <div className="mediacat-detail__proxy-image__placeholder" style={placeholderStyle} />
+        <div className="mediacat-detail__proxy-image__bg" style={style}>
+          <img className="mediacat-detail__proxy-image__image" src={src} />
         </div>
-        <div className="detail-proxy-image-spinner" style={spinnerStyle}><RadialLoader /></div>
+        <div className="mediacat-detail__proxy-image__spinner" style={spinnerStyle}><RadialLoader /></div>
       </div>
     );
   }

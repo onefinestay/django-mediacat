@@ -111,7 +111,7 @@ var Detail = React.createClass({
 
     if (readyToDisplay && crop) {
       return (
-        <div className="mediacat-detail mediacat-detail-crop">
+        <div className="mediacat-detail mediacat-detail--crop">
           <DetailProxyImage
             key={media.get('thumbnail')} 
             width={displayWidth} 
