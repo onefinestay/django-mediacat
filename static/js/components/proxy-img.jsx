@@ -5,7 +5,6 @@ var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 
-var RadialLoader = require('./loaders/radial');
 
 var ProxyImg = React.createClass({
   mixins: [PureRenderMixin],
@@ -13,7 +12,7 @@ var ProxyImg = React.createClass({
   getDefaultProps: function() {
     return {
       draggable: true
-    }
+    };
   },
 
   getInitialState: function() {
@@ -108,8 +107,8 @@ var ProxyImg = React.createClass({
     displayLeft = (containerWidth- displayWidth) / 2;
 
     var classes = {
-      'proxy-image': true,
-      'proxy-image-preloaded': this.state.alreadyLoaded ? true : false
+      'mediacat-proxy-image': true,
+      'mediacat-proxy-image--preloaded': this.state.alreadyLoaded ? true : false
     };
 
     var style = {
@@ -128,8 +127,8 @@ var ProxyImg = React.createClass({
     };
     return (
       <div className={cx(classes)}>
-        <div className="proxy-image-bg" style={style}>
-          <img src={src} style={imgStyle} draggable={draggable} onDragStart={this.onDragStart} />
+        <div className="mediacat-proxy-image__bg" style={style}>
+          <img className="mediacat-proxy-image__image" src={src} style={imgStyle} draggable={draggable} onDragStart={this.onDragStart} />
         </div>
       </div>
     );

@@ -125,10 +125,9 @@ var Thumbnail = React.createClass({
 
     var classes = {
       'mediacat-thumbnail': true,
-      'mediacat-list__item': true,
-      'mediacat-list__item--thumbnail': true,          
-      'mediacat-thumbnail-rejected': thumbnail.get('rating') === 0,
-      'mediacat-thumbnail-selected': this.state.selected
+      'mediacat-thumbnail--dragging': this.props.dragging,
+      'mediacat-thumbnail--rejected': thumbnail.get('rating') === 0,
+      'mediacat-thumbnail--selected': this.state.selected
     };
 
     var contentStyle;
@@ -143,7 +142,7 @@ var Thumbnail = React.createClass({
     }
 
     return (
-      <li
+      <div
         className={cx(classes)} 
         onClick={this.select} 
         onDoubleClick={this.handleDoubleClick} 
@@ -152,15 +151,15 @@ var Thumbnail = React.createClass({
         onMouseLeave={this.handleMouseLeave}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}>
-        {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="dragover-guide dragover-guide-before" /> : null}
-        <div style={contentStyle} className="mediacat-thumbnail-content">
+        {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="mediacat-thumbnail__dragover mediacat-thumbnail__dragover--before" /> : null}
+        <div style={contentStyle} className="mediacat-thumbnail__content">
           <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
         </div>
-        <div className="mediacat-thumbnail-footer">
+        <div className="mediacat-thumbnail__footer">
           <Rating media={thumbnail} interactable={false} /> 
         </div>
-        {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="dragover-guide dragover-guide-after" /> : null}
-      </li>
+        {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="mediacat-thumbnail__dragover mediacat-thumbnail__dragover--after" /> : null}
+      </div>
     );
   }
 });

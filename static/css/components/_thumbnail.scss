@@ -1,4 +1,4 @@
-.#{$ns}-thumbnail-list {
+.#{$ns}-list--thumbnails {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -15,97 +15,60 @@
   margin-bottom: -1px;
   margin-right: -1px;
   position: relative;
-}
 
-.#{$ns}-thumbnail-content {
-  height: 180px;
-  padding: 9px;
-  width: 180px;
-}
-
-.#{$ns}-thumbnail-footer {
-  background-color: rgba(0, 0, 0, .125);
-  border-top: 1px darken(#2b303b, 5) solid;
-  padding: 5px;
-  text-align: center;
-
-  .media-rating {
-    display: inline-block;
-    line-height: 1;
-    opacity: .25;
-
-    .icon {
-      line-height: 1;
-      vertical-align: middle;
-    }
-  }
-}
-
-.dragover-guide {
-  background-color: #3ea2c1;
-  border-radius: 2px;
-  bottom: -2px;
-  position: absolute;
-  top: -2px;
-  width: 5px;
-  z-index: 2;
-}
-
-.dragover-guide-before {
-  left: -3px;
-}
-
-.dragover-guide-after {
-  right: -3px;
-}
-
-.proxy-image {
-  height: 100%;
-  position: relative;
-  width: 100%;
-
-  .proxy-image-bg {
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: contain;      
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease;      
-    width: 100%;     
+  &--rejected {
+    background-color: darken(#2b303b, 4);
   }
 
-  .proxy-image-spinner {
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    line-height: 100%;
-    opacity: 1;
-    position: absolute;
-    right: 0;
+  &--selected {
+    background-color: #414858;
+  }
+
+  &--dragging {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    pointer-events: none;
+    transform: scale(.5);
+  }
+
+  &__content {
+    height: 180px;
+    padding: 9px;
+    width: 180px;
+  }
+
+  &__footer {
+    background-color: rgba(0, 0, 0, .125);
+    border-top: 1px darken(#2b303b, 5) solid;
+    padding: 5px;
     text-align: center;
-    top: 0;
-    transition: opacity 1s ease;
-    width: 100%;
-  }
 
-  &.proxy-image-preloaded {
-    .proxy-image-bg,
-    .proxy-image-spinner {
-      transition-property: none;
+    .media-rating {
+      display: inline-block;
+      line-height: 1;
+      opacity: .25;
+
+      .icon {
+        line-height: 1;
+        vertical-align: middle;
+      }
     }
   }
 
-  img {
-    display: block;
-    position: absolute;      
-    user-drag: none;
+  &__dragover {
+    background-color: #3ea2c1;
+    border-radius: 2px;
+    bottom: -2px;
+    position: absolute;
+    top: -2px;
+    width: 5px;
+    z-index: 2;    
+
+    &--before {
+      left: -3px;
+    }
+
+    &--after {
+      right: -3px;
+    }
   }
-}
-
-.#{$ns}-thumbnail-rejected {
-  background-color: darken(#2b303b, 4);
-}
-
-.#{$ns}-thumbnail-selected {
-  background-color: #414858;
 }

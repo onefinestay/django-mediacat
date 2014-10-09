@@ -188,7 +188,11 @@ var ThumbnailList = React.createClass({
       size = (this.state.width - (numPerRow + 1)) / numPerRow;
     }
 
-    var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var thumbnails = media.map(thumbnail =>
+      (<li className="mediacat-list__item mediacat-list__item--thumbnail">
+        <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />
+      </li>)
+    );
 
     var toolbar = (
       <PanelToolbar>

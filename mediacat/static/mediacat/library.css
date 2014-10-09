@@ -211,6 +211,10 @@ input.hidden-file {
   list-style-type: none;
   margin: 0;
   padding: 0; }
+  .mediacat-list--dragging {
+    pointer-events: none;
+    position: absolute;
+    z-index: 999; }
   .mediacat-list__item {
     margin: 0;
     padding: 0; }
@@ -607,23 +611,32 @@ input.hidden-file {
     -moz-box-sizing: border-box;
          box-sizing: border-box; }
 
-.mediacat-categories {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-
-.mediacat-categories-label {
+.mediacat-category--selected > .mediacat-category__label {
+  background-color: #414858;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000; }
+.mediacat-category--open > .mediacat-category__label .icon {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg); }
+  .mediacat-category--open > .mediacat-category__label .icon:hover {
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg); }
+.mediacat-category .icon {
+  font-size: 12px;
+  margin-right: 5px; }
+.mediacat-category__label {
   cursor: pointer;
   display: block;
   font-size: 14px;
   line-height: 1.5;
-  padding: 5px 20px;
+  padding: 4px 20px;
   position: relative; }
-  .mediacat-categories-label .icon-arrow {
+  .mediacat-category__label:hover, .mediacat-category__label--hover {
+    background-color: #303642;
+    color: #fff; }
+  .mediacat-category__label .icon-arrow {
     display: inline-block;
     font-size: 10px;
     line-height: 1.75;
@@ -634,11 +647,11 @@ input.hidden-file {
             transition: transform 0.15s ease;
     vertical-align: baseline;
     width: 15px; }
-    .mediacat-categories-label .icon-arrow:hover {
+    .mediacat-category__label .icon-arrow:hover {
       -webkit-transform: rotate(45deg);
           -ms-transform: rotate(45deg);
               transform: rotate(45deg); }
-  .mediacat-categories-label .icon-dash {
+  .mediacat-category__label .icon-dash {
     display: inline-block;
     font-size: 10px;
     line-height: 1.75;
@@ -646,36 +659,19 @@ input.hidden-file {
     opacity: 0;
     text-align: center;
     width: 15px; }
-  .mediacat-categories-label .loading {
+  .mediacat-category__label .loading {
     opacity: 0.35; }
-  .mediacat-categories-label .linear-loader {
+  .mediacat-category__label .linear-loader {
     left: auto;
     right: 5px; }
-  .mediacat-categories-label .mediacat-categories-count {
-    font-size: 12px;
-    line-height: 1.75;
-    opacity: 0.35;
-    padding: 5px;
-    position: absolute;
-    right: 10px;
-    top: 0; }
-  .mediacat-categories-label:hover, .mediacat-categories-label.hover {
-    background-color: #303642;
-    color: #fff; }
-
-.mediacat-categories-node-selected > .mediacat-categories-label {
-  background-color: #414858;
-  color: #fff;
-  text-shadow: 1px 1px 0 #000; }
-
-.mediacat-categories-node-open > .mediacat-categories-label .icon-arrow {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg); }
-  .mediacat-categories-node-open > .mediacat-categories-label .icon-arrow:hover {
-    -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-            transform: rotate(45deg); }
+.mediacat-category__count {
+  font-size: 12px;
+  line-height: 1.75;
+  opacity: 0.35;
+  padding: 5px;
+  position: absolute;
+  right: 10px;
+  top: 0; }
 
 .mediacat-list--crop-groups {
   padding: 5px; }
@@ -727,97 +723,97 @@ input.hidden-file {
 .mediacat-cropper {
   position: absolute;
   z-index: 1; }
-  .mediacat-cropper .mediacat-cropper-mask {
+  .mediacat-cropper__mask {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute; }
-  .mediacat-cropper .mediacat-cropper-selection {
+  .mediacat-cropper__selection {
     border: 1px #fff dashed;
     position: absolute; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-mover {
-      bottom: 5px;
-      cursor: move;
-      left: 5px;
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      z-index: 1; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
-      background-color: rgba(255, 255, 255, 0.35);
-      position: absolute; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2 {
+  .mediacat-cropper__mover {
+    bottom: 5px;
+    cursor: move;
+    left: 5px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 1; }
+  .mediacat-cropper__guide {
+    background-color: rgba(255, 255, 255, 0.35);
+    position: absolute; }
+    .mediacat-cropper__guide--x1, .mediacat-cropper__guide--x2 {
       bottom: 0;
       top: 0;
       width: 1px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
+    .mediacat-cropper__guide--y1, .mediacat-cropper__guide--y2 {
       height: 1px;
       left: 0;
       right: 0; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x1 {
+    .mediacat-cropper__guide--x1 {
       left: 33.3333333333%; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-x2 {
+    .mediacat-cropper__guide--x2 {
       right: 33.3333333333%; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y1 {
+    .mediacat-cropper__guide--y1 {
       top: 33.3333333333%; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-guide-y2 {
+    .mediacat-cropper__guide--y2 {
       bottom: 33.3333333333%; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right {
-      position: absolute; }
-      .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right .mediacat-cropper-selection-handle, .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right .mediacat-cropper-selection-handle {
-        background-color: #fff;
-        height: 9px;
-        left: 50%;
-        margin-left: -4px;
-        margin-top: -4px;
-        position: absolute;
-        top: 50%;
-        width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top {
+  .mediacat-cropper__selection-handle {
+    position: absolute; }
+    .mediacat-cropper__selection-handle--top {
       cursor: ns-resize;
       height: 9px;
       left: 5px;
       right: 5px;
       top: -5px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-left {
+    .mediacat-cropper__selection-handle--top-left {
       cursor: nwse-resize;
       height: 9px;
       left: -5px;
       top: -5px;
       width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-left {
+    .mediacat-cropper__selection-handle--left {
       bottom: 5px;
       cursor: ew-resize;
       left: -5px;
       top: 5px;
       width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-left {
+    .mediacat-cropper__selection-handle--bottom-left {
       bottom: -5px;
       cursor: nesw-resize;
       height: 5px;
       left: -5px;
       width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom {
+    .mediacat-cropper__selection-handle--bottom {
       bottom: -5px;
       cursor: ns-resize;
       height: 9px;
       left: 5px;
       right: 5px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-bottom-right {
+    .mediacat-cropper__selection-handle--bottom-right {
       bottom: -5px;
       cursor: nwse-resize;
       height: 9px;
       right: -5px;
       width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-right {
+    .mediacat-cropper__selection-handle--right {
       bottom: 5px;
       cursor: ew-resize;
       right: -5px;
       top: 5px;
       width: 9px; }
-    .mediacat-cropper .mediacat-cropper-selection .mediacat-cropper-selection-top-right {
+    .mediacat-cropper__selection-handle--top-right {
       cursor: nesw-resize;
       height: 9px;
       right: -5px;
       top: -5px;
+      width: 9px; }
+    .mediacat-cropper__selection-handle__box {
+      background-color: #fff;
+      height: 9px;
+      left: 50%;
+      margin-left: -4px;
+      margin-top: -4px;
+      position: absolute;
+      top: 50%;
       width: 9px; }
 
 .mediacat-detail-wrapper {
@@ -919,20 +915,6 @@ input.hidden-file {
     .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list li, .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list li {
       display: inline-block; }
 
-.mediacat-drag-placeholder {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-  position: absolute;
-  -webkit-transform: scale(0.5);
-      -ms-transform: scale(0.5);
-          transform: scale(0.5);
-  z-index: 999; }
-  .mediacat-drag-placeholder li {
-    margin: 0; }
-
 .mediacat-information > .mediacat-tabs {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
@@ -964,7 +946,28 @@ input.hidden-file {
   .mediacat-information-panel td {
     width: 100%; }
 
-.mediacat-thumbnail-list {
+.mediacat-proxy-image {
+  height: 100%;
+  position: relative;
+  width: 100%; }
+  .mediacat-proxy-image--preloaded> {
+    -webkit-transition-property: none;
+            transition-property: none; }
+  .mediacat-proxy-image__bg {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    opacity: 0;
+    -webkit-transition: opacity 1s ease;
+            transition: opacity 1s ease;
+    width: 100%; }
+  .mediacat-proxy-image__image {
+    display: block;
+    position: absolute;
+    user-drag: none; }
+
+.mediacat-list--thumbnails {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -991,79 +994,44 @@ input.hidden-file {
   margin-bottom: -1px;
   margin-right: -1px;
   position: relative; }
-
-.mediacat-thumbnail-content {
-  height: 180px;
-  padding: 9px;
-  width: 180px; }
-
-.mediacat-thumbnail-footer {
-  background-color: rgba(0, 0, 0, 0.125);
-  border-top: 1px #20242c solid;
-  padding: 5px;
-  text-align: center; }
-  .mediacat-thumbnail-footer .media-rating {
-    display: inline-block;
-    line-height: 1;
-    opacity: 0.25; }
-    .mediacat-thumbnail-footer .media-rating .icon {
+  .mediacat-thumbnail--rejected {
+    background-color: #22262f; }
+  .mediacat-thumbnail--selected {
+    background-color: #414858; }
+  .mediacat-thumbnail--dragging {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5); }
+  .mediacat-thumbnail__content {
+    height: 180px;
+    padding: 9px;
+    width: 180px; }
+  .mediacat-thumbnail__footer {
+    background-color: rgba(0, 0, 0, 0.125);
+    border-top: 1px #20242c solid;
+    padding: 5px;
+    text-align: center; }
+    .mediacat-thumbnail__footer .media-rating {
+      display: inline-block;
       line-height: 1;
-      vertical-align: middle; }
-
-.dragover-guide {
-  background-color: #3ea2c1;
-  border-radius: 2px;
-  bottom: -2px;
-  position: absolute;
-  top: -2px;
-  width: 5px;
-  z-index: 2; }
-
-.dragover-guide-before {
-  left: -3px; }
-
-.dragover-guide-after {
-  right: -3px; }
-
-.proxy-image {
-  height: 100%;
-  position: relative;
-  width: 100%; }
-  .proxy-image .proxy-image-bg {
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 100%;
-    opacity: 0;
-    -webkit-transition: opacity 1s ease;
-            transition: opacity 1s ease;
-    width: 100%; }
-  .proxy-image .proxy-image-spinner {
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    line-height: 100%;
-    opacity: 1;
+      opacity: 0.25; }
+      .mediacat-thumbnail__footer .media-rating .icon {
+        line-height: 1;
+        vertical-align: middle; }
+  .mediacat-thumbnail__dragover {
+    background-color: #3ea2c1;
+    border-radius: 2px;
+    bottom: -2px;
     position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-    -webkit-transition: opacity 1s ease;
-            transition: opacity 1s ease;
-    width: 100%; }
-  .proxy-image.proxy-image-preloaded .proxy-image-bg, .proxy-image.proxy-image-preloaded .proxy-image-spinner {
-    -webkit-transition-property: none;
-            transition-property: none; }
-  .proxy-image img {
-    display: block;
-    position: absolute;
-    user-drag: none; }
-
-.mediacat-thumbnail-rejected {
-  background-color: #22262f; }
-
-.mediacat-thumbnail-selected {
-  background-color: #414858; }
+    top: -2px;
+    width: 5px;
+    z-index: 2; }
+    .mediacat-thumbnail__dragover--before {
+      left: -3px; }
+    .mediacat-thumbnail__dragover--after {
+      right: -3px; }
 
 .mediacat-uploads {
   border-top: 1px black solid;

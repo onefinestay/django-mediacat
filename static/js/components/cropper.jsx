@@ -64,10 +64,10 @@ var Cropper = React.createClass({
 
     return (
       <div className="mediacat-cropper" style={style}>
-        <div className="mediacat-cropper-mask" style={leftMaskStyle} />
-        <div className="mediacat-cropper-mask" style={topMaskStyle} />
-        <div className="mediacat-cropper-mask" style={rightMaskStyle} />
-        <div className="mediacat-cropper-mask" style={bottomMaskStyle} />
+        <div className="mediacat-cropper__mask" style={leftMaskStyle} />
+        <div className="mediacat-cropper__mask" style={topMaskStyle} />
+        <div className="mediacat-cropper__mask" style={rightMaskStyle} />
+        <div className="mediacat-cropper__mask" style={bottomMaskStyle} />
         <CropSelection onMove={this.moveSelection} scale={this.props.scale} top={cropTop} left={cropLeft} width={cropWidth} height={cropHeight} />
       </div>
     );

@@ -16,21 +16,17 @@ var LinearLoader = require('./loaders/linear');
 var CategoryTreePlaceholderNode = React.createClass({
   render: function() {
     var style = {
-      'padding-left': 15 * this.props.depth + 'px'
-    };
-
-    var classes = {
-      'mediacat-categories-node': true,
-      'mediacat-list__item': true,
-      'mediacat-list__item--category': true,   
+      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px'
     };
 
     return (
-      <li className={cx(classes)}>
-        <a style={style} className="mediacat-categories-label">
-          <span className="icon icon-dash" />
-          <span className="loading">Loading...</span>
-        </a>
+      <li className="mediacat-list__item mediacat-list__item--category">
+        <div className="mediacat-category">
+          <a className="mediacat-category__label" style={style}>
+            <span className="icon icon-dash" />
+            <span className="loading">Loading...</span>
+          </a>
+        </div>
       </li>
     );
   }
@@ -126,34 +122,34 @@ var CategoryTreeNode = React.createClass({
     var hasChildren = node.get('has_children');
 
     var classes = {
-      'mediacat-categories-node': true,
-      'mediacat-categories-node-open': isOpen,
-      'mediacat-list__item': true,
-      'mediacat-list__item--category': true,    
-      'mediacat-categories-node-selected': this.state.selected
+      'mediacat-category': true,
+      'mediacat-category--open': isOpen,
+      'mediacat-category--selected': this.state.selected
     };
 
     var style = {
-      'padding-left': 15 * depth + 'px',
+      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px',
       'cursor': this.cursor()
     };
 
     var labelClasses = {
-      "mediacat-categories-label": true,
-      "hover": this.state.hover
+      "mediacat-category__label": true,
+      "mediacat-category__label--hover": this.state.hover
     };
 
     var count = node.get('count');
 
     return (
-      <li className={cx(classes)}>
-        <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
-          {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="icon icon-dash" />}
-          {node.get('name')}
-          {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-categories-count">{count || '-'}</div>}
-        </a>
-        {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-categories-children mediacat-list mediacat-list--categories">{nodes.toJS()}</ul> : null}
-        {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-categories-children mediacat-list mediacat-list--categories"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
+      <li className="mediacat-list__item mediacat-list__item--category">
+        <div className={cx(classes)}>
+          <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
+            {node.get('has_children') ? <span className="icon icon-arrow" onClick={this.toggleExpanded} /> : <span className="icon icon-dash" />}
+            {node.get('name')}
+            {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-category__count">{count || '-'}</div>}
+          </a>
+          {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories">{nodes.toJS()}</ul> : null}
+          {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
+        </div>
       </li>
     );
   }
@@ -176,7 +172,7 @@ var CategoryTree = React.createClass({
 
     return (
       <ScrollPane>
-        <ul className="mediacat-categories mediacat-list mediacat-list--categories">
+        <ul className="mediacat-list mediacat-list--categories">
           {nodes.toJS()}
         </ul>
       </ScrollPane>

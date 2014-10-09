@@ -15,13 +15,14 @@ var CropSelectionHandle = React.createClass({
 
   render: function() {
     var classes = [];
-    classes['mediacat-cropper-selection-' + this.props.position] = true;
+    classes['mediacat-cropper__selection-handle'] = true;
+    classes['mediacat-cropper__selection-handle--' + this.props.position] = true;
 
     return (
       <div 
         className={cx(classes)}
         onMouseDown={this.onMouseDown}>
-        <div className="mediacat-cropper-selection-handle" />
+        <div className="mediacat-cropper__selection-handle__box" />
       </div>
     );
   },
@@ -113,16 +114,16 @@ var CropSelection = React.createClass({
 
     return (
       <div 
-        className="mediacat-cropper-selection"  
+        className="mediacat-cropper__selection"  
         style={style} >
         <div 
-          className="mediacat-cropper-selection-mover" 
+          className="mediacat-cropper__mover" 
           onMouseDown={this.onMouseDown}
           />
-          <div className="mediacat-cropper-selection-guide-x1" />
-          <div className="mediacat-cropper-selection-guide-x2" />
-          <div className="mediacat-cropper-selection-guide-y1" />
-          <div className="mediacat-cropper-selection-guide-y2" />          
+          <div className="mediacat-cropper__guide mediacat-cropper__guide--x1" />
+          <div className="mediacat-cropper__guide mediacat-cropper__guide--x2" />
+          <div className="mediacat-cropper__guide mediacat-cropper__guide--y1" />
+          <div className="mediacat-cropper__guide mediacat-cropper__guide--y2" />          
         <CropSelectionHandle position="top" onMouseDown={this.onHandleMouseDown} />
         <CropSelectionHandle position="top-left" onMouseDown={this.onHandleMouseDown} />
         <CropSelectionHandle position="left" onMouseDown={this.onHandleMouseDown} />
