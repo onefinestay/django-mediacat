@@ -83,7 +83,6 @@ var CropStore = Fluxxor.createStore({
       constants.CROP_MOVE, this.onCropMove,
       constants.CROP_RESIZE, this.onCropResize,
       constants.CROP_ADD, this.onCropAdd,
-      constants.CROP_FETCH, this.onFetch,
       constants.CROP_SAVE_START, this.onSaveStart,
       constants.CROP_SAVE_SUCCESS, this.onSaveSuccess,
       constants.CROP_PICK_START, this.onPickStart,

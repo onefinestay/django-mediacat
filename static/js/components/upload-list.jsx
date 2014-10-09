@@ -34,8 +34,6 @@ var Upload = React.createClass({
 
     var classes = {
       'mediacat-upload': true,
-      'mediacat-list__item': true,
-      'mediacat-list__item--upload': true,      
       'mediacat-upload-selected': this.state.selected
     };
 
@@ -52,8 +50,10 @@ var Upload = React.createClass({
     }
 
     return (
-      <li className={cx(classes)}>
-        {upload.get('file').name} - {upload.get('progress')}% - {caption}
+      <li className="mediacat-list__item mediacat-list__item--upload">
+        <div className={cx(classes)}>
+          {upload.get('file').name} - {upload.get('progress')}% - {caption}
+        </div>
       </li>
     );
   }
@@ -73,7 +73,7 @@ var UploadList = React.createClass({
     var uploads = this.state.uploads.map(upload => <Upload key={upload.get('id')} upload={upload} />);
 
     return (
-      <ul className="mediacat-upload-list mediacat-list mediacat-list--uploads">
+      <ul className="mediacat-list mediacat-list--uploads">
         {uploads.toJS()}
       </ul>
     );

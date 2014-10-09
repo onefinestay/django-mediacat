@@ -1016,7 +1016,6 @@
 	      constants.CROP_MOVE, this.onCropMove,
 	      constants.CROP_RESIZE, this.onCropResize,
 	      constants.CROP_ADD, this.onCropAdd,
-	      constants.CROP_FETCH, this.onFetch,
 	      constants.CROP_SAVE_START, this.onSaveStart,
 	      constants.CROP_SAVE_SUCCESS, this.onSaveSuccess,
 	      constants.CROP_PICK_START, this.onPickStart,
@@ -8273,8 +8272,6 @@
 	
 	    var classes = {
 	      'mediacat-upload': true,
-	      'mediacat-list__item': true,
-	      'mediacat-list__item--upload': true,      
 	      'mediacat-upload-selected': this.state.selected
 	    };
 	
@@ -8291,8 +8288,10 @@
 	    }
 	
 	    return (
-	      React.DOM.li({className: cx(classes)}, 
-	        upload.get('file').name, " - ", upload.get('progress'), "% - ", caption
+	      React.DOM.li({className: "mediacat-list__item mediacat-list__item--upload"}, 
+	        React.DOM.div({className: cx(classes)}, 
+	          upload.get('file').name, " - ", upload.get('progress'), "% - ", caption
+	        )
 	      )
 	    );
 	  }
@@ -8312,7 +8311,7 @@
 	    var uploads = this.state.uploads.map(function(upload)  {return Upload({key: upload.get('id'), upload: upload});});
 	
 	    return (
-	      React.DOM.ul({className: "mediacat-upload-list mediacat-list mediacat-list--uploads"}, 
+	      React.DOM.ul({className: "mediacat-list mediacat-list--uploads"}, 
 	        uploads.toJS()
 	      )
 	    );
