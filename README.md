@@ -5,4 +5,4 @@ Mediacat is an opinionated Media Library for Django, lovingly extracted from the
 
 It's not quite ready yet, but here's a screenshot of the current state of play:
 
-![Mediacat Screenshot](docs/screenshot.jpg?raw=true)
+![Mediacat Screenshot](docs/screenshot.png?raw=true)
