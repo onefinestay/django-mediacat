@@ -29,7 +29,7 @@ var Navigation = React.createClass({
       <div className="mediacat-navigation mediacat-column mediacat-column--sidebar">
         <Toolbar theme="column">
           <UploadButton />
-          <div className="mediacat_toolbar__separator" />
+          <div className="mediacat-toolbar__separator" />
           <Search />
         </Toolbar>
         <CategoryTree />

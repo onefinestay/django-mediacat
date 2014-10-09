@@ -1518,7 +1518,7 @@
 	      React.DOM.div({className: "mediacat-navigation mediacat-column mediacat-column--sidebar"}, 
 	        Toolbar({theme: "column"}, 
 	          UploadButton(null), 
-	          React.DOM.div({className: "mediacat_toolbar__separator"}), 
+	          React.DOM.div({className: "mediacat-toolbar__separator"}), 
 	          Search(null)
 	        ), 
 	        CategoryTree(null), 
@@ -3769,12 +3769,13 @@
 	
 	    var classes = {
 	      'mediacat-button': true,
-	      'mediacat-button--disabled': disabled
+	      'mediacat-button--header': true,
+	      'mediacat-is-disabled': disabled
 	    };
 	
 	    return (
 	      React.DOM.div({className: cx(classes)}, 
-	        Icon({glyph: "upload"}), 
+	        Icon({glyph: "upload", size: "large"}), 
 	        React.DOM.div({className: "mediacat-button__mask", onClick: this.handleClick}), 
 	        React.DOM.input({className: "mediacat-input--hidden-file", type: "file", multiple: true, ref: "upload", 
 	          accept: "image/jpeg, image/png, image/gif", 

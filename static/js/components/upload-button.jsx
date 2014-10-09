@@ -38,12 +38,13 @@ var UploadButton = React.createClass({
 
     var classes = {
       'mediacat-button': true,
-      'mediacat-button--disabled': disabled
+      'mediacat-button--header': true,
+      'mediacat-is-disabled': disabled
     };
 
     return (
       <div className={cx(classes)}>
-        <Icon glyph="upload" />
+        <Icon glyph="upload" size="large" />
         <div className="mediacat-button__mask" onClick={this.handleClick} />
         <input className="mediacat-input--hidden-file" type="file" multiple={true} ref="upload"
           accept="image/jpeg, image/png, image/gif"
