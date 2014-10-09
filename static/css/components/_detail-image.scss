@@ -11,36 +11,30 @@
   position: relative;
 
   &__proxy-image {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    &__placeholder {
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      background-size: cover;
+    &,
+    &__placeholder,
+    &__bg {
       bottom: 0;
       left: 0;
-      opacity: 1;
       position: absolute;
       right: 0;
       top: 0;
-      transition: opacity 1s ease;
     }
 
+    &__placeholder,
     &__bg {
       background-position: 50% 50%;
       background-repeat: no-repeat;
       background-size: cover;
-      bottom: 0;
-      left: 0;
+      transition: opacity 1s ease;      
+    }
+
+    &__placeholder {
+      opacity: 1;
+    }
+
+    &__bg {
       opacity: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transition: opacity 1s ease;
       z-index: 1;
     }
 

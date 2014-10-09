@@ -835,42 +835,28 @@ input.hidden-file {
       -ms-flex-positive: 1;
           flex-grow: 1;
   position: relative; }
-  .mediacat-detail__proxy-image {
+  .mediacat-detail__proxy-image, .mediacat-detail__proxy-image__placeholder, .mediacat-detail__proxy-image__bg {
     bottom: 0;
     left: 0;
     position: absolute;
     right: 0;
     top: 0; }
-    .mediacat-detail__proxy-image__placeholder {
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      background-size: cover;
-      bottom: 0;
-      left: 0;
-      opacity: 1;
-      position: absolute;
-      right: 0;
-      top: 0;
-      -webkit-transition: opacity 1s ease;
-              transition: opacity 1s ease; }
-    .mediacat-detail__proxy-image__bg {
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      background-size: cover;
-      bottom: 0;
-      left: 0;
-      opacity: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      -webkit-transition: opacity 1s ease;
-              transition: opacity 1s ease;
-      z-index: 1; }
-    .mediacat-detail__proxy-image__image {
-      display: block;
-      height: 100%;
-      opacity: 0;
-      width: 100%; }
+  .mediacat-detail__proxy-image__placeholder, .mediacat-detail__proxy-image__bg {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-transition: opacity 1s ease;
+            transition: opacity 1s ease; }
+  .mediacat-detail__proxy-image__placeholder {
+    opacity: 1; }
+  .mediacat-detail__proxy-image__bg {
+    opacity: 0;
+    z-index: 1; }
+  .mediacat-detail__proxy-image__image {
+    display: block;
+    height: 100%;
+    opacity: 0;
+    width: 100%; }
 
 .mediacat-document {
   background-color: #1d2127;
