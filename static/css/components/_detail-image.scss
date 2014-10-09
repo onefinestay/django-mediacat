@@ -1,14 +1,14 @@
-.#{$ns}-detail-wrapper {
+.#{$ns}-detail {
   background-color: darken(#232830, 10);
   display: flex;
   flex-grow: 1;
   padding: 20px;
   position: relative;
-}
 
-.#{$ns}-detail {
-  flex-grow: 1;
-  position: relative;
+  &__content {
+    flex-grow: 1;
+    position: relative;    
+  }
 
   &__proxy-image {
     &,
@@ -44,5 +44,5 @@
       opacity: 0;
       width: 100%;
     }
-  }
+  }  
 }

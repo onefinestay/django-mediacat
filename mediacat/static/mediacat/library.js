@@ -1548,50 +1548,18 @@
 	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
 	var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
-	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 19);
 	
-	var ThumbnailList = __webpack_require__(/*! ./thumbnail-list */ 39);
-	var Detail = __webpack_require__(/*! ./detail */ 40);
+	var Document = __webpack_require__(/*! ./document */ 394);
 	
 	
 	var Main = React.createClass({displayName: 'Main',
-	  mixins: [PureRenderMixin, KeyboardMixin, FluxMixin, StoreWatchMixin("Media")],
+	  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
 	
 	  getStateFromFlux: function() {
 	    return {
 	      mode: this.getFlux().store('Media').state.get('viewMode')
 	    };
 	  },
-	
-	  componentWillMount: function() {
-	    var keyboard = this.getKeyboard();
-	    var flux = this.getFlux();
-	
-	    keyboard.on('1', this.setRating.bind(this, 1));
-	    keyboard.on('2', this.setRating.bind(this, 2));
-	    keyboard.on('3', this.setRating.bind(this, 3));
-	    keyboard.on('4', this.setRating.bind(this, 4));
-	    keyboard.on('5', this.setRating.bind(this, 5));
-	    keyboard.on('0', this.setRating.bind(this, 0));
-	  },
-	
-	  componentWillUnmount: function() {
-	    var keyboard = this.getKeyboard();
-	
-	    keyboard.off('1');
-	    keyboard.off('2');
-	    keyboard.off('3');
-	    keyboard.off('4');
-	    keyboard.off('5');
-	    keyboard.off('0');
-	  },
-	
-	  setRating: function(rating, event) {
-	    var selected = this.getFlux().store('Media').getSelectedMedia();
-	    if (selected) {
-	      this.getFlux().actions.media.setRating(selected, rating);
-	    }
-	  },  
 	
 	  setGridMode: function() {
 	    this.getFlux().actions.media.setViewMode('grid');
@@ -1606,13 +1574,6 @@
 	  },
 	  
 	  render: function() {
-	    var documentClasses = {
-	      'mediacat-document': true,
-	      'mediacat-document-grid': this.state.mode === 'grid',
-	      'mediacat-document-filmstrip': this.state.mode === 'filmstrip',
-	      'mediacat-document-detail': this.state.mode === 'detail'
-	    };
-	
 	    var gridButtonClasses = {
 	      'icon': true,
 	      'icon-grid': true,
@@ -1641,10 +1602,7 @@
 	            React.DOM.button({className: cx(detailButtonClasses), onClick: this.setDetailMode})
 	          )
 	        ), 
-	        React.DOM.div({className: cx(documentClasses)}, 
-	          this.state.mode !== 'grid' && React.DOM.div({className: "mediacat-detail-wrapper"}, Detail({mode: this.state.mode})), 
-	          this.state.mode !== 'detail' && ThumbnailList({mode: this.state.mode})
-	        )
+	        Document({mode: this.state.mode})
 	      )
 	    );
 	  }
@@ -4021,7 +3979,7 @@
 	  },
 	
 	  updateDOMDimensions: function() {
-	    var el = this.getDOMNode();
+	    var el = this.refs.content.getDOMNode();
 	
 	    this.setState({
 	      width: el.offsetWidth,
@@ -4095,40 +4053,49 @@
 	    displayTop = (this.state.height - displayHeight) / 2;
 	    displayLeft = (this.state.width - displayWidth) / 2;    
 	
+	    var classes = {
+	      'mediacat-detail': true,
+	      'mediacat-detail--filmstrip': this.props.mode === 'filmstrip',
+	    };
+	
 	    if (readyToDisplay && crop) {
 	      return (
-	        React.DOM.div({className: "mediacat-detail mediacat-detail--crop"}, 
-	          DetailProxyImage({
+	        React.DOM.div({className: cx(classes)}, 
+	          React.DOM.div({className: "mediacat-detail__content", ref: "content"}, 
+	              DetailProxyImage({
+	                key: media.get('thumbnail'), 
+	                width: displayWidth, 
+	                height: displayHeight, 
+	                top: displayTop, 
+	                left: displayLeft, 
+	                src: media.get('url'), 
+	                placeholderSrc: media.get('thumbnail')}), 
+	              Cropper({
+	                key: crop.get('id'), 
+	                scale: displayScale, 
+	                width: displayWidth, 
+	                height: displayHeight, 
+	                top: displayTop, 
+	                left: displayLeft, 
+	                media: media, 
+	                crop: crop})
+	          )
+	        )
+	      );
+	    }
+	
+	    return (
+	      React.DOM.div({className: cx(classes)}, 
+	          React.DOM.div({className: "mediacat-detail__content", ref: "content"}, 
+	          readyToDisplay ? DetailProxyImage({
 	            key: media.get('thumbnail'), 
 	            width: displayWidth, 
 	            height: displayHeight, 
 	            top: displayTop, 
 	            left: displayLeft, 
 	            src: media.get('url'), 
-	            placeholderSrc: media.get('thumbnail')}), 
-	          Cropper({
-	            key: crop.get('id'), 
-	            scale: displayScale, 
-	            width: displayWidth, 
-	            height: displayHeight, 
-	            top: displayTop, 
-	            left: displayLeft, 
-	            media: media, 
-	            crop: crop})
-	        )
-	      );
-	    }
-	
-	    return (
-	      React.DOM.div({className: "mediacat-detail"}, 
-	        readyToDisplay ? DetailProxyImage({
-	          key: media.get('thumbnail'), 
-	          width: displayWidth, 
-	          height: displayHeight, 
-	          top: displayTop, 
-	          left: displayLeft, 
-	          src: media.get('url'), 
-	          placeholderSrc: media.get('thumbnail')}) : null
+	            placeholderSrc: media.get('thumbnail')}) : null
+	          )
 	      )
 	    );
 	  }
@@ -51414,6 +51381,80 @@
 	module.exports = toArray;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 99)))
+
+/***/ },
+/* 394 */
+/*!*******************************************!*\
+  !*** ./static/js/components/document.jsx ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 */
+	var React = __webpack_require__(/*! react/addons */ 10);
+	var cx = React.addons.classSet;
+	var PureRenderMixin = __webpack_require__(/*! react */ 20).addons.PureRenderMixin;
+	
+	var Fluxxor = __webpack_require__(/*! fluxxor */ 9);
+	var FluxMixin = __webpack_require__(/*! ./flux-mixin */ 18);
+	var KeyboardMixin = __webpack_require__(/*! ./keyboard-mixin */ 19);
+	
+	var ThumbnailList = __webpack_require__(/*! ./thumbnail-list */ 39);
+	var Detail = __webpack_require__(/*! ./detail */ 40);
+	
+	
+	var Document = React.createClass({displayName: 'Document',
+	  mixins: [PureRenderMixin, KeyboardMixin, FluxMixin],
+	
+	  componentWillMount: function() {
+	    var keyboard = this.getKeyboard();
+	    var flux = this.getFlux();
+	
+	    keyboard.on('1', this.setRating.bind(this, 1));
+	    keyboard.on('2', this.setRating.bind(this, 2));
+	    keyboard.on('3', this.setRating.bind(this, 3));
+	    keyboard.on('4', this.setRating.bind(this, 4));
+	    keyboard.on('5', this.setRating.bind(this, 5));
+	    keyboard.on('0', this.setRating.bind(this, 0));
+	  },
+	
+	  componentWillUnmount: function() {
+	    var keyboard = this.getKeyboard();
+	
+	    keyboard.off('1');
+	    keyboard.off('2');
+	    keyboard.off('3');
+	    keyboard.off('4');
+	    keyboard.off('5');
+	    keyboard.off('0');
+	  },
+	
+	  setRating: function(rating, event) {
+	    var selected = this.getFlux().store('Media').getSelectedMedia();
+	    if (selected) {
+	      this.getFlux().actions.media.setRating(selected, rating);
+	    }
+	  },  
+	
+	  render: function() {
+	    var classes = {
+	      'mediacat-document': true,
+	      'mediacat-document--grid': this.props.mode === 'grid',
+	      'mediacat-document--filmstrip': this.props.mode === 'filmstrip',
+	      'mediacat-document--detail': this.props.mode === 'detail'
+	    };
+	
+	    return (
+	      React.DOM.div({className: cx(classes)}, 
+	        this.props.mode !== 'grid' && Detail({mode: this.props.mode}), 
+	        this.props.mode !== 'detail' && ThumbnailList({mode: this.props.mode})
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Document;
 
 /***/ }
 /******/ ])

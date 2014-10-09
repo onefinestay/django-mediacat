@@ -816,7 +816,7 @@ input.hidden-file {
       top: 50%;
       width: 9px; }
 
-.mediacat-detail-wrapper {
+.mediacat-detail {
   background-color: #0d0f13;
   display: -webkit-box;
   display: -webkit-flex;
@@ -828,13 +828,12 @@ input.hidden-file {
           flex-grow: 1;
   padding: 20px;
   position: relative; }
-
-.mediacat-detail {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  position: relative; }
+  .mediacat-detail__content {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    position: relative; }
   .mediacat-detail__proxy-image, .mediacat-detail__proxy-image__placeholder, .mediacat-detail__proxy-image__bg {
     bottom: 0;
     left: 0;
@@ -873,18 +872,12 @@ input.hidden-file {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
-  .mediacat-document.mediacat-document-grid > .scrollpane {
+  .mediacat-document--grid > .scrollpane {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
-  .mediacat-document.mediacat-document-grid .mediacat-detail {
-    -webkit-box-flex: 0;
-    -webkit-flex-grow: 0;
-        -ms-flex-positive: 0;
-            flex-grow: 0;
-    height: 0; }
-  .mediacat-document.mediacat-document-detail > .panel, .mediacat-document.mediacat-document-filmstrip > .panel {
+  .mediacat-document--detail > .panel, .mediacat-document--filmstrip > .panel {
     -webkit-box-flex: 0;
     -webkit-flex-grow: 0;
         -ms-flex-positive: 0;
@@ -893,12 +886,12 @@ input.hidden-file {
         -ms-flex-negative: 0;
             flex-shrink: 0;
     height: 280px; }
-  .mediacat-document.mediacat-document-detail .scrollpane .scrollpane-content, .mediacat-document.mediacat-document-filmstrip .scrollpane .scrollpane-content {
+  .mediacat-document--detail .scrollpane .scrollpane-content, .mediacat-document--filmstrip .scrollpane .scrollpane-content {
     display: inline-block; }
-  .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list, .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list {
+  .mediacat-document--detail .scrollpane .mediacat-thumbnail-list, .mediacat-document--filmstrip .scrollpane .mediacat-thumbnail-list {
     display: inline-block;
     white-space: nowrap; }
-    .mediacat-document.mediacat-document-detail .scrollpane .mediacat-thumbnail-list li, .mediacat-document.mediacat-document-filmstrip .scrollpane .mediacat-thumbnail-list li {
+    .mediacat-document--detail .scrollpane .mediacat-thumbnail-list li, .mediacat-document--filmstrip .scrollpane .mediacat-thumbnail-list li {
       display: inline-block; }
 
 .mediacat-information > .mediacat-tabs {

@@ -4,23 +4,19 @@
   flex-direction: column;
   flex-grow: 1;
 
-  &.#{$ns}-document-grid {
+  &--grid {
     > .scrollpane {
       flex-grow: 1;
     }
-
-    .#{$ns}-detail {
-      flex-grow: 0;
-      height: 0;
-    }
   }
 
-  &.#{$ns}-document-detail, &.#{$ns}-document-filmstrip {
+  &--detail,
+  &--filmstrip {
     > .panel {
       flex-grow: 0;
       flex-shrink: 0;
       height: 280px;
-    }
+    }    
 
     .scrollpane {
       .scrollpane-content {
@@ -35,6 +31,6 @@
           display: inline-block;
         }
       }
-    }
+    }    
   }
 }

@@ -35,7 +35,7 @@ var Detail = React.createClass({
   },
 
   updateDOMDimensions: function() {
-    var el = this.getDOMNode();
+    var el = this.refs.content.getDOMNode();
 
     this.setState({
       width: el.offsetWidth,
@@ -109,40 +109,49 @@ var Detail = React.createClass({
     displayTop = (this.state.height - displayHeight) / 2;
     displayLeft = (this.state.width - displayWidth) / 2;    
 
+    var classes = {
+      'mediacat-detail': true,
+      'mediacat-detail--filmstrip': this.props.mode === 'filmstrip',
+    };
+
     if (readyToDisplay && crop) {
       return (
-        <div className="mediacat-detail mediacat-detail--crop">
-          <DetailProxyImage
-            key={media.get('thumbnail')} 
-            width={displayWidth} 
-            height={displayHeight} 
-            top={displayTop} 
-            left={displayLeft} 
-            src={media.get('url')} 
-            placeholderSrc={media.get('thumbnail')} />
-          <Cropper 
-            key={crop.get('id')} 
-            scale={displayScale}
-            width={displayWidth} 
-            height={displayHeight} 
-            top={displayTop} 
-            left={displayLeft} 
-            media={media} 
-            crop={crop} />
+        <div className={cx(classes)}>
+          <div className="mediacat-detail__content" ref="content">
+              <DetailProxyImage
+                key={media.get('thumbnail')} 
+                width={displayWidth} 
+                height={displayHeight} 
+                top={displayTop} 
+                left={displayLeft} 
+                src={media.get('url')} 
+                placeholderSrc={media.get('thumbnail')} />
+              <Cropper 
+                key={crop.get('id')} 
+                scale={displayScale}
+                width={displayWidth} 
+                height={displayHeight} 
+                top={displayTop} 
+                left={displayLeft} 
+                media={media} 
+                crop={crop} />
+          </div>
         </div>
       );
     }
 
     return (
-      <div className="mediacat-detail">
-        {readyToDisplay ? <DetailProxyImage
-          key={media.get('thumbnail')}
-          width={displayWidth} 
-          height={displayHeight} 
-          top={displayTop} 
-          left={displayLeft}           
-          src={media.get('url')} 
-          placeholderSrc={media.get('thumbnail')} /> : null}
+      <div className={cx(classes)}>
+          <div className="mediacat-detail__content" ref="content">
+          {readyToDisplay ? <DetailProxyImage
+            key={media.get('thumbnail')}
+            width={displayWidth} 
+            height={displayHeight} 
+            top={displayTop} 
+            left={displayLeft}           
+            src={media.get('url')} 
+            placeholderSrc={media.get('thumbnail')} /> : null}
+          </div>
       </div>
     );
   }
