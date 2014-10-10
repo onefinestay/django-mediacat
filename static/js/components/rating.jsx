@@ -54,7 +54,7 @@ var Rating = React.createClass({
       }
     }
 
-    var icons = glyphs.map((glyph, i) => <Icon glyph={glyph} key={i}
+    var icons = glyphs.map((glyph, i) => <Icon size={this.props.size} glyph={glyph} key={i}
       onMouseOver={interactable && this.onMouseOver.bind(this, i)} 
       onMouseOut={interactable && this.onMouseOut.bind(this, i)}
       onClick={interactable && this.onClick.bind(this, i)} />);
@@ -65,7 +65,7 @@ var Rating = React.createClass({
          onMouseOver={this.onMouseOver.bind(this, - 1)} 
          onMouseOut={this.onMouseOut.bind(this, - 1)}
          onClick={this.onClick.bind(this, - 1)}
-         className="icon icon-reject" /> : null}
+         className="mediacat-icon mediacat-icon--reject" /> : null}
         {icons.toJS()}
       </div>
     );

@@ -39,14 +39,9 @@
   &__footer {
     background-color: rgba(0, 0, 0, .125);
     border-top: 1px darken(#2b303b, 5) solid;
+    color: lighten(#2b303b, 20);
     padding: 5px;
     text-align: center;
-
-    .media-rating {
-      display: inline-block;
-      line-height: 1;
-      opacity: .25;
-    }
   }
 
   &__dragover {

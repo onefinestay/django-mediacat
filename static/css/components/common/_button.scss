@@ -4,8 +4,8 @@
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
-  height: 37px;
-  line-height: 37px;
+  height: 38px;
+  line-height: 38px;
   margin: 0;
   overflow: hidden;
   padding: 0 10px;
@@ -35,8 +35,8 @@
     border: 1px solid $panel-toolbar-button-border;
     box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;
     color: $panel-toolbar-button-text;
-    height: 29px;
-    line-height: 27px;
+    height: 30px;
+    line-height: 28px;
 
     &.#{$ns}-is-active {
       background-color: $header-button-active-bg;
@@ -48,7 +48,7 @@
   &__caption {
     display: inline-block;
     font-weight: 100px;
-    line-height: 37px;
+    line-height: 38px;
     margin-left: 5px;
   }
 

@@ -35,5 +35,5 @@ gulp.task('icon', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.sketch, ['icon']);
+  gulp.watch(['./static/fonts/icons.sketch', './static/fonts/template.scss'], ['icon']);
 });

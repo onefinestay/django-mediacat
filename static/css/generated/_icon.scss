@@ -12,24 +12,26 @@
 }
 
 .#{$ns}-icon {
-  vertical-align: text-bottom;
+  display: inline-block;
+  font-size: 24px;
+  vertical-align: bottom;
 
   &:before {
-    display: inline-block;
+    display: block;
     font-family: "mediacat-icons";
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased; 
-    font-size: 24px;
     font-style: normal;
     font-weight: normal;
-    line-height: 1;
-    vertical-align: middle;
-    text-align: center;
+    text-align: center;    
+    width: 24px;
   }
 
   &--small {
+    font-size: 12px;
+
     &:before {
-      font-size: 12px;      
+      width: 12px;      
     }
   }
 

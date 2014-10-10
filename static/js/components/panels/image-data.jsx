@@ -44,7 +44,7 @@ var ImageDataPanel = React.createClass({
           </tr>
           <tr>
             <th scope="row">Rating</th>
-            <td>{media ? <Rating media={media} /> : null}</td>
+            <td>{media ? <Rating size="large" media={media} /> : null}</td>
           </tr>
         </table>
       </Panel>

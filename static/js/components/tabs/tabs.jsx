@@ -49,13 +49,13 @@ var Tabs = React.createClass({
       active = i === this.state.activeTab;
 
       buttonClasses = cx({
-        'tabs-button-active': active,
-        'tabs-button': true
+        'mediacat-tabs__button': true,
+        'mediacat-is-active': active
       });
 
       panelClasses = cx({
-        'tabs-panel-active': active,
-        'tabs-panel': true
+        'mediacat-tabs__panel': true,
+        'mediacat-is-active': active
       });
 
       tabButtons.push(<li key={tab.props.name} className={buttonClasses} onClick={this.activateTab.bind(this, i)}>{tab.props.name}</li>);
@@ -63,9 +63,11 @@ var Tabs = React.createClass({
     }
 
     return (
-      <div className="tabs">
-        <ul className="tabs-buttons">{tabButtons}</ul>
-        <ul className="tabs-panels">{tabBodies}</ul>
+      <div className="mediacat-tabs">
+        <div className="mediacat-tabs__buttons-wrapper">
+          <ul className="mediacat-tabs__buttons">{tabButtons}</ul>
+        </div>
+        <ul className="mediacat-tabs__panels">{tabBodies}</ul>
       </div>
     );
   }

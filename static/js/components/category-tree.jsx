@@ -23,10 +23,11 @@ var CategoryTreePlaceholderNode = React.createClass({
     return (
       <li className="mediacat-list__item mediacat-list__item--category">
         <div className="mediacat-category">
-          <a className="mediacat-category__label" style={style}>
-            <Icon glyph="dash" />
-            <span className="loading">Loading...</span>
-          </a>
+          <span className="mediacat-category__info" style={style}>
+            <span className="mediacat-category__handle" />
+            <span className="mediacat-category__label mediacat-category__label--loading">Loading...</span>
+            <div className="mediacat-category__count">-</div>            
+          </span>
         </div>
       </li>
     );
@@ -124,8 +125,12 @@ var CategoryTreeNode = React.createClass({
 
     var classes = {
       'mediacat-category': true,
-      'mediacat-category--open': isOpen,
       'mediacat-category--selected': this.state.selected
+    };
+
+    var handleClasses = {
+      'mediacat-category__handle': true,
+      'mediacat-category__handle--open': isOpen
     };
 
     var style = {
@@ -134,8 +139,8 @@ var CategoryTreeNode = React.createClass({
     };
 
     var labelClasses = {
-      "mediacat-category__label": true,
-      "mediacat-category__label--hover": this.state.hover
+      "mediacat-category__info": true,
+      "mediacat-is-hovered": this.state.hover
     };
 
     var count = node.get('count');
@@ -144,8 +149,10 @@ var CategoryTreeNode = React.createClass({
       <li className="mediacat-list__item mediacat-list__item--category">
         <div className={cx(classes)}>
           <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
-            {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : <Icon glyph="dash" />}
-            {node.get('name')}
+            <span className={cx(handleClasses)}>
+              {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : null}
+            </span>
+            <span className="mediacat-category__label">{node.get('name')}</span>
             {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-category__count">{count || '-'}</div>}
           </a>
           {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories">{nodes.toJS()}</ul> : null}

@@ -5,8 +5,8 @@
   flex-direction: row;
   flex-grow: 0;
   flex-shrink: 0;
-  height: 57px;
-  line-height: 37px;
+  height: 59px;
+  line-height: 38px;
   padding: $toolbar-el-spacing;
 
   &--theme-column {
@@ -16,8 +16,8 @@
   &--theme-panel {
     background-color: $panel-toolbar-bg;
     color: $panel-toolbar-text;   
-    height: 40px;
-    line-height: 29px;
+    height: 41px;
+    line-height: 30px;
     padding: $panel-toolbar-el-spacing;  
   }
 

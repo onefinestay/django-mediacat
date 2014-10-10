@@ -1,39 +1,16 @@
-.#{$ns}-list--categories {
- 
-}
-
-.#{$ns}-list--sub-categories {
-}
-
 .#{$ns}-category {
-
-  &__label {
+  &__info {
     cursor: pointer;
     display: block;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 22px;
     padding: 4px 20px;
     position: relative;
 
     &:hover, 
-    &--hover {
+    &.#{$ns}-is-hovered {
       background-color: lighten(#2b303b, 2.5);
       color: #fff;
-    }
-
-    .#{$ns}-icon--arrow {
-      margin-right: 5px;
-      opacity: .75;
-      transition: transform .15s ease;
-
-      &:hover {
-        transform: rotate(45deg);
-      }
-    }
-
-    .#{$ns}-icon--dash {
-      margin-right: 5px;
-      opacity: 0;
     }
 
     .loading {
@@ -44,12 +21,29 @@
       left: auto;
       right: 5px;
     }
+  }
 
+  &__handle {
+    display: inline-block;
+    height: 22px;
+    margin-right: 1px;
+    opacity: .75;
+    text-align: center;
+    transition: transform .15s ease;
+    width: 22px;
+    vertical-align: bottom;
+
+    &:hover {
+      transform: rotate(45deg);
+    }
+
+    &--open {
+      transform: rotate(90deg);
+    }
   }
 
   &__count {
     font-size: 12px;
-    line-height: 1.75;
     opacity: .35;
     padding: 5px;
     position: absolute;
@@ -61,16 +55,5 @@
     background-color: lighten(#2b303b, 10);
     color: #fff;
     text-shadow: 1px 1px 0 #000;
-  }
-
-  &--open > &__label {
-    .#{$ns}--icon {
-      transform: rotate(90deg);
-
-      &:hover {
-        transform: rotate(45deg);
-      }
-    }
-  }
-  
+  } 
 }

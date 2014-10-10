@@ -156,7 +156,7 @@ var Thumbnail = React.createClass({
           <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
         </div>
         <div className="mediacat-thumbnail__footer">
-          <Rating media={thumbnail} interactable={false} /> 
+          <Rating size="small" media={thumbnail} interactable={false} /> 
         </div>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'after' ? <div className="mediacat-thumbnail__dragover mediacat-thumbnail__dragover--after" /> : null}
       </div>
