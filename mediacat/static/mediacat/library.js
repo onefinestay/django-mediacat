@@ -1802,18 +1802,18 @@
 	
 	for(var RestService____Key in RestService){if(RestService.hasOwnProperty(RestService____Key)){CropService[RestService____Key]=RestService[RestService____Key];}}var ____SuperProtoOfRestService=RestService===null?null:RestService.prototype;CropService.prototype=Object.create(____SuperProtoOfRestService);CropService.prototype.constructor=CropService;CropService.__superConstructor__=RestService;function CropService(){"use strict";if(RestService!==null){RestService.apply(this,arguments);}}
 	
-		CropService.prototype.pick=function(id, previewWidth) {"use strict";
+	  CropService.prototype.pick=function(id, previewWidth) {"use strict";
 	    var root = this.options.root;
 	    var resource = this.options.resource;
 	    var url = (root + "/" + resource + "/" + id + "/pick/" + previewWidth + "/");
 	
 	    return request
 	      .get(url)
-		    .use(django)
-		    .use(bluebird)      
+	      .use(django)
+	      .use(bluebird)      
 	      .set('Accept', 'application/json')
 	      .promise();
-		};
+	  };
 	
 	
 	module.exports = CropService;
@@ -1834,7 +1834,7 @@
 	
 	for(var RestService____Key in RestService){if(RestService.hasOwnProperty(RestService____Key)){MediaService[RestService____Key]=RestService[RestService____Key];}}var ____SuperProtoOfRestService=RestService===null?null:RestService.prototype;MediaService.prototype=Object.create(____SuperProtoOfRestService);MediaService.prototype.constructor=MediaService;MediaService.__superConstructor__=RestService;function MediaService(){"use strict";if(RestService!==null){RestService.apply(this,arguments);}}
 	
-		MediaService.prototype.upload=function(file, category, onProgress, onTransferComplete) {"use strict";
+	  MediaService.prototype.upload=function(file, category, onProgress, onTransferComplete) {"use strict";
 	    var root = this.options.root;
 	    var resource = this.options.resource;
 	    var url = (root + "/" + resource + "/");
@@ -1859,7 +1859,7 @@
 	        .field('associated_object_id', object_id);
 	    }
 	    return req.promise(onProgress, onTransferComplete);
-		};
+	  };
 	
 	
 	module.exports = MediaService;

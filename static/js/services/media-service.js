@@ -7,7 +7,7 @@ var django = require('../utils/superagent-django');
 
 class MediaService extends RestService {
 
-	upload(file, category, onProgress, onTransferComplete) {
+  upload(file, category, onProgress, onTransferComplete) {
     var root = this.options.root;
     var resource = this.options.resource;
     var url = `${root}/${resource}/`;
@@ -32,7 +32,7 @@ class MediaService extends RestService {
         .field('associated_object_id', object_id);
     }
     return req.promise(onProgress, onTransferComplete);
-	}
+  }
 }
 
 module.exports = MediaService;
