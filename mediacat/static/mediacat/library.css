@@ -611,8 +611,8 @@
   text-align: center;
   -webkit-transition: -webkit-transform 0.15s ease;
           transition: transform 0.15s ease;
-  width: 22px;
-  vertical-align: bottom; }
+  vertical-align: bottom;
+  width: 22px; }
   .mediacat-category__handle:hover {
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
