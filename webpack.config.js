@@ -13,11 +13,11 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/, 
-        loaders: ['jsx?harmony']
+        loaders: ['jsx?harmony&sourceMap=true']
       },    
       {
         test: /\.jsx$/, 
-        loaders: ['jsx?harmony']
+        loaders: ['jsx?harmony&sourceMap=true']
       },
       { 
         test: /\.woff$/,   
@@ -41,7 +41,7 @@ module.exports = {
           'style-loader',
           ExtractTextPlugin.loader({remove:true}),
           'css-loader?sourceMap=true',
-          //'autoprefixer-loader',
+          'autoprefixer-loader',
           'sass-loader?precision=10&outputStyle=expanded&sourceMap=true',
         ]
       }      
