@@ -46,7 +46,7 @@ var Button = React.createClass({
 
     return this.transferPropsTo(
       <button onClick={other.onClick} disabled={disabled} className={cx(classes)}>
-        {glyph ? <Icon glyph={glyph} size={placement === 'header' ? 'large' : null} /> : null}
+        {glyph ? <Icon glyph={glyph} size={placement === 'header' ? 'large' : 'small'} /> : null}
         {children ? <span className="mediacat-button__caption">{children}</span> : null}
       </button>    
     );

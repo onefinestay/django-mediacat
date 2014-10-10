@@ -7,11 +7,6 @@
 
 .#{$ns}-category {
 
-  .icon {
-    font-size: 12px;
-    margin-right: 5px;
-  }
-
   &__label {
     cursor: pointer;
     display: block;
@@ -26,30 +21,19 @@
       color: #fff;
     }
 
-    .icon-arrow {
-      display: inline-block;
-      font-size: 10px;
-      line-height: 1.75;
+    .#{$ns}-icon--arrow {
       margin-right: 5px;
       opacity: .75;
-      text-align: center;
       transition: transform .15s ease;
-      vertical-align: baseline;
-      width: 15px;
 
       &:hover {
         transform: rotate(45deg);
       }
     }
 
-    .icon-dash {
-      display: inline-block;
-      font-size: 10px;
-      line-height: 1.75;
+    .#{$ns}-icon--dash {
       margin-right: 5px;
       opacity: 0;
-      text-align: center;
-      width: 15px;
     }
 
     .loading {
@@ -80,7 +64,7 @@
   }
 
   &--open > &__label {
-    .icon {
+    .#{$ns}--icon {
       transform: rotate(90deg);
 
       &:hover {

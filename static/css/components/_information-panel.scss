@@ -4,16 +4,11 @@
   }
 
   .media-rating {
-    .icon {
-      cursor: pointer;
-      font-size: 24px;
-    }
-
     .no-rating {
       opacity: .25;
     }
 
-    .icon-reject {
+    .#{$ns}-icon--reject {
       opacity: .25;
 
       &:hover {

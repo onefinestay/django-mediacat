@@ -12,10 +12,28 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/, loaders: ['jsx?harmony']
+        test: /\.js$/, 
+        loaders: ['jsx?harmony']
       },    
       {
-        test: /\.jsx$/, loaders: ['jsx?harmony']
+        test: /\.jsx$/, 
+        loaders: ['jsx?harmony']
+      },
+      { 
+        test: /\.woff$/,   
+        loader: "url-loader?limit=10000&minetype=application/font-woff"
+      },
+      { 
+        test: /\.ttf$/,    
+        loader: "file-loader?name=[name].[ext]?[hash]" 
+      },
+      { 
+        test: /\.eot$/,    
+        loader: "file-loader?name=[name].[ext]?[hash]" 
+      },
+      { 
+        test: /\.svg$/,    
+        loader: "file-loader?name=[name].[ext]?[hash]"
       },
       {
         test: /\.scss$/,
@@ -23,7 +41,7 @@ module.exports = {
           'style-loader',
           ExtractTextPlugin.loader({remove:true}),
           'css-loader?sourceMap=true',
-          'autoprefixer-loader',
+          //'autoprefixer-loader',
           'sass-loader?precision=10&outputStyle=expanded&sourceMap=true',
         ]
       }      

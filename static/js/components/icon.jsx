@@ -17,7 +17,7 @@ var Icon = React.createClass({
 	getDefaultProps: function() {
 		return {
 			glyph: 'add',
-			size: null
+			size: 'small'
 		};
 	},
 
@@ -25,11 +25,10 @@ var Icon = React.createClass({
   	var { glyph, size, ...other } = this.props;
 
   	var classes = {
-  		'icon': true,
   		'mediacat-icon': true,
   	}
 
-  	classes['icon-' + glyph] = true;
+  	classes['mediacat-icon--' + glyph] = true;
 
   	if (size) {
   		classes['mediacat-icon--' + size] = true;	

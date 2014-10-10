@@ -24,7 +24,7 @@ var CategoryTreePlaceholderNode = React.createClass({
       <li className="mediacat-list__item mediacat-list__item--category">
         <div className="mediacat-category">
           <a className="mediacat-category__label" style={style}>
-            <span className="icon icon-dash" />
+            <Icon glyph="dash" />
             <span className="loading">Loading...</span>
           </a>
         </div>
