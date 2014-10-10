@@ -36,14 +36,6 @@
     width: $toolbar-el-spacing;
   }
 
-  select {
-    flex-grow: 1;
-  }
-
-  .select {
-    min-width: 230px;
-  }
-
   .panel > & { 
     .separator {
       width: $panel-toolbar-el-spacing;

@@ -5,7 +5,7 @@
   flex-grow: 1;
 
   &--grid {
-    > .scrollpane {
+    > .mediacat-scrollpane {
       flex-grow: 1;
     }
   }
@@ -18,8 +18,8 @@
       height: 280px;
     }    
 
-    .scrollpane {
-      .scrollpane-content {
+    .mediacat-scrollpane {
+      &__content {
         display: inline-block;
       }
 

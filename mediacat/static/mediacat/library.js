@@ -7359,18 +7359,20 @@
 	    if (this.props.direction === 'vertical') {
 	      style = {
 	        height: this.props.handleSize + '%',
-	        top: this.props.position + '%'        
+	        top: this.props.position + '%',
+	        bottom: null
 	      };
 	    } else {
 	      style = {
 	        width: this.props.handleSize + '%',
-	        left: this.props.position + '%'        
+	        left: this.props.position + '%',
+	        right: null
 	      };
 	    }
 
 	    return (
-	      React.DOM.div({className: "scrollpane-scrollbar-track"}, 
-	        React.DOM.div({className: "scrollpane-scrollbar-handle", style: style, onMouseDown: this.props.onDrag})
+	      React.DOM.div({className: "mediacat-scrollbar__track"}, 
+	        React.DOM.div({className: "mediacat-scrollbar__handle", style: style, onMouseDown: this.props.onDrag})
 	      )
 	    );
 	  }
@@ -7397,7 +7399,7 @@
 
 	  updateDOMDimensions: function() {
 	    var el = this.getDOMNode();
-	    var contentEl = el.querySelector(" .scrollpane-content");
+	    var contentEl = this.refs.content.getDOMNode();
 
 	    this.setState({
 	      width: el.offsetWidth,
@@ -7598,22 +7600,22 @@
 	      };
 
 	      var viewportClasses = {
-	        'scrollpane-viewport': true,
-	        'scrollpane-viewport-vertical-scrollbar': shouldScrollVertical,
-	        'scrollpane-viewport-horizontal-scrollbar': shouldScrollHorizontal
+	        'mediacat-scrollpane__viewport': true,
+	        'mediacat-scrollpane__viewport--scrolls-vertically': shouldScrollVertical,
+	        'mediacat-scrollpane__viewport--scrolls-horizontally': shouldScrollHorizontal
 	      };
 
 	      return (
-	        React.DOM.div({className: "scrollpane", onWheel: this.handleWheel}, 
+	        React.DOM.div({className: "mediacat-scrollpane", onWheel: this.handleWheel}, 
 	          shouldScrollVertical &&
-	          React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-vertical", ref: "vertical-scrollbar"}, 
-	              ScrollPaneHandle({ref: "vertical-scrollbar-handle", direction: "vertical", handleSize: verticalHandleSize, position: this.state.scrollY, onDrag: this.handleDragY})
+	          React.DOM.div({className: "mediacat-scrollbar mediacat-scrollbar--vertical", ref: "vertical-scrollbar"}, 
+	            ScrollPaneHandle({ref: "vertical-scrollbar-handle", direction: "vertical", handleSize: verticalHandleSize, position: this.state.scrollY, onDrag: this.handleDragY})
 	          ), 
-	          shouldScrollHorizontal && React.DOM.div({className: "scrollpane-scrollbar scrollpane-scrollbar-horizontal", ref: "horizontal-scrollbar"}, 
+	          shouldScrollHorizontal && React.DOM.div({className: "mediacat-scrollbar mediacat-scrollbar--horizontal", ref: "horizontal-scrollbar"}, 
 	            ScrollPaneHandle({ref: "horizontal-scrollbar-handle", direction: "horizontal", handleSize: horizontalHandleSize, position: this.state.scrollX, onDrag: this.handleDragX})
 	          ), 
 	          React.DOM.div({className: cx(viewportClasses), ref: "viewport"}, 
-	          React.DOM.div({className: "scrollpane-content", style: contentStyles, ref: "content"}, 
+	          React.DOM.div({className: "mediacat-scrollpane__content", style: contentStyles, ref: "content"}, 
 	            this.props.children
 	          )
 	          )
@@ -7621,9 +7623,9 @@
 	      );
 	    } else {
 	      return (
-	        React.DOM.div({className: "scrollpane scrollpane-loading"}, 
-	          React.DOM.div({className: "scrollpane-viewport", ref: "viewport"}, 
-	          React.DOM.div({className: "scrollpane-content", ref: "content"}, 
+	        React.DOM.div({className: "mediacat-scrollpane mediacat-scrollpane--loading"}, 
+	          React.DOM.div({className: "mediacat-scrollpane__viewport", ref: "viewport"}, 
+	          React.DOM.div({className: "mediacat-scrollpane__content", ref: "content"}, 
 	            this.props.children
 	          )
 	          )

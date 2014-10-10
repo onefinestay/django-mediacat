@@ -13,18 +13,20 @@ var ScrollPaneHandle = React.createClass({
     if (this.props.direction === 'vertical') {
       style = {
         height: this.props.handleSize + '%',
-        top: this.props.position + '%'        
+        top: this.props.position + '%',
+        bottom: null
       };
     } else {
       style = {
         width: this.props.handleSize + '%',
-        left: this.props.position + '%'        
+        left: this.props.position + '%',
+        right: null
       };
     }
 
     return (
-      <div className="scrollpane-scrollbar-track">      
-        <div className="scrollpane-scrollbar-handle" style={style} onMouseDown={this.props.onDrag} />
+      <div className="mediacat-scrollbar__track">      
+        <div className="mediacat-scrollbar__handle" style={style} onMouseDown={this.props.onDrag} />
       </div>
     );
   }
@@ -51,7 +53,7 @@ var ScrollPane = React.createClass({
 
   updateDOMDimensions: function() {
     var el = this.getDOMNode();
-    var contentEl = el.querySelector(" .scrollpane-content");
+    var contentEl = this.refs.content.getDOMNode();
 
     this.setState({
       width: el.offsetWidth,
@@ -252,22 +254,22 @@ var ScrollPane = React.createClass({
       };
 
       var viewportClasses = {
-        'scrollpane-viewport': true,
-        'scrollpane-viewport-vertical-scrollbar': shouldScrollVertical,
-        'scrollpane-viewport-horizontal-scrollbar': shouldScrollHorizontal
+        'mediacat-scrollpane__viewport': true,
+        'mediacat-scrollpane__viewport--scrolls-vertically': shouldScrollVertical,
+        'mediacat-scrollpane__viewport--scrolls-horizontally': shouldScrollHorizontal
       };
 
       return (
-        <div className="scrollpane" onWheel={this.handleWheel}>
+        <div className="mediacat-scrollpane" onWheel={this.handleWheel}>
           {shouldScrollVertical &&
-          <div className="scrollpane-scrollbar scrollpane-scrollbar-vertical" ref="vertical-scrollbar">
-              <ScrollPaneHandle ref="vertical-scrollbar-handle" direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
+          <div className="mediacat-scrollbar mediacat-scrollbar--vertical" ref="vertical-scrollbar">
+            <ScrollPaneHandle ref="vertical-scrollbar-handle" direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
           </div>}
-          {shouldScrollHorizontal && <div className="scrollpane-scrollbar scrollpane-scrollbar-horizontal" ref="horizontal-scrollbar">
+          {shouldScrollHorizontal && <div className="mediacat-scrollbar mediacat-scrollbar--horizontal" ref="horizontal-scrollbar">
             <ScrollPaneHandle ref="horizontal-scrollbar-handle" direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
           </div>}
           <div className={cx(viewportClasses)} ref="viewport">
-          <div className="scrollpane-content" style={contentStyles} ref="content">
+          <div className="mediacat-scrollpane__content" style={contentStyles} ref="content">
             {this.props.children}
           </div>
           </div>
@@ -275,9 +277,9 @@ var ScrollPane = React.createClass({
       );
     } else {
       return (
-        <div className="scrollpane scrollpane-loading">
-          <div className="scrollpane-viewport" ref="viewport">
-          <div className="scrollpane-content" ref="content">
+        <div className="mediacat-scrollpane mediacat-scrollpane--loading">
+          <div className="mediacat-scrollpane__viewport" ref="viewport">
+          <div className="mediacat-scrollpane__content" ref="content">
             {this.props.children}
           </div>        
           </div>

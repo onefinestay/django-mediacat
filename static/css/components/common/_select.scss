@@ -9,6 +9,7 @@
   font-size: 14px; 
   line-height: 27px;
   position: relative;
+  width: 250px;
 
   &.#{$ns}-is-disabled {
     opacity: .5;
