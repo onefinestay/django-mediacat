@@ -122,9 +122,6 @@ var ProxyImg = React.createClass({
         left: displayLeft + 'px'
     };
 
-    var spinnerStyle = {
-      'opacity': this.state.loaded ? 0 : 100
-    };
     return (
       <div className={cx(classes)}>
         <div className="mediacat-proxy-image__bg" style={style}>

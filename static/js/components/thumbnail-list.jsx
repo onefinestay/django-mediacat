@@ -2,19 +2,14 @@
  * @jsx React.DOM
  */
 var React = require('react/addons');
-var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
-var moment = require('moment');
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Panel = require('./panel');
 var Toolbar = require('./toolbar');
-var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
 var KeyboardMixin = require('./keyboard-mixin');
-var ProxyImg = require('./proxy-img');
 
 var Thumbnail = require('./thumbnail');
 var Select = require('./select');
@@ -51,10 +46,7 @@ var ThumbnailList = React.createClass({
 
   componentWillMount: function() {
     var keyboard = this.getKeyboard();
-    var flux = this.getFlux();
-
     keyboard.pushCopy();    
-
     keyboard.on('up', this.cursorUp);
     keyboard.on('down', this.cursorDown);
     keyboard.on('left', this.cursorLeft);
@@ -67,7 +59,7 @@ var ThumbnailList = React.createClass({
 
     var el = this.getDOMNode();
 
-    var observer = new MutationObserver(function(mutations) {
+    var observer = new MutationObserver(function() {
       this.updateDOMDimensions();
     }.bind(this));
 
@@ -91,7 +83,7 @@ var ThumbnailList = React.createClass({
     keyboard.pop();
   },
  
-  setRating: function(rating, event) {
+  setRating: function(rating) {
     var selected = this.getFlux().store('Media').getSelectedMedia();
     if (selected) {
       this.getFlux().actions.media.setRating(selected, rating);
@@ -177,7 +169,6 @@ var ThumbnailList = React.createClass({
   },  
 
   render: function() {
-    var sort = this.state.sortBy;
     var media = this.state.media;
 
     var size;

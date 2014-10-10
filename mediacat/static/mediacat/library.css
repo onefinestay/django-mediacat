@@ -364,8 +364,8 @@
       -ms-flex-direction: row;
           flex-direction: row;
   font-size: 14px;
-  position: relative;
-  line-height: 27px; }
+  line-height: 27px;
+  position: relative; }
   .mediacat-select.mediacat-is-disabled {
     opacity: 0.5; }
   .mediacat-select:focus {
@@ -1044,5 +1044,3 @@ body {
       -ms-flex-direction: row;
           flex-direction: row;
   margin: 0; }
-
-/*# sourceMappingURL=library.css.map*/

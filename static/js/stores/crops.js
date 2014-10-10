@@ -106,7 +106,7 @@ var CropStore = Fluxxor.createStore({
     this.emit('change');    
   },
 
-  onCropDeselect: function(payload) {
+  onCropDeselect: function() {
     this.state = this.state.set('selectedCrop', null);
     this.emit('change');    
   },
@@ -117,10 +117,6 @@ var CropStore = Fluxxor.createStore({
     var cropIndex = this.state.get('crops').indexOf(crop);
 
     var cropData = crop.toJS();
-
-    var width = media.get('width');
-    var height = media.get('height');
-
     var cropWidth = cropData.x2 - cropData.x1;
     var cropHeight = cropData.y2 - cropData.y1;
 
@@ -268,7 +264,7 @@ var CropStore = Fluxxor.createStore({
     this.emit('change');
   },
 
-  onMediaSelect: function(payload) {
+  onMediaSelect: function() {
     this.state = this.state.withMutations(function(state) {
       state
         .set('crops', null)
@@ -290,7 +286,6 @@ var CropStore = Fluxxor.createStore({
   },
 
   onCropGetSuccess: function(payload) {
-    var req = payload.request;   
     var crops = Immutable.fromJS(payload.data);
 
     var requests = this.state.get('fetchRequests');
@@ -313,7 +308,6 @@ var CropStore = Fluxxor.createStore({
   },
 
   onSaveSuccess: function(payload) {
-    var req = payload.request;   
     var crop = Immutable.fromJS(payload.data);
     var cropId = payload.cropId;
     var index;
@@ -345,13 +339,12 @@ var CropStore = Fluxxor.createStore({
     }   
   },
 
-  onPickSuccess: function(payload) {
-    var data = payload.data;
+  onPickSuccess: function() {
     this.state = this.state.set('pickRequest', null);
     this.emit('change');
   },
 
-  onCategorySelect: function(payload) {
+  onCategorySelect: function() {
     this.state = this.state.set('selectedCrop', null);    
     this.emit('change');
   }

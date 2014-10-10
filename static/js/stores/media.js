@@ -115,7 +115,7 @@ var MediaStore = Fluxxor.createStore({
     var el = idList.get(oldIndex);
     newIdList = idList.splice(oldIndex, 1).splice(newIndex, 0, el);
 
-    var media = this.state.get('media').map((m, i) => m.set('rank', newIdList.indexOf(m.get('id'))));
+    var media = this.state.get('media').map(m => m.set('rank', newIdList.indexOf(m.get('id'))));
     this.state = this.state.set('media', media);
 
     this.emit('change');
@@ -169,7 +169,7 @@ var MediaStore = Fluxxor.createStore({
     this.emit('change');
   },
 
-  onCropSelect: function(payload) {
+  onCropSelect: function() {
     var mode = this.state.get('viewMode');
 
     if (mode === 'grid') {
@@ -192,13 +192,11 @@ var MediaStore = Fluxxor.createStore({
   },  
 
   onMediaGetSuccess: function(payload) {
-    var categoryPath = payload.categoryPath;
-
     var req = payload.request;
     var media = Immutable.fromJS(payload.data);
 
     var requests = this.state.get('fetchRequests');
-    var key = requests.findKey((v, k) => v === req);
+    var key = requests.findKey(v => v === req);
     requests = requests.delete(key);
     this.state = this.state.set('fetchRequests', requests);
 
@@ -228,7 +226,6 @@ var MediaStore = Fluxxor.createStore({
   },
 
   onUploadSuccess: function(payload) {
-    var categoryPath = payload.categoryPath;
     var newImage;
 
     if (payload.categoryPath === this.flux.stores['Categories'].state.get('selectedPath')) {

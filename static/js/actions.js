@@ -57,11 +57,11 @@ var Actions = {
     moveBefore: function(media, target) {
       this.dispatch(Constants.MEDIA_MOVE_BEFORE, {media, target});
 
-      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+      var patchData = this.flux.store('Media').state.get('media').map(function(media) {
         return {
           id: media.get('id'), 
           rank: media.get('rank')
-        }; 
+        };
       });
       
       var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
@@ -74,7 +74,7 @@ var Actions = {
     moveAfter: function(media, target) {
       this.dispatch(Constants.MEDIA_MOVE_AFTER, {media, target});
 
-      var patchData = this.flux.store('Media').state.get('media').map(function(media, i) {
+      var patchData = this.flux.store('Media').state.get('media').map(function(media) {
         return {
           id: media.get('id'), 
           rank: media.get('rank')

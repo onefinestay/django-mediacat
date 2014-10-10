@@ -3,7 +3,6 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
@@ -11,7 +10,6 @@ var moment = require('moment');
 
 var Rating = require('../rating');
 var Panel = require('../panel');
-var PanelToolbar = require('../panel-toolbar');
 
 
 var ImageDataPanel = React.createClass({

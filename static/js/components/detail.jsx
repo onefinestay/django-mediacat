@@ -43,7 +43,7 @@ var Detail = React.createClass({
     });
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate: function(prevProps) {
     if (prevProps.mode !== this.props.mode) {
       this.updateDOMDimensions();
     }
@@ -61,7 +61,6 @@ var Detail = React.createClass({
   render: function() {
     var media = this.state.media;
     var crop = this.state.crop;
-    var cropWrapperStyle;
     var width;
     var height;
     var containerRatio;

@@ -87,7 +87,7 @@ var CropsPanel = React.createClass({
     });
   },
 
-  handleAdd: function(event) {
+  handleAdd: function() {
   	var cropType = this.state.cropChoice;
   	this.getFlux().actions.crop.add(this.state.media, cropType);
     this.refs.addButton.getDOMNode().focus();

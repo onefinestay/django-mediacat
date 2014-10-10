@@ -5,7 +5,6 @@ var React = require('react/addons');
 var cx = React.addons.classSet;
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
-var Fluxxor = require("fluxxor");
 var FluxMixin = require('./flux-mixin');
 var KeyboardMixin = require('./keyboard-mixin');
 
@@ -18,8 +17,6 @@ var Document = React.createClass({
 
   componentWillMount: function() {
     var keyboard = this.getKeyboard();
-    var flux = this.getFlux();
-
     keyboard.on('1', this.setRating.bind(this, 1));
     keyboard.on('2', this.setRating.bind(this, 2));
     keyboard.on('3', this.setRating.bind(this, 3));
@@ -30,7 +27,6 @@ var Document = React.createClass({
 
   componentWillUnmount: function() {
     var keyboard = this.getKeyboard();
-
     keyboard.off('1');
     keyboard.off('2');
     keyboard.off('3');
@@ -39,7 +35,7 @@ var Document = React.createClass({
     keyboard.off('0');
   },
 
-  setRating: function(rating, event) {
+  setRating: function(rating) {
     var selected = this.getFlux().store('Media').getSelectedMedia();
     if (selected) {
       this.getFlux().actions.media.setRating(selected, rating);

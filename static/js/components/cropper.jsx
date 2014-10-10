@@ -19,7 +19,6 @@ var Cropper = React.createClass({
   },
  
   render: function() {
-    var media = this.props.media;
     var crop = this.props.crop;
     var scale = this.props.scale;
 

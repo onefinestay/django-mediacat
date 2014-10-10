@@ -6,10 +6,7 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-
-var CategoryTree = require('./category-tree');
 var FluxMixin = require('./flux-mixin');
-var ProxyImg = require('./proxy-img');
 
 
 var Upload = React.createClass({

@@ -3,8 +3,6 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
-
 var UploadList = require('./upload-list');
 
 var Panel = require('./panel');

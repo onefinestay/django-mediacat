@@ -29,7 +29,7 @@ var DraggingStore = Fluxxor.createStore({
     this.emit('change');
   },
 
-  onDragMediaStartEnd: function(event) {
+  onDragMediaStartEnd: function() {
     this.state = this.state.withMutations(function(state) {
       state.set('draggingMedia', null).set('top', null).set('left', null);
     });    

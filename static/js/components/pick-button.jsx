@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
@@ -39,27 +38,11 @@ var PickButton = React.createClass({
     };
   },  
 
-  handleClick: function(event) {
+  handleClick: function() {
     this.getFlux().actions.crop.pick(this.state.crop, this.state.previewWidth);
   },
 
-  handleChange: function(event) {
-    event.preventDefault();
-    var files = this.refs.upload.getDOMNode().files;
-    
-    if (files.length) {
-      for (var i = 0; i < files.length; i++) {
-        this.getFlux().actions.uploads.add(files[i], this.state.category);
-      }
-    }
-  },
-
   render: function() {
-    var classes = {
-      'button': true,
-      'disabled': !this.state.pickable
-    };
-
     return (
       <Button disabled={!this.state.pickable} onClick={this.handleClick} glyph="tick" />
     );
