@@ -8439,15 +8439,11 @@
 	
 	  select: function(event) {
 	    event.preventDefault();
-	    //this.getFlux().actions.uplo.select(this.props.thumbnail);
 	  },
 	
 	  getStateFromFlux: function() {
-	    //var store = this.getFlux().store('Uploads');
-	    //var selected = falsestore.getSelectedUpload();
-	
 	    return {
-	      selected: false //selected && this.props.upload.get('id') === selected.get('id')
+	      selected: false
 	    };
 	  },
 	
@@ -8468,7 +8464,7 @@
 	        caption = 'Uploading';
 	      }
 	    } else {
-	      capation = 'Complete';
+	      caption = 'Complete';
 	    }
 	
 	    return (
