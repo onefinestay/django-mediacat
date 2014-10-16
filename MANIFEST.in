@@ -1,6 +1,7 @@
 include readme.md
 include LICENSE
 
-recursive-include modeltranslation/static *
+recursive-include mediacat/static *
+recursive-include mediacat/templates *
 
 global-exclude *.pyc
