@@ -18,7 +18,7 @@ def post_save_hook(sender, **kwargs):
     if not instance:
         return
 
-    applications = getattr(instance, MediaField.get_cache_name())
+    applications = getattr(instance, MediaField.get_cache_name(), {})
     ct = ContentType.objects.get_for_model(instance)
 
     with transaction.atomic():
