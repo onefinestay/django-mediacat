@@ -3,6 +3,10 @@
   margin: 0;
   padding: 0;
 
+  &--horizontal {
+    white-space: nowrap;
+  }
+
   &--dragging {
     pointer-events: none;
     position: absolute;
@@ -12,5 +16,9 @@
   &__item {
     margin: 0;
     padding: 0;
+
+    &--grid, &--horizontal {
+      display: inline-block;
+    }
   }
  }

@@ -2,6 +2,7 @@
  * @jsx React.DOM
  */
 var React = require('react/addons');
+var cx = React.addons.classSet;
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
@@ -10,6 +11,7 @@ var Panel = require('./panel');
 var Toolbar = require('./toolbar');
 var FluxMixin = require('./flux-mixin');
 var KeyboardMixin = require('./keyboard-mixin');
+var List = require('./list');
 
 var Thumbnail = require('./thumbnail');
 var Select = require('./select');
@@ -179,11 +181,7 @@ var ThumbnailList = React.createClass({
       size = (this.state.width - (numPerRow + 1)) / numPerRow;
     }
 
-    var thumbnails = media.map(thumbnail =>
-      (<li className="mediacat-list__item mediacat-list__item--thumbnail">
-        <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />
-      </li>)
-    );
+    var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
       <Toolbar theme="panel">
@@ -193,11 +191,18 @@ var ThumbnailList = React.createClass({
       </Toolbar>
     );
 
+    var fill = this.props.mode === 'grid';
+    var height = this.props.mode === 'grid' ? null : 280;
+    var listType = this.props.mode === 'filmstrip' ? 'horizontal' : 'grid';
+
+
     return (
-      <Panel mode={this.props.mode} toolbar={toolbar}>
-        <ul className="mediacat-thumbnail-list mediacat-list mediacat-list--thumbnails" ref="content">
-          {thumbnails.toJS()}
-        </ul>
+      <Panel fill={fill} height={height} mode={this.props.mode} toolbar={toolbar}>
+        <div className="mediacat-thumbnails">
+          <List ref="content" type={listType}>
+            {thumbnails.toJS()}
+          </List>
+        </div>
       </Panel>
     );
   }

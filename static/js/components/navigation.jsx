@@ -33,7 +33,7 @@ var Navigation = React.createClass({
           <Search />
         </Toolbar>
         <CategoryTree />
-        {this.state.hasUploads ? <Uploads /> : null}
+        {true ? <Uploads /> : null}
       </div>
     );
   }

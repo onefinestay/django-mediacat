@@ -1,9 +1,8 @@
-.#{$ns}-list--thumbnails {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 5px;  
+.#{$ns}-thumbnails {
+  padding: 5px;
+  display: inline-block
 }
+
 
 .#{$ns}-thumbnail {
   background-color: #2b303b;
