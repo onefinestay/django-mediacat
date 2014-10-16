@@ -74,6 +74,7 @@ setup(
     author_email='andrew.ingram@onefinestay.com',
     packages=get_packages('mediacat'),
     package_data=get_package_data('mediacat'),
+    include_package_data=True,
     install_requires=install_requires,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
