@@ -1,0 +1,6 @@
+include readme.md
+include LICENSE
+
+recursive-include modeltranslation/static *
+
+global-exclude *.pyc
