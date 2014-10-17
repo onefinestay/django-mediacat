@@ -94,7 +94,7 @@ var ScrollPane = React.createClass({
   },
 
   componentWillUnmount: function() {
-    window.removeEventListener('resize', this.updateDOMDimensions);consol
+    window.removeEventListener('resize', this.updateDOMDimensions);
 
     if (this.state.observer) {
       this.state.observer.disconnect();
