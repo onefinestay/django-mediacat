@@ -9,25 +9,25 @@ var RadialLoader = React.createClass({
   
   render: function() {
     return (
-      <div className="radial-loader">
-        <div className="radial-loader-container radial-loader-container-1">
-          <div className="radial-loader-circle-1"></div>
-          <div className="radial-loader-circle-2"></div>
-          <div className="radial-loader-circle-3"></div>
-          <div className="radial-loader-circle-4"></div>
+      <div className="mediacat-radialloader">
+        <div className="mediacat-radialloader__container mediacat-radialloader__container--a">
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--a"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--b"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--c"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--d"></div>
         </div>
-        <div className="radial-loader-container radial-loader-container-2">
-          <div className="radial-loader-circle-1"></div>
-          <div className="radial-loader-circle-2"></div>
-          <div className="radial-loader-circle-3"></div>
-          <div className="radial-loader-circle-4"></div>
+        <div className="mediacat-radialloader__container mediacat-radialloader__container--b">
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--e"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--f"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--g"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--h"></div>
         </div>
-        <div className="radial-loader-container radial-loader-container-3">
-          <div className="radial-loader-circle-1"></div>
-          <div className="radial-loader-circle-2"></div>
-          <div className="radial-loader-circle-3"></div>
-          <div className="radial-loader-circle-4"></div>
-        </div>      
+        <div className="mediacat-radialloader__container mediacat-radialloader__container--c">
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--i"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--j"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--k"></div>
+          <div className="mediacat-radialloader__circle mediacat-radialloader__circle--l"></div>
+        </div>
       </div>
     );
   }

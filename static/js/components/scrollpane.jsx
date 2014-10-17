@@ -94,7 +94,7 @@ var ScrollPane = React.createClass({
   },
 
   componentWillUnmount: function() {
-    window.removeEventListener('resize', this.updateDOMDimensions);
+    window.removeEventListener('resize', this.updateDOMDimensions);consol
 
     if (this.state.observer) {
       this.state.observer.disconnect();
@@ -245,8 +245,6 @@ var ScrollPane = React.createClass({
     if (readyToDisplay) {
       var shouldScrollHorizontal = this.state.contentWidth > this.state.width;
       var shouldScrollVertical = this.state.contentHeight > this.state.height;
-
-      console.log(this.state.contentWidth, this.state.width);
 
       if (shouldScrollVertical) {
         verticalHandleSize = 100 * (this.state.height / this.state.contentHeight);

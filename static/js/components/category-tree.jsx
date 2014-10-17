@@ -153,7 +153,7 @@ var CategoryTreeNode = React.createClass({
               {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : null}
             </span>
             <span className="mediacat-category__label">{node.get('name')}</span>
-            {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-category__count">{count || '-'}</div>}
+            {this.state.fetchingMedia ? <div className="mediacat-category__loader"><LinearLoader size="tiny" /></div> : <div className="mediacat-category__count">{count || '-'}</div>}
           </a>
           {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories">{nodes.toJS()}</ul> : null}
           {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
