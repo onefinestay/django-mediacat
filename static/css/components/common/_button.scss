@@ -70,6 +70,9 @@
 
 
 .#{$ns}-button-group {
+  display: flex;
+  flex-direction: row;
+
   .#{$ns}-button {
     border-radius: 0;
     margin-left: 1px;

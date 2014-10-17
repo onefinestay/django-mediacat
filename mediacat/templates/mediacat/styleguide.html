@@ -1,0 +1,66 @@
+{% load staticfiles mediacat_tags %}
+<!doctype html>
+<html>
+<head>
+  <title>mediacat styleguide</title>
+  <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Muli:300,400' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="{% static 'mediacat/library.css' %}" />
+
+  <style>
+    .mediacat-styleguide {
+      box-sizing: border-box;
+      width: 960px;
+      margin: 50px auto;
+    }
+
+    .mediacat-styleguide * {
+      box-sizing: border-box;
+    }
+
+
+  </style>
+</head>
+<body>
+
+<div class="mediacat-styleguide">
+  <h1>Mediacat Styleguide</h1>
+
+  <h2>Toolbars</h2>
+
+  <h3>Theme: White and Teal</h3>
+
+  <div class="mediacat-toolbar mediacat-toolbar--theme-column">
+    <div class="mediacat-toolbar__title">Toolbar Title</div>
+    <div class="mediacat-toolbar__spacer"></div>
+    <div class="mediacat-button-group">
+      <button class="mediacat-button mediacat-is-active mediacat-button--header">
+        <span class="mediacat-icon mediacat-icon--grid mediacat-icon--large"></span>
+      </button>
+      <button class="mediacat-button mediacat-button--header">
+        <span class="mediacat-icon mediacat-icon--filmstrip mediacat-icon--large"></span>
+      </button>
+      <button class="mediacat-button mediacat-button--header">
+        <span class="mediacat-icon mediacat-icon--detail mediacat-icon--large"></span>
+      </button>
+    </div>
+  </div>
+
+  <h3>Theme: Dark Gray</h3>
+
+  <div class="mediacat-toolbar mediacat-toolbar--theme-panel">
+    <div class="mediacat-toolbar__title">Another Toolbar Title</div>
+    <div class="mediacat-toolbar__spacer"></div>
+    <label>Sort by:</label>
+    <div class="mediacat-select mediacat-select--closed" role="listbox" aria-haspopup="true" aria-activedescendant="false" tabindex="0">
+      <div class="mediacat-select__value-label">Manual</div>
+      <div class="mediacat-select__open-button">
+        <span class="mediacat-icon mediacat-icon--down-arrow mediacat-icon--small"></span>
+      </div>
+      <input type="hidden" value="manual_asc">
+    </div>
+  </div>
+
+
+</body>
+</html>
