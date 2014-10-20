@@ -14,7 +14,6 @@ var CategoryStore = Fluxxor.createStore({
       constants.CATEGORY_CLOSE, this.onCategoryClose,
       constants.CATEGORY_GET_START, this.onCategoryGetStart,
       constants.CATEGORY_GET_SUCCESS, this.onCategoryGetSuccess,
-      constants.UPLOAD_COMPLETE, this.onUploadComplete,
       constants.ASSOCIATIONS_CREATE_SUCCESS, this.onAssociationsCreateSuccess
     );
     this.setMaxListeners(0);

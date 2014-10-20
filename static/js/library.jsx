@@ -35,7 +35,7 @@ var keyboard = new Keyboard();
 
 window.React = React;
 
-React.renderComponent(
+React.render(
   <Application flux={flux} keyboard={keyboard} />,
   document.body
 );

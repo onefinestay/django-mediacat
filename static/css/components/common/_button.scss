@@ -18,7 +18,7 @@
     opacity: .5;
   }
 
-  &--header {
+  &--theme-white-on-teal {
     background-color: $header-button-bg;
     color: $header-button-text;
 
@@ -29,7 +29,7 @@
     }
   }
 
-  &--panel {
+  &--theme-dark-grey {
     background-color: $panel-toolbar-button-bg;
     border: 1px solid $panel-toolbar-button-border;
     box-shadow: 0 1px 0 0 $panel-toolbar-button-shadow;

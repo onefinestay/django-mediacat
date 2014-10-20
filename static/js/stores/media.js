@@ -59,7 +59,6 @@ var MediaStore = Fluxxor.createStore({
       constants.MEDIA_GET_SUCCESS, this.onMediaGetSuccess,    
       constants.MEDIA_SELECTED, this.onMediaSelect,
       constants.UPLOAD_SUCCESS, this.onUploadSuccess,
-      constants.ASSOCIATIONS_CREATE_START, this.onAssociationsCreateStart,
       constants.SET_VIEW_MODE, this.onSetViewMode,
       constants.CROP_SELECTED, this.onCropSelect,
       constants.SET_MEDIA_SORT, this.onSetSort,

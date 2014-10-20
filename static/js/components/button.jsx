@@ -7,18 +7,16 @@ var cx = React.addons.classSet;
 
 var Icon = require('./icon');
 
+var ThemeMixin = require('./theme-mixin');
+
 
 var Button = React.createClass({
-	mixins: [PureRenderMixin],
+	mixins: [ThemeMixin, PureRenderMixin],
 
   propTypes: {
     glyph: React.PropTypes.string,
     active: React.PropTypes.bool.isRequired,
-    disabled: React.PropTypes.bool.isRequired,
-    placement: React.PropTypes.oneOf([
-      'header', 
-      'panel'
-    ]).isRequired,
+    disabled: React.PropTypes.bool.isRequired
   },
 
 	getDefaultProps: function() {
@@ -26,13 +24,12 @@ var Button = React.createClass({
 			glyph: null,
 			caption: null,
       active: false,
-      disabled: false,
-      placement: 'header'
+      disabled: false
 		};
 	},
 
   render: function() {
-    var {glyph, active, disabled, children, placement, ...other} = this.props;
+    var {glyph, active, disabled, children, ...other} = this.props;
 
     var classes = {
       'mediacat-button': true,
@@ -40,13 +37,13 @@ var Button = React.createClass({
       'mediacat-is-disabled': disabled,
     };
 
-    if (placement) {
-      classes['mediacat-button--' + placement] = true;
-    }
+    var theme = this.getTheme();
 
-    return this.transferPropsTo(
-      <button onClick={other.onClick} disabled={disabled} className={cx(classes)}>
-        {glyph ? <Icon glyph={glyph} size={placement === 'header' ? 'large' : 'small'} /> : null}
+    classes['mediacat-button--theme-' + theme] = true;
+
+    return (
+      <button {...other} onClick={other.onClick} disabled={disabled} className={cx(classes)}>
+        {glyph ? <Icon glyph={glyph} size={theme === 'white-on-teal' ? 'large' : 'small'} /> : null}
         {children ? <span className="mediacat-button__caption">{children}</span> : null}
       </button>    
     );

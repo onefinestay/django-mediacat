@@ -16,10 +16,10 @@ var Uploads = React.createClass({
 
   render: function() {
     var toolbar = (
-      <Toolbar theme="panel">
+      <Toolbar theme="dark-grey">
         <span className="mediacat-toolbar__title">Uploads</span>
         <span className="mediacat-toolbar__separator" />
-        <Button placement="panel" glyph="arrow" />
+        <Button theme="dark-grey" glyph="arrow" />
       </Toolbar>
     );
 

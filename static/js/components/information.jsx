@@ -20,7 +20,7 @@ var Information = React.createClass({
   render: function() {
     return (
       <div className="mediacat-information mediacat-column mediacat-column--sidebar">
-        <Toolbar theme="column">
+        <Toolbar theme="white-on-teal">
           <div className="mediacat-toolbar__spacer" />
           <PickButton />
         </Toolbar>

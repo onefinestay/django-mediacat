@@ -184,7 +184,7 @@ var ThumbnailList = React.createClass({
     var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
-      <Toolbar theme="panel">
+      <Toolbar theme="dark-grey">
         <div className="mediacat-toolbar__spacer" />
         <label>Sort by:</label>
         <Select value={this.state.sortBy} ref="sortBy" options={this.state.sortOptions} onSelect={this.setSort} placeholder="Sort by" />

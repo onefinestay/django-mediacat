@@ -34,8 +34,8 @@ var Icon = React.createClass({
   		classes['mediacat-icon--' + size] = true;	
   	}
   	
-		return this.transferPropsTo(
-			<span className={cx(classes)} />
+		return (
+			<span {...other} className={cx(classes)} />
 		);
   }
 });

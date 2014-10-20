@@ -4,16 +4,11 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
+var ThemeMixin = require('./theme-mixin');
 
 
 var Toolbar = React.createClass({
-  mixins: [PureRenderMixin],
-
-  getDefaultProps: function() {
-    return {
-      theme: 'column'
-    };
-  },
+  mixins: [ThemeMixin, PureRenderMixin],
 
   getInitialState: function() {
     return {
@@ -25,7 +20,7 @@ var Toolbar = React.createClass({
     var classes = {
       'mediacat-toolbar': true
     };
-    classes['mediacat-toolbar--theme-' + this.props.theme] = true;
+    classes['mediacat-toolbar--theme-' + this.getTheme()] = true;
 
     return (
       <div className={cx(classes)}>
@@ -35,4 +30,4 @@ var Toolbar = React.createClass({
   }
 });
 
-module.exports = Toolbar;        
+module.exports = Toolbar;

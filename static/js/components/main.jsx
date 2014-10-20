@@ -36,7 +36,7 @@ var Main = React.createClass({
   render: function() {
     return (
       <div className="mediacat-content mediacat-column">
-        <Toolbar theme="column">
+        <Toolbar theme="white-on-teal">
           <div className="mediacat-toolbar__spacer" />
           <div className="mediacat-button-group">
             <Button active={this.state.mode === 'grid'} onClick={this.setGridMode} glyph="grid" />

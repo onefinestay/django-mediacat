@@ -27,7 +27,7 @@ var Navigation = React.createClass({
   render: function() {
     return (
       <div className="mediacat-navigation mediacat-column mediacat-column--sidebar">
-        <Toolbar theme="column">
+        <Toolbar theme="white-on-teal">
           <UploadButton />
           <div className="mediacat-toolbar__separator" />
           <Search />

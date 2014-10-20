@@ -34,7 +34,7 @@ var List = React.createClass({
       'mediacat-list__item--vertical': this.props.type === 'vertical'
     }
 
-    var children = this.props.children.map(child => <li className={cx(childClasses)}>{child}</li>);
+    var children = this.props.children.map(child => <li key={child.key} className={cx(childClasses)}>{child}</li>);
 
     return (
       <ul className={cx(classes)}>{children}</ul>

@@ -17,7 +17,7 @@ var Icon = require('./icon');
 var CategoryTreePlaceholderNode = React.createClass({
   render: function() {
     var style = {
-      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px'
+      'paddingLeft': 5 + (15 * (this.props.depth - 1)) + 'px'
     };
 
     return (
@@ -134,7 +134,7 @@ var CategoryTreeNode = React.createClass({
     };
 
     var style = {
-      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px',
+      'paddingLeft': 5 + (15 * (this.props.depth - 1)) + 'px',
       'cursor': this.cursor()
     };
 

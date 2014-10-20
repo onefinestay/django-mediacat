@@ -13,13 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^2.3.5",
-    "fluxxor": "1.4.1",
-    "immutable": "^2.1.0",
+    "bluebird": "^2.3.6",
+    "fluxxor": "1.5.0",
+    "immutable": "^2.5.0",
     "matrix-utilities": "1.2.4",
     "moment": "^2.8.3",
     "mousetrap": "0.0.1",
-    "react": "0.11.2",
+    "react": "^0.12.0-rc1",
     "superagent": "0.20.0",
     "uuid-v4": "0.1.0"
   },
@@ -27,7 +27,7 @@
     "autoprefixer-loader": "1.0.0",
     "css-loader": "0.9.0",
     "extract-text-webpack-plugin": "0.3.1",
-    "file-loader": "^0.7.2",
+    "file-loader": "^0.8.1",
     "gulp": "3.8.8",
     "gulp-consolidate": "^0.1.2",
     "gulp-debug": "^1.0.1",
@@ -35,11 +35,11 @@
     "gulp-iconfont-css": "0.0.9",
     "gulp-rename": "^1.2.0",
     "gulp-sketch": "0.0.6",
-    "jsx-loader": "0.11.2",
+    "jsx-loader": "git://github.com/AndrewIngram/jsx-loader",
     "lodash": "^2.4.1",
     "sass-loader": "0.2.0",
     "style-loader": "0.8.1",
     "url-loader": "^0.5.5",
-    "webpack": "1.4.5"
+    "webpack": "1.4.8"
   }
 }
