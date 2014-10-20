@@ -6,7 +6,8 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var UploadList = require('./upload-list');
 
 var Panel = require('./panel');
-var PanelToolbar = require('./panel-toolbar');
+var Toolbar = require('./toolbar');
+var Button = require('./button');
 var Icon = require('./icon');
 
 
@@ -15,15 +16,15 @@ var Uploads = React.createClass({
 
   render: function() {
     var toolbar = (
-      <PanelToolbar>
-        Uploads
-        <span className="spacer" />
-        <button className="mediacat-panel-state"><Icon glyph="arrow" /></button>
-      </PanelToolbar>
+      <Toolbar theme="panel">
+        <span className="mediacat-toolbar__title">Uploads</span>
+        <span className="mediacat-toolbar__separator" />
+        <Button placement="panel" glyph="arrow" />
+      </Toolbar>
     );
 
     return (
-      <Panel className="mediacat-uploads" toolbar={toolbar}>
+      <Panel fill={false} height={200} className="mediacat-uploads" toolbar={toolbar}>
         <UploadList />
       </Panel>
     );    

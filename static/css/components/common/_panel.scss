@@ -1,6 +1,11 @@
-.panel {
+.#{$ns}-panel {
   align-items: stretch;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  &--fixed {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
 }

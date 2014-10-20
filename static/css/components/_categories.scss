@@ -12,15 +12,6 @@
       background-color: lighten(#2b303b, 2.5);
       color: #fff;
     }
-
-    .loading {
-      opacity: .35;
-    }
-
-    .linear-loader {
-      left: auto;
-      right: 5px;
-    }
   }
 
   &__handle {
@@ -51,7 +42,14 @@
     top: 0;    
   }
 
-  &--selected > &__label {
+  &__loader {
+    opacity: .6;
+    position: absolute;
+    right: 15px;
+    top: 11px;
+  }
+
+  &--selected > &__info {
     background-color: lighten(#2b303b, 10);
     color: #fff;
     text-shadow: 1px 1px 0 #000;

@@ -26,8 +26,8 @@ var PanelToolbar = React.createClass({
 
   render: function() {
     var classes = {
-      'panel-header': true,
-      'toolbar': true
+      'mediacat-panel__header': true,
+      'mediacat-toolbar': true
     };
     this.props.className.split(/\s+/).forEach(c => classes[c] = true);
 

@@ -13,6 +13,8 @@ var Panel = React.createClass({
 
   getDefaultProps: function() {
     return {
+      fill: true,
+      height: null,
       collapsible: false,
       className: ''
     };
@@ -26,13 +28,20 @@ var Panel = React.createClass({
 
   render: function() {
     var classes = {
-      'panel': true,
-      'panel-open': this.state.open,
+      'mediacat-panel': true,
+      'mediacat-panel--fill': this.props.fill,
+      'mediacat-panel--fixed': !this.props.fill && this.props.height,
+      'mediacat-panel--open': this.state.open
     };
-    this.props.className.split(/\s+/).forEach(c => classes[c] = true);
+
+    var style = {};
+
+    if (this.props.height) {
+      style['height'] = this.props.height + 'px';
+    }
 
     return (
-      <div className={cx(classes)}>
+      <div className={cx(classes)} style={style}>
         {this.props.toolbar}
         <ScrollPane mode={this.props.mode}>
           {this.props.children}

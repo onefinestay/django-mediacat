@@ -20,7 +20,6 @@
 
   &--header {
     background-color: $header-button-bg;
-    //box-shadow: 0 1px 0 0 $header-button-shadow;
     color: $header-button-text;
 
     &.#{$ns}-is-active {
@@ -71,6 +70,9 @@
 
 
 .#{$ns}-button-group {
+  display: flex;
+  flex-direction: row;
+
   .#{$ns}-button {
     border-radius: 0;
     margin-left: 1px;

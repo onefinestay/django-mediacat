@@ -26,6 +26,11 @@
     margin-right: $toolbar-el-spacing;
   }
 
+  &__title {
+    display: inline-block;
+    flex-grow: 1;
+  }
+
   &__spacer {
     flex-grow: 1;
   }

@@ -28,7 +28,7 @@ var ImageDataPanel = React.createClass({
     var media = this.state.media;
 
     return (
-      <Panel className="mediacat-information-panel">
+      <Panel fill={true} className="mediacat-information-panel">
         <table>
           <tr>
             <th scope="row">Width</th>

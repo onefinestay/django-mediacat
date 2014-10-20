@@ -105,13 +105,13 @@ var CropsPanel = React.createClass({
   	var toolbar = (
   		<Toolbar theme="panel">
       	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
-      	<span className="separator" />
+      	<span className="mediacat-toolbar__separator" />
       	<Button glyph="add" placement="panel" disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton" />
       </Toolbar>
   	);
 
     return (
-      <Panel className="mediacat-crops-panel" toolbar={toolbar}>
+      <Panel fill={true} className="mediacat-crops-panel" toolbar={toolbar}>
         <CropList />
       </Panel>
     );

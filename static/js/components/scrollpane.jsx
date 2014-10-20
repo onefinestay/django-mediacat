@@ -2,8 +2,11 @@
  * @jsx React.DOM
  */
 var React = require('react/addons');
+var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = React.addons.classSet;
+
+var elementMetrics = require('../utils/element-metrics');
 
 
 var ScrollPaneHandle = React.createClass({
@@ -53,13 +56,14 @@ var ScrollPane = React.createClass({
 
   updateDOMDimensions: function() {
     var el = this.getDOMNode();
-    var contentEl = this.refs.content.getDOMNode();
+
+    var contentNode = this.refs.content.getDOMNode();
 
     this.setState({
       width: el.offsetWidth,
       height: el.offsetHeight,
-      contentWidth: contentEl.offsetWidth,
-      contentHeight: contentEl.offsetHeight,
+      contentWidth: contentNode.offsetWidth,
+      contentHeight: contentNode.offsetHeight,
       observer: null,
     });
   },
@@ -227,12 +231,15 @@ var ScrollPane = React.createClass({
 
   render: function() {
     var readyToDisplay = this.state.width && this.state.height;
-    var verticalHandleStyles;
     var verticalHandleSize;
-    var horizontalHandleStyles;
     var horizontalHandleSize;
     var contentStyles;
     var translateX = 0;
+    var classes = {
+      'mediacat-scrollpane': true,
+      'mediacat-scrollpane--loading': !readyToDisplay
+    };
+
     var translateY = 0;
 
     if (readyToDisplay) {
@@ -260,7 +267,7 @@ var ScrollPane = React.createClass({
       };
 
       return (
-        <div className="mediacat-scrollpane" onWheel={this.handleWheel}>
+        <div className={cx(classes)} onWheel={this.handleWheel}>
           {shouldScrollVertical &&
           <div className="mediacat-scrollbar mediacat-scrollbar--vertical" ref="vertical-scrollbar">
             <ScrollPaneHandle ref="vertical-scrollbar-handle" direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
@@ -277,7 +284,7 @@ var ScrollPane = React.createClass({
       );
     } else {
       return (
-        <div className="mediacat-scrollpane mediacat-scrollpane--loading">
+        <div className={cx(classes)}>
           <div className="mediacat-scrollpane__viewport" ref="viewport">
           <div className="mediacat-scrollpane__content" ref="content">
             {this.props.children}
