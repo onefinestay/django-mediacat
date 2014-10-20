@@ -91,6 +91,7 @@ class MediaFieldCreator(Creator):
         except AttributeError:
             applications = self.get_db_applications(instance)
         applications[self.field.attname] = value
+        setattr(instance, self.cache_name, applications)
 
 
 class MediaFieldMeta(models.SubfieldBase):

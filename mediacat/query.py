@@ -63,10 +63,8 @@ class MediacatQuerySet(QuerySet):
                     break
 
             if not self._defer_media:
-                print 'loading media'
                 real_results = self.attach_media(base_result_objects)
             else:
-                print 'not loading media'
                 real_results = base_result_objects
 
             for o in real_results:
