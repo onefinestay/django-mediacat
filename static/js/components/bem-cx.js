@@ -33,10 +33,9 @@ function cx(classNames, options) {
       }
 
       states.forEach(function(state) {
-        stateClassName = baseClassName + '--is-' + state;
-        bemClasses.push(stateClassName);
+        bemClasses.push(baseClassName + '--is-' + state);
         if (options.theme) {
-          bemClasses.push(stateClassName + '--theme-' + options.theme);
+          bemClasses.push(baseClassName + '--theme-' + options.theme + '--is-' + state);
         }
       });
     }
