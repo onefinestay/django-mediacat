@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
@@ -26,8 +26,11 @@ var Upload = React.createClass({
     var upload = this.props.upload;
 
     var classes = {
-      'mediacat-upload': true,
-      'mediacat-upload-selected': this.state.selected
+      'upload': true
+    };
+
+    var states = {
+      'selected': this.state.selected
     };
 
     var caption;
@@ -44,7 +47,7 @@ var Upload = React.createClass({
 
     return (
       <li className="mediacat-list__item mediacat-list__item--upload">
-        <div className={cx(classes)}>
+        <div className={cx(classes, {states})}>
           {upload.get('file').name} - {upload.get('progress')}% - {caption}
         </div>
       </li>

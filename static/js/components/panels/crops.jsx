@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('../bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
@@ -48,13 +48,16 @@ var CropSearchResult = React.createClass({
   },  
 
   render: function() {
-    var classes = cx({
-      'mediacat-select__option': true,
-      'mediacat-is-selected': !!this.props.selected
-    });
+    var classes = {
+      'select__option': true
+    };
+
+    var states = {
+      'selected': !!this.props.selected
+    }
 
     return (
-      <li className={classes}
+      <li className={cx(classes, {states})}
         onMouseEnter={this.props.onHover.bind(null, this.props.option)}
         onMouseDown={this.props.onClick.bind(null, this.props.option)}>
         {this.props.label}

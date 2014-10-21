@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var ThemeMixin = require('./theme-mixin');
 
@@ -13,14 +13,12 @@ var ToolbarSpacer = React.createClass({
 
   render: function() {
     var classes = {
-      'mediacat-toolbar__spacer': true
+      'toolbar__spacer': true
     };
-
     var theme = this.getTheme();
-    classes['mediacat-toolbar__spacer--theme-' + theme] = true;
 
     return (
-      <div className={cx(classes)} />
+      <div className={cx(classes, {theme})} />
     );
   }
 });

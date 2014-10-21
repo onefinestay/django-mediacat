@@ -2,7 +2,7 @@
 "use strict";
 
 var React = require('react/addons');
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var KeyboardMixin = require('./keyboard-mixin');
 var Icon = require('./icon');
 
@@ -19,13 +19,16 @@ var SelectOption = React.createClass({
   },
 
   render: function() {
-    var classes = cx({
-      'mediacat-select__option': true,
-      'mediacat-is-selected': !!this.props.selected
-    });
+    var classes = {
+      'select__option': true
+    };
+
+    var states = {
+      'selected': !!this.props.selected
+    };
 
     return (
-      <li className={classes}
+      <li className={cx(classes, {states})}
         onMouseEnter={this.props.onHover.bind(null, this.props.option)}
         onMouseDown={this.props.onClick.bind(null, this.props.option)}>
         {this.props.label}
@@ -276,14 +279,16 @@ var Select = React.createClass({
     var label;
     var value;
 
-    var classes = cx({
-      'mediacat-select': true,
-      'mediacat-select--open': active,
-      'mediacat-select--closed': !active,
-      'mediacat-select--stretch': this.props.fillWidth,      
-      'mediacat-is-disabled': this.props.disabled,
-    });    
+    var classes = {
+      'select': true,
+      'select--stretch': this.props.fillWidth
+    };
 
+    var states = {
+      'open': active,
+      'closed': !active,
+      'disabled': this.props.disabled
+    };
 
     if (selectedOption) {
       label = selectedOption.get(this.props.labelField);
@@ -292,7 +297,7 @@ var Select = React.createClass({
 
     return (
       <div
-        className={classes}
+        className={cx(classes, {states})}
         role='listbox'
         aria-haspopup='true'
         aria-activedescendant={active}

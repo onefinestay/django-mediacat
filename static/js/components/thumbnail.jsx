@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
@@ -124,10 +124,13 @@ var Thumbnail = React.createClass({
     var thumbnail = this.props.thumbnail;
 
     var classes = {
-      'mediacat-thumbnail': true,
-      'mediacat-thumbnail--dragging': this.props.dragging,
-      'mediacat-thumbnail--rejected': thumbnail.get('rating') === 0,
-      'mediacat-thumbnail--selected': this.state.selected
+      'thumbnail': true,
+      'thumbnail--rejected': thumbnail.get('rating') === 0
+    };
+
+    var states = {
+      'dragging': this.props.dragging,
+      'selected': this.state.selected
     };
 
     var contentStyle;
@@ -143,7 +146,7 @@ var Thumbnail = React.createClass({
 
     return (
       <div
-        className={cx(classes)} 
+        className={cx(classes, {states})}
         onClick={this.select} 
         onDoubleClick={this.handleDoubleClick} 
         onMouseDown={this.handleMouseDown} 

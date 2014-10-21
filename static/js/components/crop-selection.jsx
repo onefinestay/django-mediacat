@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 
 var CropSelectionHandle = React.createClass({
@@ -15,8 +15,8 @@ var CropSelectionHandle = React.createClass({
 
   render: function() {
     var classes = [];
-    classes['mediacat-cropper__selection-handle'] = true;
-    classes['mediacat-cropper__selection-handle--' + this.props.position] = true;
+    classes['cropper__selection-handle'] = true;
+    classes['cropper__selection-handle--' + this.props.position] = true;
 
     return (
       <div 

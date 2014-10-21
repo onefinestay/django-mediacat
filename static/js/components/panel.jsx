@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var ScrollPane = require('./scrollpane');
 
@@ -28,10 +28,13 @@ var Panel = React.createClass({
 
   render: function() {
     var classes = {
-      'mediacat-panel': true,
-      'mediacat-panel--fill': this.props.fill,
-      'mediacat-panel--fixed': !this.props.fill && this.props.height,
-      'mediacat-panel--open': this.state.open
+      'panel': true,
+      'panel--fill': this.props.fill,
+      'panel--fixed': !this.props.fill && this.props.height
+    };
+
+    var states = {
+      'open': this.state.open
     };
 
     var style = {};
@@ -41,7 +44,7 @@ var Panel = React.createClass({
     }
 
     return (
-      <div className={cx(classes)} style={style}>
+      <div className={cx(classes, {states})} style={style}>
         {this.props.toolbar}
         <ScrollPane mode={this.props.mode}>
           {this.props.children}

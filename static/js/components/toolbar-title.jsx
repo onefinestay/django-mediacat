@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var ThemeMixin = require('./theme-mixin');
 
@@ -13,14 +13,12 @@ var ToolbarTitle = React.createClass({
 
   render: function() {
     var classes = {
-      'mediacat-toolbar__title': true
+      'toolbar__title': true
     };
-
     var theme = this.getTheme();
-    classes['mediacat-toolbar__title--theme-' + theme] = true;
 
     return (
-      <div className={cx(classes)}>{this.props.children}</div>
+      <div className={cx(classes, {theme})}>{this.props.children}</div>
     );
   }
 });

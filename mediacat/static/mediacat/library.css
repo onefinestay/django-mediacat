@@ -163,12 +163,12 @@
   -webkit-flex-grow: 0;
       -ms-flex-positive: 0;
           flex-grow: 0; }
-  .mediacat-button.mediacat-is-disabled {
+  .mediacat-button--is-disabled {
     opacity: 0.5; }
   .mediacat-button--theme-white-on-teal {
     background-color: #fff;
     color: #3ea2c1; }
-    .mediacat-button--theme-white-on-teal.mediacat-is-active {
+    .mediacat-button--theme-white-on-teal--is-active {
       background-color: #2b7287;
       box-shadow: inset 0 1px 0 0 #1f5161, 0 1px 0 0 #78bed4;
       color: #65b5cd; }
@@ -179,7 +179,7 @@
     color: #a6aebf;
     height: 30px;
     line-height: 28px; }
-    .mediacat-button--theme-dark-grey.mediacat-is-active {
+    .mediacat-button--theme-dark-grey--is-active {
       background-color: #2b7287;
       box-shadow: 0 1px 0 0 #1f5161, inset 0 -1px 0 0 #78bed4;
       color: #65b5cd; }
@@ -281,7 +281,7 @@
   padding: 0; }
   .mediacat-list--horizontal {
     white-space: nowrap; }
-  .mediacat-list--dragging {
+  .mediacat-list--is-dragging {
     pointer-events: none;
     position: absolute;
     z-index: 999; }
@@ -317,6 +317,8 @@
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0; }
+  + .mediacat-panel {
+    border-top: 1px black solid; }
 
 .mediacat-scrollpane {
   -webkit-box-flex: 1;
@@ -389,11 +391,11 @@
   line-height: 28px;
   position: relative;
   width: 250px; }
-  .mediacat-select.mediacat-is-disabled {
+  .mediacat-select--is-disabled {
     opacity: 0.5; }
   .mediacat-select:focus {
     outline: none; }
-  .mediacat-select--open {
+  .mediacat-select--is-open {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; }
   .mediacat-select--stretch {
@@ -439,7 +441,7 @@
   .mediacat-select__option {
     cursor: pointer;
     padding: 2px 10px; }
-    .mediacat-select__option.mediacat-is-selected {
+    .mediacat-select__option--is-selected {
       background: #414858; }
 
 .mediacat-tabs {
@@ -509,7 +511,7 @@
       border-top-right-radius: 2px; }
     .mediacat-tabs__button:hover {
       background-color: #363c4a; }
-    .mediacat-tabs__button.mediacat-is-active {
+    .mediacat-tabs__button--is-active {
       background-color: #414858; }
   .mediacat-tabs__panels {
     display: -webkit-box;
@@ -539,7 +541,7 @@
     -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1; }
-    .mediacat-tabs__panel.mediacat-is-active {
+    .mediacat-tabs__panel--is-active {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -635,7 +637,7 @@
   line-height: 22px;
   padding: 4px 20px;
   position: relative; }
-  .mediacat-category__info:hover, .mediacat-category__info.mediacat-is-hovered {
+  .mediacat-category__info:hover, .mediacat-category__info--is-hovered {
     background-color: #303642;
     color: #fff; }
 .mediacat-category__handle {
@@ -652,7 +654,7 @@
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
             transform: rotate(45deg); }
-  .mediacat-category__handle--open {
+  .mediacat-category__handle--is-open {
     -webkit-transform: rotate(90deg);
         -ms-transform: rotate(90deg);
             transform: rotate(90deg); }
@@ -668,7 +670,7 @@
   position: absolute;
   right: 15px;
   top: 11px; }
-.mediacat-category--selected > .mediacat-category__info {
+.mediacat-category--is-selected > .mediacat-category__info {
   background-color: #414858;
   color: #fff;
   text-shadow: 1px 1px 0 #000; }
@@ -696,7 +698,7 @@
   text-align: center; }
   .mediacat-crop:last-child {
     border-bottom-width: 0; }
-  .mediacat-crop--selected {
+  .mediacat-crop--is-selected {
     background-color: #363c49;
     border-color: #414858; }
   .mediacat-crop__content {
@@ -898,7 +900,7 @@
   height: 100%;
   position: relative;
   width: 100%; }
-  .mediacat-proxy-image--preloaded> {
+  .mediacat-proxy-image--is-preloaded> {
     -webkit-transition-property: none;
             transition-property: none; }
   .mediacat-proxy-image__bg {
@@ -933,9 +935,9 @@
   position: relative; }
   .mediacat-thumbnail--rejected {
     background-color: #22262f; }
-  .mediacat-thumbnail--selected {
+  .mediacat-thumbnail--is-selected {
     background-color: #414858; }
-  .mediacat-thumbnail--dragging {
+  .mediacat-thumbnail--is-dragging {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     pointer-events: none;
     -webkit-transform: scale(0.5);

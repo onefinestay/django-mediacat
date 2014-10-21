@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var RadialLoader = require('./loaders/radial');
 
@@ -58,9 +58,12 @@ var DetailProxyImage = React.createClass({
     };
 
     var classes = {
-      'mediacat-detail__proxy-image': true,
-      'mediacat-detail__proxy-image--preloaded': this.state.alreadyLoaded ? true : false
+      'detail__proxy-image': true
     };
+
+    var states = {
+      'preloaded': this.state.alreadyLoaded ? true : false
+    }
 
     var placeholderStyle = {
       'backgroundImage': `url('${ placeholderSrc }')`
@@ -75,7 +78,7 @@ var DetailProxyImage = React.createClass({
       'opacity': this.state.loaded ? 0 : 100
     };
     return (
-      <div className={cx(classes)} style={containerStyle}>
+      <div className={cx(classes, {states})} style={containerStyle}>
         <div className="mediacat-detail__proxy-image__placeholder" style={placeholderStyle} />
         <div className="mediacat-detail__proxy-image__bg" style={style}>
           <img className="mediacat-detail__proxy-image__image" src={src} />

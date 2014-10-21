@@ -4,7 +4,7 @@
 var React = require('react/addons');
 var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var elementMetrics = require('../utils/element-metrics');
 
@@ -235,10 +235,14 @@ var ScrollPane = React.createClass({
     var horizontalHandleSize;
     var contentStyles;
     var translateX = 0;
+
     var classes = {
-      'mediacat-scrollpane': true,
-      'mediacat-scrollpane--loading': !readyToDisplay
+      'scrollpane': true
     };
+
+    var states = {
+      'loading': !readyToDisplay
+    }
 
     var translateY = 0;
 
@@ -261,13 +265,13 @@ var ScrollPane = React.createClass({
       };
 
       var viewportClasses = {
-        'mediacat-scrollpane__viewport': true,
-        'mediacat-scrollpane__viewport--scrolls-vertically': shouldScrollVertical,
-        'mediacat-scrollpane__viewport--scrolls-horizontally': shouldScrollHorizontal
+        'scrollpane__viewport': true,
+        'scrollpane__viewport--scrolls-vertically': shouldScrollVertical,
+        'scrollpane__viewport--scrolls-horizontally': shouldScrollHorizontal
       };
 
       return (
-        <div className={cx(classes)} onWheel={this.handleWheel}>
+        <div className={cx(classes, {states})} onWheel={this.handleWheel}>
           {shouldScrollVertical &&
           <div className="mediacat-scrollbar mediacat-scrollbar--vertical" ref="vertical-scrollbar">
             <ScrollPaneHandle ref="vertical-scrollbar-handle" direction="vertical" handleSize={verticalHandleSize} position={this.state.scrollY} onDrag={this.handleDragY} />
@@ -275,7 +279,7 @@ var ScrollPane = React.createClass({
           {shouldScrollHorizontal && <div className="mediacat-scrollbar mediacat-scrollbar--horizontal" ref="horizontal-scrollbar">
             <ScrollPaneHandle ref="horizontal-scrollbar-handle" direction="horizontal" handleSize={horizontalHandleSize} position={this.state.scrollX} onDrag={this.handleDragX} />
           </div>}
-          <div className={cx(viewportClasses)} ref="viewport">
+          <div className={cx(viewportClasses, {states})} ref="viewport">
           <div className="mediacat-scrollpane__content" style={contentStyles} ref="content">
             {this.props.children}
           </div>
@@ -284,7 +288,7 @@ var ScrollPane = React.createClass({
       );
     } else {
       return (
-        <div className={cx(classes)}>
+        <div className={cx(classes, {states})}>
           <div className="mediacat-scrollpane__viewport" ref="viewport">
           <div className="mediacat-scrollpane__content" ref="content">
             {this.props.children}

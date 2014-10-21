@@ -25,7 +25,7 @@ var CategoryTreePlaceholderNode = React.createClass({
         <div className="mediacat-category">
           <span className="mediacat-category__info" style={style}>
             <span className="mediacat-category__handle" />
-            <span className="mediacat-category__label mediacat-category__label--loading">Loading...</span>
+            <span className="mediacat-category__label mediacat-category__label--is-loading">Loading...</span>
             <div className="mediacat-category__count">-</div>            
           </span>
         </div>
@@ -124,13 +124,17 @@ var CategoryTreeNode = React.createClass({
     var hasChildren = node.get('has_children');
 
     var classes = {
-      'category': true,
-      'category--selected': this.state.selected
+      'category': true
+    };
+
+    var states = {
+      'selected': this.state.selected,
+      'hovered': this.state.hover,
+      'open': isOpen
     };
 
     var handleClasses = {
-      'category__handle': true,
-      'category__handle--open': isOpen
+      'category__handle': true
     };
 
     var style = {
@@ -139,17 +143,16 @@ var CategoryTreeNode = React.createClass({
     };
 
     var labelClasses = {
-      "category__info": true,
-      "is-hovered": this.state.hover
+      "category__info": true
     };
 
     var count = node.get('count');
 
     return (
       <li className="mediacat-list__item mediacat-list__item--category">
-        <div className={cx(classes, 'mediacat')}>
-          <a style={style} className={cx(labelClasses, 'mediacat')} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
-            <span className={cx(handleClasses, 'mediacat')}>
+        <div className={cx(classes, {states})}>
+          <a style={style} className={cx(labelClasses, {states})} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
+            <span className={cx(handleClasses, {states})}>
               {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : null}
             </span>
             <span className="mediacat-category__label">{node.get('name')}</span>

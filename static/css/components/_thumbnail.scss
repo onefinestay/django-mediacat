@@ -19,11 +19,11 @@
     background-color: darken(#2b303b, 4);
   }
 
-  &--selected {
+  &--is-selected {
     background-color: #414858;
   }
 
-  &--dragging {
+  &--is-dragging {
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     pointer-events: none;
     transform: scale(.5);

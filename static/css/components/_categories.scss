@@ -8,7 +8,7 @@
     position: relative;
 
     &:hover, 
-    &.#{$ns}-is-hovered {
+    &--is-hovered {
       background-color: lighten(#2b303b, 2.5);
       color: #fff;
     }
@@ -28,7 +28,7 @@
       transform: rotate(45deg);
     }
 
-    &--open {
+    &--is-open {
       transform: rotate(90deg);
     }
   }
@@ -49,7 +49,7 @@
     top: 11px;
   }
 
-  &--selected > &__info {
+  &--is-selected > &__info {
     background-color: lighten(#2b303b, 10);
     color: #fff;
     text-shadow: 1px 1px 0 #000;

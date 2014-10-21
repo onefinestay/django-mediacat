@@ -17,7 +17,7 @@ var ButtonGroup = React.createClass({
     var theme = this.getTheme();
 
     return (
-      <div className={cx(classes, 'mediacat', theme)}>{this.props.children}</div>
+      <div className={cx(classes, {theme})}>{this.props.children}</div>
     );
   }
 });

@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 
 var Icon = React.createClass({
@@ -25,13 +25,13 @@ var Icon = React.createClass({
   	var { glyph, size, ...other } = this.props;
 
   	var classes = {
-  		'mediacat-icon': true,
+  		'icon': true,
   	}
 
-  	classes['mediacat-icon--' + glyph] = true;
+  	classes['icon--' + glyph] = true;
 
   	if (size) {
-  		classes['mediacat-icon--' + size] = true;	
+  		classes['icon--' + size] = true;
   	}
   	
 		return (

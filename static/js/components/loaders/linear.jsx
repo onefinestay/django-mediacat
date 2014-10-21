@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 var React = require('react/addons');
-var cx = React.addons.classSet;
+var cx = require('../bem-cx');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var LinearLoader = React.createClass({
@@ -10,10 +10,10 @@ var LinearLoader = React.createClass({
 
   render: function() {
     var classes = {
-      'mediacat-linearloader': true,
-      'mediacat-linearloader--small': this.props.size === 'small',
-      'mediacat-linearloader--medium': this.props.size === 'medium',
-      'mediacat-linearloader--tiny': this.props.size === 'tiny'
+      'linearloader': true,
+      'linearloader--small': this.props.size === 'small',
+      'linearloader--medium': this.props.size === 'medium',
+      'linearloader--tiny': this.props.size === 'tiny'
     };
 
     return (

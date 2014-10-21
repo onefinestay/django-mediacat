@@ -3,7 +3,7 @@
  */
 
 var React = require('react/addons');
-var cx = React.addons.classSet;
+var cx = require('../bem-cx');
 var Tab = require('./tab');
 
 
@@ -42,24 +42,27 @@ var Tabs = React.createClass({
     var tab;
     var active;
     var buttonClasses;
+    var states;
     var panelClasses;
 
     for (i=0; i<tabs.length; i++) {
       tab = tabs[i];
       active = i === this.state.activeTab;
 
-      buttonClasses = cx({
-        'mediacat-tabs__button': true,
-        'mediacat-is-active': active
-      });
+      buttonClasses = {
+        'tabs__button': true,
+      };
 
-      panelClasses = cx({
-        'mediacat-tabs__panel': true,
-        'mediacat-is-active': active
-      });
+      panelClasses = {
+        'tabs__panel': true
+      };
 
-      tabButtons.push(<li key={tab.props.name} className={buttonClasses} onClick={this.activateTab.bind(this, i)}>{tab.props.name}</li>);
-      tabBodies.push(<li key={tab.props.name} className={panelClasses}>{tab.props.children}</li>);
+      states = {
+        'active': active
+      };
+
+      tabButtons.push(<li key={tab.props.name} className={cx(buttonClasses, {states})} onClick={this.activateTab.bind(this, i)}>{tab.props.name}</li>);
+      tabBodies.push(<li key={tab.props.name} className={cx(panelClasses, {states})}>{tab.props.children}</li>);
     }
 
     return (

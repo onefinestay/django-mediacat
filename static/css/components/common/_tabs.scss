@@ -50,7 +50,7 @@
       background-color: lighten(#2b303b, 5);
     }
 
-    &.#{$ns}-is-active {
+    &--is-active {
       background-color: #414858;      
     }
   }
@@ -69,7 +69,7 @@
     flex-direction: row;
     flex-grow: 1;
 
-    &.#{$ns}-is-active {
+    &--is-active {
       display: flex;
     }
   }

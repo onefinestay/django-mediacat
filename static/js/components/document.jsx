@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 var React = require('react/addons');
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var FluxMixin = require('./flux-mixin');
@@ -44,10 +44,10 @@ var Document = React.createClass({
 
   render: function() {
     var classes = {
-      'mediacat-document': true,
-      'mediacat-document--grid': this.props.mode === 'grid',
-      'mediacat-document--filmstrip': this.props.mode === 'filmstrip',
-      'mediacat-document--detail': this.props.mode === 'detail'
+      'document': true,
+      'document--grid': this.props.mode === 'grid',
+      'document--filmstrip': this.props.mode === 'filmstrip',
+      'document--detail': this.props.mode === 'detail'
     };
 
     return (

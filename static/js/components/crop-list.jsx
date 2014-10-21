@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
@@ -60,11 +60,14 @@ var Crop = React.createClass({
     var crop = this.props.crop;
 
     var classes = {
-      'mediacat-crop': true,
-      'mediacat-crop--pickable': this.state.pickable,
-      'mediacat-crop--selected': this.state.selected,
-      'mediacat-list__item': true,
+      'crop': true,
+      'list__item': true
     };
+
+    var states = {
+      'pickable': this.state.pickable,
+      'selected': this.state.selected
+    }
 
     var frameWidth = 150;
     var mediaWidth = media.get('width');
@@ -91,7 +94,7 @@ var Crop = React.createClass({
     };
 
     return (
-      <li className={cx(classes)} onClick={this.select}>
+      <li className={cx(classes,{states})} onClick={this.select}>
         <div className="mediacat-crop__content">
           <div className="mediacat-crop__preview-frame" style={frameStyles} >
             <div className="mediacat-crop__preview" style={previewStyles} />

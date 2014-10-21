@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
@@ -40,17 +40,15 @@ var UploadButton = React.createClass({
     var disabled = !this.state.category || !this.state.category.get('accepts_images');
 
     var classes = {
-      'mediacat-button': true,
-      'mediacat-button--header': true,
-      'mediacat-is-disabled': disabled
+      'button': true
     };
-
+    var states = {
+      'disabled': disabled
+    };
     var theme = this.getTheme();
 
-    classes['mediacat-button--theme-' + theme] = true;
-
     return (
-      <div className={cx(classes)}>
+      <div className={cx(classes, {theme, states})}>
         <Icon glyph="upload" size="large" />
         <div className="mediacat-button__mask" onClick={this.handleClick} />
         <input className="mediacat-input--hidden-file" type="file" multiple={true} ref="upload"
