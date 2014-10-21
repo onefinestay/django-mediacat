@@ -261,7 +261,7 @@ var Select = React.createClass({
       var highlighted = this.state.highlighted &&
         value == this.state.highlighted.get(this.props.valueField);
 
-      return this.props.resultRenderer({
+      return React.createFactory(this.props.resultRenderer)({
         key: value,
         value: value,
         label: option.get(this.props.labelField),
