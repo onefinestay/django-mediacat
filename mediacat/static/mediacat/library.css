@@ -599,10 +599,11 @@
             flex-grow: 0;
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
-            flex-shrink: 0;
-    width: 10px; }
-  .panel > .mediacat-toolbar .separator {
-    width: 5px; }
+            flex-shrink: 0; }
+    .mediacat-toolbar__separator--theme-white-on-teal {
+      width: 10px; }
+    .mediacat-toolbar__separator--theme-dark-grey {
+      width: 5px; }
 
 .mediacat-application {
   bottom: 0;

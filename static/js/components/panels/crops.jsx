@@ -8,10 +8,13 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('../flux-mixin');
 var Immutable = require('immutable');
+var ThemeMixin = require('../theme-mixin');
 
 var CropList = require('../crop-list');
 var Panel = require('../panel');
 var Toolbar = require('../toolbar');
+var ToolbarSeparator = require('../toolbar-separator');
+
 var Select  = require('../select');
 var Button = require('../button');
 var Icon = require('../icon');
@@ -62,15 +65,15 @@ var CropSearchResult = React.createClass({
 });
 
 
-var CropsPanel = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
+var CropsToolbar = React.createClass({
+  mixins: [ThemeMixin, PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
   getStateFromFlux: function() {
     var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
     var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');
 
     return {
-      media: selectedMedia,      
+      media: selectedMedia,
       availableCrops: availableCrops
     };
   },
@@ -92,7 +95,8 @@ var CropsPanel = React.createClass({
   	this.getFlux().actions.crop.add(this.state.media, cropType);
     this.refs.addButton.getDOMNode().focus();
   },
-  
+
+
   render: function() {
     var options = Immutable.Vector();
 
@@ -102,16 +106,23 @@ var CropsPanel = React.createClass({
 
     var disabled = this.state.media ? false : true;
 
-  	var toolbar = (
-  		<Toolbar theme="dark-grey">
+    return (
+      <Toolbar>
       	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
-      	<span className="mediacat-toolbar__separator" />
+      	<ToolbarSeparator />
       	<Button theme="dark-grey" glyph="add" disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton" />
       </Toolbar>
-  	);
+    );
+  }
+});
 
+
+var CropsPanel = React.createClass({
+  mixins: [PureRenderMixin],
+
+  render: function() {
     return (
-      <Panel fill={true} className="mediacat-crops-panel" toolbar={toolbar}>
+      <Panel fill={true} className="mediacat-crops-panel" toolbar={<CropsToolbar theme="dark-grey" />}>
         <CropList />
       </Panel>
     );

@@ -63,12 +63,12 @@ var DetailProxyImage = React.createClass({
     };
 
     var placeholderStyle = {
-      'background-image': `url('${ placeholderSrc }')`      
+      'backgroundImage': `url('${ placeholderSrc }')`
     };
 
     var style = {
       'opacity': this.state.loaded ? 100 : 0,
-      'background-image': this.state.loaded ? `url('${ src }')` : null
+      'backgroundImage': this.state.loaded ? `url('${ src }')` : null
     };
 
     var spinnerStyle = {

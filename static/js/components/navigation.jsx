@@ -7,12 +7,30 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var FluxMixin = require('./flux-mixin');
+var ThemeMixin = require('./theme-mixin');
 
 var Search = require('./search');
 var UploadButton = require('./upload-button');
 var CategoryTree = require('./category-tree');
-var Toolbar = require('./toolbar');
 var Uploads = require('./uploads');
+
+var Toolbar = require('./toolbar');
+var ToolbarSeparator = require('./toolbar-separator');
+
+
+var NavigationToolbar = React.createClass({
+  mixins: [ThemeMixin, PureRenderMixin],
+
+  render: function() {
+    return (
+      <Toolbar>
+        <UploadButton />
+        <ToolbarSeparator />
+        <Search />
+      </Toolbar>
+    );
+  }
+});
 
 
 var Navigation = React.createClass({
@@ -27,11 +45,7 @@ var Navigation = React.createClass({
   render: function() {
     return (
       <div className="mediacat-navigation mediacat-column mediacat-column--sidebar">
-        <Toolbar theme="white-on-teal">
-          <UploadButton />
-          <div className="mediacat-toolbar__separator" />
-          <Search />
-        </Toolbar>
+        <NavigationToolbar theme="white-on-teal" />
         <CategoryTree />
         {true ? <Uploads /> : null}
       </div>

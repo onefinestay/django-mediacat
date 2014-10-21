@@ -17,9 +17,6 @@ var ThemeMixin = {
   },
 
   getChildContext: function() {
-    console.log(this.getTheme());
-
-
     return {
       theme: this.getTheme()
     };

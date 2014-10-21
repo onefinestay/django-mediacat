@@ -3,7 +3,7 @@
  */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 var Icon = require('./icon');
 
@@ -32,17 +32,14 @@ var Button = React.createClass({
     var {glyph, active, disabled, children, ...other} = this.props;
 
     var classes = {
-      'mediacat-button': true,
-      'mediacat-is-active': active,
-      'mediacat-is-disabled': disabled,
+      'button': true,
+      'is-active': active,
+      'is-disabled': disabled,
     };
-
     var theme = this.getTheme();
 
-    classes['mediacat-button--theme-' + theme] = true;
-
     return (
-      <button {...other} onClick={other.onClick} disabled={disabled} className={cx(classes)}>
+      <button {...other} onClick={other.onClick} disabled={disabled} className={cx(classes, 'mediacat', theme)}>
         {glyph ? <Icon glyph={glyph} size={theme === 'white-on-teal' ? 'large' : 'small'} /> : null}
         {children ? <span className="mediacat-button__caption">{children}</span> : null}
       </button>    

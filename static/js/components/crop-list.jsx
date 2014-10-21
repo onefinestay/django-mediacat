@@ -127,7 +127,7 @@ var CropGroup = React.createClass({
     return (
       <li className="mediacat-crop-group mediacat-list__item mediacat-list__item--crop-group">
         <div className="mediacat-crop-group__header">
-          {this.state.availableCrops.get(this.props.key).get(0)}
+          {this.state.availableCrops.get(this.props.cropKey).get(0)}
         </div>
         <ul className="mediacat-list mediacat-list--crops">
           {crops.toJS()}
@@ -165,7 +165,7 @@ var CropList = React.createClass({
 
     cropGroups = this.state.crops
       .groupBy(crop => crop.get('key'))
-      .map((crops, key) => <CropGroup key={key} crops={crops} />);
+      .map((crops, key) => <CropGroup key={key} cropKey={key} crops={crops} />);
 
     return (
       <ul className="mediacat-list mediacat-list--crop-groups">

@@ -7,8 +7,11 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./flux-mixin');
 var Icon = require('./icon');
 
+var ThemeMixin = require('./theme-mixin');
+
+
 var UploadButton = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
+  mixins: [ThemeMixin, PureRenderMixin, FluxMixin, StoreWatchMixin("Categories")],
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Categories');
@@ -41,6 +44,10 @@ var UploadButton = React.createClass({
       'mediacat-button--header': true,
       'mediacat-is-disabled': disabled
     };
+
+    var theme = this.getTheme();
+
+    classes['mediacat-button--theme-' + theme] = true;
 
     return (
       <div className={cx(classes)}>

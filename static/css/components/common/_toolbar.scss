@@ -38,11 +38,12 @@
   &__separator {
     flex-grow: 0;
     flex-shrink: 0;
-    width: $toolbar-el-spacing;
-  }
 
-  .panel > & { 
-    .separator {
+    &--theme-white-on-teal {
+      width: $toolbar-el-spacing;
+    }
+
+    &--theme-dark-grey {
       width: $panel-toolbar-el-spacing;
     }
   }
