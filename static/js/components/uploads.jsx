@@ -5,9 +5,6 @@ var Button = require('./common/button');
 var Icon = require('./common/icon');
 var Panel = require('./common/panel');
 var Toolbar = require('./common/toolbar');
-var ToolbarSeparator = require('./common/toolbar-separator');
-var ToolbarSpacer = require('./common/toolbar-spacer');
-var ToolbarTitle = require('./common/toolbar-title');
 
 var ThemeMixin = require('./mixins/theme-mixin');
 
@@ -19,11 +16,11 @@ var UploadsToolbar = React.createClass({
 
   render: function() {
     return (
-      <Toolbar>
-        <ToolbarTitle>Uploads</ToolbarTitle>
-        <ToolbarSeparator />
+      <Toolbar.Toolbar>
+        <Toolbar.Title>Uploads</Toolbar.Title>
+        <Toolbar.Separator />
         <Button glyph="arrow" />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
   }
 });

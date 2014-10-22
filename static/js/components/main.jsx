@@ -7,7 +7,6 @@ var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var Button = require('./common/button');
 var ButtonGroup = require('./common/button-group');
 var Toolbar = require('./common/toolbar');
-var ToolbarSpacer = require('./common/toolbar-spacer');
 
 var FluxMixin = require('./mixins/flux-mixin');
 var ThemeMixin = require('./mixins/theme-mixin');
@@ -33,14 +32,14 @@ var MainToolbar = React.createClass({
 
   render: function() {
     return (
-      <Toolbar>
-        <ToolbarSpacer />
+      <Toolbar.Toolbar>
+        <Toolbar.Spacer />
         <ButtonGroup>
           <Button active={this.props.mode === 'grid'} onClick={this.setGridMode} glyph="grid" />
           <Button active={this.props.mode === 'filmstrip'} onClick={this.setFilmstripMode} glyph="filmstrip" />
           <Button active={this.props.mode === 'detail'} onClick={this.setDetailMode} glyph="detail" />
         </ButtonGroup>
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
   }
 })

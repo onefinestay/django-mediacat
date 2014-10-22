@@ -1,5 +1,5 @@
 var React = require('react/addons');
-var cx = require('../bem-cx');
+var cx = require('../../bem-cx');
 var Tab = require('./tab');
 
 
@@ -72,4 +72,4 @@ var Tabs = React.createClass({
   }
 });
 
-module.exports = {Tabs, Tab};
+module.exports = Tabs;

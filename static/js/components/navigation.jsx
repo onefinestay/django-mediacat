@@ -1,10 +1,11 @@
+
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var Toolbar = require('./common/toolbar');
-var ToolbarSeparator = require('./common/toolbar-separator');
+
 var FluxMixin = require('./mixins/flux-mixin');
 var ThemeMixin = require('./mixins/theme-mixin');
 
@@ -19,11 +20,11 @@ var NavigationToolbar = React.createClass({
 
   render: function() {
     return (
-      <Toolbar>
+      <Toolbar.Toolbar>
         <UploadButton />
-        <ToolbarSeparator />
+        <Toolbar.Separator />
         <Search />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
   }
 });

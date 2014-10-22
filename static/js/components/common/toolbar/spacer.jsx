@@ -1,16 +1,16 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('../bem-cx');
+var cx = require('../../bem-cx');
 
-var ThemeMixin = require('../mixins/theme-mixin');
+var ThemeMixin = require('../../mixins/theme-mixin');
 
 
-var ToolbarSeparator = React.createClass({
+var ToolbarSpacer = React.createClass({
 	mixins: [ThemeMixin, PureRenderMixin],
 
   render: function() {
     var classes = {
-      'toolbar__separator': true
+      'toolbar__spacer': true
     };
     var theme = this.getTheme();
 
@@ -20,4 +20,4 @@ var ToolbarSeparator = React.createClass({
   }
 });
 
-module.exports = ToolbarSeparator;
+module.exports = ToolbarSpacer;

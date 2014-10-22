@@ -182,11 +182,11 @@ var ThumbnailList = React.createClass({
     var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
 
     var toolbar = (
-      <Toolbar theme="dark-grey">
-        <div className="mediacat-toolbar__spacer" />
+      <Toolbar.Toolbar theme="dark-grey">
+        <Toolbar.Spacer />
         <label>Sort by:</label>
         <Select value={this.state.sortBy} ref="sortBy" options={this.state.sortOptions} onSelect={this.setSort} placeholder="Sort by" />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
 
     var fill = this.props.mode === 'grid';

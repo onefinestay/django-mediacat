@@ -10,7 +10,7 @@ var Button = require('./common/button');
 var Panel = require('./common/panel');
 var Select  = require('./common/select');
 var Toolbar = require('./common/toolbar');
-var ToolbarSeparator = require('./common/toolbar-separator');
+
 
 var FluxMixin = require('./mixins/flux-mixin');
 var ThemeMixin = require('./mixins/theme-mixin');
@@ -109,11 +109,11 @@ var CropsToolbar = React.createClass({
     var disabled = this.state.media ? false : true;
 
     return (
-      <Toolbar>
+      <Toolbar.Toolbar>
       	<Select fillWidth={true} resultRenderer={CropSearchResult} disabled={disabled} ref="cropType" options={options} onSelect={this.setCropChoice} placeholder="Select a crop to add" />
-      	<ToolbarSeparator />
+      	<Toolbar.Separator />
       	<Button theme="dark-grey" glyph="add" disabled={disabled || !this.state.cropChoice} onClick={this.handleAdd} ref="addButton" />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
   }
 });

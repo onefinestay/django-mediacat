@@ -1,8 +1,7 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
-var tabs = require('./common/tabs');
-var ToolbarSpacer = require('./common/toolbar-spacer');
+var Tabs = require('./common/tabs');
 var Toolbar = require('./common/toolbar');
 var ThemeMixin = require('./mixins/theme-mixin');
 
@@ -16,10 +15,10 @@ var InformationToolbar = React.createClass({
 
   render: function() {
     return (
-      <Toolbar>
-        <ToolbarSpacer />
+      <Toolbar.Toolbar>
+        <Toolbar.Spacer />
         <PickButton />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
   }
 });
@@ -32,14 +31,14 @@ var Information = React.createClass({
     return (
       <div className="mediacat-information mediacat-column mediacat-column--sidebar">
         <InformationToolbar theme="white-on-teal" />
-        <tabs.Tabs>
-          <tabs.Tab name="Crops">
+        <Tabs.Tabs>
+          <Tabs.Tab name="Crops">
             <CropsPanel />
-          </tabs.Tab>
-          <tabs.Tab name="Image">
+          </Tabs.Tab>
+          <Tabs.Tab name="Image">
             <ImageDataPanel />
-          </tabs.Tab>
-        </tabs.Tabs>
+          </Tabs.Tab>
+        </Tabs.Tabs>
       </div>
     );
   }
