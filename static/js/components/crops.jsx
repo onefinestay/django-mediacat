@@ -1,23 +1,22 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('../bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('../flux-mixin');
 var Immutable = require('immutable');
-var ThemeMixin = require('../theme-mixin');
 
-var CropList = require('../crop-list');
-var Panel = require('../panel');
-var Toolbar = require('../toolbar');
-var ToolbarSeparator = require('../toolbar-separator');
+var cx = require('./bem-cx');
 
-var Select  = require('../select');
-var Button = require('../button');
-var Icon = require('../icon');
+var Button = require('./common/button');
+var Panel = require('./common/panel');
+var Select  = require('./common/select');
+var Toolbar = require('./common/toolbar');
+var ToolbarSeparator = require('./common/toolbar-separator');
+
+var FluxMixin = require('./mixins/flux-mixin');
+var ThemeMixin = require('./mixins/theme-mixin');
+
+var CropList = require('./crop-list');
+
 
 var CropSearchResult = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops")],

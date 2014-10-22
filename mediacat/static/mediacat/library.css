@@ -1,3 +1,151 @@
+.mediacat-button {
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  height: 38px;
+  line-height: 38px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0 10px;
+  position: relative;
+  text-align: center;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0; }
+  .mediacat-button--is-disabled {
+    opacity: 0.5; }
+  .mediacat-button--theme-white-on-teal {
+    background-color: #fff;
+    color: #3ea2c1; }
+    .mediacat-button--theme-white-on-teal--is-active {
+      background-color: #2b7287;
+      box-shadow: inset 0 1px 0 0 #1f5161, 0 1px 0 0 #78bed4;
+      color: #65b5cd; }
+  .mediacat-button--theme-dark-grey {
+    background-color: #2b303b;
+    border: 1px solid #1b1e25;
+    box-shadow: 0 1px 0 0 #292e38;
+    color: #a6aebf;
+    height: 30px;
+    line-height: 28px; }
+    .mediacat-button--theme-dark-grey--is-active {
+      background-color: #2b7287;
+      box-shadow: 0 1px 0 0 #1f5161, inset 0 -1px 0 0 #78bed4;
+      color: #65b5cd; }
+  .mediacat-button__caption {
+    display: inline-block;
+    font-weight: 100px;
+    line-height: 38px;
+    margin-left: 5px; }
+  .mediacat-button__mask {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0; }
+  .mediacat-button:hover {
+    opacity: 0.8; }
+  .mediacat-button:focus {
+    outline: none; }
+
+.mediacat-button-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row; }
+  .mediacat-button-group .mediacat-button {
+    border-radius: 0;
+    margin-left: 1px; }
+    .mediacat-button-group .mediacat-button:first-child {
+      border-bottom-left-radius: 2px;
+      border-top-left-radius: 2px;
+      margin-left: 0; }
+    .mediacat-button-group .mediacat-button:last-child {
+      border-bottom-right-radius: 2px;
+      border-top-right-radius: 2px; }
+
+.mediacat-column {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
+  .mediacat-column:first-of-type {
+    border-right: 1px black solid; }
+  .mediacat-column:last-of-type {
+    border-left: 1px black solid; }
+  .mediacat-column--sidebar {
+    background-color: #2b303b;
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+            flex-grow: 0;
+    -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+            flex-shrink: 0;
+    width: 320px;
+    color: #a6aebf; }
+
+.mediacat-input {
+  box-shadow: inset 0 1px 0 0 #d9d9d9;
+  display: block;
+  font-weight: 300;
+  height: 30px;
+  margin: 0;
+  width: 100%; }
+  .mediacat-input--search, .mediacat-input [type=search] {
+    border: 0;
+    border-radius: 2px;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    font-family: Nunito, sans-serif;
+    font-size: 14px;
+    height: 38px;
+    line-height: 28px;
+    padding: 5px 10px 5px 5px; }
+  .mediacat-input--hidden-file {
+    height: 0;
+    position: absolute;
+    visibility: hidden;
+    width: 0; }
+
+.mediacat-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .mediacat-list--horizontal {
+    white-space: nowrap; }
+  .mediacat-list--is-dragging {
+    pointer-events: none;
+    position: absolute;
+    z-index: 999; }
+  .mediacat-list__item {
+    margin: 0;
+    padding: 0; }
+    .mediacat-list__item--grid, .mediacat-list__item--horizontal {
+      display: inline-block; }
+
 @-webkit-keyframes mediacat-radialbouncedelay {
   0%, 80%, 100% {
     -webkit-transform: scale(0);
@@ -142,154 +290,6 @@
       left: 37.5%; }
     .mediacat-linearloader__circle--c {
       left: 75%; }
-
-.mediacat-button {
-  border: 0;
-  border-radius: 2px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  height: 38px;
-  line-height: 38px;
-  margin: 0;
-  overflow: hidden;
-  padding: 0 10px;
-  position: relative;
-  text-align: center;
-  -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-          flex-shrink: 0;
-  -webkit-box-flex: 0;
-  -webkit-flex-grow: 0;
-      -ms-flex-positive: 0;
-          flex-grow: 0; }
-  .mediacat-button--is-disabled {
-    opacity: 0.5; }
-  .mediacat-button--theme-white-on-teal {
-    background-color: #fff;
-    color: #3ea2c1; }
-    .mediacat-button--theme-white-on-teal--is-active {
-      background-color: #2b7287;
-      box-shadow: inset 0 1px 0 0 #1f5161, 0 1px 0 0 #78bed4;
-      color: #65b5cd; }
-  .mediacat-button--theme-dark-grey {
-    background-color: #2b303b;
-    border: 1px solid #1b1e25;
-    box-shadow: 0 1px 0 0 #292e38;
-    color: #a6aebf;
-    height: 30px;
-    line-height: 28px; }
-    .mediacat-button--theme-dark-grey--is-active {
-      background-color: #2b7287;
-      box-shadow: 0 1px 0 0 #1f5161, inset 0 -1px 0 0 #78bed4;
-      color: #65b5cd; }
-  .mediacat-button__caption {
-    display: inline-block;
-    font-weight: 100px;
-    line-height: 38px;
-    margin-left: 5px; }
-  .mediacat-button__mask {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0; }
-  .mediacat-button:hover {
-    opacity: 0.8; }
-  .mediacat-button:focus {
-    outline: none; }
-
-.mediacat-button-group {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row; }
-  .mediacat-button-group .mediacat-button {
-    border-radius: 0;
-    margin-left: 1px; }
-    .mediacat-button-group .mediacat-button:first-child {
-      border-bottom-left-radius: 2px;
-      border-top-left-radius: 2px;
-      margin-left: 0; }
-    .mediacat-button-group .mediacat-button:last-child {
-      border-bottom-right-radius: 2px;
-      border-top-right-radius: 2px; }
-
-.mediacat-column {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1; }
-  .mediacat-column:first-of-type {
-    border-right: 1px black solid; }
-  .mediacat-column:last-of-type {
-    border-left: 1px black solid; }
-  .mediacat-column--sidebar {
-    background-color: #2b303b;
-    -webkit-box-flex: 0;
-    -webkit-flex-grow: 0;
-        -ms-flex-positive: 0;
-            flex-grow: 0;
-    -webkit-flex-shrink: 0;
-        -ms-flex-negative: 0;
-            flex-shrink: 0;
-    width: 320px;
-    color: #a6aebf; }
-
-.mediacat-input {
-  box-shadow: inset 0 1px 0 0 #d9d9d9;
-  display: block;
-  font-weight: 300;
-  height: 30px;
-  margin: 0;
-  width: 100%; }
-  .mediacat-input--search {
-    border: 0;
-    border-radius: 2px;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    font-family: Nunito, sans-serif;
-    font-size: 14px;
-    height: 38px;
-    line-height: 28px;
-    padding: 5px 10px 5px 5px; }
-  .mediacat-input--hidden-file {
-    height: 0;
-    position: absolute;
-    visibility: hidden;
-    width: 0; }
-
-.mediacat-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-  .mediacat-list--horizontal {
-    white-space: nowrap; }
-  .mediacat-list--is-dragging {
-    pointer-events: none;
-    position: absolute;
-    z-index: 999; }
-  .mediacat-list__item {
-    margin: 0;
-    padding: 0; }
-    .mediacat-list__item--grid, .mediacat-list__item--horizontal {
-      display: inline-block; }
 
 .mediacat-panel {
   -webkit-box-align: stretch;

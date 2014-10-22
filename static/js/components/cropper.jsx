@@ -1,9 +1,6 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var FluxMixin = require('./flux-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
 
 var CropSelection = require('./crop-selection');
 

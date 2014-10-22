@@ -1,13 +1,10 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var FluxMixin = require('./flux-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
 var ProxyImg = require('./proxy-img');
 var Rating = require('./rating');
 

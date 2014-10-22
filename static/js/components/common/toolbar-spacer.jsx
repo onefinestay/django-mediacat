@@ -1,11 +1,8 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('./bem-cx');
+var cx = require('../bem-cx');
 
-var ThemeMixin = require('./theme-mixin');
+var ThemeMixin = require('../mixins/theme-mixin');
 
 
 var ToolbarSpacer = React.createClass({

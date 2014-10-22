@@ -1,9 +1,6 @@
-/** @jsx React.DOM */
-"use strict";
-
 var React = require('react/addons');
-var cx = require('./bem-cx');
-var KeyboardMixin = require('./keyboard-mixin');
+var cx = require('../bem-cx');
+var KeyboardMixin = require('../mixins/keyboard-mixin');
 var Icon = require('./icon');
 
 

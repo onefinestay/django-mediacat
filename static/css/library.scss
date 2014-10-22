@@ -3,13 +3,12 @@ $ns: mediacat;
 @import './variables/colors';
 @import './variables/dimensions';
 @import './variables/fonts';
-@import './variables/loaders';
 
 @import './components/common/button';
 @import './components/common/column';
-
 @import './components/common/input';
 @import './components/common/list';
+@import './components/common/loaders';
 @import './components/common/panel';
 @import './components/common/scrollpane';
 @import './components/common/select';

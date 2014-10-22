@@ -1,10 +1,9 @@
-/** @jsx React.DOM */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('./flux-mixin');
-var Button = require('./button');
+var FluxMixin = require('./mixins/flux-mixin');
+var Button = require('./common/button');
 
 var PickButton = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Crops", "Media")],

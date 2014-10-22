@@ -1,12 +1,9 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('./bem-cx');
+var cx = require('../bem-cx');
 
-var elementMetrics = require('../utils/element-metrics');
+var elementMetrics = require('../../utils/element-metrics');
 
 
 var ScrollPaneHandle = React.createClass({

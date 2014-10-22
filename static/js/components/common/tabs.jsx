@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 var React = require('react/addons');
 var cx = require('../bem-cx');
 var Tab = require('./tab');

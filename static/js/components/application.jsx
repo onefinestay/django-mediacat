@@ -1,6 +1,3 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
@@ -9,8 +6,8 @@ var Main = require('./main');
 var Information = require('./information');
 var DragLayer = require('./drag_layer');
 
-var FluxMixin = require('./flux-mixin');
-var KeyboardMixin = require('./keyboard-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
+var KeyboardMixin = require('./mixins/keyboard-mixin');
 
 
 var Application = React.createClass({

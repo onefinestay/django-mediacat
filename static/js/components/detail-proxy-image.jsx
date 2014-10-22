@@ -1,11 +1,8 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = require('./bem-cx');
 
-var RadialLoader = require('./loaders/radial');
+var RadialLoader = require('./common/radial');
 
 var DetailProxyImage = React.createClass({
   mixins: [PureRenderMixin],

@@ -1,12 +1,9 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var cx = require('./bem-cx');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
-var FluxMixin = require('./flux-mixin');
-var KeyboardMixin = require('./keyboard-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
+var KeyboardMixin = require('./mixins/keyboard-mixin');
 
 var ThumbnailList = require('./thumbnail-list');
 var Detail = require('./detail');

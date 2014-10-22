@@ -1,10 +1,8 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('./bem-cx');
-var ThemeMixin = require('./theme-mixin');
+
+var cx = require('../bem-cx');
+var ThemeMixin = require('../mixins/theme-mixin');
 
 
 var ButtonGroup = React.createClass({

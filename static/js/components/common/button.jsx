@@ -1,10 +1,10 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('./bem-cx');
+var cx = require('../bem-cx');
 
 var Icon = require('./icon');
 
-var ThemeMixin = require('./theme-mixin');
+var ThemeMixin = require('../mixins/theme-mixin');
 
 
 var Button = React.createClass({

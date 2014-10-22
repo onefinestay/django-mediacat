@@ -1,6 +1,3 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var cx = require('../bem-cx');
 var PureRenderMixin = require('react').addons.PureRenderMixin;

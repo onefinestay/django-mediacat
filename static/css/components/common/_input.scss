@@ -6,7 +6,7 @@
   margin: 0;
   width: 100%;
 
-  &--search {
+  &--search, [type=search] {
     border: 0;      
     border-radius: 2px;
     flex-grow: 1;

@@ -1,20 +1,19 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('./flux-mixin');
-var ThemeMixin = require('./theme-mixin');
+
+var Button = require('./common/button');
+var ButtonGroup = require('./common/button-group');
+var Toolbar = require('./common/toolbar');
+var ToolbarSpacer = require('./common/toolbar-spacer');
+
+var FluxMixin = require('./mixins/flux-mixin');
+var ThemeMixin = require('./mixins/theme-mixin');
 
 var Document = require('./document');
-var Button = require('./button');
-var ButtonGroup = require('./button-group');
 
-var Toolbar = require('./toolbar');
-var ToolbarSpacer = require('./toolbar-spacer');
 
 
 var MainToolbar = React.createClass({

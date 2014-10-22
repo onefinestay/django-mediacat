@@ -1,21 +1,17 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var FluxMixin = require('./flux-mixin');
-var ThemeMixin = require('./theme-mixin');
+var Toolbar = require('./common/toolbar');
+var ToolbarSeparator = require('./common/toolbar-separator');
+var FluxMixin = require('./mixins/flux-mixin');
+var ThemeMixin = require('./mixins/theme-mixin');
 
 var Search = require('./search');
 var UploadButton = require('./upload-button');
 var CategoryTree = require('./category-tree');
 var Uploads = require('./uploads');
-
-var Toolbar = require('./toolbar');
-var ToolbarSeparator = require('./toolbar-separator');
 
 
 var NavigationToolbar = React.createClass({

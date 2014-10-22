@@ -1,13 +1,10 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
-var FluxMixin = require('./flux-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
 var moment = require('moment');
 var Immutable = require('immutable');
-var Icon = require('./icon');
+var Icon = require('./common/icon');
 
 var Rating = React.createClass({
   mixins: [PureRenderMixin, FluxMixin],

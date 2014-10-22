@@ -1,24 +1,22 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var cx = React.addons.classSet;
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var Panel = require('./panel');
-var Toolbar = require('./toolbar');
-var FluxMixin = require('./flux-mixin');
-var KeyboardMixin = require('./keyboard-mixin');
-var List = require('./list');
+var List = require('./common/list');
+var Panel = require('./common/panel');
+var Select = require('./common/select');
+var Toolbar = require('./common/toolbar');
+
+var FluxMixin = require('./mixins/flux-mixin');
+var KeyboardMixin = require('./mixins/keyboard-mixin');
 
 var Thumbnail = require('./thumbnail');
-var Select = require('./select');
-
 var elMetrics = require('../utils/element-metrics');
 
 var minSize = 145;
+
 
 var ThumbnailList = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media"), KeyboardMixin],

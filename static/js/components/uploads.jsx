@@ -1,18 +1,17 @@
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
+
+var Button = require('./common/button');
+var Icon = require('./common/icon');
+var Panel = require('./common/panel');
+var Toolbar = require('./common/toolbar');
+var ToolbarSeparator = require('./common/toolbar-separator');
+var ToolbarSpacer = require('./common/toolbar-spacer');
+var ToolbarTitle = require('./common/toolbar-title');
+
+var ThemeMixin = require('./mixins/theme-mixin');
+
 var UploadList = require('./upload-list');
-
-var Panel = require('./panel');
-
-var Toolbar = require('./toolbar');
-var ToolbarSeparator = require('./toolbar-separator');
-var ToolbarSpacer = require('./toolbar-spacer');
-var ToolbarTitle = require('./toolbar-title');
-
-var Button = require('./button');
-var Icon = require('./icon');
-
-var ThemeMixin = require('./theme-mixin');
 
 
 var UploadsToolbar = React.createClass({

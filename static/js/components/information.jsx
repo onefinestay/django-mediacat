@@ -1,20 +1,14 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
-var tabs = require('./tabs/tabs');
-var Tab = tabs.Tab;
-var Tabs = tabs.Tabs;
+var tabs = require('./common/tabs');
+var ToolbarSpacer = require('./common/toolbar-spacer');
+var Toolbar = require('./common/toolbar');
+var ThemeMixin = require('./mixins/theme-mixin');
 
-var ImageDataPanel = require('./panels/image-data');
-var CropsPanel = require('./panels/crops');
-var Toolbar = require('./toolbar');
+var ImageDataPanel = require('./image-data');
+var CropsPanel = require('./crops');
 var PickButton = require('./pick-button');
-var ToolbarSpacer = require('./toolbar-spacer');
-
-var ThemeMixin = require('./theme-mixin');
 
 
 var InformationToolbar = React.createClass({
@@ -38,14 +32,14 @@ var Information = React.createClass({
     return (
       <div className="mediacat-information mediacat-column mediacat-column--sidebar">
         <InformationToolbar theme="white-on-teal" />
-        <Tabs>
-          <Tab name="Crops">
+        <tabs.Tabs>
+          <tabs.Tab name="Crops">
             <CropsPanel />
-          </Tab>        
-          <Tab name="Image">
+          </tabs.Tab>
+          <tabs.Tab name="Image">
             <ImageDataPanel />
-          </Tab>
-        </Tabs>
+          </tabs.Tab>
+        </tabs.Tabs>
       </div>
     );
   }

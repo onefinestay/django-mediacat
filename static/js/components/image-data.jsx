@@ -1,15 +1,12 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('../flux-mixin');
 var moment = require('moment');
 
-var Rating = require('../rating');
-var Panel = require('../panel');
+var Rating = require('./rating');
+var FluxMixin = require('./mixins/flux-mixin');
+var Panel = require('./common/panel');
 
 
 var ImageDataPanel = React.createClass({

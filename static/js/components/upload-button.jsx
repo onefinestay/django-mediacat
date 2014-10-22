@@ -1,13 +1,13 @@
-/** @jsx React.DOM */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('./flux-mixin');
-var Icon = require('./icon');
 
-var ThemeMixin = require('./theme-mixin');
+var Icon = require('./common/icon');
+
+var FluxMixin = require('./mixins/flux-mixin');
+var ThemeMixin = require('./mixins/theme-mixin');
 
 
 var UploadButton = React.createClass({
