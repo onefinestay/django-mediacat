@@ -22,8 +22,7 @@ var NavigationToolbar = React.createClass({
     return (
       <Toolbar.Toolbar>
         <UploadButton />
-        <Toolbar.Separator />
-        <Search />
+        <Toolbar.Spacer />
       </Toolbar.Toolbar>
     );
   }
