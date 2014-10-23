@@ -14,7 +14,7 @@
 .#{$ns}-icon {
   display: inline-block;
   font-size: 24px;
-  vertical-align: bottom;
+  vertical-align: middle;
 
   &:before {
     display: block;
@@ -95,27 +95,45 @@
     }
   }
 
-  &--reject {
+  &--left-arrow {
     &:before {
       content: "\E00B";
     }
   }
 
-  &--star {
+  &--reject {
     &:before {
       content: "\E00C";
     }
   }
 
-  &--tick {
+  &--right-arrow {
     &:before {
       content: "\E00D";
     }
   }
 
-  &--upload {
+  &--star {
     &:before {
       content: "\E00E";
+    }
+  }
+
+  &--tick {
+    &:before {
+      content: "\E00F";
+    }
+  }
+
+  &--up-arrow {
+    &:before {
+      content: "\E010";
+    }
+  }
+
+  &--upload {
+    &:before {
+      content: "\E011";
     }
   }
 }

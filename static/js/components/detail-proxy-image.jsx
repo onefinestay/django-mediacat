@@ -4,6 +4,7 @@ var cx = require('./bem-cx');
 
 var RadialLoader = require('./common/radial');
 
+
 var DetailProxyImage = React.createClass({
   mixins: [PureRenderMixin],
 

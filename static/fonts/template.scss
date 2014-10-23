@@ -14,7 +14,7 @@
 .#{$ns}-<%= className %> {
   display: inline-block;
   font-size: 24px;
-  vertical-align: bottom;
+  vertical-align: middle;
 
   &:before {
     display: block;

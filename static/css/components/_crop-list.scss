@@ -22,7 +22,8 @@
 }
 
 .#{$ns}-crop {
-  border-bottom: 2px solid darken(#2b303b, 7.5);
+  border-bottom: 1px solid darken(#2b303b, 7.5);
+  box-shadow: 0 1px 2px 0 darken(#232830, 1);
   cursor: pointer;
   text-align: center;
 
@@ -32,7 +33,6 @@
 
   &--is-selected {
     background-color: darken(#414858, 5);
-    border-color: #414858;      
   }
 
   &__content {
@@ -40,7 +40,23 @@
   }
 
   &__footer {
-    border-top: 1px solid darken(#2b303b, 7.5);
+    background-color: rgba(0, 0, 0, 0.125);
+    border-top: 1px solid darken(#2b303b, 10);
+  }
+
+  &__applications-handle {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__applications-heading {
+    flex-grow: 1;
+    border-right: 1px solid darken(#2b303b, 10);
+    padding: 5px;
+  }
+
+  &__applications-button {
+    flex-grow: 0;
     padding: 5px 10px;
   }
 

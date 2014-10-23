@@ -7,13 +7,40 @@ from . import models
 
 
 class ImageCropApplicationSerializer(serializers.ModelSerializer):
+    field_label = serializers.SerializerMethodField('get_field_label')
+    object_label = serializers.SerializerMethodField('get_object_label')
+    content_type_label = serializers.SerializerMethodField('get_content_type_label')
+
+    def get_field_label(self, obj):
+        if obj.object:
+            return obj.object._meta.get_field_by_name(obj.field_name)[0].verbose_name
+        return None
+
+    def get_object_label(self, obj):
+        if obj.object:
+            if hasattr(obj.object, 'get_mediacat_label'):
+                return obj.object.get_mediacat_label()
+            if isinstance(obj.object, ContentType):
+                return obj.object.model_class()._meta.verbose_name_plural.title()
+
+            return unicode(obj.object)
+        return None
+
+    def get_content_type_label(self, obj):
+        if obj.object:
+            return obj.object._meta.verbose_name.title()
+        return None
 
     class Meta:
         model = models.ImageCropApplication
         fields = (
+            'id',
             'field_name',
             'content_type',
             'object_id',
+            'field_label',
+            'object_label',
+            'content_type_label',
         )
 
 
