@@ -4,9 +4,29 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var moment = require('moment');
 
-var Rating = require('./rating');
-var FluxMixin = require('./mixins/flux-mixin');
 var Panel = require('./common/panel');
+var Toolbar = require('./common/toolbar');
+
+var ThemeMixin = require('./mixins/theme-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
+
+var Rating = require('./rating');
+var InformationSection = require('./information-section');
+
+var AssociationList = require('./association-list');
+
+
+var ImageDataToolbar = React.createClass({
+  mixins: [ThemeMixin, PureRenderMixin],
+
+  render: function() {
+    return (
+      <Toolbar.Toolbar>
+      	<Toolbar.Title>Image Information</Toolbar.Title>
+      </Toolbar.Toolbar>
+    );
+  }
+});
 
 
 var ImageDataPanel = React.createClass({
@@ -23,27 +43,34 @@ var ImageDataPanel = React.createClass({
 
   render: function() {
     var media = this.state.media;
+    var size;
+
+    if (media && media.get('width') && media.get('height')) {
+      size = media.get('width') + ' × ' + media.get('height');
+    }
+
 
     return (
       <Panel fill={true} className="mediacat-information-panel">
-        <table>
-          <tr>
-            <th scope="row">Width</th>
-            <td>{media && media.get('width')}</td>
-          </tr>
-          <tr>
-            <th scope="row">Height</th>
-            <td>{media && media.get('height')}</td>
-          </tr>
-          <tr>
-            <th scope="row">Date Uploaded</th>
-            <td>{media && moment(media.get('date_created')).format('LLL')}</td>
-          </tr>
-          <tr>
-            <th scope="row">Rating</th>
-            <td>{media ? <Rating size="large" media={media} /> : null}</td>
-          </tr>
-        </table>
+        <InformationSection heading="Image Information">
+          <table className="mediacat-table mediacat-table--simple">
+            <tr>
+              <th scope="row">Size</th>
+              <td>{size}</td>
+            </tr>
+            <tr>
+              <th scope="row">Created</th>
+              <td>{media && moment(media.get('date_created')).format('LLL')}</td>
+            </tr>
+            <tr>
+              <th scope="row">Rating</th>
+              <td>{media ? <Rating size="large" media={media} /> : null}</td>
+            </tr>
+          </table>
+        </InformationSection>
+        <InformationSection heading="Associations">
+          <AssociationList />
+        </InformationSection>
       </Panel>
     );
   }

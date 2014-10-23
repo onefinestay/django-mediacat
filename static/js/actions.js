@@ -42,11 +42,17 @@ var Actions = {
         image: mediaId
       };
 
-      var request = cropService.get(query).then(function(response) {
+      var cropRequest = cropService.get(query).then(function(response) {
         var data = response.body;     
-        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request, mediaId});
+        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request: cropRequest, mediaId});
       }.bind(this));
-      this.dispatch(Constants.CROP_GET_START, {media, request});
+      this.dispatch(Constants.CROP_GET_START, {media, request: cropRequest});
+
+      var associationRequest = associationService.get(query).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.ASSOCIATION_GET_SUCCESS, {data, request: associationRequest, mediaId});
+      }.bind(this));
+      this.dispatch(Constants.ASSOCIATION_GET_START, {media, request: associationRequest});
     },
 
     setRating: function(media, rating) {

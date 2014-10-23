@@ -1,0 +1,37 @@
+.#{$ns}-table {
+  width: 100%;
+
+  tr {
+    td,
+    th {
+      font-weight: 100;
+      border-bottom: 1px #3D4859 solid;
+      margin: 0;
+      border-collapse: collapse;
+      line-height: 24px;
+      padding: 5px 0;
+    }
+
+    &:last-child {
+      td,
+      th {
+        border-bottom-width: 0;
+      }
+    }
+  }
+
+
+
+
+  th {
+    color: #8693A6;
+    padding-right: 10px;
+  }
+
+  td {
+    color: #A9B8CE;
+    text-align: right;
+  }
+
+
+}

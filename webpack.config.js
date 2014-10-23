@@ -2,6 +2,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 
 module.exports = {
+  cache: true,
   entry: {
     library: './static/js/library'
   },
@@ -13,11 +14,15 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/, 
-        loaders: ['jsx?harmony&sourceMap=true']
+        loaders: [
+          'jsx?harmony&sourceMap=true'
+        ]
       },    
       {
         test: /\.jsx$/, 
-        loaders: ['jsx?harmony&sourceMap=true']
+        loaders: [
+          'jsx?harmony&sourceMap=true'
+        ]
       },
       { 
         test: /\.woff$/,   

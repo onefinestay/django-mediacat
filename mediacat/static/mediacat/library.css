@@ -444,6 +444,24 @@
     .mediacat-select__option--is-selected {
       background: #414858; }
 
+.mediacat-table {
+  width: 100%; }
+  .mediacat-table tr td, .mediacat-table tr th {
+    font-weight: 100;
+    border-bottom: 1px #3D4859 solid;
+    margin: 0;
+    border-collapse: collapse;
+    line-height: 24px;
+    padding: 5px 0; }
+  .mediacat-table tr:last-child td, .mediacat-table tr:last-child th {
+    border-bottom-width: 0; }
+  .mediacat-table th {
+    color: #8693A6;
+    padding-right: 10px; }
+  .mediacat-table td {
+    color: #A9B8CE;
+    text-align: right; }
+
 .mediacat-tabs {
   display: -webkit-box;
   display: -webkit-flex;
@@ -629,6 +647,41 @@
           user-select: none; }
   .mediacat-application *, .mediacat-application *:before, .mediacat-application *:after {
     box-sizing: border-box; }
+
+.mediacat-association {
+  border-bottom: 1px #3D4859 solid;
+  padding: 10px 0;
+  color: #8693A6;
+  font-size: 14px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row; }
+  .mediacat-association__info {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    padding-right: 10px; }
+  .mediacat-association__actions {
+    -webkit-box-flex: 0;
+    -webkit-flex-grow: 0;
+        -ms-flex-positive: 0;
+            flex-grow: 0;
+    -webkit-align-self: center;
+        -ms-flex-item-align: center;
+            align-self: center; }
+  .mediacat-association__type {
+    font-size: 12px;
+    color: #66748A; }
+
+.mediacat-list__item:last-child .mediacat-association {
+  border-bottom-width: 0; }
 
 .mediacat-category__info {
   cursor: pointer;
@@ -895,6 +948,16 @@
     padding: 5px; }
   .mediacat-information-panel td {
     width: 100%; }
+
+.mediacat-information-section {
+  padding: 10px; }
+  .mediacat-information-section__heading {
+    background-color: #3d4859;
+    padding: 7px;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 2px; }
+  .mediacat-information-section__content {
+    padding: 7px; }
 
 .mediacat-proxy-image {
   height: 100%;

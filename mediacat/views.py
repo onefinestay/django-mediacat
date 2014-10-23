@@ -172,8 +172,8 @@ class AssociationList(generics.ListCreateAPIView):
             queryset = queryset.filter(
                 content_type_id=params['content_type_id'],
                 object_id=params['object_id'])
-        elif 'image_id' in params:
-            queryset = queryset.filter(image_id=params['image_id'])
+        elif 'image' in params:
+            queryset = queryset.filter(image_id=params['image'])
         else:
             queryset = queryset.none()
 

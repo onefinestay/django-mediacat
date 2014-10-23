@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+
 from rest_framework import serializers
 
 from . import models
@@ -45,17 +47,36 @@ class ImageCropSerializer(serializers.ModelSerializer):
 
 
 class ImageAssociationSerializer(serializers.ModelSerializer):
-
     image = serializers.PrimaryKeyRelatedField()
     content_type = serializers.PrimaryKeyRelatedField()
+    object_label = serializers.SerializerMethodField('get_object_label')
+    content_type_label = serializers.SerializerMethodField('get_content_type_label')
+
+    def get_object_label(self, obj):
+        if obj.object:
+            if hasattr(obj.object, 'get_mediacat_label'):
+                return obj.object.get_mediacat_label()
+            if isinstance(obj.object, ContentType):
+                return obj.object.model_class()._meta.verbose_name_plural.title()
+
+            return unicode(obj.object)
+        return None
+
+    def get_content_type_label(self, obj):
+        if obj.object:
+            return obj.object._meta.verbose_name.title()
+        return None
 
     class Meta:
         model = models.ImageAssociation
         fields = (
+            'id',
             'content_type',
             'object_id',
             'canonical',
             'image',
+            'object_label',
+            'content_type_label',
         )
 
 

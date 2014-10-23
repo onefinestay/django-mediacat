@@ -1,0 +1,14 @@
+.#{$ns}-information-section {
+  padding: 10px;
+
+  &__heading {
+    background-color: #3d4859;
+    padding: 7px;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+  }
+
+  &__content {
+    padding: 7px;
+  }
+}

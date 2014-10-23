@@ -12,6 +12,10 @@
 
 <script>
  	var MEDIACAT_CONFIG = {
+		associations: {
+			associations: [],
+			selectedAssociations: null
+		},
  		media: {
  			media: {% if media %}{{ media|jsonify }}{% else %}[]{% endif %},
  			selectedMedia: {% if selectedMedia %}{{ selectedMedia.pk }}{% else %}null{% endif %},
