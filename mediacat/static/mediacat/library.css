@@ -343,6 +343,7 @@
 
 .mediacat-scrollbar {
   background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: inset 1px 1px 0 0 rgba(0, 0, 0, 0.125);
   position: absolute; }
   .mediacat-scrollbar--horizontal {
     border-top: 1px solid black;
@@ -359,7 +360,8 @@
   .mediacat-scrollbar__handle {
     background-color: #414858;
     bottom: 0;
-    box-shadow: inset 1px 1px 0 0 #4f576a, inset -1px -1px 0 0 #232730;
+    border-radius: 2px;
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.125);
     cursor: pointer;
     left: 0;
     position: absolute;
