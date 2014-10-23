@@ -15,7 +15,7 @@
   "dependencies": {
     "bluebird": "^2.3.6",
     "fluxxor": "1.5.0",
-    "immutable": "^2.5.0",
+    "immutable": "^2.5.1",
     "matrix-utilities": "1.2.4",
     "moment": "^2.8.3",
     "mousetrap": "0.0.1",
@@ -28,7 +28,7 @@
     "css-loader": "0.9.0",
     "extract-text-webpack-plugin": "0.3.1",
     "file-loader": "^0.8.1",
-    "gulp": "3.8.8",
+    "gulp": "3.8.9",
     "gulp-consolidate": "^0.1.2",
     "gulp-debug": "^1.0.1",
     "gulp-iconfont": "0.2.1",
