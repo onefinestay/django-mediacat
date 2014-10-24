@@ -7,4 +7,20 @@
 
 .#{$ns}-upload {
   padding: 10px;
+  border-bottom: 1px #1b2129 solid;
+
+  &__name {
+    color: #8693A6;
+    font-size: 14px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__status {
+    color: #4E5B6D;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
 }

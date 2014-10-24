@@ -21,6 +21,7 @@
     "mousetrap": "0.0.1",
     "react": "^0.12.0-rc1",
     "superagent": "0.20.0",
+    "truncate": "^1.0.4",
     "uuid-v4": "0.1.0"
   },
   "devDependencies": {

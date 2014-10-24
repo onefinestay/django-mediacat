@@ -1,8 +1,13 @@
+var truncate = require('truncate');
+
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
+
+var List = require('./common/list');
+var ProgressBar = require('./common/progress-bar');
 var FluxMixin = require('./mixins/flux-mixin');
 
 
@@ -30,24 +35,24 @@ var Upload = React.createClass({
       'selected': this.state.selected
     };
 
-    var caption;
+    var status;
 
     if (!upload.get('complete')) {
       if (upload.get('progress') === 100) {
-        caption = 'Processing';
+        status = 'Processing';
       } else {
-        caption = 'Uploading';
+        status = 'Uploading';
       }
     } else {
-      caption = 'Complete';
+      status = 'Complete';
     }
 
     return (
-      <li className="mediacat-list__item mediacat-list__item--upload">
-        <div className={cx(classes, {states})}>
-          {upload.get('file').name} - {upload.get('progress')}% - {caption}
-        </div>
-      </li>
+      <div className={cx(classes, {states})}>
+        <div className="mediacat-upload__name">{truncate(upload.get('file').name, 20)}</div>
+        <div className="mediacat-upload__status">{status}</div>
+        <ProgressBar progress={upload.get('progress')} />
+      </div>
     );
   }
 });
@@ -66,9 +71,7 @@ var UploadList = React.createClass({
     var uploads = this.state.uploads.map(upload => <Upload key={upload.get('id')} upload={upload} />);
 
     return (
-      <ul className="mediacat-list mediacat-list--uploads">
-        {uploads.toJS()}
-      </ul>
+      <List>{uploads.toJS()}</List>
     );
   }
 });
