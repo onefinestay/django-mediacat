@@ -317,7 +317,7 @@
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0; }
-  + .mediacat-panel {
+  .mediacat-panel + .mediacat-panel {
     border-top: 1px black solid; }
 
 .mediacat-progress-bar {
