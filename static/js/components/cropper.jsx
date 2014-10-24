@@ -20,10 +20,10 @@ var Cropper = React.createClass({
     var scale = this.props.scale;
 
     var style = {
-      width: this.props.width + 'px',
-      height: this.props.height + 'px',
-      left: this.props.left + 'px',
-      top: this.props.top + 'px'
+      width: this.props.width,
+      height: this.props.height,
+      left: this.props.left,
+      top: this.props.top,
     };      
 
     var cropLeft = Math.round(scale * crop.get('x1'));
@@ -37,25 +37,25 @@ var Cropper = React.createClass({
       top: 0,
       left: 0,
       bottom: 0,
-      width: cropLeft + 'px'
+      width: cropLeft
     };
     var topMaskStyle = {
       top: 0,
-      left: cropLeft + 'px',
-      height: cropTop + 'px',
-      width: cropWidth + 'px'
+      left: cropLeft,
+      height: cropTop,
+      width: cropWidth
     };
     var rightMaskStyle = {
       top: 0,
-      left: cropRight + 'px',
+      left: cropRight,
       bottom: 0,
       right: 0
     };
     var bottomMaskStyle = {
-      top: cropBottom + 'px',
-      left: cropLeft + 'px',
+      top: cropBottom,
+      left: cropLeft,
       bottom: 0,
-      width: cropWidth + 'px'
+      width: cropWidth
     };
 
     return (

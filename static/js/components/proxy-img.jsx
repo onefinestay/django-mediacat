@@ -116,10 +116,10 @@ var ProxyImg = React.createClass({
     };
 
     var imgStyle = {
-        width: displayWidth + 'px',
-        height: displayHeight + 'px',
-        top: displayTop + 'px',
-        left: displayLeft + 'px'
+        width: displayWidth,
+        height: displayHeight,
+        top: displayTop,
+        left: displayLeft
     };
 
     return (

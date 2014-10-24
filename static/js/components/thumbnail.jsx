@@ -135,8 +135,8 @@ var Thumbnail = React.createClass({
 
     if (this.props.size) {
       contentStyle = {
-        width: this.props.size + 'px',
-        height: this.props.size + 'px'
+        width: this.props.size,
+        height: this.props.size
       };
       thumbnailSize = this.props.size - 22;
     }

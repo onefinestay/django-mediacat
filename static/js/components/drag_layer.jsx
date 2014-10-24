@@ -15,7 +15,7 @@ var DragLayer = React.createClass({
     return {
       draggingMedia: store.state.get('draggingMedia'),
       top: store.state.get('top') - 100,
-      left: store.state.get('left') - 100,
+      left: store.state.get('left') - 100
     };
   },
 
@@ -26,7 +26,7 @@ var DragLayer = React.createClass({
 
     var style = {
       top: this.state.top,
-      left: this.state.left,
+      left: this.state.left
     };
 
     return (

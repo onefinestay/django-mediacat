@@ -103,8 +103,8 @@ var Crop = React.createClass({
     var frameHeight = mediaHeight * scale;
 
     var frameStyles = {
-        width: frameWidth + 'px',
-        height: frameHeight + 'px'
+        width: frameWidth,
+        height: frameHeight
     };
 
     var cropLeft = Math.round(scale * this.props.x1);
@@ -113,10 +113,10 @@ var Crop = React.createClass({
     var cropHeight = Math.round(scale * (this.props.y2 - this.props.y1));
 
     var previewStyles = {
-      left: cropLeft + 'px',
-      top: cropTop + 'px',
-      width: cropWidth + 'px',
-      height: cropHeight + 'px'
+      left: cropLeft,
+      top: cropTop,
+      width: cropWidth,
+      height: cropHeight
     };
 
     return (

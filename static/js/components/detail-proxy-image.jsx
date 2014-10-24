@@ -49,10 +49,10 @@ var DetailProxyImage = React.createClass({
     var placeholderSrc = this.props.placeholderSrc;
 
     var containerStyle = {
-      width: this.props.width + 'px',
-      height: this.props.height + 'px',
-      top: this.props.top + 'px',
-      left: this.props.left + 'px'
+      width: this.props.width,
+      height: this.props.height,
+      top: this.props.top,
+      left: this.props.left
     };
 
     var classes = {

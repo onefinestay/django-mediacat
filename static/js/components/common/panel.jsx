@@ -37,7 +37,7 @@ var Panel = React.createClass({
     var style = {};
 
     if (this.props.height) {
-      style['height'] = this.props.height + 'px';
+      style['height'] = this.props.height;
     }
 
     return (
