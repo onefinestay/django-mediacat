@@ -9,23 +9,13 @@ var ProxyImg = require('./proxy-img');
 var Rating = require('./rating');
 
 var Thumbnail = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Dragging")],
+  mixins: [PureRenderMixin, FluxMixin],
 
   getInitialState: function() {
     return {
       dragOverPosition: null
     };
   },
-
-  getStateFromFlux: function() {
-    var store = this.getFlux().store('Media');
-    var selected = store.getSelectedMedia();
-
-    return {
-      draggingMedia: this.getFlux().store('Dragging').state.get('draggingMedia'),
-      selected: selected && this.props.thumbnail.get('id') === selected.get('id')
-    };
-  },  
 
   select: function(event) {
     event.preventDefault();
@@ -39,10 +29,9 @@ var Thumbnail = React.createClass({
   },
 
   handleMouseEnter: function(event) {
-    var draggedMedia = this.state.draggingMedia;
     var sortable = this.getFlux().store('Media').state.get('sortBy') === 'manual_asc';
 
-    if (sortable && draggedMedia && draggedMedia !== this.props.thumbnail) {
+    if (sortable && this.props.userIsDragging && !this.props.dragging) {
       elRect = this.getDOMNode().getBoundingClientRect();
       offsetX = event.clientX - elRect.left;
       offsetY = event.clientY - elRect.top;
@@ -64,10 +53,9 @@ var Thumbnail = React.createClass({
     var offsetX;
     var offsetY;
 
-    var draggedMedia = this.state.draggingMedia;
-    var sortable = this.getFlux().store('Media').state.get('sortBy') === 'manual_asc';    
+    var sortable = this.getFlux().store('Media').state.get('sortBy') === 'manual_asc';
 
-    if (sortable && draggedMedia && draggedMedia !== this.props.thumbnail) {
+    if (sortable && this.props.userIsDragging && !this.props.dragging) {
       elRect = this.getDOMNode().getBoundingClientRect();
       offsetX = event.clientX - elRect.left;
       offsetY = event.clientY - elRect.top;
@@ -87,11 +75,11 @@ var Thumbnail = React.createClass({
   },
 
   handleMouseUp: function() {
-    var draggingMedia = this.state.draggingMedia;
+    var draggingMedia = this.getFlux().store('Dragging').state.get('draggingMedia');
     var sortable = this.getFlux().store('Media').state.get('sortBy') === 'manual_asc';
     var position = this.state.dragOverPosition;
 
-    if (sortable && draggingMedia && position) {
+    if (sortable && this.props.userIsDragging && !this.props.dragging && position) {
       if (position === 'before') {
         this.getFlux().actions.media.moveBefore(draggingMedia, this.props.thumbnail);  
       } else {
@@ -126,8 +114,8 @@ var Thumbnail = React.createClass({
     };
 
     var states = {
-      'dragging': this.props.dragging,
-      'selected': this.state.selected
+      'dragging': this.props.isDragging,
+      'selected': this.props.selected
     };
 
     var contentStyle;

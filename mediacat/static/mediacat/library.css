@@ -1027,6 +1027,10 @@
 .mediacat-thumbnails {
   padding: 5px;
   display: inline-block; }
+  .mediacat-thumbnails--is-dragging {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100; }
 
 .mediacat-thumbnail {
   background-color: #2b303b;

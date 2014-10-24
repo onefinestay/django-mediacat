@@ -1,10 +1,13 @@
 var React = require('react/addons');
+var Immutable = require('immutable');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
+var List = require('./common/list');
 var FluxMixin = require('./mixins/flux-mixin');
 var Thumbnail = require('./thumbnail');
+
 
 var DragLayer = React.createClass({
   mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Dragging")],
@@ -29,12 +32,14 @@ var DragLayer = React.createClass({
       left: this.state.left
     };
 
+    var thumbnails = Immutable.fromJS([<Thumbnail isDragging={true} thumbnail={this.state.draggingMedia} />]);
+
     return (
-      <ul className="mediacat-list mediacat-list--is-dragging mediacat-list--thumbnails" style={style}>
-        <li className="mediacat-list__item mediacat-list__item--thumbnail">
-          <Thumbnail dragging={true} thumbnail={this.state.draggingMedia} />
-        </li>
-      </ul>
+      <div className="mediacat-thumbnails mediacat-thumbnails--is-dragging" style={style}>
+        <List>
+        {thumbnails.toJS()}
+        </List>
+      </div>
     );
   }
 });

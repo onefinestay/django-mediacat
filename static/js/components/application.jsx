@@ -4,7 +4,7 @@ var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Navigation = require('./navigation');
 var Main = require('./main');
 var Information = require('./information');
-var DragLayer = require('./drag_layer');
+var DragLayer = require('./drag-layer');
 
 var FluxMixin = require('./mixins/flux-mixin');
 var KeyboardMixin = require('./mixins/keyboard-mixin');

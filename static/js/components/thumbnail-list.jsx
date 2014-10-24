@@ -19,7 +19,7 @@ var minSize = 145;
 
 
 var ThumbnailList = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media"), KeyboardMixin],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Dragging"), KeyboardMixin],
 
   getInitialState: function() {
     return {
@@ -30,6 +30,8 @@ var ThumbnailList = React.createClass({
 
   getStateFromFlux: function() {
     return {
+      selectedMedia: this.getFlux().store('Media').state.get('selectedMedia'),
+      draggedMedia: this.getFlux().store('Dragging').state.get('draggingMedia'),
       sortOptions: this.getFlux().store('Media').sortOptions,
       sortBy: this.getFlux().store('Media').state.get('sortBy'),
       media: this.getFlux().store('Media').getSortedMedia()
@@ -179,7 +181,13 @@ var ThumbnailList = React.createClass({
       size = (this.state.width - (numPerRow + 1)) / numPerRow;
     }
 
-    var thumbnails = media.map(thumbnail => <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />);
+    var thumbnails = media.map(thumbnail => <Thumbnail
+      userIsDragging={!!this.state.draggedMedia}
+      dragged={thumbnail.get('id') === this.state.draggedMedia}
+      selected={thumbnail.get('id') === this.state.selectedMedia}
+      size={size}
+      key={thumbnail.get('id')}
+      thumbnail={thumbnail} />);
 
     var toolbar = (
       <Toolbar.Toolbar theme="dark-grey">

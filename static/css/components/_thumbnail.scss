@@ -1,6 +1,12 @@
 .#{$ns}-thumbnails {
   padding: 5px;
-  display: inline-block
+  display: inline-block;
+
+  &--is-dragging {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+  }
 }
 
 

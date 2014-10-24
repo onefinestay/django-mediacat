@@ -70,11 +70,8 @@ var Actions = {
         };
       });
       
-      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
-        var data = response.body;
-        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
-      }.bind(this));
-      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
+      // This is fire-and-forget, because the result of the action is already in the stores and UI
+      mediaService.patchMany(patchData.toJS());
     },
 
     moveAfter: function(media, target) {
@@ -87,12 +84,8 @@ var Actions = {
         }; 
       });
 
-      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
-        var data = response.body;
-        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
-      }.bind(this));
-
-      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
+      // This is fire-and-forget, because the result of the action is already in the stores and UI
+      mediaService.patchMany(patchData.toJS());
     },
 
     addAssociation: function(category, media) {
