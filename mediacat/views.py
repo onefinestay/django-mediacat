@@ -6,12 +6,22 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
+from onefinestay.utils.shortcuts import permission_required
 from django.views.generic import TemplateView
 
-from rest_framework import generics
-from rest_framework import parsers
-from rest_framework import status
+from rest_framework import (
+    generics,
+    parsers,
+    status,
+)
+
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.response import Response
+
+from braces.views import (
+    MultiplePermissionsRequiredMixin,
+    PermissionRequiredMixin,
+)
 
 from . import models
 from . import serializers
@@ -68,6 +78,7 @@ class BulkUpdateModelMixin(object):
 
 
 class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
+    permission_classes = (DjangoModelPermissions,)
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
     parser_classes = (
@@ -95,11 +106,13 @@ class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
 
 
 class ImageDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (DjangoModelPermissions,)
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
 
 
 class CropList(generics.ListCreateAPIView):
+    permission_classes = (DjangoModelPermissions,)
     queryset = models.ImageCrop.objects.all()
     serializer_class = serializers.ImageCropSerializer
 
@@ -117,6 +130,7 @@ class CropList(generics.ListCreateAPIView):
 
 
 class CropDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (DjangoModelPermissions,)
     queryset = models.ImageCrop.objects.all()
     serializer_class = serializers.ImageCropSerializer
     lookup_field = 'uuid'
@@ -150,6 +164,8 @@ def crop_pick(request, uuid, width):
 
 
 class CategoryList(generics.ListCreateAPIView):
+    model = models.Image
+    permission_classes = (DjangoModelPermissions,)
     queryset = None
     serializer_class = serializers.CategorySerializer
 
@@ -161,6 +177,7 @@ class CategoryList(generics.ListCreateAPIView):
 
 
 class AssociationList(generics.ListCreateAPIView):
+    permission_classes = (DjangoModelPermissions,)
     queryset = models.ImageAssociation.objects.all()
     serializer_class = serializers.ImageAssociationSerializer
 
@@ -181,7 +198,8 @@ class AssociationList(generics.ListCreateAPIView):
 
 
 
-class Library(TemplateView):
+class Library(PermissionRequiredMixin, TemplateView):
+    permission_required = 'mediacat.view'
     template_name = 'mediacat/library.html'
 
     def get_context_data(self, **kwargs):

@@ -1,0 +1,27 @@
+.#{$ns}-action {
+  text-align: left;
+  padding: 5px;
+  line-height: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  color: #D4D7DE;
+
+  & + & {
+    border-left: 1px solid #191c22;
+  }
+
+  &--is-disabled {
+    color: #676F83;
+  }
+
+  &--fill {
+    flex-grow: 1;
+  }
+
+  &__caption {
+    margin-left: 5px;
+    line-height: 16px;
+    display: block;
+  }
+}

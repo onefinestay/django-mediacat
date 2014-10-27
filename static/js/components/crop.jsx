@@ -5,6 +5,8 @@ var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 var FluxMixin = require('./mixins/flux-mixin');
 
+var Action = require('./common/action');
+var ActionBar = require('./common/action-bar');
 var Icon = require('./common/icon');
 
 var CropApplicationTable = require('./crop-application-table');
@@ -52,6 +54,13 @@ var Crop = React.createClass({
     this.getFlux().actions.crop.save(this.props.crop);
   },
 
+  delete: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.getFlux().actions.crop.delete(this.props.crop);
+  },
+
+
   getStateFromFlux: function() {
     var store = this.getFlux().store('Crops');
     var selected = store.state.get('selectedCrop');
@@ -86,8 +95,7 @@ var Crop = React.createClass({
     var crop = this.props.crop;
 
     var classes = {
-      'crop': true,
-      'list__item': true
+      'crop': true
     };
 
     var states = {
@@ -119,26 +127,28 @@ var Crop = React.createClass({
       height: cropHeight
     };
 
+    var numApplications = crop.get('applications').count();
+    var hasApplications = !!numApplications;
+
     return (
-      <li className={cx(classes,{states})} onClick={this.select}>
+      <div className={cx(classes,{states})} onClick={this.select}>
         <div className="mediacat-crop__content">
           <div className="mediacat-crop__preview-frame" style={frameStyles} >
             <div className="mediacat-crop__preview" style={previewStyles} />
+            {crop.get('changed') ? <div className="mediacat-crop__unsaved-label">Unsaved Changes</div> : null}
           </div>
         </div>
-        <div className="mediacat-crop__footer">
-          <div className="mediacat-crop__applications-handle" onClick={this.toggleExpanded}>
-            <div className="mediacat-crop__applications-heading">
-              Applications ({crop.get('applications').length})
-            </div>
-            <div className="mediacat-crop__applications-button">
-              <Icon glyph={this.state.expanded ? 'up-arrow' : 'down-arrow'} />
-            </div>
-          </div>
-          {crop.get('changed') ? <a href="javascript:;" onClick={this.save}><Icon glyph="tick" /></a> : null}
-        </div>
+        <ActionBar>
+          <Action fill={true} onClick={this.toggleExpanded} glyph={this.state.expanded ? 'up-arrow' : 'down-arrow'} disabled={!hasApplications}>
+            {hasApplications && this.state.expanded && 'Hide applications (' + numApplications + ')'}
+            {hasApplications && !this.state.expanded && 'Show applications (' + numApplications + ')'}
+            {!hasApplications && 'No applications'}
+          </Action>
+          <Action onClick={this.save} glyph="tick" disabled={!crop.get('changed')}>Save</Action>
+          <Action onClick={this.delete} glyph="delete" disabled={hasApplications} />
+        </ActionBar>
         {this.state.expanded ? <CropApplicationTable crop={crop} /> : null}
-      </li>
+      </div>
     );
   }
 });

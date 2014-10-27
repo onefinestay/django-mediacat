@@ -1,12 +1,11 @@
 .#{$ns}-information-section {
-  padding: 10px;
 
   &__heading {
     background-color: #3d4859;
     padding: 7px;
     color: rgba(255, 255, 255, 0.7);
-    border-radius: 2px;
     box-shadow: 0 1px 0 0 darken(#2b303b, 1);
+    border-bottom: 1px rgba(0, 0, 0, 0.3) solid;
   }
 
   &__content {

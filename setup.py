@@ -54,6 +54,7 @@ if sys.argv[-1] == 'publish':
 
 install_requires = [
     "django >= 1.6",
+    'django-braces >= 1.2.2',
     "djangorestframework >= 2.4.0",
     "django-uuidfield >=0.5.0",
 ]

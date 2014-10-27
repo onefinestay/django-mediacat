@@ -4,6 +4,8 @@ $ns: mediacat;
 @import './variables/dimensions';
 @import './variables/fonts';
 
+@import './components/common/action';
+@import './components/common/action-bar';
 @import './components/common/button';
 @import './components/common/column';
 @import './components/common/input';

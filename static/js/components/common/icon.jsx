@@ -9,7 +9,7 @@ var Icon = React.createClass({
 
 	propTypes: {
 		glyph: React.PropTypes.string.isRequired,
-		size: React.PropTypes.oneOf(['large', 'small'])
+		size: React.PropTypes.oneOf(['large', 'medium', 'small'])
 	},
 
 	getDefaultProps: function() {

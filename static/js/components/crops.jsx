@@ -11,10 +11,10 @@ var Panel = require('./common/panel');
 var Select  = require('./common/select');
 var Toolbar = require('./common/toolbar');
 
-
 var FluxMixin = require('./mixins/flux-mixin');
 var ThemeMixin = require('./mixins/theme-mixin');
 
+var InformationSection = require('./information-section');
 var CropList = require('./crop-list');
 
 
@@ -120,12 +120,43 @@ var CropsToolbar = React.createClass({
 
 
 var CropsPanel = React.createClass({
-  mixins: [PureRenderMixin],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
+
+  getStateFromFlux: function() {
+    var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
+    var availableCrops = this.getFlux().store('Crops').state.get('availableCrops');
+    var crops;
+
+    if (selectedMedia) {
+      crops = this.getFlux().store('Crops').state.get('crops');
+    }
+
+    return {
+      media: selectedMedia,
+      crops: crops,
+      availableCrops: availableCrops
+    };
+  },
 
   render: function() {
+    var media = this.state.media;
+    var cropGroups;
+
+    if (!media || !this.state.crops) {
+      return null;
+    }
+
+    cropGroups = this.state.crops
+      .groupBy(crop => crop.get('key'))
+      .map((crops, key) => <InformationSection
+        key={key}
+        heading={this.state.availableCrops.get(key).get(0)}>
+          <CropList crops={crops} />
+        </InformationSection>)
+
     return (
       <Panel fill={true} className="mediacat-crops-panel" toolbar={<CropsToolbar theme="dark-grey" />}>
-        <CropList />
+        {cropGroups.toJS()}
       </Panel>
     );
   }

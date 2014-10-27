@@ -31,8 +31,9 @@ var DragLayer = React.createClass({
       top: this.state.top,
       left: this.state.left
     };
+    var thumbnail = this.state.draggingMedia;
 
-    var thumbnails = Immutable.fromJS([<Thumbnail isDragging={true} thumbnail={this.state.draggingMedia} />]);
+    var thumbnails = Immutable.fromJS([<Thumbnail key={thumbnail.get('id')} isDragging={true} thumbnail={thumbnail} />]);
 
     return (
       <div className="mediacat-thumbnails mediacat-thumbnails--is-dragging" style={style}>
