@@ -838,7 +838,8 @@
     overflow: hidden; }
   .mediacat-crop__preview {
     background-color: #414858;
-    position: absolute; }
+    position: absolute;
+    border: 1px solid #1a0000; }
   .mediacat-crop__unsaved-label {
     position: absolute;
     z-index: 1;
@@ -1035,8 +1036,7 @@
   background-color: #3d4859;
   padding: 7px;
   color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 0 0 #292e38;
-  border-bottom: 1px rgba(0, 0, 0, 0.3) solid; }
+  box-shadow: 0 1px 0 0 #232830, 0 -1px 0 0 #232830; }
 .mediacat-information-section__content {
   padding: 7px; }
 
