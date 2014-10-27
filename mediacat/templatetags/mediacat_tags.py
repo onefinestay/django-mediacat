@@ -15,6 +15,9 @@ def jsonify(object):
 
 @register.simple_tag
 def get_crop_url(crop, width=None, scale=1):
+    from mediacat.models import ImageCrop
+    if not isinstance(crop, ImageCrop):
+        return ''
     if width:
         return crop.url_at_width(width * scale)
     else:
