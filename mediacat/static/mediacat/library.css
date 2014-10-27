@@ -15,7 +15,7 @@
   display: flex;
   color: #D4D7DE; }
   .mediacat-action + .mediacat-action {
-    border-left: 1px solid #191c22; }
+    border-left: 1px solid #121419; }
   .mediacat-action--is-disabled {
     color: #676F83; }
   .mediacat-action--fill {
@@ -30,7 +30,7 @@
 
 .mediacat-action-bar {
   font-size: 12px;
-  background-color: #14181f;
+  background-color: rgba(20, 24, 31, 0.7);
   color: #676F83;
   border-top: 1px solid #121419;
   display: -webkit-box;

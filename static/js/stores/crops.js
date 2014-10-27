@@ -85,6 +85,8 @@ var CropStore = Fluxxor.createStore({
       constants.CROP_ADD, this.onCropAdd,
       constants.CROP_SAVE_START, this.onSaveStart,
       constants.CROP_SAVE_SUCCESS, this.onSaveSuccess,
+      constants.CROP_DELETE_START, this.onDeleteStart,
+      constants.CROP_DELETE_SUCCESS, this.onDeleteSuccess,
       constants.CROP_PICK_START, this.onPickStart,
       constants.CROP_PICK_SUCCESS, this.onPickSuccess    
     );
@@ -310,8 +312,6 @@ var CropStore = Fluxxor.createStore({
   onSaveSuccess: function(payload) {
     var crop = Immutable.fromJS(payload.data);
     var cropId = payload.cropId;
-    var index;
-
     var requests = this.state.get('saveRequests');
     requests = requests.delete(cropId);
     this.state = this.state.set('saveRequests', requests);
@@ -320,6 +320,30 @@ var CropStore = Fluxxor.createStore({
 
     if (index !== -1) {
       this.state = this.state.updateIn(['crops', index], c => crop);
+    }
+    this.emit('change');
+  },
+
+  onDeleteStart: function(payload) {
+    var crop = payload.crop;
+    var request = payload.request;
+    var requests = this.state.get('deleteRequests', Immutable.Map());
+    requests = requests.set(crop.get('uuid'), request);
+    this.state = this.state.set('deleteRequests', requests);
+    this.emit('change');
+  },
+
+  onDeleteSuccess: function(payload) {
+    var crop = Immutable.fromJS(payload.data);
+    var cropId = payload.cropId;
+    var requests = this.state.get('deleteRequests');
+    requests = requests.delete(cropId);
+    this.state = this.state.set('deleteRequests', requests);
+
+    var index = this.state.get('crops').findIndex(c => c.get('uuid') === cropId);
+
+    if (index !== -1) {
+      this.state = this.state.updateIn(['crops'], crops => crops.splice(index, 1));
     }
     this.emit('change');
   },

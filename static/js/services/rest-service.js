@@ -63,6 +63,19 @@ class RestService {
       .promise();
   }
 
+  delete(id) {
+    var root = this.options.root;
+    var resource = this.options.resource;
+    var url = `${root}/${resource}/${id}/`;
+
+    return request
+      .del(url)
+      .use(django)
+      .use(bluebird)
+      .set('Accept', 'application/json')
+      .promise();
+  }
+
   patch(id, data) {
     var root = this.options.root;
     var resource = this.options.resource;

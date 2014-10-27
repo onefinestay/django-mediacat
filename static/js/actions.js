@@ -143,6 +143,14 @@ var Actions = {
       this.dispatch(Constants.CROP_SAVE_START, {request, crop});
     },
 
+    delete: function(crop) {
+      var request = cropService.delete(crop.get('uuid')).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.CROP_DELETE_SUCCESS, {data, request, cropId: crop.get('uuid')});
+      }.bind(this));
+      this.dispatch(Constants.CROP_DELETE_START, {request, crop});
+    },
+
     pick: function(crop, previewWidth) {
       if (window.opener) {
         var request = cropService.pick(crop.get('uuid'), previewWidth).then(function(response) {
