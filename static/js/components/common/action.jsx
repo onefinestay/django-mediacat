@@ -42,11 +42,11 @@ var Action = React.createClass({
       'action--fill': fill
     };
 
-    var states = { active, disabled };
+    var states = { active, disabled, enabled: !disabled };
 
     return (
       <div {...other} onClick={this.onClick} disabled={disabled} className={cx(classes, {states})}>
-        {glyph ? <Icon glyph={glyph} size="medium" /> : null}
+        {glyph ? <Icon glyph={glyph} size="large" /> : null}
         {children ? <span className="mediacat-action__caption">{children}</span> : null}
       </div>
     );

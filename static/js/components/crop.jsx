@@ -103,7 +103,7 @@ var Crop = React.createClass({
       'selected': this.state.selected
     }
 
-    var frameWidth = 150;
+    var frameWidth = 100;
     var mediaWidth = media.get('width');
     var mediaHeight = media.get('height');
 
@@ -111,20 +111,20 @@ var Crop = React.createClass({
     var frameHeight = mediaHeight * scale;
 
     var frameStyles = {
-        width: frameWidth,
-        height: frameHeight
+        width: frameWidth + '%',
+        paddingBottom: frameHeight + '%'
     };
 
-    var cropLeft = Math.round(scale * this.props.x1);
-    var cropTop = Math.round(scale * this.props.y1);
-    var cropWidth = Math.round(scale * (this.props.x2 - this.props.x1));
-    var cropHeight = Math.round(scale * (this.props.y2 - this.props.y1));
+    var cropLeft = Math.round((this.props.x1 / mediaWidth) * 100);
+    var cropTop = Math.round((this.props.y1 / mediaHeight) * 100);
+    var cropRight = Math.round((1 - (this.props.x2 /mediaWidth)) * 100);
+    var cropBottom = Math.round((1 - (this.props.y2 / mediaHeight)) * 100);
 
     var previewStyles = {
-      left: cropLeft,
-      top: cropTop,
-      width: cropWidth,
-      height: cropHeight
+      left: cropLeft + '%',
+      top: cropTop + '%',
+      right: cropRight + '%',
+      bottom: cropBottom + '%'
     };
 
     var numApplications = crop.get('applications').count();
@@ -134,18 +134,20 @@ var Crop = React.createClass({
       <div className={cx(classes,{states})} onClick={this.select}>
         <div className="mediacat-crop__content">
           <div className="mediacat-crop__preview-frame" style={frameStyles} >
-            <div className="mediacat-crop__preview" style={previewStyles} />
-            {crop.get('changed') ? <div className="mediacat-crop__unsaved-label">Unsaved Changes</div> : null}
+            <div className="mediacat-crop__preview-wrapper">
+              <div className="mediacat-crop__preview" style={previewStyles} />
+              {crop.get('changed') ? <div className="mediacat-crop__unsaved-label">Unsaved Changes</div> : null}
+            </div>
           </div>
         </div>
         <ActionBar>
-          <Action fill={true} onClick={this.toggleExpanded} glyph={this.state.expanded ? 'up-arrow' : 'down-arrow'} disabled={!hasApplications}>
+          <Action fill={true} onClick={this.toggleExpanded} glyph={this.state.expanded ? 'hairline-up-arrow' : 'hairline-down-arrow'} disabled={!hasApplications}>
             {hasApplications && this.state.expanded && 'Hide applications (' + numApplications + ')'}
             {hasApplications && !this.state.expanded && 'Show applications (' + numApplications + ')'}
             {!hasApplications && 'No applications'}
           </Action>
-          <Action onClick={this.save} glyph="tick" disabled={!crop.get('changed')}>Save</Action>
-          <Action onClick={this.delete} glyph="delete" disabled={hasApplications} />
+          <Action onClick={this.save} glyph="hairline-tick" disabled={!crop.get('changed')}>Save</Action>
+          <Action onClick={this.delete} glyph="hairline-delete" disabled={hasApplications} />
         </ActionBar>
         {this.state.expanded ? <CropApplicationTable crop={crop} /> : null}
       </div>
