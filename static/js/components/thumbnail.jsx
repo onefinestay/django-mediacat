@@ -71,7 +71,6 @@ var Thumbnail = React.createClass({
   handleMouseDown: function(event) {
     document.addEventListener('mousemove', this.dragMove);
     document.addEventListener('mouseup', this.dragEnd);
-    this.getFlux().actions.dragging.dragStart(this.props.thumbnail, event.pageX, event.pageY);
   },
 
   handleMouseUp: function() {
@@ -90,7 +89,14 @@ var Thumbnail = React.createClass({
 
   dragMove: function(event) {
     event.preventDefault();
-    this.getFlux().actions.dragging.dragMove(event.pageX, event.pageY);
+
+    var draggingMedia = this.getFlux().store('Dragging').state.get('draggingMedia');
+
+    if (!draggingMedia) {
+      this.getFlux().actions.dragging.dragStart(this.props.thumbnail, event.pageX, event.pageY);
+    } else {
+      this.getFlux().actions.dragging.dragMove(event.pageX, event.pageY);
+    }
   },
 
   dragEnd: function(event) {
