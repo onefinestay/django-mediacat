@@ -123,8 +123,6 @@ var ProxyImg = React.createClass({
         left: displayLeft
     };
 
-    console.log(classes);
-
     return (
       <div className={cx(classes, {states})}>
         <div className="mediacat-proxy-image__bg" style={style}>

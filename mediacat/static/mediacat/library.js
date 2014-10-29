@@ -306,7 +306,6 @@
 	    },
 	
 	    fetchChildrenError: function(response) {
-	      console.log(response);
 	    },
 	
 	    loadChildren: function(category) {
@@ -9551,8 +9550,6 @@
 	        top: displayTop,
 	        left: displayLeft
 	    };
-	
-	    console.log(classes);
 	
 	    return (
 	      React.createElement("div", {className: cx(classes, {states:states})}, 

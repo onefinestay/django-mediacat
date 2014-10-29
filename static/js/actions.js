@@ -205,7 +205,6 @@ var Actions = {
     },
 
     fetchChildrenError: function(response) {
-      console.log(response);
     },
 
     loadChildren: function(category) {
