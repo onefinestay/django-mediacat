@@ -100,7 +100,7 @@ var CropsToolbar = React.createClass({
 
 
   render: function() {
-    var options = Immutable.Vector();
+    var options = Immutable.List();
 
   	this.state.availableCrops.forEach(function(config, key) {
   		options = options.push(Immutable.Map({value: key, label: config.get(0)}));

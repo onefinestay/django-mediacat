@@ -17,9 +17,11 @@ var Application = React.createClass({
     return (
       <div className="mediacat-application">
         <DragLayer />
-        <Navigation />
-        <Main />
-        <Information />
+        <div className="mediacat-application__flex-container">
+          <Navigation />
+          <Main />
+          <Information />
+        </div>
       </div>
     );
   }

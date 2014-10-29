@@ -104,7 +104,8 @@ var ProxyImg = React.createClass({
     displayLeft = (containerWidth- displayWidth) / 2;
 
     var classes = {
-      'proxy-image': true
+      'proxy-image': true,
+      'proxy-image--disable-animation': this.props.disableAnimation
     };
 
     var states = {
@@ -121,6 +122,8 @@ var ProxyImg = React.createClass({
         top: displayTop,
         left: displayLeft
     };
+
+    console.log(classes);
 
     return (
       <div className={cx(classes, {states})}>

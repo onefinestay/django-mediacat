@@ -69,9 +69,9 @@ var Thumbnail = React.createClass({
   },
 
   handleMouseDown: function(event) {
-    this.getFlux().actions.dragging.dragStart(this.props.thumbnail, event.pageX, event.pageY);
     document.addEventListener('mousemove', this.dragMove);
-    document.addEventListener('mouseup', this.dragEnd);    
+    document.addEventListener('mouseup', this.dragEnd);
+    this.getFlux().actions.dragging.dragStart(this.props.thumbnail, event.pageX, event.pageY);
   },
 
   handleMouseUp: function() {
@@ -96,7 +96,7 @@ var Thumbnail = React.createClass({
   dragEnd: function(event) {
     event.preventDefault();
     document.removeEventListener('mousemove', this.dragMove);
-    document.removeEventListener('mouseup', this.dragEnd);        
+    document.removeEventListener('mouseup', this.dragEnd);
 
     this.getFlux().actions.dragging.dragEnd(event.pageX, event.pageY);
 
@@ -141,7 +141,15 @@ var Thumbnail = React.createClass({
         onMouseMove={this.handleMouseMove}>
         {this.state.dragOverPosition && this.state.dragOverPosition === 'before' ? <div className="mediacat-thumbnail__dragover mediacat-thumbnail__dragover--before" /> : null}
         <div style={contentStyle} className="mediacat-thumbnail__content">
-          <ProxyImg src={thumbnail.get('thumbnail')} width={thumbnail.get('width')} height={thumbnail.get('height')} maxWidth={thumbnailSize} maxHeight={thumbnailSize} draggable={false} />
+          <ProxyImg
+            src={thumbnail.get('thumbnail')}
+            width={thumbnail.get('width')}
+            height={thumbnail.get('height')}
+            maxWidth={thumbnailSize}
+            maxHeight={thumbnailSize}
+            draggable={false}
+            disableAnimation={this.props.isDragging}
+          />
         </div>
         <div className="mediacat-thumbnail__footer">
           <Rating size="small" media={thumbnail} interactable={false} /> 

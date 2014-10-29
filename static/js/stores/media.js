@@ -217,7 +217,7 @@ var MediaStore = Fluxxor.createStore({
       if (payload.category.get('accepts_images') && state.get('viewMode') === 'detail') {
         state = state.set('viewMode', 'grid');  
       }
-      state = state.set('media', Immutable.Sequence());
+      state = state.set('media', Immutable.List());
       state = state.set('selectedMedia', null);
       state = state.set('selectedCrop', null);      
     })

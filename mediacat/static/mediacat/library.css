@@ -699,15 +699,6 @@
 .mediacat-application {
   bottom: 0;
   box-sizing: border-box;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
   left: 0;
   position: absolute;
   right: 0;
@@ -718,6 +709,26 @@
           user-select: none; }
   .mediacat-application *, .mediacat-application *:before, .mediacat-application *:after {
     box-sizing: border-box; }
+  .mediacat-application__flex-container {
+    bottom: 0;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
 
 .mediacat-applications-table {
   border-bottom: 1px solid #13161a;
@@ -1044,9 +1055,6 @@
   height: 100%;
   position: relative;
   width: 100%; }
-  .mediacat-proxy-image--is-preloaded> {
-    -webkit-transition-property: none;
-            transition-property: none; }
   .mediacat-proxy-image__bg {
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -1060,11 +1068,18 @@
     display: block;
     position: absolute;
     user-drag: none; }
+  .mediacat-proxy-image--disable-animation .mediacat-proxy-image__bg {
+    -webkit-transition: none;
+            transition: none; }
+  .mediacat-proxy-image--is-preloaded .mediacat-proxy-image__b {
+    -webkit-transition: none;
+            transition: none; }
 
 .mediacat-thumbnails {
   padding: 5px;
   display: inline-block; }
   .mediacat-thumbnails--is-dragging {
+    display: block;
     position: absolute;
     pointer-events: none;
     z-index: 100; }

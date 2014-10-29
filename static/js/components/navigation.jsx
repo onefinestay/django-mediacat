@@ -34,7 +34,7 @@ var Navigation = React.createClass({
 
   getStateFromFlux: function() {
     return {
-      hasUploads: this.getFlux().store('Uploads').state.get('uploads').length > 0
+      hasUploads: this.getFlux().store('Uploads').state.get('uploads').count() > 0
     };
   },
   

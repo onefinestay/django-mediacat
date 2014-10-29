@@ -15,11 +15,11 @@
   "dependencies": {
     "bluebird": "^2.3.6",
     "fluxxor": "1.5.0",
-    "immutable": "^2.6.0",
+    "immutable": "^3.0.0",
     "matrix-utilities": "1.2.4",
     "moment": "^2.8.3",
     "mousetrap": "0.0.1",
-    "react": "^0.12.0-rc1",
+    "react": "^0.12.0",
     "superagent": "0.20.0",
     "truncate": "^1.0.4",
     "uuid-v4": "0.1.0"
@@ -27,7 +27,7 @@
   "devDependencies": {
     "autoprefixer-loader": "1.0.0",
     "css-loader": "0.9.0",
-    "extract-text-webpack-plugin": "0.3.1",
+    "extract-text-webpack-plugin": "0.3.3",
     "file-loader": "^0.8.1",
     "gulp": "3.8.9",
     "gulp-consolidate": "^0.1.2",
@@ -36,11 +36,11 @@
     "gulp-iconfont-css": "0.0.9",
     "gulp-rename": "^1.2.0",
     "gulp-sketch": "0.0.6",
-    "jsx-loader": "git://github.com/AndrewIngram/jsx-loader",
+    "jsx-loader": "0.12.0",
     "lodash": "^2.4.1",
     "sass-loader": "0.2.0",
     "style-loader": "0.8.1",
     "url-loader": "^0.5.5",
-    "webpack": "1.4.8"
+    "webpack": "1.4.9"
   }
 }

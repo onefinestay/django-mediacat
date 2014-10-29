@@ -312,6 +312,7 @@ var Select = React.createClass({
           value={value}
           ref="input" />
         {active ? <SelectOptions
+          ref="options"
           options={options}
           onClose={this.close}
           onCursorUp={this.moveUp}
