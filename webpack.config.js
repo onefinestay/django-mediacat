@@ -13,13 +13,15 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /mediacat\/static\/js\/.*\.js/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         loaders: [
           '6to5-loader?sourceMap=true'
         ]
       },
       {
-        test: /mediacat\/static\/js\/.*\.jsx/,
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
         loaders: [
           '6to5-loader?sourceMap=true',
           'jsx?harmony&sourceMap=true'

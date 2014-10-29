@@ -1,8 +1,3 @@
-/**
- * @jsx React.DOM
- */
-"use strict";
-
 require('../css/library');
 
 var React = require('react/addons');
