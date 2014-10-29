@@ -25,6 +25,8 @@
     "uuid-v4": "0.1.0"
   },
   "devDependencies": {
+    "6to5": "^1.10.7",
+    "6to5-loader": "^0.2.3",
     "autoprefixer-loader": "1.0.0",
     "css-loader": "0.9.0",
     "extract-text-webpack-plugin": "0.3.3",

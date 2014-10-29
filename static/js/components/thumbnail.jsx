@@ -29,6 +29,10 @@ var Thumbnail = React.createClass({
   },
 
   handleMouseEnter: function(event) {
+    var elRect;
+    var offsetX;
+    var offsetY;
+
     var sortable = this.getFlux().store('Media').state.get('sortBy') === 'manual_asc';
 
     if (sortable && this.props.userIsDragging && !this.props.dragging) {
