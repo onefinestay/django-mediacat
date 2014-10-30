@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.db.models.fields import FieldDoesNotExist
 
 from rest_framework import serializers
 
@@ -13,7 +14,10 @@ class ImageCropApplicationSerializer(serializers.ModelSerializer):
 
     def get_field_label(self, obj):
         if obj.object:
-            return obj.object._meta.get_field_by_name(obj.field_name)[0].verbose_name
+            try:
+                return obj.object._meta.get_field_by_name(obj.field_name)[0].verbose_name
+            except FieldDoesNotExist:
+                return obj.field_name
         return None
 
     def get_object_label(self, obj):
