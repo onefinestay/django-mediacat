@@ -112,17 +112,9 @@ class ImageAssociationSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    associations = ImageAssociationSerializer(many=True, required=False)
     url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
     can_delete = serializers.Field(source='can_delete')
-
-    associated_content_type = serializers.IntegerField(
-        required=False,
-        write_only=True)
-    associated_object_id = serializers.IntegerField(
-        required=False,
-        write_only=True)
 
     def restore_object(self, attrs, instance=None):
         # Pop the attrs because Django no likey
@@ -155,9 +147,6 @@ class ImageSerializer(serializers.ModelSerializer):
             'height',
             'width',
             'can_delete',
-            'associations',
-            'associated_content_type',
-            'associated_object_id',
             'url',
             'thumbnail',
         )
