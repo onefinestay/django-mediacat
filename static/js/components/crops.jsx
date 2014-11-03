@@ -7,6 +7,7 @@ var Immutable = require('immutable');
 var cx = require('./bem-cx');
 
 var Button = require('./common/button');
+var Icon = require('./common/icon');
 var Panel = require('./common/panel');
 var Select  = require('./common/select');
 var Toolbar = require('./common/toolbar');
