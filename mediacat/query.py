@@ -54,7 +54,7 @@ class MediacatQuerySet(QuerySet):
             base_result_objects = []
             reached_end = False
 
-            for i in range(100):
+            for i in range(1000):
                 try:
                     o = next(base_iter)
                     base_result_objects.append(o)
