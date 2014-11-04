@@ -126,6 +126,9 @@ var CropStore = Fluxxor.createStore({
     var dY = payload.dY;
 
     var scale;
+    var preferWidth;
+    var fixedWidth;
+    var fixedHeight;
 
     // What point do we anchor around, and how should we multiply the X and Y deltas;
     var anchor = {
@@ -142,8 +145,10 @@ var CropStore = Fluxxor.createStore({
 
     if (Math.abs(dX) >= Math.abs(dY)) {
       scale = (cropWidth + (anchor[2] * dX)) / cropWidth;
+      preferWidth = true;
     } else {
       scale = (cropHeight + (anchor[3] * dY)) / cropHeight;
+      preferWidth= false;
     }
 
     var x = (cropData[anchor[0][0]] + cropData[anchor[0][1]]) / 2;
@@ -158,6 +163,23 @@ var CropStore = Fluxxor.createStore({
       transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
     }
 
+    if (preferWidth) {
+      fixedHeight = (transformedData.x2 - transformedData.x1) / cropData.ratio;
+
+      if (transformedData.y1 === cropData.y1) {
+        transformedData.y2 = transformedData.y1 + fixedHeight;
+      } else {
+        transformedData.y1 = transformedData.y2 - fixedHeight;
+      }
+    } else {
+      fixedWidth = (transformedData.y2 - transformedData.y1) * cropData.ratio;
+
+      if (transformedData.x1 === cropData.x1) {
+        transformedData.x2 = transformedData.x1 + fixedWidth;
+      } else {
+        transformedData.x1 = transformedData.x2 - fixedWidth;
+      }
+    }
     this.updateCrop(cropIndex, crop, transformedData);
   },
 
