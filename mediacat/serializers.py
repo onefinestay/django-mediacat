@@ -116,25 +116,6 @@ class ImageSerializer(serializers.ModelSerializer):
     thumbnail = serializers.Field(source='get_thumbnail_url')
     can_delete = serializers.Field(source='can_delete')
 
-    def restore_object(self, attrs, instance=None):
-        # Pop the attrs because Django no likey
-        associated_content_type = attrs.pop('associated_content_type', None)
-        associated_object_id = attrs.pop('associated_object_id', None)
-
-        instance = super(ImageSerializer, self).restore_object(
-            attrs,
-            instance=instance
-        )
-
-        if associated_content_type and associated_object_id:
-            association = models.ImageAssociation(
-                content_type_id=associated_content_type,
-                object_id=associated_object_id,
-                canonical=True
-            )
-            instance._m2m_data['associations'] = [association]
-        return instance
-
     class Meta:
         model = models.Image
         fields = (

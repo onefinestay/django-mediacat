@@ -231,6 +231,7 @@ var Actions = {
       var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
         var data = response.body;
         this.dispatch(Constants.UPLOAD_SUCCESS, {data, id, file, categoryPath, request});
+        this.dispatch(Constants.ASSOCIATIONS_CREATE_SUCCESS, {categoryPath});
       }.bind(this));
       this.dispatch(Constants.UPLOAD_START, {id, file, categoryPath, request});
     }

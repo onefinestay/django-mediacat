@@ -87,6 +87,25 @@ class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
         parsers.FormParser,
     )
 
+    def create(self, request, *args, **kwargs):
+        if 'associated_content_type' in request.DATA and 'associated_object_id' in request.DATA:
+            association_data = {
+                'content_type_id': request.DATA['associated_content_type'],
+                'object_id': request.DATA['associated_object_id'],
+                'canonical': True
+            }
+        else:
+            association_data = None
+
+        response = super(ImageList, self).create(request, *args, **kwargs)
+
+        if response.status_code == 201 and association_data:
+            association_data['image_id'] = response.data['id']
+            models.ImageAssociation.objects.create(**association_data)
+
+        return response
+
+
     def get_queryset(self):
         queryset = super(ImageList, self).get_queryset().prefetch_related('associations')
         params = self.request.QUERY_PARAMS

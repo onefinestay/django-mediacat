@@ -329,6 +329,7 @@
 	      var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
 	        var data = response.body;
 	        this.dispatch(Constants.UPLOAD_SUCCESS, {data:data, id:id, file:file, categoryPath:categoryPath, request:request});
+	        this.dispatch(Constants.ASSOCIATIONS_CREATE_SUCCESS, {categoryPath:categoryPath});
 	      }.bind(this));
 	      this.dispatch(Constants.UPLOAD_START, {id:id, file:file, categoryPath:categoryPath, request:request});
 	    }
