@@ -356,7 +356,6 @@ var CropStore = Fluxxor.createStore({
   },
 
   onDeleteSuccess: function(payload) {
-    var crop = Immutable.fromJS(payload.data);
     var cropId = payload.cropId;
     var requests = this.state.get('deleteRequests');
     requests = requests.delete(cropId);

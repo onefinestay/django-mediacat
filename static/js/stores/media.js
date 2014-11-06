@@ -62,6 +62,8 @@ var MediaStore = Fluxxor.createStore({
       constants.SET_VIEW_MODE, this.onSetViewMode,
       constants.CROP_SELECTED, this.onCropSelect,
       constants.SET_MEDIA_SORT, this.onSetSort,
+      constants.MEDIA_DELETE_START, this.onDeleteStart,
+      constants.MEDIA_DELETE_SUCCESS, this.onDeleteSuccess,
       constants.MEDIA_SET_RATING, this.onSetRating,
       constants.MEDIA_MOVE_BEFORE, this.onMoveBefore,
       constants.MEDIA_MOVE_AFTER, this.onMoveAfter      
@@ -232,6 +234,29 @@ var MediaStore = Fluxxor.createStore({
       this.state = this.state.updateIn(['media'], media => media.push(newImage));
       this.emit('change');
     }
+  },
+
+  onDeleteStart: function(payload) {
+    var media = payload.media;
+    var request = payload.request;
+    var requests = this.state.get('deleteRequests', Immutable.Map());
+    requests = requests.set(media.get('id'), request);
+    this.state = this.state.set('deleteRequests', requests);
+    this.emit('change');
+  },
+
+  onDeleteSuccess: function(payload) {
+    var mediaId = payload.mediaId;
+    var requests = this.state.get('deleteRequests');
+    requests = requests.delete(mediaId);
+    this.state = this.state.set('deleteRequests', requests);
+
+    var index = this.state.get('media').findIndex(m => m.get('id') === mediaId);
+
+    if (index !== -1) {
+      this.state = this.state.updateIn(['media'], media => media.splice(index, 1));
+    }
+    this.emit('change');
   }
 });
 

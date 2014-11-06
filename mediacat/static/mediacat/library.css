@@ -66,8 +66,15 @@
   -webkit-flex-grow: 0;
       -ms-flex-positive: 0;
           flex-grow: 0; }
+  .mediacat-button:hover {
+    opacity: 0.8; }
+  .mediacat-button:focus {
+    outline: none; }
   .mediacat-button--is-disabled {
-    opacity: 0.5; }
+    opacity: 0.5;
+    cursor: not-allowed; }
+    .mediacat-button--is-disabled:hover {
+      opacity: 0.5; }
   .mediacat-button--theme-white-on-teal {
     background-color: #fff;
     color: #3ea2c1; }
@@ -86,10 +93,14 @@
       background-color: #2b7287;
       box-shadow: 0 1px 0 0 #1f5161, inset 0 -1px 0 0 #78bed4;
       color: #65b5cd; }
+  .mediacat-button--action-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a; }
   .mediacat-button__caption {
     display: inline-block;
     font-weight: 100px;
-    line-height: 38px;
+    line-height: 1;
     margin-left: 5px; }
   .mediacat-button__mask {
     bottom: 0;
@@ -97,10 +108,6 @@
     position: absolute;
     right: 0;
     top: 0; }
-  .mediacat-button:hover {
-    opacity: 0.8; }
-  .mediacat-button:focus {
-    outline: none; }
 
 .mediacat-button-group {
   display: -webkit-box;

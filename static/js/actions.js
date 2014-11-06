@@ -109,7 +109,16 @@ var Actions = {
 
     setSort: function(sort) {
       this.dispatch(Constants.SET_MEDIA_SORT, {sort});
-    }
+    },
+
+    delete: function(media) {
+      var mediaId = media.get('id');
+      var request = mediaService.delete(mediaId).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.MEDIA_DELETE_SUCCESS, {data, request, mediaId});
+      }.bind(this));
+      this.dispatch(Constants.MEDIA_DELETE_START, {request, media});
+    },
   },
 
   crop: {
@@ -142,9 +151,10 @@ var Actions = {
     },
 
     delete: function(crop) {
-      var request = cropService.delete(crop.get('uuid')).then(function(response) {
+      var cropId = crop.get('uuid');
+      var request = cropService.delete(cropId).then(function(response) {
         var data = response.body;
-        this.dispatch(Constants.CROP_DELETE_SUCCESS, {data, request, cropId: crop.get('uuid')});
+        this.dispatch(Constants.CROP_DELETE_SUCCESS, {data, request, cropId});
       }.bind(this));
       this.dispatch(Constants.CROP_DELETE_START, {request, crop});
     },

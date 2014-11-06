@@ -6,6 +6,7 @@ var moment = require('moment');
 
 var Panel = require('./common/panel');
 var Toolbar = require('./common/toolbar');
+var Button = require('./common/button');
 
 var ThemeMixin = require('./mixins/theme-mixin');
 var FluxMixin = require('./mixins/flux-mixin');
@@ -30,15 +31,27 @@ var ImageDataToolbar = React.createClass({
 
 
 var ImageDataPanel = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media")],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Crops")],
 
   getStateFromFlux: function() {
     var store = this.getFlux().store('Media');
     var selected = store.getSelectedMedia();
+    var crops = null;
+
+    if (selected) {
+      crops = this.getFlux().store('Crops').state.get('crops');
+    }
 
     return {
-      media: selected
+      media: selected,
+      crops: crops
     };
+  },
+
+  delete: function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.getFlux().actions.media.delete(this.state.media);
   },
 
   render: function() {
@@ -49,6 +62,12 @@ var ImageDataPanel = React.createClass({
       size = media.get('width') + ' × ' + media.get('height');
     }
 
+    var canDelete = this.state.crops !== null && this.state.crops.count() === 0;
+    var deleteMsg = '';
+
+    if (!canDelete && this.state.media) {
+      deleteMsg =  'Delete all crops first';
+    }
 
     return (
       <Panel fill={true} className="mediacat-information-panel">
@@ -65,6 +84,10 @@ var ImageDataPanel = React.createClass({
             <tr>
               <th scope="row">Rating</th>
               <td>{media ? <Rating size="large" media={media} /> : null}</td>
+            </tr>
+            <tr>
+              <th csope="row">Delete</th>
+              <td>{canDelete ? <Button onClick={this.delete} action="danger" theme="dark-grey" glyphSize="large" glyph="hairline-delete" disabled={!canDelete}>Delete Image</Button> : deleteMsg}</td>
             </tr>
           </table>
         </InformationSection>

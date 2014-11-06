@@ -14,8 +14,21 @@
   flex-shrink: 0;
   flex-grow: 0;
 
+  &:hover {
+    opacity: .8;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
   &--is-disabled {
     opacity: .5;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: .5;
+    }
   }
 
   &--theme-white-on-teal {
@@ -44,12 +57,20 @@
     }
   }
 
+  &--action-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+  }
+
   &__caption {
     display: inline-block;
     font-weight: 100px;
-    line-height: 38px;
+    line-height: 1;
     margin-left: 5px;
   }
+
+
 
   &__mask {
     bottom: 0;
@@ -57,14 +78,6 @@
     position: absolute;
     right: 0;
     top: 0;
-  }
-
-  &:hover {
-    opacity: .8;
-  }
-
-  &:focus {
-    outline: none;
   }
 }
 

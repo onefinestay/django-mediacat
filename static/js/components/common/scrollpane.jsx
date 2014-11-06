@@ -188,6 +188,7 @@ var ScrollPane = React.createClass({
       event.preventDefault();
       event.stopPropagation();
       var dY;
+      var dX;
       var handleY;
       var handleX;
       var newScrollX = this.state.scrollX;
