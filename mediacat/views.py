@@ -101,7 +101,7 @@ class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
 
         if response.status_code == 201 and association_data:
             association_data['image_id'] = response.data['id']
-            models.ImageAssociation.objects.create(**association_data)
+            models.ImageAssociation(**association_data).save()
 
         return response
 
