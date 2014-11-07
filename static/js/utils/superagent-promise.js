@@ -1,5 +1,3 @@
-var Promise = require("bluebird");
-
 module.exports = function(request) {
 	request.promise = function(onProgress, onTransferComplete) {
     return new Promise(function(resolve, reject) {

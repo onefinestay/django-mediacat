@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^2.3.6",
     "fluxxor": "1.5.0",
     "immutable": "^3.0.0",
     "matrix-utilities": "1.2.4",

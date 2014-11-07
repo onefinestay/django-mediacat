@@ -1,7 +1,7 @@
 var RestService = require('./rest-service');
 
 var request = require('superagent');
-var bluebird = require('../utils/superagent-bluebird');
+var promise = require('../utils/superagent-promise');
 var django = require('../utils/superagent-django');
 
 
@@ -23,7 +23,7 @@ class MediaService extends RestService {
     var req = request
       .post(url)
       .use(django)
-      .use(bluebird)
+      .use(promise)
       .field('image_file', file);
 
     if (content_type && object_id) {

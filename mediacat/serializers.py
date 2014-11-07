@@ -11,6 +11,7 @@ class ImageCropApplicationSerializer(serializers.ModelSerializer):
     field_label = serializers.SerializerMethodField('get_field_label')
     object_label = serializers.SerializerMethodField('get_object_label')
     content_type_label = serializers.SerializerMethodField('get_content_type_label')
+    can_delete = serializers.SerializerMethodField('get_can_delete')
 
     def get_field_label(self, obj):
         if obj.object:
@@ -35,6 +36,16 @@ class ImageCropApplicationSerializer(serializers.ModelSerializer):
             return obj.object._meta.verbose_name.title()
         return None
 
+    def get_can_delete(self, obj):
+        if obj.object:
+            try:
+                field = obj.object._meta.get_field_by_name(obj.field_name)[0]
+                return field.null
+            except FieldDoesNotExist:
+                return True
+        return False
+
+
     class Meta:
         model = models.ImageCropApplication
         fields = (
@@ -45,6 +56,7 @@ class ImageCropApplicationSerializer(serializers.ModelSerializer):
             'field_label',
             'object_label',
             'content_type_label',
+            'can_delete',
         )
 
 

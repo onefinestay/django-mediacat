@@ -1,6 +1,6 @@
 var request = require('superagent');
 
-var bluebird = require('../utils/superagent-bluebird');
+var promise = require('../utils/superagent-promise');
 var django = require('../utils/superagent-django');
 
 class RestService {
@@ -16,7 +16,7 @@ class RestService {
     return request
       .get(url)
       .use(django)
-      .use(bluebird)
+      .use(promise)
       .query(query)
       .set('Accept', 'application/json')
       .promise();
@@ -30,7 +30,7 @@ class RestService {
     return request
       .get(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .set('Accept', 'application/json')
       .promise();
   }
@@ -43,7 +43,7 @@ class RestService {
     return request
       .post(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .send(data)
       .set('Accept', 'application/json')
       .promise();
@@ -57,7 +57,7 @@ class RestService {
     return request
       .put(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .send(data)
       .set('Accept', 'application/json')
       .promise();
@@ -71,7 +71,7 @@ class RestService {
     return request
       .del(url)
       .use(django)
-      .use(bluebird)
+      .use(promise)
       .set('Accept', 'application/json')
       .promise();
   }
@@ -84,7 +84,7 @@ class RestService {
     return request
       .patch(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .send(data)
       .set('Accept', 'application/json')
       .promise();
@@ -98,7 +98,7 @@ class RestService {
     return request
       .patch(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .send(data)
       .set('Accept', 'application/json')
       .promise();    

@@ -142,9 +142,9 @@ var Crop = React.createClass({
         </div>
         <ActionBar>
           <Action fill={true} onClick={this.toggleExpanded} glyph={this.state.expanded ? 'hairline-up-arrow' : 'hairline-down-arrow'} disabled={!hasApplications}>
-            {hasApplications && this.state.expanded && 'Hide applications (' + numApplications + ')'}
-            {hasApplications && !this.state.expanded && 'Show applications (' + numApplications + ')'}
-            {!hasApplications && 'No applications'}
+            {hasApplications && this.state.expanded && 'Hide usage (' + numApplications + ')'}
+            {hasApplications && !this.state.expanded && 'Show usage (' + numApplications + ')'}
+            {!hasApplications && 'Not used'}
           </Action>
           <Action onClick={this.save} glyph="hairline-tick" disabled={!crop.get('changed')}>Save</Action>
           <Action onClick={this.delete} glyph="hairline-delete" disabled={hasApplications} />

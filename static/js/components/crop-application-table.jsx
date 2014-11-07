@@ -20,6 +20,7 @@ var CropApplicationRow = React.createClass({
         <td>{application.get('object_label')}</td>
         <td>{application.get('content_type_label')}</td>
         <td>{application.get('field_label')}</td>
+        <td>{application.get('can_delete') ? <Icon size="large" glyph="hairline-delete" /> : null}</td>
       </tr>
     );
   }
@@ -36,7 +37,7 @@ var CropApplicationTable = React.createClass({
       return null;
     }
 
-    var items = applications.map(a => <CropApplicationRow key={a.get('id')} application={a} />);
+    var items = applications.map(a => <CropApplicationRow key={a.get('id')} crop={this.props.crop} application={a} />);
 
     return (
       <div className="mediacat-applications-table">
@@ -46,6 +47,7 @@ var CropApplicationTable = React.createClass({
               <th>Label</th>
               <th>Type</th>
               <th>Field</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
