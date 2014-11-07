@@ -81,6 +81,7 @@ var CropStore = Fluxxor.createStore({
       constants.CROP_SELECTED, this.onCropSelect,
       constants.CROP_DESELECTED, this.onCropDeselect,
       constants.CROP_MOVE, this.onCropMove,
+      constants.CROP_DELETE_APPLICATION, this.onDeleteApplication,
       constants.CROP_RESIZE, this.onCropResize,
       constants.CROP_ADD, this.onCropAdd,
       constants.CROP_SAVE_START, this.onSaveStart,
@@ -209,6 +210,18 @@ var CropStore = Fluxxor.createStore({
     }
 
     this.updateCrop(cropIndex, crop, transformedData);
+  },
+
+  onDeleteApplication: function(payload) {
+    var crop = payload.crop;
+    var application = payload.application;
+
+    var cropIndex = this.state.get('crops').indexOf(crop);
+    var applicationIndex = this.state.getIn(['crops', cropIndex, 'applications']).indexOf(application);
+
+    this.state = this.state.updateIn(['crops', cropIndex, 'applications'], applications => applications.splice(applicationIndex, 1));
+    this.state = this.state.updateIn(['crops', cropIndex], c => c.set('changed', true));
+    this.emit('change');
   },
 
   updateCrop: function(index, crop, data) {

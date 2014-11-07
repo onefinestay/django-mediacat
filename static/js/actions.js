@@ -159,6 +159,10 @@ var Actions = {
       this.dispatch(Constants.CROP_DELETE_START, {request, crop});
     },
 
+    deleteApplication: function(crop, application) {
+      this.dispatch(Constants.CROP_DELETE_APPLICATION, {crop, application});
+    },
+
     pick: function(crop, previewWidth) {
       if (window.opener) {
         var request = cropService.pick(crop.get('uuid'), previewWidth).then(function(response) {

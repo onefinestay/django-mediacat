@@ -10,7 +10,7 @@ var FluxMixin = require('./mixins/flux-mixin');
 
 
 var CropApplicationRow = React.createClass({
-  mixins: [PureRenderMixin],
+  mixins: [PureRenderMixin, FluxMixin],
 
   render: function() {
     var application = this.props.application;
@@ -20,7 +20,6 @@ var CropApplicationRow = React.createClass({
         <td>{application.get('object_label')}</td>
         <td>{application.get('content_type_label')}</td>
         <td>{application.get('field_label')}</td>
-        <td>{application.get('can_delete') ? <Icon size="large" glyph="hairline-delete" /> : null}</td>
       </tr>
     );
   }
@@ -47,7 +46,6 @@ var CropApplicationTable = React.createClass({
               <th>Label</th>
               <th>Type</th>
               <th>Field</th>
-              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
