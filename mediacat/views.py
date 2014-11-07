@@ -90,7 +90,7 @@ class ImageList(BulkUpdateModelMixin, generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         if 'associated_content_type' in request.DATA and 'associated_object_id' in request.DATA:
             association_data = {
-                'content_type_id': request.DATA['associated_content_type'],
+                'content_type_id': int(request.DATA['associated_content_type']),
                 'object_id': request.DATA['associated_object_id'],
                 'canonical': True
             }
