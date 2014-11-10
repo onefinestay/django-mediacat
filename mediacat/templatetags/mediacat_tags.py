@@ -40,3 +40,13 @@ def get_available_crop_scales(crop, width):
     if not isinstance(crop, ImageCrop):
         return []
     return crop.available_scales(width=width)
+
+
+
+@register.simple_tag
+def get_crop_height(crop, width):
+    from mediacat.models import ImageCrop
+    if not isinstance(crop, ImageCrop):
+        return ''
+
+    return crop.height_at_width(width)
