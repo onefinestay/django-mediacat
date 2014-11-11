@@ -85,7 +85,8 @@
     padding: 0;
     border: 1px #fff solid;
     background-color: rgba(0, 0, 0, 0.25);
-    color: #fff; }
+    color: #fff;
+    line-height: 1; }
     .mediacat-mediainput-widget__trigger:hover {
       color: #fff;
       background-color: rgba(0, 0, 0, 0.5); }

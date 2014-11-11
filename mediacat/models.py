@@ -227,6 +227,7 @@ class ImageCrop(models.Model):
             'fit_in': True,
             'crop': self.corners,
             'width': width,
+            'height': self.height_at_width(width),
             'filters': ['quality({})'.format(85)],
         }
         key = self.get_url_cache_key(**kwargs)

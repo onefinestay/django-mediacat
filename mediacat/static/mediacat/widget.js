@@ -49,7 +49,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	__webpack_require__(/*! ../css/widget */ 12);
+	__webpack_require__(/*! ../css/widget */ 14);
 	
 	(function ($, window, document, undefined) {
 	  "use strict";
@@ -167,7 +167,7 @@
 
 /***/ },
 
-/***/ 12:
+/***/ 14:
 /*!********************************!*\
   !*** ./static/css/widget.scss ***!
   \********************************/
@@ -176,10 +176,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./~/extract-text-webpack-plugin/loader.js?{"remove":true}!./~/css-loader?sourceMap=true!./~/autoprefixer-loader!./~/sass-loader?precision=10&outputStyle=expanded&sourceMap=true!./static/css/widget.scss */ 13);
+	var content = __webpack_require__(/*! !./~/extract-text-webpack-plugin/loader.js?{"remove":true}!./~/css-loader?sourceMap=true!./~/autoprefixer-loader!./~/sass-loader?precision=10&outputStyle=expanded&sourceMap=true!./static/css/widget.scss */ 15);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(/*! ./~/style-loader/addStyles.js */ 18)(content);
+	var update = __webpack_require__(/*! ./~/style-loader/addStyles.js */ 27)(content);
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
@@ -194,7 +194,7 @@
 
 /***/ },
 
-/***/ 13:
+/***/ 15:
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./~/extract-text-webpack-plugin/loader.js?{"remove":true}!./~/css-loader?sourceMap=true!./~/autoprefixer-loader!./~/sass-loader?precision=10&outputStyle=expanded&sourceMap=true!./static/css/widget.scss ***!
   \*****************************************************************************************************************************************************************************************************************/
@@ -204,7 +204,7 @@
 
 /***/ },
 
-/***/ 18:
+/***/ 27:
 /*!*************************************!*\
   !*** ./~/style-loader/addStyles.js ***!
   \*************************************/
