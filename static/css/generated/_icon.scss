@@ -121,57 +121,63 @@
     }
   }
 
-  &--hairline-tick {
+  &--hairline-image {
     &:before {
       content: "\E00E";
     }
   }
 
-  &--hairline-up-arrow {
+  &--hairline-tick {
     &:before {
       content: "\E00F";
     }
   }
 
-  &--left-arrow {
+  &--hairline-up-arrow {
     &:before {
       content: "\E010";
     }
   }
 
-  &--reject {
+  &--left-arrow {
     &:before {
       content: "\E011";
     }
   }
 
-  &--right-arrow {
+  &--reject {
     &:before {
       content: "\E012";
     }
   }
 
-  &--star {
+  &--right-arrow {
     &:before {
       content: "\E013";
     }
   }
 
-  &--tick {
+  &--star {
     &:before {
       content: "\E014";
     }
   }
 
-  &--up-arrow {
+  &--tick {
     &:before {
       content: "\E015";
     }
   }
 
-  &--upload {
+  &--up-arrow {
     &:before {
       content: "\E016";
+    }
+  }
+
+  &--upload {
+    &:before {
+      content: "\E017";
     }
   }
 }

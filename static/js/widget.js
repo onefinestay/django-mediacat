@@ -1,3 +1,5 @@
+require('../css/widget');
+
 (function ($, window, document, undefined) {
   "use strict";
 
@@ -27,8 +29,8 @@
     init: function() {
       var $el = $(this.element);
       this.input = $el.find('input');
-      this.button = $el.find('.mediacat-mediainput-trigger');
-      this.preview = $el.find('.mediacat-mediainput-preview');
+      this.button = $el.find('.mediacat-mediainput-widget__trigger');
+      this.preview = $el.find('.mediacat-mediainput-widget__preview');
       this.button.on('click', $.proxy(this.click, this));
       this.ul = null;
     },

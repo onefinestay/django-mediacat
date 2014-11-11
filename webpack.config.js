@@ -4,6 +4,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
   cache: true,
   entry: {
+    widget: './static/js/widget',
     library: './static/js/library'
   },
   output: {
