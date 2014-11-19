@@ -18,7 +18,7 @@ def thumb(url, **kwargs):
     # just for code clarity
     thumbor_kwargs = kwargs
     if not 'fit_in' in thumbor_kwargs:
-        thumbor_kwargs['fit_in'] = True
+        thumbor_kwargs['fit_in'] = False
 
     thumbor_kwargs['image_url'] = url
 
