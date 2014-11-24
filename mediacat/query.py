@@ -54,7 +54,7 @@ class MediacatQuerySet(QuerySet):
             base_result_objects = []
             reached_end = False
 
-            for i in range(100):
+            for i in range(1000):
                 try:
                     o = next(base_iter)
                     base_result_objects.append(o)
@@ -63,10 +63,8 @@ class MediacatQuerySet(QuerySet):
                     break
 
             if not self._defer_media:
-                print 'loading media'
                 real_results = self.attach_media(base_result_objects)
             else:
-                print 'not loading media'
                 real_results = base_result_objects
 
             for o in real_results:

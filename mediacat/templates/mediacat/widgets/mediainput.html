@@ -3,9 +3,9 @@
 <div class="mediacat-mediainput-widget" data-crops="{{ crops }}"{% if category %} data-category="{{ category }}"{% endif %} data-image-id="{{ image.pk }}" data-preview-width="{{ width }}">
 	<input id={{ id }} type="hidden" name="{{ name }}" value="{{ value|default:'' }}" />
 	{% if value and crop %}
-	<img width="{{ width }}" class="mediacat-mediainput-preview" src="{% get_crop_url crop=crop width=width %}" />
+	<img width="{{ width }}" class="mediacat-mediainput-widget__preview" src="{% get_crop_url crop=crop width=width %}" />
 	{% else %}
-	<img width="{{ width }}" style="background-color: #ccc;" class="mediacat-mediainput-preview" src="http://placehold.it/{{ width }}x{{ height }}" />
+	<img width="{{ width }}" class="mediacat-mediainput-widget__preview" width="{{ width }}" height="{{ height }}" src="http://placehold.it/{{ width }}x{{ height }}&text=mediacat%20placeholder" />
 	{% endif %}
-	<a href="javascript:;" class="mediacat-mediainput-trigger">Library</a>
+	<a href="javascript:;" class="mediacat-mediainput-widget__trigger"><span class="mediacat-icon mediacat-icon--hairline-image"></span></a>
 </div>

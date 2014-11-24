@@ -1,17 +1,62 @@
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.fields import FieldDoesNotExist
+
 from rest_framework import serializers
 
 from . import models
 
 
 class ImageCropApplicationSerializer(serializers.ModelSerializer):
+    field_label = serializers.SerializerMethodField('get_field_label')
+    object_label = serializers.SerializerMethodField('get_object_label')
+    content_type_label = serializers.SerializerMethodField('get_content_type_label')
+    can_delete = serializers.SerializerMethodField('get_can_delete')
+
+    def get_field_label(self, obj):
+        if obj.object:
+            try:
+                return obj.object._meta.get_field_by_name(obj.field_name)[0].verbose_name
+            except FieldDoesNotExist:
+                return obj.field_name
+        return None
+
+    def get_object_label(self, obj):
+        if obj.object:
+            if hasattr(obj.object, 'get_mediacat_label'):
+                return obj.object.get_mediacat_label()
+            if isinstance(obj.object, ContentType):
+                return obj.object.model_class()._meta.verbose_name_plural.title()
+
+            return unicode(obj.object)
+        return None
+
+    def get_content_type_label(self, obj):
+        if obj.object:
+            return obj.object._meta.verbose_name.title()
+        return None
+
+    def get_can_delete(self, obj):
+        if obj.object:
+            try:
+                field = obj.object._meta.get_field_by_name(obj.field_name)[0]
+                return field.null
+            except FieldDoesNotExist:
+                return True
+        return False
+
 
     class Meta:
         model = models.ImageCropApplication
         fields = (
+            'id',
             'field_name',
             'content_type',
             'object_id',
+            'field_label',
+            'object_label',
+            'content_type_label',
+            'can_delete',
         )
 
 
@@ -45,51 +90,43 @@ class ImageCropSerializer(serializers.ModelSerializer):
 
 
 class ImageAssociationSerializer(serializers.ModelSerializer):
-
     image = serializers.PrimaryKeyRelatedField()
     content_type = serializers.PrimaryKeyRelatedField()
+    object_label = serializers.SerializerMethodField('get_object_label')
+    content_type_label = serializers.SerializerMethodField('get_content_type_label')
+
+    def get_object_label(self, obj):
+        if obj.object:
+            if hasattr(obj.object, 'get_mediacat_label'):
+                return obj.object.get_mediacat_label()
+            if isinstance(obj.object, ContentType):
+                return obj.object.model_class()._meta.verbose_name_plural.title()
+
+            return unicode(obj.object)
+        return None
+
+    def get_content_type_label(self, obj):
+        if obj.object:
+            return obj.object._meta.verbose_name.title()
+        return None
 
     class Meta:
         model = models.ImageAssociation
         fields = (
+            'id',
             'content_type',
             'object_id',
             'canonical',
             'image',
+            'object_label',
+            'content_type_label',
         )
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    associations = ImageAssociationSerializer(many=True, required=False)
     url = serializers.Field(source='get_original_url')
     thumbnail = serializers.Field(source='get_thumbnail_url')
     can_delete = serializers.Field(source='can_delete')
-
-    associated_content_type = serializers.IntegerField(
-        required=False,
-        write_only=True)
-    associated_object_id = serializers.IntegerField(
-        required=False,
-        write_only=True)
-
-    def restore_object(self, attrs, instance=None):
-        # Pop the attrs because Django no likey
-        associated_content_type = attrs.pop('associated_content_type', None)
-        associated_object_id = attrs.pop('associated_object_id', None)
-
-        instance = super(ImageSerializer, self).restore_object(
-            attrs,
-            instance=instance
-        )
-
-        if associated_content_type and associated_object_id:
-            association = models.ImageAssociation(
-                content_type_id=associated_content_type,
-                object_id=associated_object_id,
-                canonical=True
-            )
-            instance._m2m_data['associations'] = [association]
-        return instance
 
     class Meta:
         model = models.Image
@@ -103,9 +140,6 @@ class ImageSerializer(serializers.ModelSerializer):
             'height',
             'width',
             'can_delete',
-            'associations',
-            'associated_content_type',
-            'associated_object_id',
             'url',
             'thumbnail',
         )
