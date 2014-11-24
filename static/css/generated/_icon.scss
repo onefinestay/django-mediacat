@@ -14,7 +14,7 @@
 .#{$ns}-icon {
   display: inline-block;
   font-size: 24px;
-  vertical-align: bottom;
+  vertical-align: top;
 
   &:before {
     display: block;
@@ -25,6 +25,14 @@
     font-weight: normal;
     text-align: center;    
     width: 24px;
+  }
+
+  &--medium {
+    font-size: 16px;
+
+    &:before {
+      width: 16px;
+    }
   }
 
   &--small {
@@ -59,63 +67,117 @@
     }
   }
 
-  &--detail {
+  &--delete {
     &:before {
       content: "\E005";
     }
   }
 
-  &--dot {
+  &--detail {
     &:before {
       content: "\E006";
     }
   }
 
-  &--down-arrow {
+  &--dot {
     &:before {
       content: "\E007";
     }
   }
 
-  &--empty-star {
+  &--down-arrow {
     &:before {
       content: "\E008";
     }
   }
 
-  &--filmstrip {
+  &--empty-star {
     &:before {
       content: "\E009";
     }
   }
 
-  &--grid {
+  &--filmstrip {
     &:before {
       content: "\E00A";
     }
   }
 
-  &--reject {
+  &--grid {
     &:before {
       content: "\E00B";
     }
   }
 
-  &--star {
+  &--hairline-delete {
     &:before {
       content: "\E00C";
     }
   }
 
-  &--tick {
+  &--hairline-down-arrow {
     &:before {
       content: "\E00D";
     }
   }
 
-  &--upload {
+  &--hairline-image {
     &:before {
       content: "\E00E";
+    }
+  }
+
+  &--hairline-tick {
+    &:before {
+      content: "\E00F";
+    }
+  }
+
+  &--hairline-up-arrow {
+    &:before {
+      content: "\E010";
+    }
+  }
+
+  &--left-arrow {
+    &:before {
+      content: "\E011";
+    }
+  }
+
+  &--reject {
+    &:before {
+      content: "\E012";
+    }
+  }
+
+  &--right-arrow {
+    &:before {
+      content: "\E013";
+    }
+  }
+
+  &--star {
+    &:before {
+      content: "\E014";
+    }
+  }
+
+  &--tick {
+    &:before {
+      content: "\E015";
+    }
+  }
+
+  &--up-arrow {
+    &:before {
+      content: "\E016";
+    }
+  }
+
+  &--upload {
+    &:before {
+      content: "\E017";
     }
   }
 }

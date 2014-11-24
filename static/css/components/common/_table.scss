@@ -1,0 +1,49 @@
+.#{$ns}-table {
+  font-weight: 100;
+  width: 100%;
+  color: #8693A6;
+
+  border-collapse: collapse;
+  margin: 0;
+
+
+
+  th {
+    font-weight: 100;
+  }
+
+  &--grid {
+    th,
+    td {
+      padding: 5px;
+    }
+  }
+
+  &--simple {
+    tr {
+      td,
+      th {
+        border-bottom: 1px #3D4859 solid;
+        line-height: 24px;
+        padding: 5px 0;
+      }
+
+      &:last-child {
+        td,
+        th {
+          border-bottom-width: 0;
+        }
+      }
+    }
+
+    th {
+      color: #8693A6;
+      padding-right: 10px;
+    }
+
+    td {
+      text-align: right;
+      color: #A9B8CE;
+    }
+  }
+}

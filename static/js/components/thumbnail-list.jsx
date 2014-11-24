@@ -1,25 +1,25 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
+var cx = React.addons.classSet;
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var Panel = require('./panel');
-var Toolbar = require('./toolbar');
-var FluxMixin = require('./flux-mixin');
-var KeyboardMixin = require('./keyboard-mixin');
+var List = require('./common/list');
+var Panel = require('./common/panel');
+var Select = require('./common/select');
+var Toolbar = require('./common/toolbar');
+
+var FluxMixin = require('./mixins/flux-mixin');
+var KeyboardMixin = require('./mixins/keyboard-mixin');
 
 var Thumbnail = require('./thumbnail');
-var Select = require('./select');
-
 var elMetrics = require('../utils/element-metrics');
 
 var minSize = 145;
 
+
 var ThumbnailList = React.createClass({
-  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media"), KeyboardMixin],
+  mixins: [PureRenderMixin, FluxMixin, StoreWatchMixin("Media", "Dragging"), KeyboardMixin],
 
   getInitialState: function() {
     return {
@@ -30,6 +30,8 @@ var ThumbnailList = React.createClass({
 
   getStateFromFlux: function() {
     return {
+      selectedMedia: this.getFlux().store('Media').state.get('selectedMedia'),
+      draggedMedia: this.getFlux().store('Dragging').state.get('draggingMedia'),
       sortOptions: this.getFlux().store('Media').sortOptions,
       sortBy: this.getFlux().store('Media').state.get('sortBy'),
       media: this.getFlux().store('Media').getSortedMedia()
@@ -179,25 +181,34 @@ var ThumbnailList = React.createClass({
       size = (this.state.width - (numPerRow + 1)) / numPerRow;
     }
 
-    var thumbnails = media.map(thumbnail =>
-      (<li className="mediacat-list__item mediacat-list__item--thumbnail">
-        <Thumbnail size={size} key={thumbnail.get('id')} thumbnail={thumbnail} />
-      </li>)
-    );
+    var thumbnails = media.map(thumbnail => <Thumbnail
+      userIsDragging={!!this.state.draggedMedia}
+      dragged={thumbnail.get('id') === this.state.draggedMedia}
+      selected={thumbnail.get('id') === this.state.selectedMedia}
+      size={size}
+      key={thumbnail.get('id')}
+      thumbnail={thumbnail} />);
 
     var toolbar = (
-      <Toolbar theme="panel">
-        <div className="mediacat-toolbar__spacer" />
+      <Toolbar.Toolbar theme="dark-grey">
+        <Toolbar.Spacer />
         <label>Sort by:</label>
         <Select value={this.state.sortBy} ref="sortBy" options={this.state.sortOptions} onSelect={this.setSort} placeholder="Sort by" />
-      </Toolbar>
+      </Toolbar.Toolbar>
     );
 
+    var fill = this.props.mode === 'grid';
+    var height = this.props.mode === 'grid' ? null : 280;
+    var listType = this.props.mode === 'filmstrip' ? 'horizontal' : 'grid';
+
+
     return (
-      <Panel mode={this.props.mode} toolbar={toolbar}>
-        <ul className="mediacat-thumbnail-list mediacat-list mediacat-list--thumbnails" ref="content">
-          {thumbnails.toJS()}
-        </ul>
+      <Panel fill={fill} height={height} mode={this.props.mode} toolbar={toolbar}>
+        <div className="mediacat-thumbnails">
+          <List ref="content" type={listType}>
+            {thumbnails.toJS()}
+          </List>
+        </div>
       </Panel>
     );
   }

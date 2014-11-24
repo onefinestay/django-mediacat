@@ -1,11 +1,9 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
-var RadialLoader = require('./loaders/radial');
+var RadialLoader = require('./common/radial');
+
 
 var DetailProxyImage = React.createClass({
   mixins: [PureRenderMixin],
@@ -51,31 +49,34 @@ var DetailProxyImage = React.createClass({
     var placeholderSrc = this.props.placeholderSrc;
 
     var containerStyle = {
-      width: this.props.width + 'px',
-      height: this.props.height + 'px',
-      top: this.props.top + 'px',
-      left: this.props.left + 'px'
+      width: this.props.width,
+      height: this.props.height,
+      top: this.props.top,
+      left: this.props.left
     };
 
     var classes = {
-      'mediacat-detail__proxy-image': true,
-      'mediacat-detail__proxy-image--preloaded': this.state.alreadyLoaded ? true : false
+      'detail__proxy-image': true
     };
 
+    var states = {
+      'preloaded': this.state.alreadyLoaded ? true : false
+    }
+
     var placeholderStyle = {
-      'background-image': `url('${ placeholderSrc }')`      
+      'backgroundImage': `url('${ placeholderSrc }')`
     };
 
     var style = {
       'opacity': this.state.loaded ? 100 : 0,
-      'background-image': this.state.loaded ? `url('${ src }')` : null
+      'backgroundImage': this.state.loaded ? `url('${ src }')` : null
     };
 
     var spinnerStyle = {
       'opacity': this.state.loaded ? 0 : 100
     };
     return (
-      <div className={cx(classes)} style={containerStyle}>
+      <div className={cx(classes, {states})} style={containerStyle}>
         <div className="mediacat-detail__proxy-image__placeholder" style={placeholderStyle} />
         <div className="mediacat-detail__proxy-image__bg" style={style}>
           <img className="mediacat-detail__proxy-image__image" src={src} />

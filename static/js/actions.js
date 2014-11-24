@@ -1,5 +1,3 @@
-"use strict";
-
 var Constants = require('./constants');
 
 var CropService = require('./services/crop-service');
@@ -42,11 +40,17 @@ var Actions = {
         image: mediaId
       };
 
-      var request = cropService.get(query).then(function(response) {
+      var cropRequest = cropService.get(query).then(function(response) {
         var data = response.body;     
-        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request, mediaId});
+        this.dispatch(Constants.CROP_GET_SUCCESS, {data, request: cropRequest, mediaId});
       }.bind(this));
-      this.dispatch(Constants.CROP_GET_START, {media, request});
+      this.dispatch(Constants.CROP_GET_START, {media, request: cropRequest});
+
+      var associationRequest = associationService.get(query).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.ASSOCIATION_GET_SUCCESS, {data, request: associationRequest, mediaId});
+      }.bind(this));
+      this.dispatch(Constants.ASSOCIATION_GET_START, {media, request: associationRequest});
     },
 
     setRating: function(media, rating) {
@@ -64,11 +68,8 @@ var Actions = {
         };
       });
       
-      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
-        var data = response.body;
-        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
-      }.bind(this));
-      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
+      // This is fire-and-forget, because the result of the action is already in the stores and UI
+      mediaService.patchMany(patchData.toJS());
     },
 
     moveAfter: function(media, target) {
@@ -81,12 +82,8 @@ var Actions = {
         }; 
       });
 
-      var request = mediaService.patchMany(patchData.toJS()).then(function(response) {
-        var data = response.body;
-        this.dispatch(Constants.MEDIA_PATCHMANY_SUCCESS, {data});
-      }.bind(this));
-
-      this.dispatch(Constants.MEDIA_PATCHMANY_START, {request, data: patchData});
+      // This is fire-and-forget, because the result of the action is already in the stores and UI
+      mediaService.patchMany(patchData.toJS());
     },
 
     addAssociation: function(category, media) {
@@ -112,7 +109,16 @@ var Actions = {
 
     setSort: function(sort) {
       this.dispatch(Constants.SET_MEDIA_SORT, {sort});
-    }
+    },
+
+    delete: function(media) {
+      var mediaId = media.get('id');
+      var request = mediaService.delete(mediaId).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.MEDIA_DELETE_SUCCESS, {data, request, mediaId});
+      }.bind(this));
+      this.dispatch(Constants.MEDIA_DELETE_START, {request, media});
+    },
   },
 
   crop: {
@@ -142,6 +148,19 @@ var Actions = {
         this.dispatch(Constants.CROP_SAVE_SUCCESS, {data, request, cropId: crop.get('uuid')});
       }.bind(this));
       this.dispatch(Constants.CROP_SAVE_START, {request, crop});
+    },
+
+    delete: function(crop) {
+      var cropId = crop.get('uuid');
+      var request = cropService.delete(cropId).then(function(response) {
+        var data = response.body;
+        this.dispatch(Constants.CROP_DELETE_SUCCESS, {data, request, cropId});
+      }.bind(this));
+      this.dispatch(Constants.CROP_DELETE_START, {request, crop});
+    },
+
+    deleteApplication: function(crop, application) {
+      this.dispatch(Constants.CROP_DELETE_APPLICATION, {crop, application});
     },
 
     pick: function(crop, previewWidth) {
@@ -198,7 +217,6 @@ var Actions = {
     },
 
     fetchChildrenError: function(response) {
-      console.log(response);
     },
 
     loadChildren: function(category) {
@@ -227,6 +245,7 @@ var Actions = {
       var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
         var data = response.body;
         this.dispatch(Constants.UPLOAD_SUCCESS, {data, id, file, categoryPath, request});
+        this.dispatch(Constants.ASSOCIATIONS_CREATE_SUCCESS, {categoryPath});
       }.bind(this));
       this.dispatch(Constants.UPLOAD_START, {id, file, categoryPath, request});
     }

@@ -3,26 +3,32 @@ $ns: mediacat;
 @import './variables/colors';
 @import './variables/dimensions';
 @import './variables/fonts';
-@import './variables/loaders';
 
+@import './components/common/action';
+@import './components/common/action-bar';
 @import './components/common/button';
 @import './components/common/column';
-
 @import './components/common/input';
 @import './components/common/list';
+@import './components/common/loaders';
 @import './components/common/panel';
+@import './components/common/progress-bar';
 @import './components/common/scrollpane';
 @import './components/common/select';
+@import './components/common/table';
 @import './components/common/tabs';
 @import './components/common/toolbar';
 
 @import './components/application';
+@import './components/applications-table';
+@import './components/associations';
 @import './components/categories';
 @import './components/crop-list';
 @import './components/cropper';
 @import './components/detail-image';
 @import './components/document';
 @import './components/information-panel';
+@import './components/information-section';
 @import './components/proxy-image';
 @import './components/thumbnail';
 @import './components/uploads';

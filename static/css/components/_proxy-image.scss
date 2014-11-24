@@ -3,10 +3,6 @@
   position: relative;
   width: 100%;
 
-  &--preloaded > {
-    transition-property: none;
-  }  
-
   &__bg {
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -14,12 +10,20 @@
     height: 100%;
     opacity: 0;
     transition: opacity 1s ease;      
-    width: 100%;     
+    width: 100%;
   }
 
   &__image {
     display: block;
     position: absolute;      
     user-drag: none;
+  }
+
+  &--disable-animation &__bg {
+    transition: none;
+  }
+
+  &--is-preloaded &__b {
+    transition: none;
   }
 }

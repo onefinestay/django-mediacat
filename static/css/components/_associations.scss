@@ -1,0 +1,31 @@
+.#{$ns}-association {
+  border-bottom: 1px #3D4859 solid;
+  padding: 10px 0;
+  color: #8693A6;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+
+  &__info {
+    flex-grow: 1;
+    padding-right: 10px;
+  }
+
+  &__actions {
+    flex-grow: 0;
+    align-self: center;
+  }
+
+  &__type {
+    font-size: 12px;
+    color: #66748A;
+  }
+}
+
+.#{$ns}-list {
+  &__item:last-child {
+    .#{$ns}-association {
+      border-bottom-width: 0;
+    }
+  }
+}

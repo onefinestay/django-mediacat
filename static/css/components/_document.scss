@@ -3,34 +3,4 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-
-  &--grid {
-    > .mediacat-scrollpane {
-      flex-grow: 1;
-    }
-  }
-
-  &--detail,
-  &--filmstrip {
-    > .panel {
-      flex-grow: 0;
-      flex-shrink: 0;
-      height: 280px;
-    }    
-
-    .mediacat-scrollpane {
-      &__content {
-        display: inline-block;
-      }
-
-      .#{$ns}-thumbnail-list {
-        display: inline-block;
-        white-space: nowrap;
-
-        li {
-          display: inline-block;
-        }
-      }
-    }    
-  }
 }

@@ -18,7 +18,7 @@ class Keyboard {
   pop() {
     if (this.keyStack.count() > 1) {
       Mousetrap.reset();      
-      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1).toVector();
+      this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1).toList();
       this.keyStack.last().forEach(function(k) {
         Mousetrap.bind(k.key, k.action);
       })
@@ -36,7 +36,7 @@ class Keyboard {
     var index = this.keyStack.last().findIndex(k => k.key === key);
 
     if (index >= 0) {
-      this.keyStack = this.keyStack.updateIn([-1], keys => keys.splice(index, 1).toVector());
+      this.keyStack = this.keyStack.updateIn([-1], keys => keys.splice(index, 1).toList());
     }
     Mousetrap.unbind(key);
   }

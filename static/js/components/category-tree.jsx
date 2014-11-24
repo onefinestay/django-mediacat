@@ -1,23 +1,22 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
-var ScrollPane = require('./scrollpane');
+var LinearLoader = require('./common/linear');
+var Panel = require('./common/panel');
+
 var CategoryTree = require('./category-tree');
-var FluxMixin = require('./flux-mixin');
-var LinearLoader = require('./loaders/linear');
-var Icon = require('./icon');
+var FluxMixin = require('./mixins/flux-mixin');
+
+var Icon = require('./common/icon');
 
 
 var CategoryTreePlaceholderNode = React.createClass({
   render: function() {
     var style = {
-      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px'
+      'paddingLeft': 5 + (15 * (this.props.depth - 1))
     };
 
     return (
@@ -25,7 +24,7 @@ var CategoryTreePlaceholderNode = React.createClass({
         <div className="mediacat-category">
           <span className="mediacat-category__info" style={style}>
             <span className="mediacat-category__handle" />
-            <span className="mediacat-category__label mediacat-category__label--loading">Loading...</span>
+            <span className="mediacat-category__label mediacat-category__label--is-loading">Loading...</span>
             <div className="mediacat-category__count">-</div>            
           </span>
         </div>
@@ -124,36 +123,39 @@ var CategoryTreeNode = React.createClass({
     var hasChildren = node.get('has_children');
 
     var classes = {
-      'mediacat-category': true,
-      'mediacat-category--selected': this.state.selected
+      'category': true
+    };
+
+    var states = {
+      'selected': this.state.selected,
+      'hovered': this.state.hover,
+      'open': isOpen
     };
 
     var handleClasses = {
-      'mediacat-category__handle': true,
-      'mediacat-category__handle--open': isOpen
+      'category__handle': true
     };
 
     var style = {
-      'padding-left': 5 + (15 * (this.props.depth - 1)) + 'px',
+      'paddingLeft': 5 + (15 * (this.props.depth - 1)),
       'cursor': this.cursor()
     };
 
     var labelClasses = {
-      "mediacat-category__info": true,
-      "mediacat-is-hovered": this.state.hover
+      "category__info": true
     };
 
     var count = node.get('count');
 
     return (
       <li className="mediacat-list__item mediacat-list__item--category">
-        <div className={cx(classes)}>
-          <a style={style} className={cx(labelClasses)} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
-            <span className={cx(handleClasses)}>
+        <div className={cx(classes, {states})}>
+          <a style={style} className={cx(labelClasses, {states})} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
+            <span className={cx(handleClasses, {states})}>
               {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : null}
             </span>
             <span className="mediacat-category__label">{node.get('name')}</span>
-            {this.state.fetchingMedia ? <LinearLoader /> : <div className="mediacat-category__count">{count || '-'}</div>}
+            {this.state.fetchingMedia ? <div className="mediacat-category__loader"><LinearLoader size="tiny" /></div> : <div className="mediacat-category__count">{count || '-'}</div>}
           </a>
           {isOpen && hasChildren && loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories">{nodes.toJS()}</ul> : null}
           {isOpen && hasChildren && !loadedChildren ? <ul className="mediacat-list mediacat-list--sub-categories"><CategoryTreePlaceholderNode depth={depth + 1} /></ul> : null}
@@ -179,11 +181,11 @@ var CategoryTree = React.createClass({
     var nodes = this.state.categories.map((node, i) => <CategoryTreeNode key={node.get('path')} node={node} depth={1} />);
 
     return (
-      <ScrollPane>
+      <Panel fill={true}>
         <ul className="mediacat-list mediacat-list--categories">
           {nodes.toJS()}
         </ul>
-      </ScrollPane>
+      </Panel>
     );
   }
 });

@@ -81,10 +81,13 @@ var CropStore = Fluxxor.createStore({
       constants.CROP_SELECTED, this.onCropSelect,
       constants.CROP_DESELECTED, this.onCropDeselect,
       constants.CROP_MOVE, this.onCropMove,
+      constants.CROP_DELETE_APPLICATION, this.onDeleteApplication,
       constants.CROP_RESIZE, this.onCropResize,
       constants.CROP_ADD, this.onCropAdd,
       constants.CROP_SAVE_START, this.onSaveStart,
       constants.CROP_SAVE_SUCCESS, this.onSaveSuccess,
+      constants.CROP_DELETE_START, this.onDeleteStart,
+      constants.CROP_DELETE_SUCCESS, this.onDeleteSuccess,
       constants.CROP_PICK_START, this.onPickStart,
       constants.CROP_PICK_SUCCESS, this.onPickSuccess    
     );
@@ -124,6 +127,9 @@ var CropStore = Fluxxor.createStore({
     var dY = payload.dY;
 
     var scale;
+    var preferWidth;
+    var fixedWidth;
+    var fixedHeight;
 
     // What point do we anchor around, and how should we multiply the X and Y deltas;
     var anchor = {
@@ -140,8 +146,10 @@ var CropStore = Fluxxor.createStore({
 
     if (Math.abs(dX) >= Math.abs(dY)) {
       scale = (cropWidth + (anchor[2] * dX)) / cropWidth;
+      preferWidth = true;
     } else {
       scale = (cropHeight + (anchor[3] * dY)) / cropHeight;
+      preferWidth= false;
     }
 
     var x = (cropData[anchor[0][0]] + cropData[anchor[0][1]]) / 2;
@@ -156,6 +164,23 @@ var CropStore = Fluxxor.createStore({
       transformedData = scaleCoordinates(transformedData, overflow.reverseScale, x, y);
     }
 
+    if (preferWidth) {
+      fixedHeight = (transformedData.x2 - transformedData.x1) / cropData.ratio;
+
+      if (transformedData.y1 === cropData.y1) {
+        transformedData.y2 = transformedData.y1 + fixedHeight;
+      } else {
+        transformedData.y1 = transformedData.y2 - fixedHeight;
+      }
+    } else {
+      fixedWidth = (transformedData.y2 - transformedData.y1) * cropData.ratio;
+
+      if (transformedData.x1 === cropData.x1) {
+        transformedData.x2 = transformedData.x1 + fixedWidth;
+      } else {
+        transformedData.x1 = transformedData.x2 - fixedWidth;
+      }
+    }
     this.updateCrop(cropIndex, crop, transformedData);
   },
 
@@ -185,6 +210,18 @@ var CropStore = Fluxxor.createStore({
     }
 
     this.updateCrop(cropIndex, crop, transformedData);
+  },
+
+  onDeleteApplication: function(payload) {
+    var crop = payload.crop;
+    var application = payload.application;
+
+    var cropIndex = this.state.get('crops').indexOf(crop);
+    var applicationIndex = this.state.getIn(['crops', cropIndex, 'applications']).indexOf(application);
+
+    this.state = this.state.updateIn(['crops', cropIndex, 'applications'], applications => applications.splice(applicationIndex, 1));
+    this.state = this.state.updateIn(['crops', cropIndex], c => c.set('changed', true));
+    this.emit('change');
   },
 
   updateCrop: function(index, crop, data) {
@@ -310,8 +347,6 @@ var CropStore = Fluxxor.createStore({
   onSaveSuccess: function(payload) {
     var crop = Immutable.fromJS(payload.data);
     var cropId = payload.cropId;
-    var index;
-
     var requests = this.state.get('saveRequests');
     requests = requests.delete(cropId);
     this.state = this.state.set('saveRequests', requests);
@@ -320,6 +355,29 @@ var CropStore = Fluxxor.createStore({
 
     if (index !== -1) {
       this.state = this.state.updateIn(['crops', index], c => crop);
+    }
+    this.emit('change');
+  },
+
+  onDeleteStart: function(payload) {
+    var crop = payload.crop;
+    var request = payload.request;
+    var requests = this.state.get('deleteRequests', Immutable.Map());
+    requests = requests.set(crop.get('uuid'), request);
+    this.state = this.state.set('deleteRequests', requests);
+    this.emit('change');
+  },
+
+  onDeleteSuccess: function(payload) {
+    var cropId = payload.cropId;
+    var requests = this.state.get('deleteRequests');
+    requests = requests.delete(cropId);
+    this.state = this.state.set('deleteRequests', requests);
+
+    var index = this.state.get('crops').findIndex(c => c.get('uuid') === cropId);
+
+    if (index !== -1) {
+      this.state = this.state.updateIn(['crops'], crops => crops.splice(index, 1));
     }
     this.emit('change');
   },

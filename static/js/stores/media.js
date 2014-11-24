@@ -59,10 +59,11 @@ var MediaStore = Fluxxor.createStore({
       constants.MEDIA_GET_SUCCESS, this.onMediaGetSuccess,    
       constants.MEDIA_SELECTED, this.onMediaSelect,
       constants.UPLOAD_SUCCESS, this.onUploadSuccess,
-      constants.ASSOCIATIONS_CREATE_START, this.onAssociationsCreateStart,
       constants.SET_VIEW_MODE, this.onSetViewMode,
       constants.CROP_SELECTED, this.onCropSelect,
       constants.SET_MEDIA_SORT, this.onSetSort,
+      constants.MEDIA_DELETE_START, this.onDeleteStart,
+      constants.MEDIA_DELETE_SUCCESS, this.onDeleteSuccess,
       constants.MEDIA_SET_RATING, this.onSetRating,
       constants.MEDIA_MOVE_BEFORE, this.onMoveBefore,
       constants.MEDIA_MOVE_AFTER, this.onMoveAfter      
@@ -218,7 +219,7 @@ var MediaStore = Fluxxor.createStore({
       if (payload.category.get('accepts_images') && state.get('viewMode') === 'detail') {
         state = state.set('viewMode', 'grid');  
       }
-      state = state.set('media', Immutable.Sequence());
+      state = state.set('media', Immutable.List());
       state = state.set('selectedMedia', null);
       state = state.set('selectedCrop', null);      
     })
@@ -233,6 +234,29 @@ var MediaStore = Fluxxor.createStore({
       this.state = this.state.updateIn(['media'], media => media.push(newImage));
       this.emit('change');
     }
+  },
+
+  onDeleteStart: function(payload) {
+    var media = payload.media;
+    var request = payload.request;
+    var requests = this.state.get('deleteRequests', Immutable.Map());
+    requests = requests.set(media.get('id'), request);
+    this.state = this.state.set('deleteRequests', requests);
+    this.emit('change');
+  },
+
+  onDeleteSuccess: function(payload) {
+    var mediaId = payload.mediaId;
+    var requests = this.state.get('deleteRequests');
+    requests = requests.delete(mediaId);
+    this.state = this.state.set('deleteRequests', requests);
+
+    var index = this.state.get('media').findIndex(m => m.get('id') === mediaId);
+
+    if (index !== -1) {
+      this.state = this.state.updateIn(['media'], media => media.splice(index, 1));
+    }
+    this.emit('change');
   }
 });
 

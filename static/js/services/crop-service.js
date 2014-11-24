@@ -1,7 +1,7 @@
 var RestService = require('./rest-service');
 
 var request = require('superagent');
-var bluebird = require('../utils/superagent-bluebird');
+var promise = require('../utils/superagent-promise');
 var django = require('../utils/superagent-django');
 
 class CropService extends RestService {
@@ -14,7 +14,7 @@ class CropService extends RestService {
     return request
       .get(url)
       .use(django)
-      .use(bluebird)      
+      .use(promise)
       .set('Accept', 'application/json')
       .promise();
   }

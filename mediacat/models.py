@@ -66,7 +66,7 @@ class Image(models.Model):
 
         return thumb(
             url,
-            fit_in=True,
+            fit_in=False,
             width=width,
             filters=['quality({})'.format(85)]
         )
@@ -224,9 +224,10 @@ class ImageCrop(models.Model):
 
     def get_url(self, width):
         kwargs = {
-            'fit_in': True,
+            'fit_in': False,
             'crop': self.corners,
             'width': width,
+            'height': self.height_at_width(width),
             'filters': ['quality({})'.format(85)],
         }
         key = self.get_url_cache_key(**kwargs)

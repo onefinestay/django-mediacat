@@ -1,0 +1,31 @@
+.#{$ns}-action {
+  text-align: left;
+  padding: 5px 7px;
+  line-height: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  color: darken(#D4D7DE, 15);
+
+  & + & {
+    border-left: 1px solid #121419;
+  }
+
+  &--is-disabled {
+    opacity: 0.25;
+  }
+
+  &--is-enabled:hover {
+    color: #D4D7DE;
+  }
+
+  &--fill {
+    flex-grow: 1;
+  }
+
+  &__caption {
+    margin-left: 5px;
+    line-height: 24px;
+    display: block;
+  }
+}

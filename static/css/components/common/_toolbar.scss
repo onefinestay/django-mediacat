@@ -9,11 +9,11 @@
   line-height: 38px;
   padding: $toolbar-el-spacing;
 
-  &--theme-column {
+  &--theme-white-on-teal {
     background-color: $header-bg;
   }
 
-  &--theme-panel {
+  &--theme-dark-grey {
     background-color: $panel-toolbar-bg;
     color: $panel-toolbar-text;   
     height: 41px;
@@ -26,6 +26,11 @@
     margin-right: $toolbar-el-spacing;
   }
 
+  &__title {
+    display: inline-block;
+    flex-grow: 1;
+  }
+
   &__spacer {
     flex-grow: 1;
   }
@@ -33,11 +38,12 @@
   &__separator {
     flex-grow: 0;
     flex-shrink: 0;
-    width: $toolbar-el-spacing;
-  }
 
-  .panel > & { 
-    .separator {
+    &--theme-white-on-teal {
+      width: $toolbar-el-spacing;
+    }
+
+    &--theme-dark-grey {
       width: $panel-toolbar-el-spacing;
     }
   }

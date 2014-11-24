@@ -1,13 +1,10 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
-var FluxMixin = require('./flux-mixin');
 
+var cx = require('./bem-cx');
+var FluxMixin = require('./mixins/flux-mixin');
 
 var DetailProxyImage = require('./detail-proxy-image');
 var Cropper = require('./cropper');
@@ -26,7 +23,6 @@ var Detail = React.createClass({
   getStateFromFlux: function() {
     var selectedMedia = this.getFlux().store('Media').getSelectedMedia();
     var selectedCrop = this.getFlux().store('Crops').getSelectedCrop();
-
 
     return {
       crop: selectedCrop,
@@ -109,8 +105,8 @@ var Detail = React.createClass({
     displayLeft = (this.state.width - displayWidth) / 2;    
 
     var classes = {
-      'mediacat-detail': true,
-      'mediacat-detail--filmstrip': this.props.mode === 'filmstrip',
+      'detail': true,
+      'detail--filmstrip': this.props.mode === 'filmstrip',
     };
 
     if (readyToDisplay && crop) {

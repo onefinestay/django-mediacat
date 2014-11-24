@@ -1,16 +1,13 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
 
 var Navigation = require('./navigation');
 var Main = require('./main');
 var Information = require('./information');
-var DragLayer = require('./drag_layer');
+var DragLayer = require('./drag-layer');
 
-var FluxMixin = require('./flux-mixin');
-var KeyboardMixin = require('./keyboard-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
+var KeyboardMixin = require('./mixins/keyboard-mixin');
 
 
 var Application = React.createClass({
@@ -20,9 +17,11 @@ var Application = React.createClass({
     return (
       <div className="mediacat-application">
         <DragLayer />
-        <Navigation />
-        <Main />
-        <Information />
+        <div className="mediacat-application__flex-container">
+          <Navigation />
+          <Main />
+          <Information />
+        </div>
       </div>
     );
   }

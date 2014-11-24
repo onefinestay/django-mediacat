@@ -1,14 +1,10 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
 var Fluxxor = require("fluxxor");
-var FluxMixin = require('./flux-mixin');
+var FluxMixin = require('./mixins/flux-mixin');
 var moment = require('moment');
 var Immutable = require('immutable');
-var Icon = require('./icon');
+var Icon = require('./common/icon');
 
 var Rating = React.createClass({
   mixins: [PureRenderMixin, FluxMixin],
@@ -45,10 +41,10 @@ var Rating = React.createClass({
     var glyphs;
 
     if (this.state.highlight !== null) {
-      glyphs = Immutable.Repeat('star', this.state.highlight).toVector().concat(Immutable.Repeat('empty-star', 5 - this.state.highlight).toVector());
+      glyphs = Immutable.Repeat('star', this.state.highlight).toList().concat(Immutable.Repeat('empty-star', 5 - this.state.highlight).toList());
     } else {
       if (rating !== undefined && rating !== null) {
-        glyphs = Immutable.Repeat('star', rating).toVector().concat(Immutable.Repeat('empty-star', 5 - rating).toVector());
+        glyphs = Immutable.Repeat('star', rating).toList().concat(Immutable.Repeat('empty-star', 5 - rating).toList());
       } else {
         glyphs = Immutable.Repeat('empty-star', 5);
       }

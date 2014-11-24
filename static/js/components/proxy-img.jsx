@@ -1,9 +1,6 @@
-/**
- * @jsx React.DOM
- */
 var React = require('react/addons');
 var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = React.addons.classSet;
+var cx = require('./bem-cx');
 
 
 var ProxyImg = React.createClass({
@@ -107,23 +104,27 @@ var ProxyImg = React.createClass({
     displayLeft = (containerWidth- displayWidth) / 2;
 
     var classes = {
-      'mediacat-proxy-image': true,
-      'mediacat-proxy-image--preloaded': this.state.alreadyLoaded ? true : false
+      'proxy-image': true,
+      'proxy-image--disable-animation': this.props.disableAnimation
     };
+
+    var states = {
+      'preloaded': this.state.alreadyLoaded ? true : false
+    }
 
     var style = {
       'opacity': this.state.loaded ? 100 : 0
     };
 
     var imgStyle = {
-        width: displayWidth + 'px',
-        height: displayHeight + 'px',
-        top: displayTop + 'px',
-        left: displayLeft + 'px'
+        width: displayWidth,
+        height: displayHeight,
+        top: displayTop,
+        left: displayLeft
     };
 
     return (
-      <div className={cx(classes)}>
+      <div className={cx(classes, {states})}>
         <div className="mediacat-proxy-image__bg" style={style}>
           <img className="mediacat-proxy-image__image" src={src} style={imgStyle} draggable={draggable} onDragStart={this.onDragStart} />
         </div>
