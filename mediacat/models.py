@@ -220,7 +220,7 @@ class ImageCrop(models.Model):
         cache.set(key, value)
 
     def height_at_width(self, width):
-        return int(round(width / settings.MEDIACAT_AVAILABLE_CROP_RATIOS[self.key][1]))
+        return int(round(int(width) / settings.MEDIACAT_AVAILABLE_CROP_RATIOS[self.key][1]))
 
     def get_url(self, width):
         kwargs = {
