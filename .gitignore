@@ -5,3 +5,4 @@ node_modules
 npm-debug.log
 django_mediacat.egg-info
 .sass-cache
+dist
