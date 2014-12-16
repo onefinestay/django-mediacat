@@ -160,3 +160,11 @@ class MediaField(models.Field):
         defaults.update(kwargs)
         defaults['widget'] = widget
         return super(MediaField, self).formfield(**defaults)
+
+
+# south compatibility, ignore virtual fields
+try:
+    from south.modelsinspector import add_ignored_fields
+    add_ignored_fields(["^mediacat\.fields\.MediaField"])
+except ImportError:
+    pass

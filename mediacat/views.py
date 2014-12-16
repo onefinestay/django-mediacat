@@ -172,6 +172,8 @@ def crop_pick(request, uuid, width):
     except models.ImageCrop.DoesNotExist:
         return HttpResponseBadRequest()
 
+    width = int(width)
+
     data = {
         'crop_id': crop.pk,
         'image_id': crop.image.pk,
