@@ -20,7 +20,6 @@ def post_save_hook(sender, **kwargs):
 
     applications = getattr(instance, MediaField.get_cache_name(), {})
     ct = ContentType.objects.get_for_model(instance)
-
     with transaction.atomic():
         # Clear existing applications
         ImageCropApplication.objects.filter(
@@ -31,12 +30,13 @@ def post_save_hook(sender, **kwargs):
         new_applications = []
 
         for field_name, crop in applications.items():
-            new_applications.append(ImageCropApplication(
-                object_id=instance.id,
-                content_type=ct,
-                field_name=field_name,
-                crop=crop
-            ))
+            if crop is not None:
+                new_applications.append(ImageCropApplication(
+                    object_id=instance.id,
+                    content_type=ct,
+                    field_name=field_name,
+                    crop=crop
+                ))
 
         if new_applications:
             ImageCropApplication.objects.bulk_create(new_applications)
