@@ -117,7 +117,8 @@ class ImageAssociation(models.Model):
     class Meta:
         unique_together = ('image', 'content_type', 'object_id')
         index_together = [
-            ['image', 'object_id', 'content_type']
+            ['image', 'object_id', 'content_type'],
+            ['object_id', 'content_type']
         ]
 
     def save(self, **kwargs):
