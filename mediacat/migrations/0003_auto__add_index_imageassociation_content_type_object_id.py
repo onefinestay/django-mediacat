@@ -9,12 +9,12 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding index on 'ImageAssociation', fields ['content_type', 'object_id']
-        db.create_index(u'mediacat_imageassociation', ['content_type_id', 'object_id'])
+        db.create_index(u'mediacat_imageassociation', ['object_id', 'content_type_id'])
 
 
     def backwards(self, orm):
         # Removing index on 'ImageAssociation', fields ['content_type', 'object_id']
-        db.delete_index(u'mediacat_imageassociation', ['content_type_id', 'object_id'])
+        db.delete_index(u'mediacat_imageassociation', ['object_id', 'content_type_id'])
 
 
     models = {
