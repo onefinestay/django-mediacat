@@ -63,7 +63,7 @@ install_requires = [
 try:
     from PIL import Image, ImageOps
 except ImportError:
-    install_requires += ["pillow"]
+    install_requires += ["Pillow==2.5.1"]
 
 
 setup(
