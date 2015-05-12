@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 
 from uuidfield import UUIDField
 
-from .backends.thumbor import thumb
+from .backends.imgix import thumb
 from .xmp.extract import extract_xmp_data
 from .exif.extract import extract_exif_data
 
