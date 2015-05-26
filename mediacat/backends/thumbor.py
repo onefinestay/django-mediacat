@@ -6,7 +6,12 @@ from libthumbor import CryptoURL
 
 class Backend(object):
 
-    def thumb(self, url, **kwargs):
+    def thumb(self, image, **kwargs):
+        url = image.url
+
+        if not url:
+            return None
+
         if settings.THUMBOR_BASE_URL:
             # If THUMBOR_BASE_URL is explicity set, use that
             base = settings.THUMBOR_BASE_URL

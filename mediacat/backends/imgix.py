@@ -106,25 +106,34 @@ class UrlHelper(object):
 
 class Backend(object):
 
-    def thumb(self, url, **kwargs):
+    def thumb(self, image, **kwargs):
+        path = image.name
+
+        if not path:
+            return None
+
         builder = UrlBuilder(settings.IMGIX_BASE_URL, use_https=True)
         builder_kwargs = {
             'w': kwargs['width'],
             'h': kwargs['height'],
-            'q': 85,
         }
 
         if 'crop' in kwargs:
+            rect = '{left},{top},{width},{height}'.format(
+                left=kwargs['crop'][0][0],
+                top=kwargs['crop'][0][1],
+                width=kwargs['crop'][1][0] - kwargs['crop'][0][0],
+                height=kwargs['crop'][1][1] - kwargs['crop'][0][1],
+            )
+
             builder_kwargs.update({
-                'fit': 'crop',
-                'left': kwargs['crop'][0][0],
-                'top': kwargs['crop'][0][1],
-                'right': kwargs['crop'][1][0],
-                'bottom': kwargs['crop'][0][1],
+                'auto': 'format',
+                'fit': 'clip',
+                'rect': rect,
             })
         else:
             builder_kwargs.update({
                 'fit': 'clip',
             })
 
-        return builder.create_url(url, **builder_kwargs)
+        return builder.create_url(path, **builder_kwargs)

@@ -62,13 +62,8 @@ class Image(models.Model):
         return self.image_file.url
 
     def get_thumbnail_url(self, width=200):
-        url = self.image_file.url
-
-        if not url:
-            return None
-
         return backend.thumb(
-            url,
+            self.image_file,
             fit_in=False,
             width=width,
             filters=['quality({})'.format(85)]
@@ -239,12 +234,7 @@ class ImageCrop(models.Model):
         if value:
             return value
 
-        url = self.image.image_file.url
-
-        if not url:
-            value = None
-        else:
-            value = backend.thumb(url, **kwargs)
+        value = backend.thumb(self.image.image_file, **kwargs)
 
         cache.set(key, value)
         self.add_url_cache_key(key)
