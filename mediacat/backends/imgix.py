@@ -114,8 +114,8 @@ class Backend(object):
 
         builder = UrlBuilder(settings.IMGIX_BASE_URL, use_https=True)
         builder_kwargs = {
-            'w': kwargs['width'],
-            'h': kwargs['height'],
+            'w': kwargs.get('width', None),
+            'h': kwargs.get('height', None),
         }
 
         if 'crop' in kwargs:
@@ -128,7 +128,7 @@ class Backend(object):
 
             builder_kwargs.update({
                 'auto': 'format',
-                'fit': 'clip',
+                'fit': 'crop',
                 'rect': rect,
             })
         else:
