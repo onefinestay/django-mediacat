@@ -12,9 +12,12 @@ from django.utils.translation import ugettext as _
 
 from uuidfield import UUIDField
 
-from .backends.thumbor import thumb
+from .backends import get_backend
 from .xmp.extract import extract_xmp_data
 from .exif.extract import extract_exif_data
+
+
+backend = get_backend()
 
 
 RATING_CHOICES = (
@@ -59,13 +62,8 @@ class Image(models.Model):
         return self.image_file.url
 
     def get_thumbnail_url(self, width=200):
-        url = self.image_file.url
-
-        if not url:
-            return None
-
-        return thumb(
-            url,
+        return backend.thumb(
+            self.image_file,
             fit_in=False,
             width=width,
             filters=['quality({})'.format(85)]
@@ -237,12 +235,7 @@ class ImageCrop(models.Model):
         if value:
             return value
 
-        url = self.image.image_file.url
-
-        if not url:
-            value = None
-        else:
-            value = thumb(url, **kwargs)
+        value = backend.thumb(self.image.image_file, **kwargs)
 
         cache.set(key, value)
         self.add_url_cache_key(key)
