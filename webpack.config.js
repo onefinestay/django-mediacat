@@ -66,8 +66,8 @@ module.exports = {
     require('postcss-custom-properties')(),
     require('postcss-color-function')(),
     require('postcss-nested')(),
-    require('autoprefixer-core')()
-    //require('cssnano')(),
+    require('autoprefixer-core')(),
+    require('cssnano')(),
     //require('postcss-log-warnings')()
   ]
 };
