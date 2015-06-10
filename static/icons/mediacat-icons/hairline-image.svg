@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>hairline-image</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="hairline-image" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M608,424.636779 L608,224 L160,224 L160,439.022295 L287.393398,311.628896 L286.686292,310.92179 L309.313708,288.294373 L422.45064,401.431304 L503.26903,320.612915 L503.622583,320.966468 L503.976136,320.612915 L608,424.636779 L608,424.636779 Z M608,471.305826 L608,544 L160,544 L160,484.277129 L310.020815,334.256313 L310.020815,334.256313 L445.07821,469.313708 L467.705627,446.686292 L445.785164,424.765828 L503.622583,366.928409 L608,471.305826 L608,471.305826 L608,471.305826 Z M128,192 L128,576 L640,576 L640,192 L128,192 L128,192 Z M544,320 C561.673112,320 576,305.673112 576,288 C576,270.326888 561.673112,256 544,256 C526.326888,256 512,270.326888 512,288 C512,305.673112 526.326888,320 544,320 L544,320 Z" id="Rectangle-50" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

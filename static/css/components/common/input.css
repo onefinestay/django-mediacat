@@ -1,0 +1,27 @@
+.mediacat-input {
+  box-shadow: inset 0 1px 0 0 var(--header-button-shadow);
+  display: block;
+  font-weight: 300;
+  height: 30px;
+  margin: 0;
+  width: 100%;
+
+  &--search,
+  [type=search] {
+    border: 0;      
+    border-radius: 2px;
+    flex-grow: 1;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    height: 38px;
+    line-height: 28px;
+    padding: 5px 10px 5px 5px;
+  }
+
+  &--hidden-file {
+    height: 0;
+    position: absolute;
+    visibility: hidden;
+    width: 0;
+  }
+}

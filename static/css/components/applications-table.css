@@ -1,0 +1,19 @@
+.mediacat-applications-table {
+  background-color: rgba(0, 0, 0, .25);
+  border-bottom: 1px solid color(rgb(35, 40, 48) lightness(-7.5%));  
+  box-shadow: inset 0 1px 0 0 color(rgb(35, 40, 48) lightness(-2.5%));
+
+  th,
+  td {
+    border-right: 1px solid color(rgb(35, 40, 48) lightness(-7.5%));
+    font-size: 12px;
+
+    &:last-child {
+      border-right-width: 0;
+    }
+  }
+
+  th {
+    border-bottom: 1px solid color(rgb(35, 40, 48) lightness(-7.5));
+  }
+}

@@ -1,0 +1,41 @@
+.mediacat-information {
+  > .mediacat-tabs {
+    flex-grow: 1;
+  }
+
+  .media-rating {
+    .no-rating {
+      opacity: .25;
+    }
+
+    .mediacat-icon--reject {
+      opacity: .25;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.mediacat-information-panel {
+  background-color: var(--sidebar-bg);
+  flex-shrink: 0;
+  overflow-y: scroll;
+  padding: 10px;
+  width: 320px;
+
+  table {
+    border: 1px var(--seperator-color) solid;
+    width: 100%;
+  }
+
+  th, 
+  td {
+    padding: 5px;
+  }
+
+  td {
+    width: 100%;
+  }
+}

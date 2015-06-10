@@ -1,0 +1,40 @@
+:root {
+  --teal: rgb(62, 162, 193);
+  --white: rgb(255, 255, 255);
+  --slate: rgb(43, 48, 59);
+  --light-slate: color(var(--slate) lightness(+10%));
+  --v-light-slate: color(var(--slate) lightness(+50%));;
+  --dark-slate: color(var(--slate) lightness(-20%));
+
+  --body-bg: var(--dark-slate);
+  --body-text: var(--white);
+
+  --seperator-color: color(var(--dark-slate) lightness(-20%));
+
+  --header-bg: var(--teal);
+
+  --header-button-bg: var(--white);
+  --header-button-text: var(--teal);
+  --header-button-shadow: color(var(--header-button-bg) lightness(-15%));
+
+  --header-button-active-bg: color(var(--header-bg) lightness(-15%));
+  --header-button-active-highlight: color(var(--header-bg) lightness(+15%));
+  --header-button-active-shadow: color(var(--header-bg) lightness(-25%));
+  --header-button-active-text: color(var(--header-bg) lightness(+10%));
+
+  --header-input-bg: var(--white);
+  --header-input-text: var(--teal);
+
+  --sidebar-bg: var(--slate);
+  --sidebar-text: var(--v-light-slate);
+
+  --panel-toolbar-bg: var(--light-slate);
+  --panel-toolbar-text: var(--v-light-slate);
+
+  --panel-toolbar-button-bg: var(--slate);
+  --panel-toolbar-button-border: color(var(--panel-toolbar-button-bg) lightness(-7.5%));
+  --panel-toolbar-button-shadow: color(var(--panel-toolbar-button-bg) lightness(-1%));
+  --panel-toolbar-button-text: var(--light-slate);
+
+  --crop-mask-bg: rgba(0, 0, 0, .5);
+}

@@ -1,8 +1,8 @@
-var themes = [
+const themes = [
   'white-on-teal',
-  'dark-grey'
+  'dark-grey',
 ];
 
-var defaultTheme = themes[0];
+const defaultTheme = themes[0];
 
-module.exports = { themes, defaultTheme };
+export default { themes, defaultTheme };

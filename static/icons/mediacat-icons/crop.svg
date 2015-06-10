@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>crop</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="crop" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M608,207.254834 L608,545 L608,545 L672,545 L672,609 L608,609 L608,672 L544,672 L544,609 L160,609 L160,576.5 L160,224 L96,224 L96,160 L160,160 L160,160 L160,96 L224,96 L224,160 L564.745166,160 L625.303607,99.4415588 L670.558441,144.696393 L608,207.254834 Z M544,271.254834 L544,545 L270.254834,545 L544,271.254834 Z M500.745166,224 L224,224 L224,500.745166 L500.745166,224 Z" id="Rectangle-19" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

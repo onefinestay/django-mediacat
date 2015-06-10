@@ -1,0 +1,31 @@
+.mediacat-association {
+  border-bottom: 1px #3d4859 solid;
+  padding: 10px 0;
+  color: #8693a6;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+
+  &__info {
+    flex-grow: 1;
+    padding-right: 10px;
+  }
+
+  &__actions {
+    align-self: center;
+    flex-grow: 0;    
+  }
+
+  &__type {
+    color: #66748a;    
+    font-size: 12px;
+  }
+}
+
+.mediacat-list {
+  &__item:last-child {
+    .mediacat-association {
+      border-bottom-width: 0;
+    }
+  }
+}

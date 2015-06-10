@@ -1,0 +1,15 @@
+.mediacat-panel {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  &--fixed {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  & + & {
+    border-top: 1px var(--seperator-color) solid;
+  }
+}

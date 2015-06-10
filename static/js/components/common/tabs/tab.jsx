@@ -1,9 +1,7 @@
-var React = require('react/addons');
+import React from 'react/addons';
 
-var Tab = React.createClass({
-  render: function() {
+export default class Tab extends React.Component {
+  render() {
     return '';
   }
-});
-
-export default Tab;
+}

@@ -1,0 +1,48 @@
+.mediacat-detail {
+  background-color: color(rgb(35, 40, 48) lightness(-10%));
+  display: flex;
+  flex-grow: 1;
+  padding: 20px;
+  position: relative;
+
+  &__content {
+    flex-grow: 1;
+    position: relative;    
+  }
+
+  &__proxy-image {
+    &,
+    &__placeholder,
+    &__bg {
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    &__placeholder,
+    &__bg {
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: opacity 1s ease;      
+    }
+
+    &__placeholder {
+      opacity: 1;
+    }
+
+    &__bg {
+      opacity: 0;
+      z-index: 1;
+    }
+
+    &__image {
+      display: block;
+      height: 100%;
+      opacity: 0;
+      width: 100%;
+    }
+  }  
+}

@@ -1,0 +1,53 @@
+@import 'variables/colors.css';
+@import 'variables/dimensions.css';
+@import 'variables/fonts.css';
+
+@import 'generated/icon.css';
+
+@import 'components/common/action.css';
+@import 'components/common/action-bar.css';
+@import 'components/common/button.css';
+@import 'components/common/column.css';
+@import 'components/common/input.css';
+@import 'components/common/list.css';
+@import 'components/common/loaders.css';
+@import 'components/common/panel.css';
+@import 'components/common/progress-bar.css';
+@import 'components/common/scrollpane.css';
+@import 'components/common/select.css';
+@import 'components/common/table.css';
+@import 'components/common/tabs.css';
+@import 'components/common/toolbar.css';
+
+@import 'components/application.css';
+@import 'components/applications-table.css';
+@import 'components/associations.css';
+@import 'components/categories.css';
+@import 'components/crop-list.css';
+@import 'components/cropper.css';
+@import 'components/detail-image.css';
+@import 'components/document.css';
+@import 'components/information-panel.css';
+@import 'components/information-section.css';
+@import 'components/proxy-image.css';
+@import 'components/thumbnail.css';
+@import 'components/uploads.css';
+
+
+html {
+  background-color: var(--body-bg);
+  color: var(--body-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  margin: 0;  
+}
+
+svg {
+  fill: currentColor;
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>grid</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="grid" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M64,513 L64,705 L256,705 L256,513 L64,513 Z M64,288 L64,480 L256,480 L256,288 L64,288 Z M64,64 L64,256 L256,256 L256,64 L64,64 Z M288,513 L288,705 L480,705 L480,513 L288,513 Z M288,288 L288,480 L480,480 L480,288 L288,288 Z M288,64 L288,256 L480,256 L480,64 L288,64 Z M512,513 L512,705 L704,705 L704,513 L512,513 Z M512,288 L512,480 L704,480 L704,288 L512,288 Z M512,64 L512,256 L704,256 L704,64 L512,64 Z" id="Rectangle-6" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

@@ -25,7 +25,7 @@ var CategoryTreePlaceholderNode = React.createClass({
           <span className="mediacat-category__info" style={style}>
             <span className="mediacat-category__handle" />
             <span className="mediacat-category__label mediacat-category__label--is-loading">Loading...</span>
-            <div className="mediacat-category__count">-</div>            
+            <div className="mediacat-category__count">-</div>
           </span>
         </div>
       </li>
@@ -152,7 +152,7 @@ var CategoryTreeNode = React.createClass({
         <div className={cx(classes, {states})}>
           <a style={style} className={cx(labelClasses, {states})} href={node.get('url')} onClick={this.select} onMouseEnter={this.onMouseEnter} onMouseOut={this.onMouseOut} onMouseUp={this.onMouseUp}>
             <span className={cx(handleClasses, {states})}>
-              {node.get('has_children') ? <Icon glyph="arrow" onClick={this.toggleExpanded} /> : null}
+              {node.get('has_children') ? <Icon glyph="arrow" size="small" onClick={this.toggleExpanded} /> : null}
             </span>
             <span className="mediacat-category__label">{node.get('name')}</span>
             {this.state.fetchingMedia ? <div className="mediacat-category__loader"><LinearLoader size="tiny" /></div> : <div className="mediacat-category__count">{count || '-'}</div>}

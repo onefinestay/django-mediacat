@@ -1,0 +1,20 @@
+.mediacat-progress-bar {
+  background-color: #191e25;
+  border-radius: 2px;
+  height: 4px;
+  position: relative;
+  width: 100%;
+
+  &__progress {
+    background-color: #00a6c3;
+    border-radius: 2px;
+    height: 4px;
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    &--is-complete {
+      background-color: #667285;
+    }
+  }
+ }

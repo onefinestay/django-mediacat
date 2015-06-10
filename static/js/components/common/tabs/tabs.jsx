@@ -1,37 +1,37 @@
-var React = require('react/addons');
-var cx = require('../../bem-cx');
-var Tab = require('./tab');
+import React from 'react/addons';
+
+import cx from '../../bem-cx';
+import Tab from './tab';
 
 
-var Tabs = React.createClass({
+export default class Tabs extends React.Component {
 
-  getInitialState: function() {
-    return {
-      activeTab: 0
-    };
-  },
+  constructor(props) {
+    super(props);
+    this.state = {activeTab: 0};
+  }
 
-  activateTab: function(index) {
+  activateTab(index) {
     var tabs = this.props.children;
 
     if (!Array.isArray(tabs)) {
       tabs = [tabs];
-    } 
+    }
 
     var tab = tabs[index];
     this.setState({activeTab: index});
     if (tab.props.onActivate) {
       tab.props.onActivate();
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var tabs = this.props.children;
 
     if (!Array.isArray(tabs)) {
       tabs = [tabs];
-    }    
-    
+    }
+
     var tabButtons = [];
     var tabBodies = [];
     var i;
@@ -70,6 +70,4 @@ var Tabs = React.createClass({
       </div>
     );
   }
-});
-
-export default Tabs;
+}

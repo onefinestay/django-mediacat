@@ -2,38 +2,57 @@
 
 var gulp = require("gulp");
 var rename = require("gulp-rename");
-var sketch = require("gulp-sketch");
-var iconfont = require('gulp-iconfont');
 var consolidate = require('gulp-consolidate');
 
 var fontName = 'mediacat-icons';
 
-gulp.task('icon', function() {
-  return gulp.src('./static/fonts/icons.sketch')
-  .pipe(sketch({
-    export: 'artboards',
-    compact: true,
-    clean: true,
-    formats: 'svg'
-  }))
-  .pipe(iconfont({
-    fontName: fontName
-  }))
-  .on('codepoints', function(codepoints) {
-    var options = {
-      glyphs: codepoints,
-      fontName: fontName,
-      fontPath: '../fonts/build/', // set path to font (from your CSS file if relative)
-      className: 'icon' // set class name in your CSS
-    };
-    gulp.src('./static/fonts/template.scss')
-      .pipe(consolidate('lodash', options))
-      .pipe(rename({basename: '_icon' }))
-      .pipe(gulp.dest('./static/css/generated/')); // set path to export your CSS
-  })
-  .pipe(gulp.dest('./static/fonts/build/')); // set path to export your fonts
+
+var imageMinOptions = {
+  svgoPlugins: [
+    { removeTitle: true },
+    { removeDesc: true },
+    { removeUselessStrokeAndFill: false },
+  ]
+};
+
+gulp.task('icons', function () {
+  var imagemin = require('gulp-imagemin');
+  var replace = require('gulp-replace');
+  var svgSprite = require("gulp-svg-sprite");
+  var rename = require("gulp-rename");
+
+  var config = {
+    mode: {
+      symbol: {
+        inline: true,
+        prefix: "#mediacat-icon-%s",
+        example: false
+      }
+    },
+    shape: {
+      dimension: {
+        attributes: true
+      }
+    }
+  };
+
+  return gulp.src('./static/icons/**/*.svg')
+    .pipe(imagemin(imageMinOptions))
+    .pipe(svgSprite(config))
+    .pipe(replace(' fill="#000"', ''))
+    .pipe(rename('mediacat-icons.svg'))
+    .pipe(gulp.dest("./mediacat/templates/mediacat"));
 });
 
-gulp.task('watch', function() {
-  gulp.watch(['./static/fonts/icons.sketch', './static/fonts/template.scss'], ['icon']);
+gulp.task('sketch', function() {
+  var sketch = require('gulp-sketch');
+
+  return gulp.src('./static/icons/*.sketch')
+    .pipe(sketch({
+      export: 'artboards',
+      formats: 'svg'
+    }))
+    .pipe(gulp.dest('./static/icons/mediacat-icons'));
 });
+
+gulp.task('icon-pipeline', ['sketch', 'icons']);

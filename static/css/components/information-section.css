@@ -1,0 +1,13 @@
+.mediacat-information-section {
+
+  &__heading {
+    background-color: #3d4859;
+    box-shadow: 0 1px 0 0 #232830, 0 -1px 0 0 #232830;
+    color: rgba(255, 255, 255, .7);
+    padding: 7px;
+  }
+
+  &__content {
+    padding: 7px;
+  }
+}

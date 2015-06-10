@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>hairline-delete</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="hairline-delete" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M480,192 L577,192 L577,224 L193,224 L193,192 L288,192 L288,128 L480,128 L480,192 L480,192 Z M513,288 L448,288 L448,288 L448,608 L513,608 L513,288 L513,288 Z M545,288 L577,288 L577,256 L193,256 L193,288 L223,288 L223,288 L223,640 L239,640 L528.5,640 L545,640 L545,288 L545,288 Z M416,288 L352,288 L352,288 L352,608 L416,608 L416,288 L416,288 Z M320,288 L255,288 L255,608 L320,608 L320,288 L320,288 Z M320,160 L320,192 L448,192 L448,160 L320,160 Z" id="Rectangle-23" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

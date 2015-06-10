@@ -1,14 +1,15 @@
-var React = require('react/addons');
-var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('../../bem-cx');
+import React from 'react/addons';
 
-var ThemeMixin = require('../../mixins/theme-mixin');
+import cx from '../../bem-cx';
+import ThemeMixin from '../../mixins/theme-mixin';
+
+const PureRenderMixin = React.addons.PureRenderMixin;
 
 
 var ToolbarTitle = React.createClass({
 	mixins: [ThemeMixin, PureRenderMixin],
 
-  render: function() {
+  render() {
     var classes = {
       'toolbar__title': true
     };
@@ -20,4 +21,4 @@ var ToolbarTitle = React.createClass({
   }
 });
 
-module.exports = ToolbarTitle;
+export default ToolbarTitle;

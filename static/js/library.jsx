@@ -34,5 +34,5 @@ window.React = React;
 
 React.render(
   <Application flux={flux} keyboard={keyboard} />,
-  document.body
+  document.getElementById('application')
 );
