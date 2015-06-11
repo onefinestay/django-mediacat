@@ -59,4 +59,4 @@ var Constants = {
   DRAG_MEDIA_END: 'DRAG_MEDIA_END'
 };
 
-module.exports = Constants;
+export default Constants;

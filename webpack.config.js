@@ -68,6 +68,7 @@ module.exports = {
     require('postcss-nested')(),
     require('autoprefixer-core')(),
     require('cssnano')(),
-    //require('postcss-log-warnings')()
+    require('postcss-bem-linter')(),
+    require('postcss-log-warnings')()
   ]
 };
