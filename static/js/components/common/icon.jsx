@@ -1,41 +1,40 @@
-var React = require('react/addons');
-var PureRenderMixin = require('react').addons.PureRenderMixin;
+import React from 'react/addons';
+import cx from 'classnames';
 
-var cx = require('../bem-cx');
+const PureRenderMixin = React.addons.PureRenderMixin;
 
 
-var Icon = React.createClass({
-	mixins: [PureRenderMixin],
+const Icon = React.createClass({
+  mixins: [PureRenderMixin],
 
-	propTypes: {
-		glyph: React.PropTypes.string.isRequired,
-		size: React.PropTypes.oneOf(['large', 'medium', 'small'])
-	},
+  propTypes: {
+    glyph: React.PropTypes.string.isRequired,
+    size: React.PropTypes.oneOf(['large', 'medium', 'small'])
+  },
 
-	getDefaultProps: function() {
-		return {
-			glyph: 'add',
-			size: 'small'
-		};
-	},
+  getDefaultProps() {
+    return {
+      size: 'medium',
+    };
+  },
 
-  render: function() {
-  	var { glyph, size, ...other } = this.props;
+  render() {
+    var {glyph, size, ...props} = this.props;
 
-  	var classes = {
-  		'icon': true,
-  	}
+    var classes = cx({
+      ['mediacat-Icon']: true,
+      [`mediacat-Icon--${ glyph }`]: true,
+      [`mediacat-Icon--${ size }`]: true,
+    });
 
-  	classes['icon--' + glyph] = true;
-
-  	if (size) {
-  		classes['icon--' + size] = true;
-  	}
-  	
-		return (
-			<span {...other} className={cx(classes)} />
-		);
+    return (
+      <div className={classes} {...props}>
+        <svg className="mediacat-Icon__Container" dangerouslySetInnerHTML={{__html:
+          `<use xlink:href=\"#mediacat-icons--${ glyph }\"></use>`
+        }} />
+      </div>
+    );
   }
 });
 
-module.exports = Icon;
+export default Icon;

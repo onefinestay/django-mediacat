@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>reject</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="reject" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M495.2491,540.503934 C463.862896,562.854689 425.466574,576 384,576 C277.961328,576 192,490.038672 192,384 C192,342.533426 205.145311,304.137104 227.496066,272.7509 L495.2491,540.503934 L495.2491,540.503934 Z M540.503934,495.2491 C562.854689,463.862896 576,425.466574 576,384 C576,277.961328 490.038672,192 384,192 C342.533426,192 304.137104,205.145311 272.7509,227.496066 L540.503934,495.2491 L540.503934,495.2491 Z M384,640 C525.384896,640 640,525.384896 640,384 C640,242.615104 525.384896,128 384,128 C242.615104,128 128,242.615104 128,384 C128,525.384896 242.615104,640 384,640 L384,640 Z" id="Oval-2" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

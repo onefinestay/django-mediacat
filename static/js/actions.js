@@ -63,8 +63,8 @@ var Actions = {
 
       var patchData = this.flux.store('Media').state.get('media').map(function(media) {
         return {
-          id: media.get('id'), 
-          rank: media.get('rank')
+          id: media.get('id'),
+          rank: media.get('rank'),
         };
       });
       
@@ -240,7 +240,7 @@ var Actions = {
 
       var onTransferComplete = function(event) {
         this.dispatch(Constants.UPLOAD_TRANSFER_COMPLETE, {event, id, file, categoryPath});
-      }.bind(this);        
+      }.bind(this);
 
       var request = mediaService.upload(file, category, onProgress, onTransferComplete).then(function(response) {
         var data = response.body;

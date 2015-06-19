@@ -1,0 +1,26 @@
+.mediacat-uploads {
+  border-top: 1px var(--seperator-color) solid;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.mediacat-upload {
+  border-bottom: 1px #1b2129 solid;
+  padding: 10px;
+
+  &__name {
+    color: #8693a6;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  &__status {
+    color: #4e5b6d;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+}

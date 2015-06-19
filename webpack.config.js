@@ -1,3 +1,4 @@
+"use strict";
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 
@@ -17,50 +18,57 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loaders: [
-          '6to5-loader?sourceMap=true'
+          'babel-loader?stage=1&optional[]=runtime&optional[]=spec.protoToAssign'
         ]
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loaders: [
-          '6to5-loader?sourceMap=true',
-          'jsx?harmony&sourceMap=true'
+          'babel-loader?stage=1&optional[]=runtime&optional[]=spec.protoToAssign'
         ]
       },
-      { 
-        test: /\.woff$/,   
+      {
+        test: /\.woff$/,
         loader: "url-loader?limit=10000&minetype=application/font-woff"
       },
-      { 
-        test: /\.ttf$/,    
-        loader: "file-loader?name=[name].[ext]?[hash]" 
-      },
-      { 
-        test: /\.eot$/,    
-        loader: "file-loader?name=[name].[ext]?[hash]" 
-      },
-      { 
-        test: /\.svg$/,    
+      {
+        test: /\.ttf$/,
         loader: "file-loader?name=[name].[ext]?[hash]"
       },
       {
-        test: /\.scss$/,
+        test: /\.eot$/,
+        loader: "file-loader?name=[name].[ext]?[hash]"
+      },
+      {
+        test: /\.svg$/,
+        loader: "file-loader?name=[name].[ext]?[hash]"
+      },
+      {
+        test: /\.css$/,
         loaders: [
           'style-loader',
-          ExtractTextPlugin.loader({remove:true}),
-          'css-loader?sourceMap=true',
-          'autoprefixer-loader',
-          'sass-loader?precision=10&outputStyle=expanded&sourceMap=true',
+          ExtractTextPlugin.loader({remove: true}),
+          'css-loader?sourceMap',
+          'postcss-loader',
         ]
-      }      
+      }
     ]
   },
   plugins: [
     new ExtractTextPlugin("[name].css")
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss']
+    extensions: ['', '.js', '.jsx', '.css']
   },
-  cache: true
+  postcss: [
+    require('postcss-import')({path: ['./static/css']}),
+    require('postcss-custom-properties')(),
+    require('postcss-color-function')(),
+    require('postcss-nested')(),
+    require('autoprefixer-core')(),
+    require('cssnano')(),
+    require('postcss-bem-linter')(),
+    require('postcss-log-warnings')()
+  ]
 };

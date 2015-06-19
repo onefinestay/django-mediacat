@@ -1,0 +1,54 @@
+.mediacat-crop {
+  background-color: #20232b;
+  border: 1px solid #121419;
+  border-radius: 2px;  
+  box-shadow: 0 1px 2px 0 color(rgb(35, 40, 48) lightness(-1%));
+  cursor: pointer;
+  margin: 5px;
+  text-align: center;
+
+  &:last-child {
+    border-bottom-width: 0;
+  }
+
+  &--is-selected {
+    background-color: color(rgb(65, 72, 88) lightness(-5%));
+  }
+
+  &__content {
+    padding: 10px;
+  }
+
+  &__preview-frame {
+    background-color: #1a0000;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  &__preview-wrapper {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  &__preview {
+    background-color: rgb(65, 72, 88);
+    border: 1px solid #1a0000;
+    position: absolute;
+  }
+
+  &__unsaved-label {
+    font-size: 14px;
+    height: 100%;
+    line-height: 1;
+    margin-top: -7px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    z-index: 1;
+  }
+}

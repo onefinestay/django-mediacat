@@ -1,0 +1,29 @@
+.mediacat-Icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  vertical-align: middle;
+  pointer-events: inherit;
+
+  &--small {
+    width: 12px;
+    height: 12px;
+  }
+
+  &--medium {
+    width: 16px;
+    height: 16px;
+  }
+
+  &--large {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__Container {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}

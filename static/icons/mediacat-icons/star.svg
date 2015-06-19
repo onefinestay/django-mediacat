@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>star</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="star" sketch:type="MSArtboardGroup" fill="#000000">
+            <polygon id="Star-1" sketch:type="MSShapeGroup" points="384 512.075342 195.908719 646.885438 265.997337 426.341389 79.6619148 289.114562 311.070344 287.620939 384 68 456.929656 287.620939 688.338085 289.114562 502.002663 426.341389 572.091281 646.885438 "></polygon>
+            <polygon id="Star-2" sketch:type="MSShapeGroup" points="384 512.075342 195.908719 646.885438 265.997337 426.341389 79.6619148 289.114562 311.070344 287.620939 384 68 456.929656 287.620939 688.338085 289.114562 502.002663 426.341389 572.091281 646.885438 "></polygon>
+        </g>
+    </g>
+</svg>

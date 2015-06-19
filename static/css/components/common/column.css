@@ -1,0 +1,21 @@
+.mediacat-column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  &:first-of-type {
+    border-right: 1px var(--seperator-color) solid;
+  }
+
+  &:last-of-type {
+    border-left: 1px var(--seperator-color) solid;  	
+  }
+
+  &--sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: var(--sidebar-width);
+  }
+}

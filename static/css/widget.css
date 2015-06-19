@@ -1,0 +1,31 @@
+@import 'variables/colors.css';
+@import 'variables/dimensions.css';
+@import 'variables/fonts.css';
+
+@import 'generated/icon.css';
+
+
+.mediacat-mediainput-widget {
+  position: relative;
+  display: inline-block;
+
+  &__preview {
+    background-color: #ccc;
+  }
+
+  &__trigger {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 0;
+    border: 1px #fff solid;
+    background-color: rgba(0, 0, 0, .25);
+    color: #fff;
+    line-height: 1;
+
+    &:hover {
+      color: #fff;
+      background-color: rgba(0, 0, 0, .5);
+    }
+  }
+}

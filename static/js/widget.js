@@ -38,10 +38,10 @@ require('../css/widget');
     openLibrary: function(crops) {
       var width  = screen.width * 0.75;
       var height = screen.height * 0.75;
-      var left   = (screen.width  - width) / 2;
+      var left   = (screen.width - width) / 2;
       var top    = (screen.height - height) / 2;
-      var params = 'width='+width+', height='+height;
-      params += ', top='+top+', left='+left;
+      var params = 'width=' + width + ', height=' + height;
+      params += ', top=' + top + ', left=' + left;
 
       var libraryURL = '/mediacat/';
 
@@ -65,14 +65,14 @@ require('../css/widget');
       }
 
       if (crops) {
-        libraryURL += '&crops=' + crops
+        libraryURL += '&crops=' + crops;
       }
 
       if (previewWidth) {
         libraryURL += '&previewWidth=' + previewWidth;
       }
 
-      var newwindow = window.open(libraryURL,'name', params);
+      var newwindow = window.open(libraryURL, 'name', params);
 
       var self = this;
 
@@ -95,10 +95,10 @@ require('../css/widget');
     },
 
     click: function(event) {
-        event.preventDefault();
-        var self = this;
-        var crops = $(this.element).data('crops');
-        this.openLibrary(crops);
+      event.preventDefault();
+      var self = this;
+      var crops = $(this.element).data('crops');
+      this.openLibrary(crops);
     }
   };
 

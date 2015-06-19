@@ -1,19 +1,21 @@
-var React = require('react/addons');
-var PureRenderMixin = require('react').addons.PureRenderMixin;
-var cx = require('../../bem-cx');
-var ThemeMixin = require('../../mixins/theme-mixin');
+import React from 'react/addons';
+
+import cx from '../../bem-cx';
+import ThemeMixin from '../../mixins/theme-mixin';
+
+const PureRenderMixin = React.addons.PureRenderMixin;
 
 
 var Toolbar = React.createClass({
   mixins: [ThemeMixin, PureRenderMixin],
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       open: true
     };
   },
 
-  render: function() {
+  render() {
     var classes = {
       'toolbar': true
     };
@@ -27,4 +29,4 @@ var Toolbar = React.createClass({
   }
 });
 
-module.exports = Toolbar;
+export default Toolbar;

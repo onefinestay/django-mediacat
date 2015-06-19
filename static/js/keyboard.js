@@ -1,5 +1,6 @@
-var Mousetrap = require('mousetrap');
-var Immutable = require('immutable');
+import Mousetrap from 'mousetrap';
+import Immutable from 'immutable';
+
 
 class Keyboard {
   constructor() {
@@ -17,11 +18,11 @@ class Keyboard {
 
   pop() {
     if (this.keyStack.count() > 1) {
-      Mousetrap.reset();      
+      Mousetrap.reset();
       this.keyStack = this.keyStack.splice(this.keyStack.count() - 1, 1).toList();
       this.keyStack.last().forEach(function(k) {
         Mousetrap.bind(k.key, k.action);
-      })
+      });
     } else {
       throw new Error('Cannot pop the last level of keyboard bindings.');
     }
@@ -46,4 +47,4 @@ class Keyboard {
   }
 }
 
-module.exports = Keyboard;
+export default Keyboard;

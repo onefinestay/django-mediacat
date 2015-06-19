@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="768px" height="768px" viewBox="0 0 768 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: bin/sketchtool 1.3 (252) - http://www.bohemiancoding.com/sketch -->
+    <title>empty-star</title>
+    <desc>Created with bin/sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="empty-star" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M384,512.075342 L195.908719,646.885438 L265.997337,426.341389 L79.6619148,289.114562 L311.070344,287.620939 L384,68 L456.929656,287.620939 L688.338085,289.114562 L502.002663,426.341389 L572.091281,646.885438 L384,512.075342 Z M385,463.873502 L263.916238,550.657501 L309.035786,408.682269 L189.082358,320.342499 L338.051534,319.38098 L385,178 L431.948466,319.38098 L580.917642,320.342499 L460.964214,408.682269 L506.083762,550.657501 L385,463.873502 Z" id="Star-1" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
