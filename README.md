@@ -9,7 +9,7 @@ It's not quite ready yet, but here's a screenshot of the current state of play:
 
 ## Data Model
 
-Mediacat is built around around two major models, Images and Crops. An Image represents an original uploaded file, along with some metadata, and a Crop represents a rectangular subsection of a specific image. Crops are also constrained to being one of a number of developer-defined ratios.
+Mediacat is built around around two major models, Images and Crops. An Image represents an original uploaded file, along with some metadata, and a Crop represents a rectangular subsection of a specific image. Crops are also constrained to being one of a number of developer-defined ratios. These images are of very pretty cats, and we sure love our felines!
 
 A crop can be attached to the model through the use of a `MediaField`. A MediaField looks like a regular Django model field, with some extra magic that happens in the background:
 
